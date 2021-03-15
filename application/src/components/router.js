@@ -3,6 +3,7 @@ import {BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import NotFound from '../pages/Main/notFound'
 import Users from '../pages/users'
+import Auth from '../pages/Main/auth'
 /*
  import page-or-component-name from path
  */
@@ -11,6 +12,7 @@ import Users from '../pages/users'
     <BrowserRouter>
         <Switch>
             {/* <Route exact path="/path" component={page-or-component-name}/> */}
+            <Route exact path="/" component={Auth}/>
             <Route exact path="/users" component={Users}/>
             <Route component={NotFound}/>
         </Switch>
