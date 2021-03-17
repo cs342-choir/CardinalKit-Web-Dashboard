@@ -1,34 +1,34 @@
-import React from 'react';
+import React from "react";
+import { useSelector } from "react-redux";
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Redirect
-  } from 'react-router-dom';
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 
-import { AuthRouter } from './authRouter';
+import { AuthRouter } from "./authRouter";
+import Loading from "../components/loading";
 
 export const AppRouter = () => {
-    return (
-        <Router>
-            <div>
-                <Switch>
-                    <Route 
-                        path="/auth"
-                        component={ AuthRouter }
-                    />
+  const { loading } = useSelector((state) => state.ui);
+  return (
+    <Loading loading={loading}>
+      <Router>
+        <div>
+          <Switch>
+            <Route path="/auth" component={AuthRouter} />
 
-                    {/* <Route 
+            {/* <Route 
                         exact
                         path="/"
                         // component={ JournalScreen }
                     /> */}
 
-                    <Redirect to="/auth/login" />
-
-
-                </Switch>
-            </div>
-        </Router>
-    )
-}
+            <Redirect to="/auth/login" />
+          </Switch>
+        </div>
+      </Router>
+    </Loading>
+  );
+};
