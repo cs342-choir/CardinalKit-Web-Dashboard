@@ -32,3 +32,15 @@ export const login = (uid, displayName) => ({
     displayName,
   },
 });
+
+export const logout =()=>{
+  return (dispatch)=>{
+    auth.signOut().then(()=>{
+      dispatch(logoutAction())
+    })
+  }
+}
+
+const logoutAction=()=>({
+  type: types.logout
+})
