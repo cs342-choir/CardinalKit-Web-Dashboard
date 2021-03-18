@@ -28,9 +28,9 @@ export const AppRouter = () => {
     auth.onAuthStateChanged((user) => {
       if (user?.uid) {
         dispatch(login(user.uid, user.displayName));
-        setIsLoggedIn(true);
         loadStudies().then((studies)=>{
           dispatch(setStudies(studies)) 
+          setIsLoggedIn(true);
         })
         
       } else {
