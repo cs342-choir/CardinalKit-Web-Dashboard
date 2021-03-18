@@ -3,4 +3,6 @@ export const types = {
     logout: '[Auth] Logout',
 
     loading: '[Ui] Loading',
+
+    studiesLoad: '[studies] Load',
 }

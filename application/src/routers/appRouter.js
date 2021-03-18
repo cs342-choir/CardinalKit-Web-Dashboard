@@ -9,10 +9,12 @@ import {
 import { AuthRouter } from "./authRouter";
 import Loading from "../components/loading";
 import { Main } from "../pages/Main/main";
-import { auth } from "../components/firebase";
-import { login } from "../ations/auth";
+import { auth } from "../firebase/firebase";
+import { login } from "../actions/auth";
 import { PrivateRoute } from "./privateRoute";
 import { LoginRoute } from "./loginRoute";
+import { loadStudies } from "../helpers/loadFirebase";
+import { setStudies } from "../actions/studies";
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -26,10 +28,12 @@ export const AppRouter = () => {
     auth.onAuthStateChanged((user) => {
       if (user?.uid) {
         dispatch(login(user.uid, user.displayName));
-        console.log("setTrue");
         setIsLoggedIn(true);
+        loadStudies().then((studies)=>{
+          dispatch(setStudies(studies)) 
+        })
+        
       } else {
-        console.log("setFalse");
         setIsLoggedIn(false);
       }
       setLoadingUser(false)

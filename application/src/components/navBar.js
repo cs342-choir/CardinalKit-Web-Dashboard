@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { logout } from "../ations/auth";
+import { logout } from "../actions/auth";
 
 export const NavVar = ()=>{
   const dispatch = useDispatch()
