@@ -1,5 +1,5 @@
 import { types } from "../types/types";
-import { auth, googleAuthProvider } from "../components/firebase";
+import { auth, googleAuthProvider } from "../firebase/firebase";
 import { loading } from "./ui";
 
 export const loginEmailPassword = (email, password) => {
