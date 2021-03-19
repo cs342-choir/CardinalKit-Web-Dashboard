@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import { NavLink } from "react-router-dom";
 import { logout } from "../actions/auth";
 
 export const NavVar = ()=>{
@@ -8,12 +9,18 @@ export const NavVar = ()=>{
     dispatch(logout())
   }
     return(
-        <div>
+        <nav>
              <button
           onClick={handleLogout}
         >
           Sign Out
         </button>
-        </div>
+        <ul>
+          <li>
+            <NavLink activeClassName="active" to="/">Home</NavLink>
+          </li>
+        </ul>
+
+        </nav>
     )
 }

@@ -1,21 +1,26 @@
 import React from "react";
 import { ButtonList } from "../../components/ui/buttonsList";
 import { NavVar } from "../../components/navBar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { fetchUsersStudy } from "../../actions/studies";
 
 export const Main = () => {
+  const history = useHistory()
+  const handleSelectStudy = (element) => {
+    history.push(`/study/${element.id}`)
+  };
+
+
+
   const { studies } = useSelector((state) => state.studies);
-  const studiesFormat = studies.map((element)=>({
-    text:element.id,
-    ...element
-  }))
   return (
     <>
       <NavVar></NavVar>
         <ButtonList 
-          buttons={studiesFormat}
+          buttons={studies}
+          handleSelect={handleSelectStudy}
         ></ButtonList>
-      <h1>HEllo</h1>
     </>
   );
 };

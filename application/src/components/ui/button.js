@@ -5,7 +5,7 @@ console.log(element.id);
     return(
         <button
             key={element.id}
-            onClick={handleClick}
+            onClick={()=>handleClick(element)}
         >
             {element.text}
         </button>
