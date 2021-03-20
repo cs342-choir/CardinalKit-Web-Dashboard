@@ -1,6 +1,7 @@
 export const types = {
     login: '[Auth] Login',
     logout: '[Auth] Logout',
+    userType: '[Auth] UserType',
 
     loading: '[Ui] Loading',
 

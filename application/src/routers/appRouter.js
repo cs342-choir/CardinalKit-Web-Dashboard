@@ -7,10 +7,10 @@ import Loading from "../components/loading";
 import { Main } from "../pages/Main/main";
 import { StudyDetail } from "../pages/studies/studyDetail";
 import { auth } from "../firebase/firebase";
-import { login } from "../actions/auth";
+import { fethUserPermissions, login } from "../actions/auth";
 import { PrivateRoute } from "./privateRoute";
 import { LoginRoute } from "./loginRoute";
-import { fetchStudies } from "../actions/studies";
+// import { fetchStudies } from "../actions/studies";
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,8 @@ export const AppRouter = () => {
     auth.onAuthStateChanged((user) => {
       if (user?.uid) {
         dispatch(login(user.uid, user.displayName));
-        dispatch(fetchStudies());
+        dispatch(fethUserPermissions(user.uid))
+        // dispatch(fetchStudies());
         setIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);

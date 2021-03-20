@@ -1,18 +1,21 @@
 import { types } from "../types/types";
 import { auth, googleAuthProvider } from "../firebase/firebase";
 import { loading } from "./ui";
+import { getUserPermissions } from "../helpers/loadFirebase";
+import { setStudies } from "./studies";
 
 export const loginEmailPassword = (email, password) => {
   return (dispatch) => {
     dispatch(loading(true));
-    auth.signInWithEmailAndPassword(email, password)
-    .then(({ user }) => {
-      dispatch(loading(false));
-      dispatch(login(user.uid, user.displayName));
-    })
-    .catch(()=>{
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then(({ user }) => {
         dispatch(loading(false));
-    });
+        dispatch(login(user.uid, user.displayName));
+      })
+      .catch(() => {
+        dispatch(loading(false));
+      });
   };
 };
 
@@ -33,14 +36,30 @@ export const login = (uid, displayName) => ({
   },
 });
 
-export const logout =()=>{
-  return (dispatch)=>{
-    auth.signOut().then(()=>{
-      dispatch(logoutAction())
-    })
-  }
-}
+export const logout = () => {
+  return (dispatch) => {
+    auth.signOut().then(() => {
+      dispatch(logoutAction());
+    });
+  };
+};
 
-const logoutAction=()=>({
-  type: types.logout
-})
+const logoutAction = () => ({
+  type: types.logout,
+});
+
+export const fethUserPermissions = (userId) => {
+  return (dispatch) => {
+    getUserPermissions(userId).then((data) => {
+      dispatch(setStudies(data.studies));
+      dispatch(userType(data.isSuperAdmin));
+    });
+  };
+};
+
+const userType = (isSuperAdmin) => ({
+  type: types.userType,
+  payload: {
+    isSuperAdmin: isSuperAdmin,
+  },
+});

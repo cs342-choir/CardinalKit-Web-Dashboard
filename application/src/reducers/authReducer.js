@@ -9,6 +9,11 @@ export const authReducer = (state = {}, action) => {
         }
     case types.logout:
       return {}
+    case types.userType:
+      return{
+        ...state,
+        isSuperAdmin:action.payload.isSuperAdmin
+      }
     default:
         return state
   }
