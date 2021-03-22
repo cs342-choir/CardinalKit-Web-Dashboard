@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
-import Loading from "../../components/loading";
 import { NavVar } from "../../components/navBar";
+import { ButtonList } from "../../components/ui/buttonsList";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { fetchUsersStudy } from "../../actions/studies";
 import { useTable } from "react-table";
+import { useParams, useHistory } from "react-router-dom";
+
+import { fetchUsersStudy } from "../../actions/studies";
+
+import Loading from "../../components/loading";
 import BarGraph from "../../components/ui/graph/barGraph";
 import LineGraph from "../../components/ui/graph/lineGraph";
 
-//dispatch(fetchUsersStudy(element.id));
-
 export const StudyDetail = () => {
+  const studyTypes = [
+    { id: "01", text: "carekit-store", url: "/carekit-store" },
+    { id: "02", text: "surveys", url: "/surveys" },
+  ];
+  const history = useHistory();
+
   const { id } = useParams();
   const dispatch = useDispatch();
   const [loading, setLoadingUser] = useState(true);
@@ -57,13 +64,23 @@ export const StudyDetail = () => {
     data,
   });
 
+  const handleSelectStudy = (element) => {
+    history.push(`${element.url}/${id}`);
+  };
+
   if (loading) {
     return <Loading />;
   } else {
     return (
       <>
         <NavVar />
-        <table {...getTableProps()} style={{ border: "solid 1px blue" }}>
+
+        <ButtonList
+          buttons={studyTypes}
+          handleSelect={handleSelectStudy}
+        ></ButtonList>
+
+        {/* <table {...getTableProps()} style={{ border: "solid 1px blue" }}>
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
@@ -125,7 +142,7 @@ export const StudyDetail = () => {
             { x: 3, y: -5 },
             { x: 4, y: 15 },
           ]}
-        />
+        /> */}
       </>
     );
   }

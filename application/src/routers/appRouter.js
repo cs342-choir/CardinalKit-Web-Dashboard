@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter as Router, Switch, Redirect, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Redirect,
+  Route,
+} from "react-router-dom";
 
 import { AuthRouter } from "./authRouter";
 import Loading from "../components/loading";
@@ -12,6 +17,8 @@ import { PrivateRoute } from "./privateRoute";
 import { LoginRoute } from "./loginRoute";
 import { RegisterScreen } from "../pages/Main/Register";
 import { LoginLinkScreen } from "../pages/Main/LoginLink";
+import { CareKitGraph } from "../pages/studies/types/carekit";
+import { SurveyGraph } from "../pages/studies/types/surveys";
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -57,7 +64,18 @@ export const AppRouter = () => {
             path="/study/:id"
             component={StudyDetail}
           />
-
+          <PrivateRoute
+            exact
+            isAuthenticated={isLoggedIn}
+            path="/carekit-store/:studyId"
+            component={CareKitGraph}
+          />
+          <PrivateRoute
+            exact
+            isAuthenticated={isLoggedIn}
+            path="/surveys/:studyId"
+            component={SurveyGraph}
+          />
           <PrivateRoute
             exact
             isAuthenticated={isLoggedIn}
@@ -65,11 +83,7 @@ export const AppRouter = () => {
             component={RegisterScreen}
           />
 
-          <Route
-            exact
-            path="/LoginLink"
-            component={LoginLinkScreen}
-          />
+          <Route exact path="/LoginLink" component={LoginLinkScreen} />
 
           <Redirect to="/auth/login" />
         </Switch>

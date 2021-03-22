@@ -50,22 +50,21 @@ export const getUserPermissions = async (userId) => {
         });
       });
     }
-    console.log("permissions", permissions);
   }
   return permissions;
 };
 
 export const registerFirebaseUser = async (name, email, studies) => {
-  const res={
-    status:false,
-    error:""
-  }
+  const res = {
+    status: false,
+    error: "",
+  };
   const resCreateUser = await secondApp
     .auth()
     .createUserWithEmailAndPassword(email, uuid())
     .catch((error) => {
       console.log(error, "error");
-      res.error=error.message
+      res.error = error.message;
     });
 
   if (resCreateUser) {
@@ -92,10 +91,32 @@ export const registerFirebaseUser = async (name, email, studies) => {
     const sended = auth
       .sendPasswordResetEmail(email, actionCodeSettings)
       .catch((error) => {
-        res.error=error.message
+        res.error = error.message;
       });
 
     res.status = sended !== undefined;
-  } 
-  return res
+  }
+  return res;
+};
+
+export const getAllUsersDataByStudyType = async (studyId, studyType) => {
+  const usersSnap = await db.collection(`studies/${studyId}/users`).get();
+  const records = {};
+  await Promise.all(
+    usersSnap.docs.map(async (user) => {
+      let recordsSnap = await db
+        .collection(`studies/${studyId}/users/${user.id}/${studyType}`)
+        .get();
+
+      await Promise.all(
+        recordsSnap.docs.map(async (record) => {
+          if (!(record.id in records)) {
+            records[record.id] = [];
+          }
+          records[record.id].push(record.data());
+        })
+      );
+    })
+  );
+  return records;
 };

@@ -14,7 +14,15 @@ export const studiesReducer = (state = {}, action) => {
         ...state,
         users:newUsers
       }
-     
+    case types.studyTypeData:
+      const studyData= state.studyTypeData?state.studyTypeData:{}
+      let studyTypeData=studyData[action.payload.studyId]?studyData[action.payload.studyId]:{}
+      studyTypeData[action.payload.typeId]=action.payload.data
+      studyData[action.payload.studyId]=studyTypeData
+      return {
+        ...state,
+        studyTypeData:studyData
+      }
       
     default:
       return state;
