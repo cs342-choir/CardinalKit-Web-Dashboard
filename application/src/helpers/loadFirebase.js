@@ -56,32 +56,46 @@ export const getUserPermissions = async (userId) => {
 };
 
 export const registerFirebaseUser = async (name, email, studies) => {
-  secondApp
+  const res={
+    status:false,
+    error:""
+  }
+  const resCreateUser = await secondApp
     .auth()
     .createUserWithEmailAndPassword(email, uuid())
-    .then(async ({ user }) => {
-      secondApp.auth().signOut();
-      console.log(user.uid);
-      let path = `userPermisions/${user.uid}`;
-      await db.doc(path).set({
-        isSuperAdmin: false,
-      });
-      path += "/studiesPermission";
-      studies.map((element) =>
-        db.collection(path).doc(element.value).set({ exists: true })
-      );
-
-      var actionCodeSettings = {
-        url: "http://localhost:3000/",
-        handleCodeInApp: true,
-      };
-      auth
-        .sendPasswordResetEmail(email, actionCodeSettings)
-        .then(function () {
-          console.log("sendDed");
-        })
-        .catch(function (error) {
-          console.log("error", error);
-        });
+    .catch((error) => {
+      console.log(error, "error");
+      res.error=error.message
     });
+
+  if (resCreateUser) {
+    const { user } = resCreateUser;
+
+    secondApp.auth().signOut();
+    let path = `userPermisions/${user.uid}`;
+
+    await db.doc(path).set({
+      isSuperAdmin: false,
+    });
+
+    path += "/studiesPermission";
+
+    studies.map((element) =>
+      db.collection(path).doc(element.value).set({ exists: true })
+    );
+
+    var actionCodeSettings = {
+      url: "http://localhost:3000/",
+      handleCodeInApp: true,
+    };
+
+    const sended = auth
+      .sendPasswordResetEmail(email, actionCodeSettings)
+      .catch((error) => {
+        res.error=error.message
+      });
+
+    res.status = sended !== undefined;
+  } 
+  return res
 };

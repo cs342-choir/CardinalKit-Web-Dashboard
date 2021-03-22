@@ -66,7 +66,7 @@ export const userType = (isSuperAdmin) => ({
 
 
 export const registerUser=(name,email,studies)=>{
-  return async (dispatch)=>{
-    registerFirebaseUser(name,email,studies)
+  return async ()=>{
+    return await registerFirebaseUser(name,email,studies)
   }
 }

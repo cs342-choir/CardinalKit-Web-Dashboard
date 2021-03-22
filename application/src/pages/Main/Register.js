@@ -1,10 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Select from "react-select";
 import { registerUser } from "../../actions/auth";
 import { useForm } from "../../hooks/useForm";
+import swal from 'sweetalert'
 // import { useEffect } from "react/cjs/react.development";
 // let studiesFormatted = [
 // { value: 'ocean', label: 'Ocean', color: '#00B8D9', isFixed: true },
@@ -20,11 +21,13 @@ import { useForm } from "../../hooks/useForm";
 //   ];
 
 export const RegisterScreen = () => {
+  const history = useHistory();
   const [values, handleInputChange] = useForm({
     username: "",
     email: "",
   });
   const [studiesSelected, handleStudiesChange] = useState([]);
+  const [error, setError] = useState();
   const { username, email } = values;
 
   const dispatch = useDispatch();
@@ -36,7 +39,17 @@ export const RegisterScreen = () => {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    dispatch(registerUser(username, email, studiesSelected));
+    dispatch(registerUser(username, email, studiesSelected)).then((res)=>{
+      if(res.status){
+        swal("Congrats!", ", Your account is created!", "success").then(()=>{
+          history.push(`/`);
+        });
+      }
+      else{
+        setError(res.error)
+      }
+    });
+    
   };
 
   return (
@@ -73,14 +86,17 @@ export const RegisterScreen = () => {
           classNamePrefix="select"
           onChange={handleStudiesChange}
         />
+        {error&&
+          <div>{error}</div>}
 
         <button type="submit" className="btn btn-primary btn-block mb-5">
           Register
         </button>
 
         <Link to="/" className="link">
-          Go Back?
+          Go Back
         </Link>
+
       </form>
     </>
   );
