@@ -1,7 +1,7 @@
 import { types } from "../types/types";
 import { auth, googleAuthProvider } from "../firebase/firebase";
 import { loading } from "./ui";
-import { getUserPermissions } from "../helpers/loadFirebase";
+import { getUserPermissions, registerFirebaseUser } from "../helpers/loadFirebase";
 import { setStudies } from "./studies";
 
 export const loginEmailPassword = (email, password) => {
@@ -57,9 +57,16 @@ export const fethUserPermissions = (userId) => {
   };
 };
 
-const userType = (isSuperAdmin) => ({
+export const userType = (isSuperAdmin) => ({
   type: types.userType,
   payload: {
     isSuperAdmin: isSuperAdmin,
   },
 });
+
+
+export const registerUser=(name,email,studies)=>{
+  return async (dispatch)=>{
+    registerFirebaseUser(name,email,studies)
+  }
+}

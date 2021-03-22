@@ -1,10 +1,8 @@
 import React from "react";
 import { ButtonList } from "../../components/ui/buttonsList";
 import { NavVar } from "../../components/navBar";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { fetchUsersStudy } from "../../actions/studies";
-import Button from "../../components/ui/button";
+import { useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 
 export const Main = () => {
   const history = useHistory();
@@ -16,9 +14,6 @@ export const Main = () => {
   const { studies } = useSelector((state) => state.studies);
   const { isSuperAdmin } = useSelector((state)=>state.auth)
 
-  const handleRegisterNewAdmin=()=>{
-    console.log("RegisterAction");
-  }
   return (
     <>
       <NavVar></NavVar>
@@ -27,14 +22,9 @@ export const Main = () => {
         handleSelect={handleSelectStudy}
       ></ButtonList>
       {isSuperAdmin&&
-        <Button
-        key={"Register"}
-        element={{
-          id:"Register",
-          text: "Register New admin User",
-        }}
-        handleClick={handleRegisterNewAdmin}
-      />
+        <Link to="/register" className="link">
+          Create new account
+        </Link>
       } 
       
     </>

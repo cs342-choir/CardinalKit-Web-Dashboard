@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter as Router, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Redirect, Route } from "react-router-dom";
 
 import { AuthRouter } from "./authRouter";
 import Loading from "../components/loading";
@@ -10,7 +10,8 @@ import { auth } from "../firebase/firebase";
 import { fethUserPermissions, login } from "../actions/auth";
 import { PrivateRoute } from "./privateRoute";
 import { LoginRoute } from "./loginRoute";
-// import { fetchStudies } from "../actions/studies";
+import { RegisterScreen } from "../pages/Main/Register";
+import { LoginLinkScreen } from "../pages/Main/LoginLink";
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -24,8 +25,7 @@ export const AppRouter = () => {
     auth.onAuthStateChanged((user) => {
       if (user?.uid) {
         dispatch(login(user.uid, user.displayName));
-        dispatch(fethUserPermissions(user.uid))
-        // dispatch(fetchStudies());
+        dispatch(fethUserPermissions(user.uid));
         setIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);
@@ -57,6 +57,20 @@ export const AppRouter = () => {
             path="/study/:id"
             component={StudyDetail}
           />
+
+          <PrivateRoute
+            exact
+            isAuthenticated={isLoggedIn}
+            path="/register"
+            component={RegisterScreen}
+          />
+
+          <Route
+            exact
+            path="/LoginLink"
+            component={LoginLinkScreen}
+          />
+
           <Redirect to="/auth/login" />
         </Switch>
       </Router>

@@ -7,4 +7,5 @@ export default firebase;
 export const db = firebase.firestore();
 export const auth = firebase.auth();
 export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+export const secondApp = firebase.initializeApp(config, "Secondary");
 
