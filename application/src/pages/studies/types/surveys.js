@@ -1,136 +1,104 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+
 import { getDataStudy } from "../../../actions/studies";
-import { useTable } from "react-table";
+import Table from "../../../components/ui/table";
+import { NavVar } from "../../../components/navBar";
 
 export const SurveyGraph = () => {
-  const [data, setData] = useState(() => []);
-  const [columns, setColumns] = useState(() => []);
+  const dispatch = useDispatch();
+
+  const [_rows, _setRows] = useState(() => ({
+    ShortWalkTask: [{ user: "userId" }],
+  }));
+  const [_columns, setColumns] = useState(() => ({
+    ShortWalkTask: [{ Header: "userId", accessor: "user" }],
+  }));
+
+  const [_data, _setData] = useState([]);
 
   const { studyTypeData } = useSelector((state) => state.studies);
-  const dispatch = useDispatch();
   const { studyId } = useParams();
 
-  const [shortWalk, setShortWalk] = useState([]);
   useEffect(() => {
     dispatch(getDataStudy(studyId, "surveys"));
-  }, [dispatch, studyId, data, studyTypeData]);
+  }, [dispatch, studyId]);
 
   useEffect(() => {
     if (studyTypeData != null && studyTypeData[studyId] != null) {
-      let data = studyTypeData[studyId]["surveys"]["ShortWalkTask"];
-      setShortWalk(data);
+      let data = studyTypeData[studyId]["surveys"];
+      _setData(data);
     }
-  }, [studyTypeData, studyId, data]);
-
+  }, [studyTypeData, studyId]);
+  
   useEffect(() => {
-      let counter=0
-    if (shortWalk != null) {
-      let obj = [];
-      let _Columns = [];
-      const Headers = [
-        { Header: "userId", accessor: "user" },
-        { Header: "updateAt", accessor: "update" },
-      ];
-      shortWalk.map((entry) =>
-        entry.results.map((result) => {
-          let row = {};
-          for (let key in result) {
-            if (key !== "results") {
-              if (!_Columns.includes(key)) {
-                _Columns.push(key);
-                Headers.push({ Header: key, accessor: key });
+    let _allRows = { ..._rows };
+    let _allColumns = { ..._columns };
+    for (let keyData in _data) {
+      if (_data[keyData] != null) {
+        let rows = [];
+        let columns = [];
+        const Headers = [
+          { Header: "userId", accessor: "user" },
+          { Header: "updateAt", accessor: "update" },
+        ];
+        _data[keyData].map((entry) => {
+          entry.results.map((result) => {
+            let row = {};
+            for (let keyRow in result) {
+              if (keyRow !== "results") {
+                if (!columns.includes(keyRow)) {
+                  columns.push(keyRow);
+                  Headers.push({ Header: keyRow, accessor: keyRow });
+                }
+                row[keyRow] = JSON.stringify(result[keyRow]);               
               }
-              row[key] = JSON.stringify(result[key]);
-            }
-          }
-          row["user"] = entry.userId;
-          row["update"] = entry.updatedAt.toDate().toString();
-          result.results.forEach((element) => {
-            let rowCopy = { ...row };
-            for (let key in element) {
-              if (!_Columns.includes(`R_${key}`)) {
-                _Columns.push(`R_${key}`);
-                Headers.push({ Header: `R_${key}`, accessor: `R_${key}` });
-              }
-              rowCopy[`R_${key}`] = JSON.stringify(element[key]);
-              obj.push(rowCopy);
-              counter++
-            }
-          });
-          console.log("counter",counter,entry.userId);
-        })
-      );
-        console.log("counter",counter);
-      setColumns(Headers);
-      setData(obj);
-    }
-  }, [shortWalk]);
+              row["user"] = entry.userId;
+              row["update"] = entry.updatedAt.toDate().toString();
+              result.results.forEach((element) => {
+                let rowCopy = { ...row };
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({
-    columns,
-    data,
-  });
+                for (let key in element) {
+                  if (!columns.includes(`R_${key}`)) {
+                    columns.push(`R_${key}`);
+                    Headers.push({ Header: `R_${key}`, accessor: `R_${key}` });
+                  }
+                  rowCopy[`R_${key}`] = JSON.stringify(element[key]);
+                  rows.push(rowCopy);
+                }
+              });
+            }
+            return {};
+          });
+
+          return {};
+        });_allRows[keyData] = rows;
+        _allColumns[keyData] = Headers;
+      }
+      _setRows(_allRows);
+      setColumns(_allColumns);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [_data]);
 
   return (
     <>
-      <h1>Short Walk Task</h1>
-      <table {...getTableProps()} style={{ border: "solid 1px blue" }}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th
-                  {...column.getHeaderProps()}
-                  style={{
-                    borderBottom: "solid 3px red",
-                    background: "aliceblue",
-                    color: "black",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {column.render("Header")}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td
-                      {...cell.getCellProps()}
-                      style={{
-                        padding: "10px",
-                        border: "solid 1px gray",
-                        background: "papayawhip",
-                      }}
-                    >
-                      {cell.render("Cell")}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <h1>Survey Task Assessment</h1>
-
-      <h1>Survey Task Assessment</h1>
-
-      <h1>Feedback</h1>
+      <NavVar></NavVar>
+<h1>surveys</h1>
+      {Object.keys(_data).map((item) => {
+        return (
+          <>
+            <h1>{item}</h1>
+            {_rows[item]&&
+            <Table
+              data={_rows[item]}
+              columns={_columns[item]}
+            ></Table>}
+          </>
+        );
+      })}
+      
     </>
   );
 };
