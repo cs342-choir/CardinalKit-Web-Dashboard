@@ -89,7 +89,6 @@ export const CareKitGraph = () => {
   return (
     <>
       <NavVar></NavVar>
-<h1>surveys</h1>
       {Object.keys(_data).map((item) => {
         return (
           <>
