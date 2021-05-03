@@ -479,6 +479,10 @@ let items = [
     'hk-quantity-sample':'http://unitsofmeasure.org'
   }),
 
+  //pace
+  transformRule.copyValue('body.pace.value','valueQuantity.value'),
+  transformRule.copyValue('body.pace.unit','valueQuantity.unit'),
+
     //Heart Rate
     transformRule.copyValue('body.heart_rate.value','valueQuantity.value'),
     transformRule.addValueIfHasKey('body.heart_rate','valueQuantity.code','/min'),
@@ -487,6 +491,16 @@ let items = [
     transformRule.ohmFhirConceptMappingTable('body.blood_glucose.unit','valueQuantity'),
     transformRule.copyValue('body.blood_glucose.value','valueQuantity.value'),
     transformRule.copyValue('body.blood_glucose.unit','valueQuantity.unit'),
+
+    //ambient_temperature
+    transformRule.ohmFhirConceptMappingTable('body.ambient_temperature.unit','valueQuantity'),
+    transformRule.copyValue('body.ambient_temperature.value','valueQuantity.value'),
+    transformRule.copyValue('body.ambient_temperature.unit','valueQuantity.unit'),
+
+    //KCAL_BURNED
+    transformRule.ohmFhirConceptMappingTable('body.kcal_burned.unit','valueQuantity'),
+    transformRule.copyValue('body.kcal_burned.value','valueQuantity.value'),
+    transformRule.copyValue('body.kcal_burned.unit','valueQuantity.unit'),
 
     //Respiratoty Rate
     transformRule.copyValue('body.respiratory_rate.value','valueQuantity.value'),
@@ -503,6 +517,37 @@ let items = [
     transformRule.ohmFhirConceptMappingTable('body.body_weight.unit','valueQuantity'),
     transformRule.copyValue('body.body_weight.value','valueQuantity.value'),
     transformRule.copyValue('body.body_weight.unit','valueQuantity.unit'),
+
+    //Body height
+
+    transformRule.ohmFhirConceptMappingTable('body.body_height.unit','valueQuantity'),
+    transformRule.copyValue('body.body_height.value','valueQuantity.value'),
+    transformRule.copyValue('body.body_height.unit','valueQuantity.unit'),
+
+    //body fat percentage 
+
+    transformRule.ohmFhirConceptMappingTable('body.body_fat_percentage.unit','valueQuantity'),
+    transformRule.copyValue('body.body_fat_percentage.value','valueQuantity.value'),
+    transformRule.copyValue('body.body_fat_percentage.unit','valueQuantity.unit'),
+
+    //body mass index
+    transformRule.ohmFhirConceptMappingTable('body.body_mass_index.unit','valueQuantity'),
+    transformRule.copyValue('body.body_mass_index.value','valueQuantity.value'),
+    transformRule.copyValue('body.body_mass_index.unit','valueQuantity.unit'),
+
+    //breath_carbon_monoxide
+    transformRule.ohmFhirConceptMappingTable('body.breath_carbon_monoxide.unit','valueQuantity'),
+    transformRule.copyValue('body.breath_carbon_monoxide.value','valueQuantity.value'),
+    transformRule.copyValue('body.breath_carbon_monoxide.unit','valueQuantity.unit'),
+
+     //expiratory_time
+     transformRule.ohmFhirConceptMappingTable('body.expiratory_time.unit','valueQuantity'),
+     transformRule.copyValue('body.expiratory_time.value','valueQuantity.value'),
+     transformRule.copyValue('body.expiratory_time.unit','valueQuantity.unit'),
+
+ 
+
+
     //Blood Pressure ---
 //No data
     // Oxygen Saturation
@@ -548,13 +593,34 @@ let items = [
       'episode':"/{episode}",
       'session':"/{session}",
     }).AddDependendKey('body.total_sleep_time'),
-    //TODO ADD TOTAL SLEEP SLEEP UNIT
+  
+  //Sleep duration
 
+    transformRule.ohmFhirConceptMappingTable('body.sleep_duration.unit','valueQuantity'),
+    transformRule.copyValue('body.sleep_duration.value','valueQuantity.value'),
+    transformRule.copyValue('body.sleep_duration.unit','valueQuantity.unit'),
 
+     //speed
+
+     transformRule.ohmFhirConceptMappingTable('body.speed.unit','valueQuantity'),
+     transformRule.copyValue('body.speed.value','valueQuantity.value'),
+     transformRule.copyValue('body.speed.unit','valueQuantity.unit'),
+
+      //ventilation_cycle_time
+
+      transformRule.ohmFhirConceptMappingTable('body.ventilation_cycle_time.unit','valueQuantity'),
+      transformRule.copyValue('body.ventilation_cycle_time.value','valueQuantity.value'),
+      transformRule.copyValue('body.ventilation_cycle_time.unit','valueQuantity.unit'),
+      
     //hk quantity sample
     transformRule.ohmFhirConceptMappingTable('body.unit_value.unit','valueQuantity'),
     transformRule.copyValue('body.unit_value.value','valueQuantity.value'),
     transformRule.copyValue('body.unit_value.unit','valueQuantity.unit'),
+
+    //hk Workout
+    transformRule.ohmFhirConceptMappingTable('body.distance.unit','valueQuantity'),
+    transformRule.copyValue('body.distance.value','valueQuantity.value'),
+    transformRule.copyValue('body.distance.unit','valueQuantity.unit'),
 
   //device
   transformRule.copyValue('header.acquisition_provenance.source_name','device.display'),  
@@ -562,6 +628,16 @@ let items = [
   transformRule.addValueIfHasKey('header.acquisition_provenance.modality','device.extension[0].url','http://www.fhir.org/mfhir/StructureDefinition/extenion-modality'),
 
   //Component
+  
+      //Geoposition
+  transformRule.copyValue('body.latitude.value','component[0].valueQuantity.value'),
+  transformRule.copyValue('body.latitude.unit','component[0].valueQuantity.unit'),
+
+  transformRule.copyValue('body.longitude.value','component[0].valueQuantity.value'),
+  transformRule.copyValue('body.longitude.unit','component[0].valueQuantity.unit'),
+  transformRule.copyValue('body.positioning_system','component[0].valueQuantity.positioning_system'),
+
+
   //temporal_relationship_to_sleep
   transformRule.addMultipleValueIfHasKey('body.temporal_relationship_to_sleep',{
     'component[0].code.coding[1].code':'relative-to-sleep',
@@ -599,6 +675,8 @@ let items = [
     'component[0].code.coding[1].display':'Oxygen Therapy Mode of Administration'
   }),
   transformRule.copyValue('body.oxygen_therapy_mode_of_administration','component[0].valueString'),
+
+  transformRule.copyValue('body.reported_activity_intensity','component[0].valueString'),
 
   //supplemental_oxygen_flow_rate
   transformRule.addMultipleValueIfHasKey('body.supplemental_oxygen_flow_rate',{
