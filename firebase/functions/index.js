@@ -25,20 +25,19 @@ function () {
     return str;
 };
 
-
-
 var typeRule = {
   copy:"copy",
   add:"add",
   addIfHaskey:"addIfHaskey",
   fromDict:"fromDict",
   concat:"concat",
-  conceptTable:"conceptTable"
+  conceptTable:"conceptTable",
+  multipleValue: "multipleValue"
 }
-// Table Transformation
+
 class transformRule{
   type = typeRule.copy;
-  
+  keyDependOn = null;
 
   static copyValue(keyInput,keyOutput){
     let newRule = new transformRule()
@@ -50,9 +49,9 @@ class transformRule{
 
   static addValue(KeyOutput,value){
     let newRule = new transformRule()
-    newRule.KeyOutput=KeyOutput
+    newRule.keyOutput=KeyOutput
     newRule.valueOutput = value
-    newRule.typeRule=typeRule.add
+    newRule.type=typeRule.add
     return newRule;
   }
 
@@ -65,8 +64,14 @@ class transformRule{
     return newRule;
   }
 
-  //dict Values example
-  // {stepCount:step-count,heartRate:heart-rate}
+  static addMultipleValueIfHasKey(keyInput,dictOutput){
+    let newRule = new transformRule()
+    newRule.keyInput=keyInput
+    newRule.outputValues = dictOutput
+    newRule.type = typeRule.dictOutput
+    return newRule
+  }
+
   static addValueDependOnInput(keyInput,keyOutput,dictValuesToTransform,defaultValue=null){
     let newRule = new transformRule()
     newRule.keyInput=keyInput
@@ -96,21 +101,26 @@ class transformRule{
   }
   
   transformValue(dictInput,dictOutput){
+    if(this.keyDependOn){
+      if(!_.hasIn(dictInput, this.keyDependOn)){
+        return false;
+      }
+    }
     switch(this.type){
       case typeRule.copy:
         if(_.hasIn(dictInput, this.keyInput)){
           let value = _.get(dictInput,this.keyInput)
-          _.set(dictOutput,this.KeyOutput,value)
+          _.set(dictOutput,this.keyOutput,value)
         }
         break
 
       case typeRule.add:
-        _.set(dictOutput,this.KeyOutput,this.valueOutput)
+        _.set(dictOutput,this.keyOutput,this.valueOutput)
         break
 
       case typeRule.addIfHaskey:
         if(_.hasIn(dictInput, this.keyInput)){
-          _.set(dictOutput,this.KeyOutput,this.valueOutput)
+          _.set(dictOutput,this.keyOutput,this.valueOutput)
         }
         break
 
@@ -141,62 +151,32 @@ class transformRule{
           _.set(dictOutput, this.keyOutput, this.formatOutput.formatUnicorn(...values))
         }
         break
-
-      case typeRule.conceptTable:
-        console.log("tratando de pasar de tabla");
+      case typeRule.multipleValue:
         if(_.hasIn(dictInput, this.keyInput)){
-          console.log("tiene el input");
-          let idInput = _.get(dictInput,this.keyInput)
-          console.log("encontro id input",idInput);
-          console.log("Diccionario",dictionaryConcepMap[idInput]);
+          Object.keys(this.outputValues).forEach(key => {
+            _.set(dictOutput,key,this.outputValues[key])
+          });
           
+        }
+        break;
+      case typeRule.conceptTable:
+        if(_.hasIn(dictInput, this.keyInput)){
+          let idInput = _.get(dictInput,this.keyInput)
           if(_.hasIn(dictionaryConcepMap,idInput)){
             _.set(dictOutput,this.keyOutput,dictionaryConcepMap[idInput])
           }
         }
         break
-
-    }
-    
-    // if(!this.dependOnInput){
-    //   _.set(dictOutput,this.KeyOutput,this.valueOutput)
-    // }
-    // else if(this.concatenate){
-    //   let values = []
-    //   let hasAll = true
-    //   this.keysInput.forEach(element => {
-    //     if(_.hasIn(dictInput, element)){
-    //       values.push(_.get(dictInput,element))
-    //     }
-    //     else{
-    //       hasAll=false
-    //     }
-    //   });
-    //   if(hasAll){
-    //     _.set(dictOutput, this.keyOutput, this.formatOutput.formatUnicorn(...values))
-    //   }
-    //   // else if(this.concatenate){
-    //   //   _.set(dictOutput, this.keyOutput, this.formatOutput.formatUnicorn(value))
-    //   // }
-    // }
-    // else if(_.hasIn(dictInput, this.keyInput)){
-    //   let value = _.get(dictInput,this.keyInput)
-    //   if(this.transformByDict){
-    //     if(this.dictValues[value]){
-    //       _.set(dictOutput, this.keyOutput, this.dictValues[value])
-    //     }
-    //     else if(this.defaultValue){
-    //       _.set(dictOutput, this.keyOutput, this.dictValues[value])
-    //     }
-    //   }
-    //   else{
-    //     _.set(dictOutput, this.keyOutput, this.valueOutput?this.valueOutput:value)
-    //   }
-    // }
+    }    
   }
   
 }
-
+transformRule.prototype.AddDependendKey = function(){
+  "use strict";
+  var rule = this;
+  rule.keyDependOn = Array.prototype.slice.call(arguments)[0]
+  return rule
+}
 let items = [ 
   // // pass exact value to another key
   // transformRule.copyValue('header.id','metadata.id'),
@@ -233,7 +213,45 @@ let items = [
   transformRule.addValue('status','unknown'),
 
   //Category
-  transformRule.addValue('category[0].coding[0].system','http://hl7.org/fhir/observation-category'),
+  transformRule.copyValue('body.category_type','category[0].type'),
+  transformRule.copyValue('body.category_value','category[0].value'),
+  transformRule.copyValue('body.quantity_type','category[0].type'),
+
+  transformRule.addValueDependOnInput('header.schema_id.name','category[0].coding[0].system',{
+    'acceleration':'http://hl7.org/fhir/observation-category',
+    'ambient-temperature':'http://hl7.org/fhir/observation-category',
+    'blood-glucose':'http://hl7.org/fhir/observation-category',
+    'blood-presure':'http://hl7.org/fhir/observation-category',
+    'body-fat-percentage':'http://hl7.org/fhir/observation-category',
+    'body-height':'http://hl7.org/fhir/observation-category',
+    'body-mass-index':'http://hl7.org/fhir/observation-category',
+    'body-temperature':'http://hl7.org/fhir/observation-categoryhttp://hl7.org/fhir/observation-category',
+    'body-weight':'http://hl7.org/fhir/observation-category',
+    'breath-carbon-monoxide':'http://hl7.org/fhir/observation-category',
+    'calories-burned':'http://hl7.org/fhir/observation-categoryy',
+    'diastolic-blood-pressure':'http://hl7.org/fhir/observation-category',
+    'expiratory-time':'http://hl7.org/fhir/observation-category',
+    'geoposition':'http://hl7.org/fhir/observation-category',
+    'heart-rate':'http://hl7.org/fhir/observation-category',
+    'inspiratory-time':'http://hl7.org/fhir/observation-category',
+    'magnetic-force':'http://hl7.org/fhir/observation-category',
+    'medication-adherence-percent':'http://hl7.org/fhir/observation-category',
+    'minute-volume':'http://hl7.org/fhir/observation-category',
+    'minute-moderate-activity':'http://hl7.org/fhir/observation-category',
+    'orientation':'http://hl7.org/fhir/observation-category',
+    'oxygen-saturation':'http://hl7.org/fhir/observation-category',
+    'pace':'http://hl7.org/fhir/observation-category',
+    'physical-activity':'http://hl7.org/fhir/observation-category',
+    'respiratory-rate':'http://hl7.org/fhir/observation-category',
+    'rr-interval':'http://hl7.org/fhir/observation-category',
+    'sleep-duration':'http://hl7.org/fhir/observation-category',
+    'sleep-episode':'http://hl7.org/fhir/observation-category',
+    'speed':'http://hl7.org/fhir/observation-category',
+    'step-count':'http://hl7.org/fhir/observation-category',
+    'systolic-blood-pressure':'http://hl7.org/fhir/observation-category',
+    'ventilation-cycle-time':'http://hl7.org/fhir/observation-category',
+    'hk-category-sample':'http://hl7.org/fhir/observation-category',
+  }),
   transformRule.addValueDependOnInput('header.schema_id.name','category[0].coding[0].code',{
     'acceleration':'physical-activity',
     'ambient-temperature':'None',
@@ -440,7 +458,26 @@ let items = [
     'step-count':'steps',
     'systolic-blood-pressure':'mmHg'
   }),
-  transformRule.addValue('valueQuantity.system','http://unitsofmeasure.org'),
+  transformRule.addValueDependOnInput('header.schema_id.name','valueQuantity.system',{
+    'blood-glucose':'http://unitsofmeasure.org',
+    'body-fat-percentage':'http://unitsofmeasure.org',
+    'body-height':'http://unitsofmeasure.org',
+    'body-mass-index':'http://unitsofmeasure.org',
+    'body-temperature':'http://unitsofmeasure.org',
+    'body-weight':'http://unitsofmeasure.org',
+    'calories-burned':'http://unitsofmeasure.org',
+    'diastolic-blood-pressure':'http://unitsofmeasure.org',
+    'heart-rate':'http://unitsofmeasure.org',
+    'minute-moderate-activity':'http://unitsofmeasure.org',
+    'oxygen-saturation':'http://unitsofmeasure.org',
+    'respiratory-rate':'http://unitsofmeasure.org',
+    'rr-interval':'http://unitsofmeasure.org',
+    'sleep-duration':'http://unitsofmeasure.org',
+    'step-count':'http://unitsofmeasure.org',
+    'systolic-blood-pressure':'http://unitsofmeasure.org',
+
+    'hk-quantity-sample':'http://unitsofmeasure.org'
+  }),
 
     //Heart Rate
     transformRule.copyValue('body.heart_rate.value','valueQuantity.value'),
@@ -450,56 +487,185 @@ let items = [
     transformRule.ohmFhirConceptMappingTable('body.blood_glucose.unit','valueQuantity'),
     transformRule.copyValue('body.blood_glucose.value','valueQuantity.value'),
     transformRule.copyValue('body.blood_glucose.unit','valueQuantity.unit'),
-  
 
+    //Respiratoty Rate
+    transformRule.copyValue('body.respiratory_rate.value','valueQuantity.value'),
+    transformRule.copyValue('body.respiratory_rate.unit','valueQuantity.unit'),
+    transformRule.addValueIfHasKey('body.respiratory_rate','valueQuantity.code','/min'),
+
+    //Body Temperature
+    transformRule.ohmFhirConceptMappingTable('body.body_temperature.unit','valueQuantity'),
+    transformRule.copyValue('body.body_temperature.value','valueQuantity.value'),
+    transformRule.copyValue('body.body_temperature.unit','valueQuantity.unit'),
+
+    //Body weight
+
+    transformRule.ohmFhirConceptMappingTable('body.body_weight.unit','valueQuantity'),
+    transformRule.copyValue('body.body_weight.value','valueQuantity.value'),
+    transformRule.copyValue('body.body_weight.unit','valueQuantity.unit'),
+    //Blood Pressure ---
+//No data
+    // Oxygen Saturation
+    transformRule.copyValue('body.oxygen_saturation.value','valueQuantity.value'),
+    transformRule.addValueIfHasKey('body.oxygen_saturation','valueQuantity.unit','%'),
+    transformRule.addValueIfHasKey('body.oxygen_saturation','valueQuantity.code','%'),
+
+    //Step Count
+    transformRule.copyValue('body.step_count.value','valueQuantity.value'),
+    transformRule.addValueIfHasKey('body.step_count','valueQuantity.unit','steps'),
+    transformRule.addValueIfHasKey('body.step_count','valueQuantity.code','{steps}'),
+    transformRule.addValueDependOnInput('body.descriptive_statistic_denominatoris','valueQuantity.unit',{
+      'd':"steps/day",
+      'w':"steps/week",
+      'm':"steps/month",
+      'episode':"steps/episode",
+      'session':"steps/session",
+    }).AddDependendKey('body.step_count'),
+    transformRule.addValueDependOnInput('body.descriptive_statistic_denominatoris','valueQuantity.code',{
+      'd':"{steps}/d",
+      'w':"{steps}/wk",
+      'm':"{steps}/mo",
+      'episode':"{steps}/{episode}",
+      'session':"{steps}/{session}",
+    }).AddDependendKey('body.step_count'),
+
+    //Sleep Time Data
+
+    transformRule.copyValue('body.total_sleep_time.value','valueQuantity.value'),
+    transformRule.addValueIfHasKey('body.total_sleep_time','valueQuantity.unit','steps'),
+    transformRule.addValueIfHasKey('body.total_sleep_time','valueQuantity.code','{steps}'),
+    transformRule.addValueDependOnInput('body.descriptive_statistic_denominatoris','valueQuantity.unit',{
+      'd':"/day",
+      'w':"/week",
+      'm':"/month",
+      'episode':"/episode",
+      'session':"/session",
+    }).AddDependendKey('body.total_sleep_time'),
+    transformRule.addValueDependOnInput('body.descriptive_statistic_denominatoris','valueQuantity.code',{
+      'd':"/d",
+      'w':"/wk",
+      'm':"/mo",
+      'episode':"/{episode}",
+      'session':"/{session}",
+    }).AddDependendKey('body.total_sleep_time'),
+    //TODO ADD TOTAL SLEEP SLEEP UNIT
+
+
+    //hk quantity sample
+    transformRule.ohmFhirConceptMappingTable('body.unit_value.unit','valueQuantity'),
+    transformRule.copyValue('body.unit_value.value','valueQuantity.value'),
+    transformRule.copyValue('body.unit_value.unit','valueQuantity.unit'),
+
+  //device
   transformRule.copyValue('header.acquisition_provenance.source_name','device.display'),  
   transformRule.copyValue('header.acquisition_provenance.modality','device.extension[0].valueCode'),
-  transformRule.addValue('device.extension[0].url','http://www.fhir.org/mfhir/StructureDefinition/extenion-modality'),
- 
-  
-  transformRule.addValueIfHasKey('body.blood_glucose.unit','valueQuantity.system','http://unitsofmeasure.org'),
-  //TODO
-  transformRule.addValueDependOnInput('body.blood_glucose.unit','valueQuantity.code',{
+  transformRule.addValueIfHasKey('header.acquisition_provenance.modality','device.extension[0].url','http://www.fhir.org/mfhir/StructureDefinition/extenion-modality'),
 
+  //Component
+  //temporal_relationship_to_sleep
+  transformRule.addMultipleValueIfHasKey('body.temporal_relationship_to_sleep',{
+    'component[0].code.coding[1].code':'relative-to-sleep',
+    'component[0].code.coding[1].system':'http://www.fhir.org/guides/mfhir/omh_fhir_observation_codes',
+    'component[0].code.coding[1].display':'OMH to FHIR Temporal Relationship To Sleep'
   }),
-
+  transformRule.ohmFhirConceptMappingTable('body.temporal_relationship_to_sleep','component[0].valueCodeableConcept.coding[0]'),
+  transformRule.copyValue('body.temporal_relationship_to_sleep','component[0].valueCodeableConcept.text'),
   
   
+  //temporal_relationship_to_physical_activity
+  transformRule.addMultipleValueIfHasKey('body.temporal_relationship_to_physical_activity',{
+    'component[0].code.coding[1].code':'relative-to-activity',
+    'component[0].code.coding[1].system':'http://www.fhir.org/guides/mfhir/omh_fhir_observation_codes',
+    'component[0].code.coding[1].display':'OMH to FHIR Temporal Relationship To Physical Activity'
+  }),
+  transformRule.ohmFhirConceptMappingTable('body.temporal_relationship_to_physical_activity','component[0].valueCodeableConcept.coding[0]'),
+  transformRule.copyValue('body.temporal_relationship_to_physical_activity','component[0].valueCodeableConcept.text'),
 
+
+  //temporal_relationship_to_meal
+  transformRule.addMultipleValueIfHasKey('body.temporal_relationship_to_meal',{
+    'component[0].code.coding[1].code':'relative-to-meal',
+    'component[0].code.coding[1].system':'http://www.fhir.org/guides/mfhir/omh_fhir_observation_codes',
+    'component[0].code.coding[1].display':'OMH to FHIR Temporal Relationship To Meal'
+  }),
+  transformRule.ohmFhirConceptMappingTable('body.temporal_relationship_to_meal','component[0].valueCodeableConcept.coding[0]'),
+  transformRule.copyValue('body.temporal_relationship_to_meal','component[0].valueCodeableConcept.text'),
+
+
+  //oxygen_therapy_mode_of_administration
+  transformRule.addMultipleValueIfHasKey('body.oxygen_therapy_mode_of_administration',{
+    'component[0].code.coding[1].code':'o2-administration-method',
+    'component[0].code.coding[1].system':'http://www.fhir.org/guides/mfhir/omh_fhir_observation_codes',
+    'component[0].code.coding[1].display':'Oxygen Therapy Mode of Administration'
+  }),
+  transformRule.copyValue('body.oxygen_therapy_mode_of_administration','component[0].valueString'),
+
+  //supplemental_oxygen_flow_rate
+  transformRule.addMultipleValueIfHasKey('body.supplemental_oxygen_flow_rate',{
+    'component[0].code.coding[1].code':'3151-8',
+    'component[0].code.coding[1].system':'http://loinc.org',
+    'component[0].code.coding[1].display':'Inhaled oxygen flow rate'
+  }),
+  transformRule.copyValue('body.supplemental_oxygen_flow_rate.value','component[0].valueQuantity.value'),
+  transformRule.copyValue('body.supplemental_oxygen_flow_rate.unit','component[0].valueQuantity.unit'),
+  transformRule.addValueIfHasKey('body.supplemental_oxygen_flow_rate','component[0].valueQuantity.system','http://unitsofmeasure.org'),
+  transformRule.addValueIfHasKey('body.supplemental_oxygen_flow_rate','component[0].valueQuantity.code','l/min'),
   
+  //body posture
   
-  //TODO
-  //body.temporal_relationship_to_physical_activity - Observation.component[0] ??
-  //body.temporal_relationship_to_physical_activity - Observation.component[0].code
+  transformRule.addMultipleValueIfHasKey('body.body_posture',{
+    'component[0].code.coding[1].code':'271605009',
+    'component[0].code.coding[1].system':'http://snomed.info/sct',
+    'component[0].code.coding[1].display':'Position of body and posture (observable entity)'
+  }),
+  transformRule.ohmFhirConceptMappingTable('body.body_posture','component[0].valueCodeableConcept.coding[0]'),
+  transformRule.copyValue('body.body_posture','component[0].valueCodeableConcept.text'),
 
-  //Step Count
+  //diastolic blood pressure
+  transformRule.addMultipleValueIfHasKey('body.diastolic_blood_pressure',{
+    'component[0].code.coding[1].code':'8462-4',
+    'component[0].code.coding[1].system':'http://loinc.org',
+    'component[0].code.coding[1].display':'Diastolic blood pressure'
+  }),
+  transformRule.copyValue('body.diastolic_blood_pressure.value','component[0].valueQuantity.value'),
+  transformRule.copyValue('body.diastolic_blood_pressure.unit','component[0].valueQuantity.unit'),
+  transformRule.addValueIfHasKey('body.diastolic_blood_pressure','component[0].valueQuantity.system','http://unitsofmeasure.org'),
+  transformRule.addValueIfHasKey('body.diastolic_blood_pressure','component[0].valueQuantity.system','mm[Hg]'),
 
-  transformRule.copyValue('body.step_count','valueQuantity.value'),
-  transformRule.addValueIfHasKey('body.step_count','valueQuantity.code','{steps}'),
 
-  //Heart Rate
+  //sistolic  blood pressure
+  transformRule.addMultipleValueIfHasKey('body.systolic_blood_pressure',{
+    'component[0].code.coding[1].code':'8480-6',
+    'component[0].code.coding[1].system':'http://loinc.org',
+    'component[0].code.coding[1].display':'Systolic blood pressure'
+  }),
+  transformRule.copyValue('body.systolic_blood_pressure.value','component[0].valueQuantity.value'),
+  transformRule.copyValue('body.systolic_blood_pressure.unit','component[0].valueQuantity.unit'),
+  transformRule.addValueIfHasKey('body.systolic_blood_pressure','component[0].valueQuantity.system','http://unitsofmeasure.org'),
+  transformRule.addValueIfHasKey('body.systolic_blood_pressure','component[0].valueQuantity.system','mm[Hg]'),
   
-  //OMH_FHIR_Concept_Maps['body.body_temperature.unit']Concept Mapping
-
-  //Temperature
-  transformRule.copyValue('body.body_temperature.value','valueQuantity.value'),
-  transformRule.copyValue('body.body_temperature.unit','valueQuantity.unit'),
-
+  //activity Name
+  transformRule.addMultipleValueIfHasKey('body.activity_name',{
+    'component[0].code.coding[1].code':'257733005',
+    'component[0].code.coding[1].system':'http://snomed.info/sct',
+    'component[0].code.coding[1].display':'Activity'
+  }),
+  transformRule.ohmFhirConceptMappingTable('body.activity_name','component[0].valueCodeableConcept.coding[0]'),
+  transformRule.copyValue('body.activity_name','component[0].valueCodeableConcept.text'),
+ 
   //Create value in server for resource_id
-  transformRule.addValue('id','--'),
-  
-
-
-  
+  transformRule.copyValue('header.documentId','id'),
 ]
 
 exports.omhToFhir =
     functions.firestore
         .document("/studies/{studyId}/users/{userId}/healthKit/{healthId}")
-        .onWrite((change, context) => {
-          const dataOmh = change.after.data().payload;
+        .onCreate((snapshot, context) => {
+          const dataOmh = snapshot.data().payload;
           let dataFhir = [];
           dataOmh.forEach(register => {
+            register['header']['user_id']=context.params.userId
+            register['header']['documentId']=context.params.healthId
             let dicFhir = {}
             items.forEach(element => {
               element.transformValue(register,dicFhir)
