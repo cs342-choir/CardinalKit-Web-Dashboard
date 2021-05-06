@@ -556,6 +556,7 @@ let items = [
     transformRule.addValueIfHasKey('body.oxygen_saturation','valueQuantity.code','%'),
 
     //Step Count
+    transformRule.copyValue('body.step_count','valueQuantity.value'),
     transformRule.copyValue('body.step_count.value','valueQuantity.value'),
     transformRule.addValueIfHasKey('body.step_count','valueQuantity.unit','steps'),
     transformRule.addValueIfHasKey('body.step_count','valueQuantity.code','{steps}'),
@@ -616,6 +617,7 @@ let items = [
     transformRule.ohmFhirConceptMappingTable('body.unit_value.unit','valueQuantity'),
     transformRule.copyValue('body.unit_value.value','valueQuantity.value'),
     transformRule.copyValue('body.unit_value.unit','valueQuantity.unit'),
+    transformRule.copyValue('body.count','valueQuantity.value'),
 
     //hk Workout
     transformRule.ohmFhirConceptMappingTable('body.distance.unit','valueQuantity'),
@@ -735,6 +737,15 @@ let items = [
   transformRule.copyValue('header.documentId','id'),
 ]
 
+function sendToFirestore(studyId,userId,recordId,data){
+  db.doc(
+    `studies/${studyId}`+
+    `/users/${userId}`+
+    `/healthFhir/${recordId}`
+).set({ ...data });
+
+}
+
 exports.omhToFhir =
     functions.firestore
         .document("/studies/{studyId}/users/{userId}/healthKit/{healthId}")
@@ -750,9 +761,22 @@ exports.omhToFhir =
             });
             dataFhir.push(dicFhir)
           });
-          db.doc(
-              `studies/${context.params.studyId}`+
-              `/users/${context.params.userId}`+
-              `/healthFhir/${context.params.healthId}`
-          ).set({ ...dataFhir });
+          if(dataFhir.length>500){
+            let counter=0
+            let lowerIndex = 0
+            let higherIndex=500
+            do{
+              if(higherIndex>=dataFhir.length){
+                higherIndex=dataFhir.length-1
+              }
+              sendToFirestore(context.params.studyId,context.params.userId,context.params.healthId+"P"+counter,dataFhir.slice(lowerIndex,higherIndex))
+              lowerIndex+=500
+              higherIndex+=500
+              counter++
+            }
+            while(lowerIndex<dataFhir.length)
+          }
+          else{
+            sendToFirestore(context.params.studyId,context.params.userId,context.params.healthId,dataFhir)
+          }
         });
