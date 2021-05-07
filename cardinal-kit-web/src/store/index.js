@@ -1,12 +1,13 @@
 import { createStore } from 'vuex'
+import modules from './modules'
 
 export default createStore({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
+  modules:modules,
+  actions:{
+    reset({commit}){
+      Object.keys(modules).forEach(moduleName => {
+        commit(`${moduleName}/RESET`);
+      })
+    }
   }
 })
