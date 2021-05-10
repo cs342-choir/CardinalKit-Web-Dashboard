@@ -62,6 +62,7 @@
 <script>
 import Logo from "@/components/auth/Logo";
 import Card from "@/components/auth/Card";
+import store from "@/store"
 import { mapActions } from "vuex";
 
 export default {
@@ -78,11 +79,22 @@ export default {
   methods: {
     ...mapActions("auth", ["SignIn","LogInWithGoogle"]),
     handleSubmitLogin() {
-      this.SignIn({ email: this.email, password: this.password });
+      this.SignIn({ email: this.email, password: this.password })
+      .then((response)=>{
+        if(response.isLogged){
+          console.log("called After Login")
+          this.$router.push({name:"Home"});
+        }
+      })
     },
     handleGoogleLogin(){
-      console.log("Click")
-      this.LogInWithGoogle();
+      this.LogInWithGoogle()
+      .then((response)=>{
+        if(response.isLogged){
+          console.log("called After Login")
+          this.$router.push({name:"Home"});
+        }
+      })
     }
   },
 };

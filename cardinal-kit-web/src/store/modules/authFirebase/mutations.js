@@ -8,5 +8,6 @@ export function RESET(state){
 }
 
 export function isLogged(state,isLogged){
+    localStorage.setItem('logged',isLogged)
     state.isLogged=isLogged
 }

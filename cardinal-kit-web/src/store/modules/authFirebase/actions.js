@@ -4,19 +4,47 @@ export function reset({commit}){
     commit('RESET')
 }
 
-export function SignIn({commit},payload){
+export async function SignIn({commit},payload){
     console.log("auth",payload)
-    auth.signInWithEmailAndPassword(payload.email, payload.password)
-    .then((userCredential) => {
-      // Signed in
-      var user = userCredential.user;
-      // ...
+    return await 
+      auth.signInWithEmailAndPassword(payload.email, payload.password)
+      .then(() => {
+        commit('isLogged',true)
+        return({
+          'isLogged':true
+        })
+      })
+      .catch((error) => {
+        commit('isLogged',false)
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        return({
+        'isLogged':false,
+        'error':errorMessage,
+        'errorCode':errorCode
+      })
+    });
+
+}
+
+export async function LogInWithGoogle({commit}){
+  return auth.signInWithPopup(googleAuthProvider)
+    .then(() => {
+      commit('isLogged',true)
+      return({
+        'isLogged':true
+      })
     })
     .catch((error) => {
+      commit('isLogged',false)
       var errorCode = error.code;
       var errorMessage = error.message;
-      // ..
-    });
+      return({
+      'isLogged':false,
+      'error':errorMessage,
+      'errorCode':errorCode
+    })
+  })
 }
 
 export function SignUp({commit},payload){
@@ -31,14 +59,9 @@ export function SignUp({commit},payload){
   });
 }
 
-export function LogInWithGoogle({commit}){
-  auth.signInWithPopup(googleAuthProvider)
-    .then(({ userCredential }) => {
-      var user = userCredential.user;
-    })
-    .catch((error) => {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // ..
-    });
+export  function Logout({commit},payload){
+   auth.signOut().then(()=>{
+     console.log("Logout")
+    commit('isLogged',false)
+  })
 }
