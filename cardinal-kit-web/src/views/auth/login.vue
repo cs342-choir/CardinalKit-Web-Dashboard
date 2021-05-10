@@ -6,22 +6,51 @@
         <h1 class="text-3xl text-center">SIGN IN</h1>
       </template>
       <template v-slot:card-body>
-        <form class="login-form" @submit.prevent="handleSubmitLogin" >
+        <form class="login-form" @submit.prevent="handleSubmitLogin">
           <div class="form-group">
             <label for="email">Email Address</label>
-            <input class="form-input" type="email" placeholder=""
-            id="email" v-model="email"/>
+            <input
+              class="form-input"
+              type="email"
+              placeholder=""
+              id="email"
+              v-model="email"
+            />
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input class="form-input" type="password" placeholder=""
-            id="password" v-model="password" autocomplete="on"/>
-            <router-link to="#" class="ev-link forgot">Forgot Password?</router-link>
+            <input
+              class="form-input"
+              type="password"
+              placeholder=""
+              id="password"
+              v-model="password"
+              autocomplete="on"
+            />
+            <router-link to="#" class="ev-link forgot"
+              >Forgot Password?</router-link
+            >
           </div>
           <button class="btn btn-eventtia" type="submit">Log in</button>
         </form>
+       
       </template>
       <template v-slot:card-footer>
+         <div className="auth__social-networks">
+          <p>Login with social networks</p>
+          <div className="google-btn" :onClick="handleGoogleLogin">
+            <div className="google-icon-wrapper">
+              <img
+                className="google-icon"
+                src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                alt="google button"
+              />
+            </div>
+            <p className="btn-text">
+              <b>Sign in with google</b>
+            </p>
+          </div>
+        </div>
         <div class="text-center">
           <span class="ft-10">Not a member? </span>
           <router-link class="ev-link" to="/signup">Sign up</router-link>
@@ -31,29 +60,32 @@
   </section>
 </template>
 <script>
-
-import Logo from '@/components/auth/Logo';
-import Card from '@/components/auth/Card';
-import { mapActions } from 'vuex'
+import Logo from "@/components/auth/Logo";
+import Card from "@/components/auth/Card";
+import { mapActions } from "vuex";
 
 export default {
-  data(){
+  data() {
     return {
-      email:'',
-      password:''
-    }
+      email: "",
+      password: "",
+    };
   },
-  components:{
+  components: {
     Logo,
-    Card
+    Card,
   },
-  methods:{
-    ...mapActions('auth',['SignIn']),
-    handleSubmitLogin(){
+  methods: {
+    ...mapActions("auth", ["SignIn","LogInWithGoogle"]),
+    handleSubmitLogin() {
       this.SignIn({ email: this.email, password: this.password });
+    },
+    handleGoogleLogin(){
+      console.log("Click")
+      this.LogInWithGoogle();
     }
-  }
-}
+  },
+};
 </script>
 <style lang="scss" scoped>
 .wrapper-login {
@@ -62,38 +94,38 @@ export default {
   align-items: center;
   border-radius: 2px;
   height: 100vh;
-  background: rgba(66,10,67,0.70);
+  background: rgba(66, 10, 67, 0.7);
 
   .login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 2rem;
+
+    .form-group {
+      margin-bottom: 1rem;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      margin-bottom: 2rem;
 
-      .form-group{
-        margin-bottom: 1rem;
+      label {
+        text-align: start;
+        margin-bottom: 3px;
+        font-size: 10pt;
+      }
+      input {
+        margin-bottom: 0.5rem;
+      }
+
+      a {
+        width: 100%;
         display: flex;
-        flex-direction: column;
+        justify-content: flex-end;
 
-        label {
-          text-align: start;
-          margin-bottom: 3px;
+        &.forgot {
           font-size: 10pt;
         }
-        input {
-          margin-bottom: .5rem;
-        }
-
-        a {
-          width: 100%;
-          display: flex;
-          justify-content: flex-end;
-
-          &.forgot {
-            font-size: 10pt;
-          }
-        }
       }
+    }
   }
 }
 </style>
