@@ -15,7 +15,7 @@
           <div class="form-group">
             <label for="password">Password</label>
             <input class="form-input" type="password" placeholder=""
-            id="password" v-model="password"/>
+            id="password" v-model="password" autocomplete="on"/>
             <router-link to="#" class="ev-link forgot">Forgot Password?</router-link>
           </div>
           <button class="btn btn-eventtia" type="submit">Log in</button>

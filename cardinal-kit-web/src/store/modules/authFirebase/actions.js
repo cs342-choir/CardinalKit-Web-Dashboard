@@ -18,3 +18,18 @@ export function SignIn({commit},payload){
       // ..
     });
 }
+
+export function SignUp({commit},payload){
+  console.log("auth",payload)
+  auth.createUserWithEmailAndPassword(payload.email, payload.password)
+  .then((userCredential) => {
+    // Signed in
+    var user = userCredential.user;
+    // ...
+  })
+  .catch((error) => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    // ..
+  });
+}
