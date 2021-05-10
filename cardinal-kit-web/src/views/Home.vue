@@ -1,10 +1,10 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
-      <b-button v-on:click="reset()">
-                Reset
+      <b-button v-on:click="handleLogout()">
+                Logout
             </b-button>
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   </div>
 </template>
 
@@ -20,7 +20,13 @@ export default {
   },
   methods:{
     ...mapActions('user',['changeUserName']),
-    ...mapActions(['reset'])
+    ...mapActions('auth',['Logout']),
+    handleLogout(){
+      this.Logout().then(()=>{
+        console.log("Called Logout")
+        this.$router.push("Login");
+      })
+    }
   }
 }
 </script>
