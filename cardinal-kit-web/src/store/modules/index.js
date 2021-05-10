@@ -1,5 +1,5 @@
 const modules = {
     'user':require('./user').default ,
-    'auth':require('./auth').default
+    'auth':require('./authFirebase').default
 };
 export default modules;
