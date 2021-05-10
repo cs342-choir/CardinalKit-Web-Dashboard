@@ -82,7 +82,6 @@ export default {
       this.SignIn({ email: this.email, password: this.password })
       .then((response)=>{
         if(response.isLogged){
-          console.log("called After Login")
           this.$router.push({name:"Home"});
         }
       })
@@ -91,7 +90,6 @@ export default {
       this.LogInWithGoogle()
       .then((response)=>{
         if(response.isLogged){
-          console.log("called After Login")
           this.$router.push({name:"Home"});
         }
       })
