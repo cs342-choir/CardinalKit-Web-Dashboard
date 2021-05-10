@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "firebase": "^8.5.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"
@@ -22,7 +23,9 @@
     "@vue/compiler-sfc": "^3.0.0",
     "@vue/test-utils": "^2.0.0-0",
     "typescript": "~3.9.3",
-    "vue-jest": "^5.0.0-0"
+    "vue-jest": "^5.0.0-0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.2"
   },
   "browserslist": [
     "> 1%",
