@@ -52,71 +52,27 @@ router.beforeEach((to, from, next) => {
       console.log("to dentro de auth",to.name,"from",from.name)
         if (user) {
           if(to.name=="Login"){
-            console.log("nextHome")
             next({name:'Home'})
           }
           else{
-            console.log("nextNormal1")
             next()
           }
         } else {
           
           
           if (to.matched.some((record) => record.meta.requiresAuth || to.name!="Login")) {
-            console.log("nextLogin")
             next({name:'Login'})
           }
           else{
-            console.log("nextNormal2")
             next()
           }
         }
         unsubscribe()
     });
-    // console.log(unsubscribe)
   } else {
 
   }
 });
 
-// router.beforeEach((to, from, next) => {
-//   console.log("Logged1",)
-//   if (localStorage.getItem("logged")) {
-//     store.commit('auth/isLogged',true)
-//     if (to.name == "Login") {
-//       next({ name: "Home" });
-//     } else {
-//       next();
-//     }
-//   } else {
-//     store.commit('auth/isLogged',false)
-//     if (to.matched.some((record) => record.meta.requiresAuth)) {
-//       next({ name: "Login" });
-//     } else {
-//       next();
-//     }
-//   }
-
-// });
-
-// if (process.env.VUE_APP_AUTH_MODE == "firebase") {
-//   let { auth } = require("@/plugins/firebase/firebase");
-//   auth.onAuthStateChanged((user) => {
-//     console.log("callUserChange")
-//     let isLogged = user!=undefined
-//     let previousIsLogged = localStorage.getItem("logged")
-//     if(previousIsLogged!=isLogged){
-//       console.log("rerounteonauthChange")
-//       if(isLogged){
-//         console.log("pushHome")
-//         router.push({name:'Home'})
-//       }
-//       else{
-//         console.log("pushLogin")
-//         router.push({name:'Login'})
-//       }
-//     }
-//   });
-// }
 
 export default router;
