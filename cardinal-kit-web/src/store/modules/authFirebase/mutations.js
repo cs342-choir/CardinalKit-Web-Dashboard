@@ -6,3 +6,7 @@ export function RESET(state){
         state[key] = newState[key]
     });
 }
+
+export function isLogged(state,isLogged){
+    state.isLogged=isLogged
+}
