@@ -1,32 +1,32 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-      <b-button v-on:click="handleLogout()">
-                Logout
-            </b-button>
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+    <img alt="Vue logo" src="@/assets/logo.png" />
+    <br/>
+     <b-button @click="handleLogout()">
+      Logout
+    </b-button>
+    <br/>
+    <b-button @click="handleSeeStudies()">
+      See StudiesList
+    </b-button>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 import { mapActions } from 'vuex'
-
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  },
-  methods:{
-    ...mapActions('user',['changeUserName']),
-    ...mapActions('auth',['Logout']),
-    handleLogout(){
-      this.Logout().then(()=>{
-        console.log("Called Logout")
+  name: "Home",
+  methods: {
+    ...mapActions("auth", ["Logout"]),
+    handleSeeStudies() {
+      this.$router.push("studies");
+    },
+    handleLogout() {
+      this.Logout().then(() => {
+        console.log("Called Logout");
         this.$router.push("Login");
-      })
-    }
-  }
-}
+      });
+    },
+  },
+};
 </script>
