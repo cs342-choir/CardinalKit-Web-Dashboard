@@ -5,6 +5,8 @@ import store from "../store";
 import Home from "../views/Home.vue";
 import Login from "@/views/auth/login";
 import SignUp from "@/views/auth/signUp";
+import StudiesList from "@/views/studies/studiesList";
+import StudyDetail from "@/views/studies/studyDetail"
 
 const routes = [
   {
@@ -12,7 +14,7 @@ const routes = [
     name: "Home",
     component: Home,
     meta: {
-      // requiresAuth: true,
+      requiresAuth: true,
     },
   },
   {
@@ -34,9 +36,27 @@ const routes = [
     name: "signup",
     component: SignUp,
     meta: {
-      // requiresAuth: true,
+      requiresAuth: true,
     },
   },
+  {
+    path: "/studies",
+    name: "studies",
+    component: StudiesList,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/studyDetail/:idStudy",
+    name: "studyDetail",
+    component: StudyDetail,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+
+  
 ];
 
 const router = createRouter({
@@ -45,11 +65,9 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log("to fuera de auth",to.name,"from",from.name)
   if (process.env.VUE_APP_AUTH_MODE == "firebase") {
     let { auth } = require("@/plugins/firebase/firebase");
     let unsubscribe = auth.onAuthStateChanged(function(user){
-      console.log("to dentro de auth",to.name,"from",from.name)
         if (user) {
           if(to.name=="Login"){
             next({name:'Home'})
@@ -60,7 +78,7 @@ router.beforeEach((to, from, next) => {
         } else {
           
           
-          if (to.matched.some((record) => record.meta.requiresAuth || to.name!="Login")) {
+          if (to.matched.some((record) => record.meta.requiresAuth && to.name!="Login")) {
             next({name:'Login'})
           }
           else{
