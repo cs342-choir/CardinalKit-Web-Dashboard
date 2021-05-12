@@ -5,8 +5,9 @@ import store from "../store";
 import Home from "../views/Home.vue";
 import Login from "@/views/auth/login";
 import SignUp from "@/views/auth/signUp";
-import StudiesList from "@/views/studies/studiesList";
-import StudyDetail from "@/views/studies/studyDetail"
+import StudiesList from "@/views/studies/patientsList";
+import StudyDetail from "@/views/studies/studyDetail";
+import HealthUser from "@/views/patients/healthKit/healthKitUser";
 
 const routes = [
   {
@@ -51,6 +52,14 @@ const routes = [
     path: "/studyDetail/:idStudy",
     name: "studyDetail",
     component: StudyDetail,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/healthKitUser/:studyId/:userId",
+    name: "healthUser",
+    component: HealthUser,
     meta: {
       requiresAuth: true,
     },
