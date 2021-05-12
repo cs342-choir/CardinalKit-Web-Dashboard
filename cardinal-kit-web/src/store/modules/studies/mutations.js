@@ -10,3 +10,13 @@ export function RESET(state){
 export function saveStudies(state,studies){
     state.studies=studies
 }
+
+export function saveRecords(state,records){
+    //Map Data
+
+    state.records=records
+}
+
+export function SaveUsers(state,users){
+    state.users=users
+}

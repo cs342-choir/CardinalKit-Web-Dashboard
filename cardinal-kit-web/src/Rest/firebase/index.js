@@ -1,7 +1,8 @@
 import {db} from '@/plugins/firebase/firebase'
 
-export const GET=async (path,payload)=>{
-    if(payload.isCollection){
+export const GET=async (path)=>{
+    let parts = path.split('/')
+    if(parts%2!=0){
         return (await db.collection(path).get());
     }
     else{
