@@ -3,8 +3,7 @@ import * as actions from './actions'
 import * as getters from './getters'
 
 export const initialState = () => ({
-    studies:[],
-    users:[]
+    healthData:{}
 })
 
 export default {
