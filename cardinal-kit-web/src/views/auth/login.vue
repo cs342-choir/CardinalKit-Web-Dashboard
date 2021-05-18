@@ -104,7 +104,7 @@ export default {
   align-items: center;
   border-radius: 2px;
   height: 100vh;
-  background: rgba(66, 10, 67, 0.7);
+  background: $background-login;
 
   .login-form {
     display: flex;
