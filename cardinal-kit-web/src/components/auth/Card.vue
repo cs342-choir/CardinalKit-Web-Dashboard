@@ -18,9 +18,10 @@
   flex-direction: column;
   justify-content: center;
   min-width: 300px;
+  max-width: 500px;
   min-height: 300px;
   padding: 2rem;
-  box-shadow: -2px 4px 13px 1px #4a4a4a;
+  box-shadow: -1px 4px 11px 0px #c5c5c5;
   background: white;
 
   .card-body {
