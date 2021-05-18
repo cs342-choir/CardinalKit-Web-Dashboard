@@ -1,5 +1,5 @@
 <template>
-<div :onClick="handleSubmit" class="card">
+<div :onClick="handleSubmit" class="card-category">
   <div class="flex align-center">
    <img width="15" class="icon" :src="data.icon"/> 
    <span class="subtitle">{{data.name}}</span>
@@ -47,7 +47,7 @@
 
 
 <style lang="scss" scoped>
-.card {
+.card-category {
   padding: 1rem;
   background: white;
   width: 100%;
