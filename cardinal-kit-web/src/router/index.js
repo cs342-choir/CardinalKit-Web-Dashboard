@@ -8,6 +8,7 @@ import SignUp from "@/views/auth/signUp";
 import StudiesList from "@/views/studies/patientsList";
 import StudyDetail from "@/views/studies/studyDetail";
 import HealthUser from "@/views/patients/healthKit/healthKitUser";
+import Activity from "@/views/patients/healthKit/activity";
 
 const routes = [
   {
@@ -60,6 +61,14 @@ const routes = [
     path: "/healthKitUser/:studyId/:userId",
     name: "healthUser",
     component: HealthUser,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/userActivity/:studyId/:userId",
+    name: "userActivity",
+    component: Activity,
     meta: {
       requiresAuth: true,
     },
