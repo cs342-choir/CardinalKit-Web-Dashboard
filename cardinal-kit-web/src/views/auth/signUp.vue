@@ -3,8 +3,8 @@
     <Card>
       <template v-slot:card-header>
         <div class="card-header">
-          <Logo :width="'140'" :className="'flex justify-center mb-3'"></Logo>
-          <h1 id="signup" class="text-3xl text-center">SIGN UP</h1>
+          <Logo :width="'140'" :className="'flex justify-center'"></Logo>
+          <h1 id="signup" class="mb-1 text-center">SIGN UP</h1>
           <span class="block text-center">
             Already have an account?
             <router-link class="ev-link" to="/login">Sign in</router-link>
@@ -14,7 +14,7 @@
       <template v-slot:card-body>
         <form class="login-form" @submit.prevent="handleSubmitRegister">
           <div class="form-group__horizontal">
-            <div class="w-full form-group">
+            <div class="w-100 form-group">
               <label for="firstName">First Name</label>
               <input
                 class="form-input"
@@ -35,7 +35,7 @@
               />
             </div>
           </div>
-          <div class="w-full form-group">
+          <div class="w-100 form-group">
             <label for="email">Email Address</label>
             <input
               class="form-input"
@@ -112,7 +112,6 @@ export default({
 
     h1#signup {
       font-size: 2rem;
-      margin-bottom: 0;
     }
 
     span {

@@ -1,11 +1,11 @@
 * {
-    font-family: Helvetica, Arial, sans-serif;
     margin: 0px;
 }
 
 html, body {
     height: 100vh;
     width: 100vw;
+    background-color: $background-app;
 }
 
 main {
@@ -30,4 +30,32 @@ main {
 
 .pointer {
     cursor: pointer;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.ft-10 {
+    font-size: 10pt;
+}
+
+.w-100 {
+ width: 100%;
+}
+
+.block{
+    display: block;
+}
+
+.flex {
+    display: flex;
+
+    &.justify-center {
+        justify-content: center;
+    }
+
+    &.align-center{
+        align-items: center;
+    }
 }
