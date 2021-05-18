@@ -2,8 +2,8 @@
   <section class="wrapper-login">
     <Card>
       <template v-slot:card-header>
-        <Logo :className="'flex justify-center mb-3'" :width="'145'"></Logo>
-        <h1 class="text-3xl text-center">SIGN IN</h1>
+        <Logo :className="'flex justify-center'" :width="'145'"></Logo>
+        <h1 class="text-center">SIGN IN</h1>
       </template>
       <template v-slot:card-body>
         <form class="login-form" @submit.prevent="handleSubmitLogin">
@@ -37,7 +37,7 @@
       </template>
       <template v-slot:card-footer>
          <div className="auth__social-networks">
-          <p>Login with social networks</p>
+          <p class="mb-1 subtitle">Login with social networks</p>
           <div className="google-btn" :onClick="handleGoogleLogin">
             <div className="google-icon-wrapper">
               <img
@@ -104,7 +104,7 @@ export default {
   align-items: center;
   border-radius: 2px;
   height: 100vh;
-  background: rgba(66, 10, 67, 0.7);
+  background: $background-login;
 
   .login-form {
     display: flex;
@@ -135,6 +135,17 @@ export default {
           font-size: 10pt;
         }
       }
+    }
+  }
+  
+  .auth__social-networks {
+    .subtitle {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    .google-btn {
+      margin-bottom: .5rem;
     }
   }
 }
