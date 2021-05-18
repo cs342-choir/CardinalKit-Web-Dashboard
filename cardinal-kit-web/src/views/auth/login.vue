@@ -3,7 +3,7 @@
     <Card>
       <template v-slot:card-header>
         <Logo :className="'flex justify-center'" :width="'145'"></Logo>
-        <h1>SIGN IN</h1>
+        <h1 class="text-center">SIGN IN</h1>
       </template>
       <template v-slot:card-body>
         <form class="login-form" @submit.prevent="handleSubmitLogin">
@@ -105,10 +105,6 @@ export default {
   border-radius: 2px;
   height: 100vh;
   background: rgba(66, 10, 67, 0.7);
-
-  h1 {
-    text-align: center;
-  }
 
   .login-form {
     display: flex;
