@@ -1,7 +1,11 @@
 <template>
-<div>     
-   <!-- <img :src="data.icon"/> -->
-    <button :onClick="handleSubmit">{{data.name}}</button>
+<div :onClick="handleSubmit" class="card">
+  <div class="flex align-center">
+   <img width="15" class="icon" :src="data.icon"/> 
+   <span class="subtitle">{{data.name}}</span>
+  </div>
+  <span>></span>
+    
 </div>
 
 </template>
@@ -20,6 +24,9 @@
           studyId:{
               type:String,
               required:true
+          },
+          icon: {
+            type: String
           }
         },
         data(){
@@ -39,19 +46,22 @@
 </script>
 
 
-<style>
-/* Style buttons */
-.btn {
-  background-color: DodgerBlue; /* Blue background */
-  border: none; /* Remove borders */
-  color: white; /* White text */
-  padding: 12px 16px; /* Some padding */
-  font-size: 16px; /* Set a font size */
-  cursor: pointer; /* Mouse pointer on hover */
-}
+<style lang="scss" scoped>
+.card {
+  padding: 1rem;
+  background: white;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
 
-/* Darker background on mouse-over */
-.btn:hover {
-  background-color: RoyalBlue;
+  .icon {
+    margin-right: 1rem;
+  }
+
+  .subtitle {
+    font-weight: 700;
+    text-transform: capitalize;
+  }
 }
 </style>
