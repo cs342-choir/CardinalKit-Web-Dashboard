@@ -1,14 +1,25 @@
 <template>
 <div class="page">
   <h1 class="mb-5">Patient</h1>
-  <div v-for="patient in patients" :key="patient.id">
-    <b-button @click="handleSelecPatient(patient.id)">
-        {{patient.name}}
-      </b-button>
-  </div>
+  <alt-table :columns="columns">
+    <template #t-row>
+      <tr v-for="(patient, index) in patients" :key="patient.id">
+        <td>{{index + 1}}</td>
+        <td>
+          {{patient.name || 'NN'}}
+        </td>
+        <td>
+          <span class="pointer" @click="handleSelecPatient(patient.id)">
+            detail
+          </span>
+        </td>
+      </tr>
+    </template>
+  </alt-table>
 </div>
 </template>
 <script>
+import altTable from '@/components/tables/altTable';
   export default {
     name: 'name',
     props: {
@@ -21,18 +32,18 @@
         required:true
       }
     },
+    components:{
+      altTable
+    },
     data(){
       return{
-        
+        columns: [{ header: 'N°' }, { header: 'Name' }, { header: 'Action' }]
       }
     },
     methods: {
       handleSelecPatient(patientId){
         this.$router.push(`/healthKitUser/${this.studyId}/${patientId}`)
       }
-    },
-    computed:{
-      
     }
   };
 </script>
