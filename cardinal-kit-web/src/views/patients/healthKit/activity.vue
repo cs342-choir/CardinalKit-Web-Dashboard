@@ -1,20 +1,22 @@
 <template>
-  <div  class="Wrapper">
-    <div class="Title" >  Activity  </div>
+  <div  class="page">
+    <h1 class="mb-5"> Activity </h1>
     <activity-card name="Actividad" date="7 may">
       <template v-slot:card-body>
-        Move
-        <br/>
-          {{calories}} kcal
-        <br/>
-        exercise
-        <br/>
-          {{exerciseTime}} min
-        <br/>
-        Stand Up
-        <br/>
-          {{standUpTime}} h
-        <br/>
+        <div class="card-info">
+          <div class="card-info__group">
+            <p class="subtitle">move</p>
+            <p>{{calories}} kcal</p>
+          </div>
+          <div class="card-info__group">
+            <p class="subtitle">exercise</p>
+            <p>{{exerciseTime}} min</p>
+          </div>
+          <div class="card-info__group">
+            <p class="subtitle">Stand Up</p>
+            <p>{{standUpTime}} h</p>
+          </div>
+        </div>
         <multiple-radial-bars :series="[calories,exerciseTime,standUpTime]" :height="'250'" :labels="['Move','exercise','Stand Up']"/>
       </template>
     </activity-card>
