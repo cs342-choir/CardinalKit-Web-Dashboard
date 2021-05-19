@@ -1,12 +1,16 @@
 <template>
-  <div class="btn-group">
-    <category
-      v-for="category in categories"
-      :data="category"
-      :key="category.id"
-      :userId="userId"
-      :studyId="studyId"
-    />
+  <div class="page">
+    <h1 class="mb-5">Categorias de salud</h1>
+    <div class="categories-grid">
+      <category
+        v-for="category in categories"
+        :data="category"
+        :key="category.id"
+        :userId="userId"
+        :studyId="studyId"
+        :icon="category.icon"
+      />
+    </div>
   </div>
 </template>
 <script>
@@ -58,3 +62,11 @@ export default {
   computed: {},
 };
 </script>
+
+<style lang="scss" scoped>
+.categories-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+</style>
