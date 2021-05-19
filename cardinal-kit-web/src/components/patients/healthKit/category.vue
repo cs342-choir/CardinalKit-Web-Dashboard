@@ -43,8 +43,6 @@
         },
     };
 </script>
-
-
 <style lang="scss" scoped>
 .card-category {
   padding: 1rem;
