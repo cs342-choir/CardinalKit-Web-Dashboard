@@ -1,23 +1,24 @@
 // Colors
 // Basic colors
-$primary: #21094e;
-$secondary: #511281;
+$primary: #2978b5;
+$secondary: #4ca1a3;
 $white: #fff;
-$link: #a5e1ad;
+$link: #51c4d3;
 $violet: #851486;
 $dark-grey: #363636;
 $light-grey: #d8d8d8;
 
 //Backgrounds
-$background-app: whitesmoke;
-$background-login: rgba(66, 10, 67, 0.7);
+$background-app: #f5f5f7;
+$background-login: #f5f5f7;
+$background-signup: #f5f5f7;
 
 
 // Alert colors
 $success: #4ca1a3;
 $warning: #5C62C5;
-$danger: #e0506f;
-$google-blue: #4285f4;
-$button-active-blue: #1669f2;
+$danger: #e93b81;
+$bg-button-google: $white;
+$button-active-google: whitesmoke;
 
 
