@@ -31,7 +31,7 @@
               >Forgot Password?</router-link
             >
           </div>
-          <button class="btn btn-eventtia" type="submit">Log in</button>
+          <button class="btn btn-primary" type="submit">Log in</button>
         </form>
        
       </template>

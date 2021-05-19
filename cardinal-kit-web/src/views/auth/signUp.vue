@@ -24,7 +24,7 @@
                 v-model="firstName"
               />
             </div>
-            <div class="form-group">
+            <div class="w-100 form-group">
               <label for="lastName">Last Name</label>
               <input
                 class="form-input"
@@ -58,7 +58,7 @@
               autocomplete="on"
             />
           </div>
-          <button id="b-signup" class="btn btn-eventtia" type="submit">
+          <button id="b-signup" class="btn btn-primary" type="submit">
             Register
           </button>
         </form>
@@ -105,7 +105,7 @@ export default({
   align-items: center;
   border-radius: 2px;
   height: 100vh;
-  background: rgba(66, 10, 67, 0.7);
+  background: $background-signup;
 
   .card-header {
     margin-bottom: 2rem;
