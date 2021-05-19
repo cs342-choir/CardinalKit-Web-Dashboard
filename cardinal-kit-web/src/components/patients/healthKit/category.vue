@@ -4,7 +4,7 @@
    <img width="15" class="icon" :src="data.icon"/> 
    <span class="subtitle">{{data.name}}</span>
   </div>
-  <span class="arrow">></span>
+  <span class="arrow">›</span>
 </div>
 
 </template>
@@ -54,7 +54,8 @@
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 8px;
+  box-shadow: $shadow-sm;
 
   .icon {
     margin-right: 1rem;
