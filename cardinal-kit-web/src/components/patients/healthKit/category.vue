@@ -1,7 +1,10 @@
 <template>
-<div>     
-   <!-- <img :src="data.icon"/> -->
-    <button :onClick="handleSubmit">{{data.name}}</button>
+<div :onClick="handleSubmit" class="card-category">
+  <div class="flex align-center">
+   <img width="15" class="icon" :src="data.icon"/> 
+   <span class="subtitle">{{data.name}}</span>
+  </div>
+  <span class="arrow">›</span>
 </div>
 
 </template>
@@ -20,6 +23,9 @@
           studyId:{
               type:String,
               required:true
+          },
+          icon: {
+            type: String
           }
         },
         data(){
@@ -37,9 +43,29 @@
         },
     };
 </script>
+<style lang="scss" scoped>
+.card-category {
+  padding: 1rem;
+  background: white;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 8px;
+  box-shadow: $shadow-sm;
 
+  .icon {
+    margin-right: 1rem;
+  }
 
-<style>
-/* Style buttons */
+  .subtitle {
+    font-weight: 700;
+    text-transform: capitalize;
+  }
 
+  .arrow {
+    font-weight: 700;
+  }
+}
 </style>
