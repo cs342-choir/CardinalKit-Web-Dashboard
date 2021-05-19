@@ -18,9 +18,16 @@ $background-signup: #f5f5f7;
 $success: #4ca1a3;
 $warning: #5C62C5;
 $danger: #e93b81;
+$info: $primary;
 $bg-button-google: $white;
 $button-active-google: whitesmoke;
 
 // Shadows
 $shadow-sm: -2px 4px 5px 0px #e8e8e8;
+$tw-shadow: 0 4px 6px -1px rgba(0,0,0,0.1),0 2px 4px -1px rgba(0,0,0,0.06);
 
+//Text colors
+$text-success: #000;
+$text-warning: white;
+$text-danger: white;
+$text-info: white;
