@@ -4,8 +4,7 @@
    <img width="15" class="icon" :src="data.icon"/> 
    <span class="subtitle">{{data.name}}</span>
   </div>
-  <span>></span>
-    
+  <span class="arrow">></span>
 </div>
 
 </template>
@@ -53,7 +52,9 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   cursor: pointer;
+  border-radius: 5px;
 
   .icon {
     margin-right: 1rem;
@@ -62,6 +63,10 @@
   .subtitle {
     font-weight: 700;
     text-transform: capitalize;
+  }
+
+  .arrow {
+    font-weight: 700;
   }
 }
 </style>
