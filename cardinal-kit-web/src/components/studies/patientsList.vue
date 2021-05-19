@@ -1,6 +1,6 @@
 <template>
-<div>
-  patient
+<div class="page">
+  <h1 class="mb-5">Patient</h1>
   <div v-for="patient in patients" :key="patient.id">
     <b-button @click="handleSelecPatient(patient.id)">
         {{patient.name}}
