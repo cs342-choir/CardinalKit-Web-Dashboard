@@ -59,4 +59,8 @@ main {
     &.align-center{
         align-items: center;
     }
+
+    &.flex-column {
+        flex-direction: column;
+    }
 }

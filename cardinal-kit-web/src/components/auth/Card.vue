@@ -27,5 +27,9 @@
   .card-body {
     width: 100%;
   }
+
+  @media screen and (min-width: 500px) {
+    width: 100%;
+  }
 }
 </style>
