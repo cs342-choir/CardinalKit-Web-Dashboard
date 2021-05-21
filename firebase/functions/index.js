@@ -6,6 +6,7 @@ admin.initializeApp();
 const db = admin.firestore();
 const {dictionaryConcepMap} = require('./Dictionarys/dictionaryConceptMap')
 const {dictionaryAppleMap} = require('./Dictionarys/dictionaryAppleCodesMap')
+const {dictionaryLonicCodesMap} = require('./Dictionarys/dictionaryLonicCodesMap')
 
 String.prototype.formatUnicorn = String.prototype.formatUnicorn ||
 function () {
@@ -33,7 +34,8 @@ var typeRule = {
   fromDict:"fromDict",
   concat:"concat",
   tableMapping:"tableMapping",
-  multipleValue: "multipleValue"
+  multipleValue: "multipleValue",
+  addToArray: "addToArray",
 }
 
 class transformRule{
@@ -101,6 +103,15 @@ class transformRule{
     newRule.type=typeRule.tableMapping
     return newRule
   }
+
+  static addValueToArray(keyInput,arrayOutput,valueOutput){
+    let newRule = new transformRule()
+    newRule.keyInput=keyInput
+    newRule.arrayOutput = arrayOutput
+    newRule.valueOutput = valueOutput
+    newRule.type=typeRule.addToArray
+    return newRule
+  }
   
   transformValue(dictInput,dictOutput){
     if(this.keyDependOn){
@@ -131,9 +142,6 @@ class transformRule{
           let value = _.get(dictInput,this.keyInput)
           if(this.dictValues[value]){
             _.set(dictOutput, this.keyOutput, this.dictValues[value])
-          }
-          else if(this.defaultValue){
-            _.set(dictOutput, this.keyOutput, this.defaultValue)
           }
         }
         break
@@ -175,11 +183,26 @@ class transformRule{
                 _.set(dictOutput,this.keyOutput,dictionaryAppleMap[idInput])
               }
               break;
-          }
-
-          
+            case 'lonic':
+              if(_.hasIn(dictionaryLonicCodesMap,idInput)){
+                _.set(dictOutput,this.keyOutput,dictionaryLonicCodesMap[idInput])
+              }
+              break;
+              
+          }          
         }
         break
+      case typeRule.addToArray:
+        if(_.hasIn(dictInput, this.keyInput)){
+           if(_,hasIn(dictOutput,this.arrayOutput)){
+             let originalArray = _.get(dictOutput,this.arrayOutput)
+             _.set(dictOutput,this.arrayOutput,_.concat(originalArray,[this.valueOutput]))
+           }
+           else{
+            _.set(dictOutput,this.arrayOutput,[this.valueOutput])
+           }
+        }
+        break;
     }    
   }
   
@@ -330,122 +353,31 @@ let items = [
   }),
   
  //Code 
-  transformRule.addValueDependOnInput('header.schema_id.name','code.coding[0].code',{
-    'acceleration':'80493-0',
-    'ambient-temperature':'60832-3',
-    'blood-glucose':'2339-0',
-    'blood-presure':'85354-9',
-    'body-fat-percentage':'41982-0',
-    'body-height':'8302-2',
-    'body-mass-index':'39156-5',
-    'body-temperature':'8310-5',
-    'body-weight':'29463-7',
-    'breath-carbon-monoxide':'251900003',
-    'calories-burned':'41981-2',
-    'diastolic-blood-pressure':'8462-4',
-    'expiratory-time':'60739-0',
-    'geoposition':'geoposition',
-    'heart-rate':'8867-4',
-    'inspiratory-time':'60740-8',
-    'magnetic-force':'magnetic-force',
-    'medication-adherence-percent':'418633004',
-    'minute-volume':'20139-2',
-    'minute-moderate-activity':'408581006',
-    'orientation':'orientation',
-    'oxygen-saturation':'59408-5',
-    'pace':'pace',
-    'physical-activity':'68130003',
-    'respiratory-rate':'9279-1',
-    'rr-interval':'8637-1',
-    'sleep-duration':'248263006',
-    'sleep-episode':'258158006',
-    'speed':'C0678536',
-    'step-count':'55423-8',
-    'systolic-blood-pressure':'8480-6',
-    'ventilation-cycle-time':'250818005',
-  }),
-  transformRule.addValueDependOnInput('header.schema_id.name','code.coding[0].system',{
-    'acceleration':'http://loinc.org',
-    'ambient-temperature':'http://loinc.org',
-    'blood-glucose':'http://loinc.org',
-    'blood-presure':'http://loinc.org',
-    'body-fat-percentage':'http://loinc.org',
-    'body-height':'http://loinc.org',
-    'body-mass-index':'http://loinc.org',
-    'body-temperature':'http://loinc.org',
-    'body-weight':'http://loinc.org',
-    'breath-carbon-monoxide':'http://snomed.info/id',
-    'calories-burned':'http://loinc.org',
-    'diastolic-blood-pressure':'http://loinc.org',
-    'expiratory-time':'http://loinc.org',
-    'geoposition':'http://www.fhir.org/guides/omhtofhir/datapoint-type',
-    'heart-rate':'http://loinc.org',
-    'inspiratory-time':'http://loinc.org',
-    'magnetic-force':'http://www.fhir.org/guides/omhtofhir/datapoint-type',
-    'medication-adherence-percent':'http://snomed.info/id',
-    'minute-volume':'http://loinc.org',
-    'minute-moderate-activity':'http://snomed.info/id',
-    'orientation':'http://www.fhir.org/guides/omhtofhir/datapoint-type',
-    'oxygen-saturation':'http://loinc.org',
-    'pace':'http://www.fhir.org/guides/omhtofhir/datapoint-type',
-    'physical-activity':'http://snomed.info/id',
-    'respiratory-rate':'http://loinc.org',
-    'rr-interval':'http://loinc.org',
-    'sleep-duration':'http://snomed.info/id',
-    'sleep-episode':'http://snomed.info/id',
-    'speed':'http://ncimeta.nci.nih.gov',
-    'step-count':'http://loinc.org',
-    'systolic-blood-pressure':'http://loinc.org',
-    'ventilation-cycle-time':'http://snomed.info/id'
-  }),
-  transformRule.addValueDependOnInput('header.schema_id.name','code.coding[0].display',{
-    'acceleration':'Activity level [Acceleration]',
-    'ambient-temperature':'Room temperature',
-    'blood-glucose':'Glucose Mass/volume in Blood',
-    'blood-presure':'Blood pressure panel with all children optional',
-    'body-fat-percentage':'Percentage of body fat Measured',
-    'body-height':'Body height',
-    'body-mass-index':'Body mass index (BMI) Ratio',
-    'body-temperature':'Body temperature',
-    'body-weight':'Body weight',
-    'breath-carbon-monoxide':'Expired carbon monoxide concentration (observable entity)',
-    'calories-burned':'Calories burned',
-    'diastolic-blood-pressure':'Diastolic blood pressure',
-    'expiratory-time':'Expiration Time Respiratory system',
-    'geoposition':'Geoposition',
-    'heart-rate':'Heart rate',
-    'inspiratory-time':'Inspiration Time Respiratory system',
-    'magnetic-force':'Magnetic Force Panel',
-    'medication-adherence-percent':'Medication compliance (observable entity)',
-    'minute-volume':'Volume expired 1 minute',
-    'minute-moderate-activity':'Physical activity target moderate exercise (finding)',
-    'orientation':'Gyroscope measurement Panel',
-    'oxygen-saturation':'Oxygen saturation in Arterial blood by Pulse oximetry',
-    'pace':'Pace',
-    'physical-activity':'Physical activity (observable entity)',
-    'respiratory-rate':'Respiratory Rate',
-    'rr-interval':'R-R interval by EKG',
-    'sleep-duration':'Duration of sleep (observable entity)',
-    'sleep-episode':'Sleep, function (observable entity)',
-    'speed':'Speed',
-    'step-count':'Number of steps in unspecified time Pedometer',
-    'systolic-blood-pressure':'Systolic blood pressure',
-    'ventilation-cycle-time':'Ventilation cycle time (observable entity)'
-  }),
+ 
+ transformRule.ohmFhirMappingTable('header.schema_id.name','code.coding[0]','lonic'),
+
   transformRule.concatenation(['body.descriptive_statistic','header.schema_id.name'],'code.coding[1].code','{0}-{1}'),
   transformRule.concatenation(['header.schema_id.name','body.descriptive_statistic'],'code.coding[1].display'),
   transformRule.addValueIfHasKey('body.descriptive_statistic','code.coding[1].system','http://www.fhir.org/guides/mfhir/omh_fhir_observation_codes'),
 
 
   //Code base in categoryType
-  transformRule.copyValue('body.category_type','code.coding[1].code'),
-  transformRule.addValueIfHasKey('body.category_type','code.coding[1].system','com.apple.health'),
-  transformRule.copyValue('body.category_value','code.coding[1].display'),
+  transformRule.addValue('code.coding[1].system','com.apple.health'),
+
+
   transformRule.copyValue('body.quantity_type','code.coding[1].code'),
+  transformRule.copyValue('body.quantity_type','code.coding[1].display'),
+
+  
+  transformRule.copyValue('body.category_type','code.coding[1].code'),  
+  transformRule.copyValue('body.category_type','code.coding[1].display'),
+
+  transformRule.copyValue('body.category_value','valueString'),
   
   //Replace based on AppleCodes Table
-  transformRule.ohmFhirMappingTable('body.category_type','code.coding[1]','appleCodes'),
   transformRule.ohmFhirMappingTable('header.schema_id.name','code.coding[1]','appleCodes'),
+  transformRule.ohmFhirMappingTable('body.quantity_type','code.coding[1]','appleCodes'),
+  transformRule.ohmFhirMappingTable('body.category_type','code.coding[1]','appleCodes'),
   
 //Subject //add userId
   transformRule.copyValue('header.user_id','subject.identifier.value'),
@@ -763,40 +695,37 @@ function sendToFirestore(studyId,userId,recordId,data){
     `/users/${userId}`+
     `/healthFhir/${recordId}`
 ).set({ ...data });
-
 }
 
 exports.omhToFhir =
     functions.firestore
         .document("/studies/{studyId}/users/{userId}/healthKit/{healthId}")
         .onCreate((snapshot, context) => {
-          const dataOmh = snapshot.data().payload;
-          let dataFhir = [];
-          dataOmh.forEach(register => {
-            register['header']['user_id']=context.params.userId
-            register['header']['documentId']=context.params.healthId
-            let dicFhir = {}
-            items.forEach(element => {
-              element.transformValue(register,dicFhir)
-            });
-            dataFhir.push(dicFhir)
-          });
-          if(dataFhir.length>500){
-            let counter=0
-            let lowerIndex = 0
-            let higherIndex=500
-            do{
-              if(higherIndex>=dataFhir.length){
-                higherIndex=dataFhir.length-1
-              }
-              sendToFirestore(context.params.studyId,context.params.userId,context.params.healthId+"P"+counter,dataFhir.slice(lowerIndex,higherIndex))
-              lowerIndex+=500
-              higherIndex+=500
-              counter++
-            }
-            while(lowerIndex<dataFhir.length)
+          let dataOmh = {...snapshot.data()};
+          if(!('header' in dataOmh)){
+            dataOmh['header']={}
           }
-          else{
-            sendToFirestore(context.params.studyId,context.params.userId,context.params.healthId,dataFhir)
+          dataOmh['header']['user_id']=context.params.userId
+          dataOmh['header']['documentId']=context.params.healthId
+          let dicFhir = {}
+          items.forEach(element => {
+            element.transformValue(dataOmh,dicFhir)
+          });          
+          let array =  _.get(dicFhir,'identifier',[])
+          if(array.length>0){
+            _.remove(array, function(n) { return n == undefined});
+            _.set(dicFhir,'identifier',array) 
           }
+          array =  _.get(dicFhir,'code.coding',[])
+          if(array.length>0){
+            _.remove(array, function(n) { return n == undefined});
+            console.log("this is new array",array)
+            _.set(dicFhir,'code.coding',array) 
+          }
+          array =  _.get(dicFhir,'component[0].code.coding',[])
+          if(array.length>0){
+            _.remove(array, function(n) { return n == undefined});
+            _.set(dicFhir,'component[0].code.coding',array) 
+          }
+          sendToFirestore(context.params.studyId,context.params.userId,context.params.healthId,dicFhir)
         });
