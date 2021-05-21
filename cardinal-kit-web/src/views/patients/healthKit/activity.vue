@@ -58,3 +58,30 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.card-info {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+
+  &__group {
+    text-align: center;
+    padding: 1rem;
+    width: 100%;
+    
+    .subtitle {
+      font-weight: bold;
+      margin-bottom: .8rem;
+      text-transform: capitalize;
+    }
+
+    &:nth-child(n) {
+      border-right: solid lightgray 1px;
+    }
+    &:last-child {
+      border: none;
+    }
+  }
+}
+</style>
