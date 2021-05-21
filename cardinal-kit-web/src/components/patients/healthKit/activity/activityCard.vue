@@ -1,8 +1,14 @@
 <template>
   <div class="card">
-    <div class="card-header">
-      <h4 :style="{ color: colorTitle }"><b>{{ name }} </b></h4>
-      <div><span>{{ date }}</span></div>
+    <div class="card-header align-center">
+      <div class="card-header__title">
+        <img v-if="logo" :src="logo" alt="logo activity card">
+        <h4 :style="{ color: colorTitle }"><b>{{ name }} </b></h4>
+      </div>
+      <div class="card-header__link flex align-center pointer">
+        <span>{{ date }}</span>
+        <span class="arrow-link">›</span>
+      </div>
       <!-- Logo -->
     </div>
     <div class="card-body">
@@ -62,6 +68,28 @@ export default {
     display: flex;
     justify-content: space-between;
     padding: .7rem;
+
+    &__title {
+      display: flex;
+      align-items: center;
+
+      img {
+        margin-right: 5px;
+        object-fit: scale-down;
+        height: 17px;
+        width: 12px;
+      }
+    }
+
+    &__link {
+      .arrow-link {
+        text-decoration: none;
+        font-weight: bold;
+        color: lightgrey;
+        margin-left: 5px;
+        font-size: 15pt;
+      }
+    }
   }
   .card-body {
     &__info {
