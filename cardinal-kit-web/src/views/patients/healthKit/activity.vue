@@ -1,31 +1,42 @@
 <template>
-  <div  class="page">
+  <section class="page">
     <h1 class="mb-5"> Activity </h1>
-    <activity-card name="Actividad" date="7 may">
-      <template v-slot:card-body>
-        <div class="card-info">
-          <div class="card-info__group">
-            <p class="subtitle">move</p>
-            <p>{{calories}} kcal</p>
+    <div class="wrapper-activities">
+       <activity-card name="Actividad" date="7 may">
+        <template v-slot:card-body>
+          <div class="card-info">
+            <div class="card-info__group">
+              <p class="subtitle">move</p>
+              <p>{{calories}} kcal</p>
+            </div>
+            <div class="card-info__group">
+              <p class="subtitle">exercise</p>
+              <p>{{exerciseTime}} min</p>
+            </div>
+            <div class="card-info__group">
+              <p class="subtitle">Stand Up</p>
+              <p>{{standUpTime}} h</p>
+            </div>
           </div>
-          <div class="card-info__group">
-            <p class="subtitle">exercise</p>
-            <p>{{exerciseTime}} min</p>
-          </div>
-          <div class="card-info__group">
-            <p class="subtitle">Stand Up</p>
-            <p>{{standUpTime}} h</p>
-          </div>
-        </div>
-        <multiple-radial-bars :series="[calories,exerciseTime,standUpTime]" :height="'250'" :labels="['Move','exercise','Stand Up']"/>
+          <!-- <multiple-radial-bars :series="[calories,exerciseTime,standUpTime]" :height="'250'" :labels="['Move','exercise','Stand Up']"/> -->
+        </template>
+      </activity-card>
+      <template v-if="activities && activities.length" >
+          <activity-card v-for="activity in activities" :key="activity.id"
+          :name="activity.name" 
+          :date="activity.date"
+          :color-title="activity.color" 
+          :value="activity.value" 
+          :measure="activity.measure" />
       </template>
-    </activity-card>
-  </div>
+    </div>
+  </section>
 </template>
 <script>
 import store from "@/store";
 import activityCard from "@/components/patients/healthKit/activity/activityCard";
 import multipleRadialBars from "@/components/apexCharts/multipleRadialBars";
+import { ACTIVITIES_PER_USER } from "@/plugins/mock/activities";
 
 import { mapGetters } from 'vuex';
 export default {
@@ -38,7 +49,8 @@ export default {
     return {
       calories:39,
       exerciseTime:10,
-      standUpTime:2      
+      standUpTime:2,
+      activities: []     
     };
   },
   methods: {},
@@ -47,7 +59,7 @@ export default {
   },
   mounted(){
     // let burnedDataArray = this.getSpecificHealthData('41981-2').data
-    
+    this.activities = ACTIVITIES_PER_USER[this.$route.params.userId] || [];
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([
@@ -58,3 +70,35 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.wrapper-activities {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+}
+.card-info {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+
+  &__group {
+    text-align: center;
+    padding: 1rem;
+    width: 100%;
+    
+    .subtitle {
+      font-weight: bold;
+      margin-bottom: .8rem;
+      text-transform: capitalize;
+    }
+
+    &:nth-child(n) {
+      border-right: solid lightgray 1px;
+    }
+    &:last-child {
+      border: none;
+    }
+  }
+}
+</style>
