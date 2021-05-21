@@ -66,6 +66,15 @@ const routes = [
     },
   },
   {
+    path: "/healthGraph/:studyId/:userId/:hkWorkout",
+    name: "healthGraph",
+    component: () => import('@/views/patients/healthKit/healthKitGraphs'),
+    props: true,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/userActivity/:studyId/:userId",
     name: "userActivity",
     component: Activity,
