@@ -9,7 +9,6 @@
         <span>{{ date }}</span>
         <span class="arrow-link">›</span>
       </div>
-      <!-- Logo -->
     </div>
     <div class="card-body">
       <slot name="card-body">
@@ -53,7 +52,7 @@ export default {
   computed: {},
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .card {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
@@ -91,6 +90,7 @@ export default {
       }
     }
   }
+
   .card-body {
     &__info {
       display: flex;
