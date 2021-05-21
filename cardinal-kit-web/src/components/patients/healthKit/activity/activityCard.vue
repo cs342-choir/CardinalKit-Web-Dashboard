@@ -1,12 +1,22 @@
 <template>
   <div class="card">
-    <div class="card-header">
-      <h4><b>{{ name }} </b></h4>
-      <div><span>{{ date }}</span></div>
-      <!-- Logo -->
+    <div class="card-header align-center">
+      <div class="card-header__title">
+        <img v-if="logo" :src="logo" alt="logo activity card">
+        <h4 :style="{ color: colorTitle }"><b>{{ name }} </b></h4>
+      </div>
+      <div class="card-header__link flex align-center pointer">
+        <span>{{ date }}</span>
+        <span class="arrow-link">›</span>
+      </div>
     </div>
     <div class="card-body">
-      <slot name="card-body"></slot>
+      <slot name="card-body">
+        <div class="card-body__info">
+          <p class="info-value">{{value || 'Value'}}</p>
+          <p class="info-measure">{{ measure || 'Type Measure' }}</p>
+        </div>
+      </slot>
     </div>
   </div>
 </template>
@@ -22,6 +32,18 @@ export default {
       type: String,
       required: true,
     },
+    value: {
+      type: String,
+    },
+    measure: {
+      type: String,
+    },
+    logo: {
+      type: String,
+    },
+    colorTitle: {
+      type: String,
+    }
   },
   data() {
     return {};
@@ -34,14 +56,59 @@ export default {
 .card {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
-  width: 40%;
+  min-width: 40%;
   border-radius: 5px;
-  background: white;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  background-color: $bg-card;
 
   .card-header {
     display: flex;
     justify-content: space-between;
-    padding: 1rem;
+    padding: .7rem;
+
+    &__title {
+      display: flex;
+      align-items: center;
+
+      img {
+        margin-right: 5px;
+        object-fit: scale-down;
+        height: 17px;
+        width: 12px;
+      }
+    }
+
+    &__link {
+      .arrow-link {
+        text-decoration: none;
+        font-weight: bold;
+        color: lightgrey;
+        margin-left: 5px;
+        font-size: 15pt;
+      }
+    }
+  }
+
+  .card-body {
+    &__info {
+      display: flex;
+      gap: 1px;
+      padding: .7rem;
+      align-items: baseline;
+
+      .info-value {
+        font-size: 17pt;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+      .info-measure {
+        color: lightslategray;
+        font-weight: bold;
+        font-size: 10pt;
+      }
+    }
   }
 }
 
