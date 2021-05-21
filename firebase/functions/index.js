@@ -71,7 +71,7 @@ class transformRule{
     let newRule = new transformRule()
     newRule.keyInput=keyInput
     newRule.outputValues = dictOutput
-    newRule.type = typeRule.dictOutput
+    newRule.type = typeRule.multipleValue
     return newRule
   }
 
@@ -362,7 +362,7 @@ let items = [
 
 
   //Code base in categoryType
-  transformRule.addValue('code.coding[1].system','com.apple.health'),
+  
 
 
   transformRule.copyValue('body.quantity_type','code.coding[1].code'),
@@ -372,12 +372,18 @@ let items = [
   transformRule.copyValue('body.category_type','code.coding[1].code'),  
   transformRule.copyValue('body.category_type','code.coding[1].display'),
 
+  transformRule.copyValue('body.activity_name','code.coding[1].code'),
+  transformRule.copyValue('body.activity_name','code.coding[1].display'),
+
   transformRule.copyValue('body.category_value','valueString'),
   
   //Replace based on AppleCodes Table
   transformRule.ohmFhirMappingTable('header.schema_id.name','code.coding[1]','appleCodes'),
   transformRule.ohmFhirMappingTable('body.quantity_type','code.coding[1]','appleCodes'),
   transformRule.ohmFhirMappingTable('body.category_type','code.coding[1]','appleCodes'),
+  
+
+  transformRule.addValue('code.coding[1].system','com.apple.health'),
   
 //Subject //add userId
   transformRule.copyValue('header.user_id','subject.identifier.value'),
@@ -591,12 +597,11 @@ let items = [
   transformRule.copyValue('body.longitude.unit','component[0].valueQuantity.unit'),
   transformRule.copyValue('body.positioning_system','component[0].valueQuantity.positioning_system'),
 
-
   //temporal_relationship_to_sleep
   transformRule.addMultipleValueIfHasKey('body.temporal_relationship_to_sleep',{
-    'component[0].code.coding[1].code':'relative-to-sleep',
-    'component[0].code.coding[1].system':'http://www.fhir.org/guides/mfhir/omh_fhir_observation_codes',
-    'component[0].code.coding[1].display':'OMH to FHIR Temporal Relationship To Sleep'
+    'component[0].code.coding[0].code':'relative-to-sleep',
+    'component[0].code.coding[0].system':'http://www.fhir.org/guides/mfhir/omh_fhir_observation_codes',
+    'component[0].code.coding[0].display':'OMH to FHIR Temporal Relationship To Sleep'
   }),
   transformRule.ohmFhirMappingTable('body.temporal_relationship_to_sleep','component[0].valueCodeableConcept.coding[0]','concept'),
   transformRule.copyValue('body.temporal_relationship_to_sleep','component[0].valueCodeableConcept.text'),
@@ -614,9 +619,9 @@ let items = [
 
   //temporal_relationship_to_meal
   transformRule.addMultipleValueIfHasKey('body.temporal_relationship_to_meal',{
-    'component[0].code.coding[1].code':'relative-to-meal',
-    'component[0].code.coding[1].system':'http://www.fhir.org/guides/mfhir/omh_fhir_observation_codes',
-    'component[0].code.coding[1].display':'OMH to FHIR Temporal Relationship To Meal'
+    'component[0].code.coding[2].code':'relative-to-meal',
+    'component[0].code.coding[2].system':'http://www.fhir.org/guides/mfhir/omh_fhir_observation_codes',
+    'component[0].code.coding[2].display':'OMH to FHIR Temporal Relationship To Meal'
   }),
   transformRule.ohmFhirMappingTable('body.temporal_relationship_to_meal','component[0].valueCodeableConcept.coding[0]','concept'),
   transformRule.copyValue('body.temporal_relationship_to_meal','component[0].valueCodeableConcept.text'),
@@ -624,9 +629,9 @@ let items = [
 
   //oxygen_therapy_mode_of_administration
   transformRule.addMultipleValueIfHasKey('body.oxygen_therapy_mode_of_administration',{
-    'component[0].code.coding[1].code':'o2-administration-method',
-    'component[0].code.coding[1].system':'http://www.fhir.org/guides/mfhir/omh_fhir_observation_codes',
-    'component[0].code.coding[1].display':'Oxygen Therapy Mode of Administration'
+    'component[0].code.coding[3].code':'o2-administration-method',
+    'component[0].code.coding[3].system':'http://www.fhir.org/guides/mfhir/omh_fhir_observation_codes',
+    'component[0].code.coding[3].display':'Oxygen Therapy Mode of Administration'
   }),
   transformRule.copyValue('body.oxygen_therapy_mode_of_administration','component[0].valueString'),
 
@@ -634,9 +639,9 @@ let items = [
 
   //supplemental_oxygen_flow_rate
   transformRule.addMultipleValueIfHasKey('body.supplemental_oxygen_flow_rate',{
-    'component[0].code.coding[1].code':'3151-8',
-    'component[0].code.coding[1].system':'http://loinc.org',
-    'component[0].code.coding[1].display':'Inhaled oxygen flow rate'
+    'component[0].code.coding[4].code':'3151-8',
+    'component[0].code.coding[4].system':'http://loinc.org',
+    'component[0].code.coding[4].display':'Inhaled oxygen flow rate'
   }),
   transformRule.copyValue('body.supplemental_oxygen_flow_rate.value','component[0].valueQuantity.value'),
   transformRule.copyValue('body.supplemental_oxygen_flow_rate.unit','component[0].valueQuantity.unit'),
@@ -646,18 +651,18 @@ let items = [
   //body posture
   
   transformRule.addMultipleValueIfHasKey('body.body_posture',{
-    'component[0].code.coding[1].code':'271605009',
-    'component[0].code.coding[1].system':'http://snomed.info/sct',
-    'component[0].code.coding[1].display':'Position of body and posture (observable entity)'
+    'component[0].code.coding[5].code':'271605009',
+    'component[0].code.coding[5].system':'http://snomed.info/sct',
+    'component[0].code.coding[5].display':'Position of body and posture (observable entity)'
   }),
   transformRule.ohmFhirMappingTable('body.body_posture','component[0].valueCodeableConcept.coding[0]','concept'),
   transformRule.copyValue('body.body_posture','component[0].valueCodeableConcept.text'),
 
   //diastolic blood pressure
   transformRule.addMultipleValueIfHasKey('body.diastolic_blood_pressure',{
-    'component[0].code.coding[1].code':'8462-4',
-    'component[0].code.coding[1].system':'http://loinc.org',
-    'component[0].code.coding[1].display':'Diastolic blood pressure'
+    'component[0].code.coding[6].code':'8462-4',
+    'component[0].code.coding[6].system':'http://loinc.org',
+    'component[0].code.coding[6].display':'Diastolic blood pressure'
   }),
   transformRule.copyValue('body.diastolic_blood_pressure.value','component[0].valueQuantity.value'),
   transformRule.copyValue('body.diastolic_blood_pressure.unit','component[0].valueQuantity.unit'),
@@ -667,22 +672,23 @@ let items = [
 
   //sistolic  blood pressure
   transformRule.addMultipleValueIfHasKey('body.systolic_blood_pressure',{
-    'component[0].code.coding[1].code':'8480-6',
-    'component[0].code.coding[1].system':'http://loinc.org',
-    'component[0].code.coding[1].display':'Systolic blood pressure'
+    'component[0].code.coding[7].code':'8480-6',
+    'component[0].code.coding[7].system':'http://loinc.org',
+    'component[0].code.coding[7].display':'Systolic blood pressure'
   }),
   transformRule.copyValue('body.systolic_blood_pressure.value','component[0].valueQuantity.value'),
   transformRule.copyValue('body.systolic_blood_pressure.unit','component[0].valueQuantity.unit'),
   transformRule.addValueIfHasKey('body.systolic_blood_pressure','component[0].valueQuantity.system','http://unitsofmeasure.org'),
   transformRule.addValueIfHasKey('body.systolic_blood_pressure','component[0].valueQuantity.system','mm[Hg]'),
   
+  
+
   //activity Name
   transformRule.addMultipleValueIfHasKey('body.activity_name',{
-    'component[0].code.coding[1].code':'257733005',
-    'component[0].code.coding[1].system':'http://snomed.info/sct',
-    'component[0].code.coding[1].display':'Activity'
+    'component[0].code.coding[8].code':'257733005',
+    'component[0].code.coding[8].system':'http://snomed.info/sct',
+    'component[0].code.coding[8].display':'Activity'
   }),
-  transformRule.ohmFhirMappingTable('body.activity_name','component[0].valueCodeableConcept.coding[0]','concept'),
   transformRule.copyValue('body.activity_name','component[0].valueCodeableConcept.text'),
  
   //Create value in server for resource_id
@@ -719,12 +725,13 @@ exports.omhToFhir =
           array =  _.get(dicFhir,'code.coding',[])
           if(array.length>0){
             _.remove(array, function(n) { return n == undefined});
-            console.log("this is new array",array)
             _.set(dicFhir,'code.coding',array) 
           }
           array =  _.get(dicFhir,'component[0].code.coding',[])
+          console.log("array",array)
           if(array.length>0){
             _.remove(array, function(n) { return n == undefined});
+            console.log("newarray",array)
             _.set(dicFhir,'component[0].code.coding',array) 
           }
           sendToFirestore(context.params.studyId,context.params.userId,context.params.healthId,dicFhir)
