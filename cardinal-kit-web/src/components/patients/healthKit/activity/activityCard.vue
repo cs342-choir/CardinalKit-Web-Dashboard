@@ -1,12 +1,17 @@
 <template>
   <div class="card">
     <div class="card-header">
-      <h4><b>{{ name }} </b></h4>
+      <h4 :style="{ color: colorTitle }"><b>{{ name }} </b></h4>
       <div><span>{{ date }}</span></div>
       <!-- Logo -->
     </div>
     <div class="card-body">
-      <slot name="card-body"></slot>
+      <slot name="card-body">
+        <div class="card-body__info">
+          <p class="info-value">{{value || 'Value'}}</p>
+          <p class="info-measure">{{ measure || 'Type Measure' }}</p>
+        </div>
+      </slot>
     </div>
   </div>
 </template>
@@ -22,6 +27,18 @@ export default {
       type: String,
       required: true,
     },
+    value: {
+      type: String,
+    },
+    measure: {
+      type: String,
+    },
+    logo: {
+      type: String,
+    },
+    colorTitle: {
+      type: String,
+    }
   },
   data() {
     return {};
@@ -34,37 +51,34 @@ export default {
 .card {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
-  width: 40%;
+  min-width: 40%;
   border-radius: 5px;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  background-color: $bg-card;
 
   .card-header {
     display: flex;
     justify-content: space-between;
-    padding: 1rem;
+    padding: .7rem;
   }
   .card-body {
-    .card-info {
-      padding: 1rem;
+    &__info {
       display: flex;
-      justify-content: space-between;
+      gap: 1px;
+      padding: .7rem;
+      align-items: baseline;
 
-      &__group {
-        text-align: center;
-        padding: 1rem;
-        width: 100%;
-        
-        .subtitle {
-          font-weight: bold;
-          margin-bottom: .8rem;
-          text-transform: capitalize;
-        }
-
-        &:nth-child(n) {
-          border-right: solid lightgray 1px;
-        }
-        &:last-child {
-          border: none;
-        }
+      .info-value {
+        font-size: 17pt;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+      .info-measure {
+        color: lightslategray;
+        font-weight: bold;
+        font-size: 10pt;
       }
     }
   }
