@@ -27,7 +27,8 @@
           :date="activity.date"
           :color-title="activity.color" 
           :value="activity.value" 
-          :measure="activity.measure" />
+          :measure="activity.measure"
+          :logo="activity.logo" />
       </template>
     </div>
   </section>

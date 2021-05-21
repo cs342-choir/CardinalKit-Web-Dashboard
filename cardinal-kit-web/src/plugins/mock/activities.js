@@ -7,6 +7,7 @@ export const ACTIVITIES_PER_USER = {
       value: '37,3',
       measure: 'kcal',
       color: 'red',
+      logo: require("@/assets/icons/Flame.png"),
     },
     {
       id: 'jfawieanaviadfaeavvara5',
@@ -15,6 +16,7 @@ export const ACTIVITIES_PER_USER = {
       value: '1',
       measure: 'min',
       color: 'red',
+      logo: require("@/assets/icons/Flame.png"),
     },
     {
       id: 'jfawieanaviaeqweqqweruia4',
@@ -23,6 +25,7 @@ export const ACTIVITIES_PER_USER = {
       value: '7',
       measure: 'días',
       color: 'red',
+      logo: require("@/assets/icons/Flame.png"),
     },
     {
       id: 'ewwqieanaviaevaeq24q5jn8',
@@ -31,6 +34,7 @@ export const ACTIVITIES_PER_USER = {
       value: '34',
       measure: 'brazadas',
       color: 'red',
+      logo: require("@/assets/icons/Flame.png"),
     },
   ]
 }
