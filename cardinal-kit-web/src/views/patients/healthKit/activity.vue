@@ -78,6 +78,7 @@ export default {
   gap: 10px;
   grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
 }
+
 .card-info {
   padding: 1rem;
   display: flex;
