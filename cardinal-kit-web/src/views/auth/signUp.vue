@@ -3,7 +3,7 @@
     <Card>
       <template v-slot:card-header>
         <div class="card-header">
-          <Logo :width="'140'" :className="'flex justify-center'"></Logo>
+          <Logo :width="'100'" :className="'flex justify-center'"></Logo>
           <h1 id="signup" class="mb-1 text-center">SIGN UP</h1>
           <span class="block text-center">
             Already have an account?
@@ -117,6 +117,9 @@ export default({
     span {
       font-size: 10pt;
     }
+     @media screen and (max-width: 510px) {
+       margin-bottom: 1rem;
+    }
   }
 
   .login-form {
@@ -133,6 +136,10 @@ export default({
       &__horizontal {
         display: flex;
         gap: 15px;
+
+        @media screen and (max-width: 510px) {
+          flex-direction: column;
+        }
       }
 
       label {
