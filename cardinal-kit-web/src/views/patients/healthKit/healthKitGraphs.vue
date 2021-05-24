@@ -22,7 +22,6 @@
         <bar-chart v-if="analytic.graph.type === 'bar'" :key="index" :series="analytic.graph.series" :categories="analytic.graph.categories"/>
         <line-chart v-if="analytic.graph.type === 'line'" :key="index" :series="analytic.graph.series"/>
       </template>
-      <!-- <multiple-radial-bars :series="[39,10,2]" :height="'250'" :labels="['Move','exercise','Stand Up']"/> -->
     </div>
   </section>
 </template>
