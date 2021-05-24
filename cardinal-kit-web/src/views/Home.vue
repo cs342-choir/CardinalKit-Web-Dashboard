@@ -1,26 +1,30 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="@/assets/logo.png" />
+    <Header :src-logo="logo" width-logo="50">
+      <template #menu>
+        <router-link class="ev-link" to="studies">See StudiesList</router-link>
+        <span class="ev-link" @click="handleLogout()">Logout</span>
+      </template>
+    </Header>
     <br/>
-     <b-button @click="handleLogout()">
-      Logout
-    </b-button>
-    <br/>
-    <b-button @click="handleSeeStudies()">
-      See StudiesList
-    </b-button>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from 'vuex';
+import Header from '@/components/auth/Header';
 export default {
   name: "Home",
+  components: {
+    Header
+  },
+  data: function () {
+    return {
+      logo: require('@/assets/logo.png')
+    }
+  },
   methods: {
     ...mapActions("auth", ["Logout"]),
-    handleSeeStudies() {
-      this.$router.push("studies");
-    },
     handleLogout() {
       this.Logout().then(() => {
         console.log("Called Logout");
