@@ -67,5 +67,7 @@ export default {
 .wrapper-graphs {
   display: grid;
   gap: 15px;
+  max-width: 1200px;
+  margin: auto;
 }
 </style>
