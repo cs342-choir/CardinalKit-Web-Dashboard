@@ -3,7 +3,7 @@
     <Header :src-logo="logo" width-logo="50">
       <template #menu>
         <router-link class="ev-link" to="studies">See StudiesList</router-link>
-        <span class="ev-link" @click="handleLogout()">Logout</span>
+        <span class="ev-link pointer" @click="handleLogout()">Logout</span>
       </template>
     </Header>
     <br/>
