@@ -5,7 +5,7 @@
         <img v-if="logo" :src="logo" alt="logo activity card">
         <h4 :style="{ color: colorTitle }"><b>{{ name }} </b></h4>
       </div>
-      <div class="card-header__link flex align-center pointer">
+      <div @click="showToGraph(id)" class="card-header__link flex align-center pointer">
         <span>{{ date }}</span>
         <span class="arrow-link">›</span>
       </div>
@@ -43,13 +43,27 @@ export default {
     },
     colorTitle: {
       type: String,
+    },
+    id: {
+      type: String,
     }
   },
   data() {
-    return {};
+    return {
+      userId: '',
+      studyId: '',
+    };
   },
-  methods: {},
-  computed: {},
+  mounted () {
+    const { studyId, userId } = this.$route?.params;
+    this.userId = userId;
+    this.studyId = studyId;
+  },
+  methods: {
+    showToGraph: function (id) {
+      this.$router.push(`/healthGraph/${this.studyId}/${this.userId}/${id}`);
+    },
+  }
 };
 </script>
 <style lang="scss" scoped>
