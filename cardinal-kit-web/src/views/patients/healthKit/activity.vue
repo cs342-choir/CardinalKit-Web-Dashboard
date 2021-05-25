@@ -28,7 +28,8 @@
           :color-title="activity.color" 
           :value="activity.value" 
           :measure="activity.measure"
-          :logo="activity.logo" />
+          :logo="activity.logo"
+          :id="activity.id" />
       </template>
     </div>
   </section>
