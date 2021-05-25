@@ -1,11 +1,18 @@
 <template>
-  <header>
+  <header :class="className">
     <Logo :path="srcLogo"  :width="widthLogo" />
     <div class="header-menu" :class="{ show: showMenu }">
-      <span @click="handleShowMenu" class="close-menu pointer">
+      <span @click="handleShowMenu" class="close-menu ev-link pointer">
         ✖
       </span>
-      <slot class="responsive-menu" name="menu"></slot>
+      <slot name="menu">
+         <template v-for="(item, index) in menu" :key="index">
+           <router-link class="ev-link" :to="item.route">
+              {{item.name}}
+            </router-link>
+         </template>
+         <span v-if="logout" class="ev-link pointer logout" @click="emitLogout()">Logout</span>
+      </slot>
     </div>
     <i @click="handleShowMenu" class="active-menu pointer">
       <img src="@/assets/icons/menu.svg" alt="menu">
@@ -26,26 +33,48 @@ export default {
       type: String,
       default: '50'
     },
+    logout: {
+      type: Boolean,
+      default: false
+    },
+    className: {
+      type: String,
+      default: 'bg-default'
+    },
+    menu: Array
   },
   components: {
       Logo,
   },
-  setup() {
+  setup(props, context) {
     const showMenu = ref(false);
 
     function handleShowMenu() {
       showMenu.value = !showMenu.value
     }
 
+    function emitLogout() {
+      context.emit('handleLogout', true);
+    }
+
     return {
       showMenu,
-      handleShowMenu
+      handleShowMenu,
+      emitLogout
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+
+.bg-default {
+  background-color: whitesmoke;
+  .header-menu {
+    background-color: whitesmoke;
+  }
+}
+
 header {
   display: flex;
   justify-content: space-between;
@@ -53,13 +82,19 @@ header {
   position: sticky;
   top: 0;
   padding: .5rem 2rem;
-  background-color: whitesmoke;
   box-shadow: $shadow-sm;
 
   .header-menu {
     display: flex;
+    align-items: center;
     gap: 15px;
     transition: all .5s ease;
+
+    .logout {
+      padding: .5rem;
+      border: solid 2px;
+      border-radius: 4px;
+    }
 
     .close-menu {
       display: none;
@@ -72,7 +107,7 @@ header {
       bottom: 0;
       width: 100%;
       flex-flow: column;
-      background: whitesmoke;
+      background: inherit;
       align-items: center;
       font-size: 1.3em;
       padding: 2.5rem 1rem;
