@@ -8,7 +8,7 @@
       @handle-logout="handleLogout" 
       :menu="[{ name: 'Studies', route: 'studies'}]" 
     />
-    <!-- <Header :src-logo="logo" width-logo="50">
+    <!-- <Header className="bg-warning" :src-logo="logo" width-logo="50">
       <template #menu>
         <router-link class="ev-link" to="studies">See StudiesList</router-link>
         <span class="ev-link pointer logout" @click="handleLogout()">Logout</span>
