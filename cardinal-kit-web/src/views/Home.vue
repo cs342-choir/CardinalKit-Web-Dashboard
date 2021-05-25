@@ -1,12 +1,19 @@
 <template>
   <div class="home">
-    <Header :src-logo="logo" width-logo="50">
+    <Header 
+      :src-logo="logo" 
+      className="bg-info" 
+      logout 
+      width-logo="50" 
+      @handle-logout="handleLogout" 
+      :menu="[{ name: 'Studies', route: 'studies'}]" 
+    />
+    <!-- <Header :src-logo="logo" width-logo="50">
       <template #menu>
         <router-link class="ev-link" to="studies">See StudiesList</router-link>
-        <span class="ev-link pointer" @click="handleLogout()">Logout</span>
+        <span class="ev-link pointer logout" @click="handleLogout()">Logout</span>
       </template>
-    </Header>
-    <br/>
+    </Header> -->
   </div>
 </template>
 
