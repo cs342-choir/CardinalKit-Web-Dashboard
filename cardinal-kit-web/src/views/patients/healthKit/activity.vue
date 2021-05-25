@@ -77,7 +77,7 @@ export default {
 .wrapper-activities {
   display: grid;
   gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(290px, 350px));
 }
 
 .card-info {
