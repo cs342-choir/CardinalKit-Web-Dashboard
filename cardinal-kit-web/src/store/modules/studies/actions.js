@@ -14,10 +14,7 @@ export const FetchAllStudies = async ({ commit }) => {
       ...study.data(),
     });
   });
-  
-  console.log("aca return antes")
   commit("saveStudies", studies);
-  console.log("aca return despues")
   return studies
 };
 
