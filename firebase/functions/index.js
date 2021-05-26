@@ -695,12 +695,17 @@ let items = [
   transformRule.copyValue('header.documentId','id'),
 ]
 
-function sendToFirestore(studyId,userId,recordId,data){
+function sendToFirestore(studyId,userId,recordId,data,date){
   db.doc(
     `studies/${studyId}`+
     `/users/${userId}`+
     `/healthFhir/${recordId}`
-).set({ ...data });
+  ).set({ ...data });
+  db.doc(
+    `studies/${studyId}`+
+    `/users/${userId}`+
+    `/healthKit/${recordId}`
+  ).set({ header : {creation_date_time:date} },{merge:true});
 }
 
 exports.omhToFhir =
@@ -734,5 +739,9 @@ exports.omhToFhir =
             console.log("newarray",array)
             _.set(dicFhir,'component[0].code.coding',array) 
           }
-          sendToFirestore(context.params.studyId,context.params.userId,context.params.healthId,dicFhir)
+          let stringDate = dataOmh['header']['creation_date_time']
+          let dateJs = new Date(stringDate)
+          let dateFirebase = admin.firestore.Timestamp.fromDate(dateJs)
+
+          sendToFirestore(context.params.studyId,context.params.userId,context.params.healthId,dicFhir,dateFirebase)
         });
