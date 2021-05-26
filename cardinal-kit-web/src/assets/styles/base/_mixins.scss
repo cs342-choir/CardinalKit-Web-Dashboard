@@ -3,4 +3,12 @@
     a, p, label, span, i {
         color: $color;
     }
+
+    button {
+        background-color: $bg;
+    }
+
+    svg {
+        fill: $color;
+    }
 }
