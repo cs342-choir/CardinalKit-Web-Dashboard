@@ -1,42 +1,75 @@
 import {db} from '@/plugins/firebase/firebase'
+import { RESET } from '../../store/modules/patient/mutations'
 
-export const GET=async (path)=>{
+export class Ref {
+    constructor(object, method, payload = null) {
+        this.object = object
+        this.method = method
+        this.payload = payload
+    }
+    WHERE(params) {
+        this.object = this.object.where(params[0], params[1], params[2])
+        return this
+    }
+    LIMIT(limit) {
+        this.object = this.object.limit(limit)
+        return this
+    }
+    ORDER_BY(name, desc = false) {
+        this.object = this.object.orderBy(name, desc ? 'desc' : 'asc')
+        return this
+    }
+    async Execute() {
+        switch (this.method) {
+            case "GET":
+                return await this.object.get()
+            case "ADD":
+                return await this.object.add(this.payload)
+            case "SET":
+                return await this.object.set(this.payload)
+            case "UPDATE":
+                return await this.object.update(this.payload)
+            case "DELETE":
+                return await this.object.delete()
+            default:
+                return await this.object.get()
+        }
+    }
+}
+
+
+
+
+
+export const GET= (path)=>{
     let parts = path.split('/')
+    let object
     if(parts%2!=0){
-        return (await db.collection(path).get());
+        object = db.collection(path);
     }
     else{
-        return (await db.doc(path).get());
+        object = db.doc(path);
     }
+    return new Ref(object,"GET")    
 }
 
-export const GET_WHERE = async (path,whereParams)=>{
-    let ref = db.collection(path)
-    console.log(whereParams)
-    whereParams.forEach(element => {
-        console.log(element)
-        ref=ref.where(element[0],element[1],element[2])
-    });
-    return await ref.get()
-}
-
-export const  POST= async (path,payload)=>{
+export const  POST= (path,payload)=>{
     if(payload.emptyDoc){
-        return await db.collection(path).add(payload.data) 
+        return new Ref(db.collection(path),"ADD",payload.data)
     }
     else{
-        return await db.collection(path).doc(payload.docId).set(payload.data)
+        return new Ref(db.collection(path).doc(payload.docId),"SET",payload.data)
     }
 }
 
 export const PATH= async (path,payload)=>{
-    return await db.collection(path).doc(payload.docId).update(payload.data);
+    return new Ref(db.collection(path).doc(payload.docId),"UPDATE",payload.data)
 }
 
 export const  PUT= async ()=>{
-    return await db.collection(path).doc(payload.docId).set(payload.data);
+    return new Ref(db.collection(path).doc(payload.docId),"SET",payload.data)
 }
 
 export const DELETE= async (path,payload)=>{
-    return await db.collection(path).doc(payload.docId).delete();
+    return new Ref(db.collection(path).doc(payload.docId),"DELETE")
 }
