@@ -1,16 +1,11 @@
 <template>
   <picture :class="className">
-    <img :src="path || logo" alt="logo" :width="width" />
+    <img :src="path || ''" alt="logo" :width="width" />
   </picture>
 </template>
 <script>
-import logo from '@/assets/logo.png'
-export default{
-  data(){
-    return{
-      logo:logo
-    }
-  },
+export default {
+  name: 'Logo',
   props: {
     width: String,
     className: String,

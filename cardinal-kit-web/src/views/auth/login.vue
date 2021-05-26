@@ -2,7 +2,7 @@
   <section class="wrapper-login">
     <Card>
       <template v-slot:card-header>
-        <Logo :className="'flex justify-center'" :width="'145'"></Logo>
+        <Logo :path="logo" :className="'flex justify-center'" :width="'100'"></Logo>
         <h1 class="text-center">SIGN IN</h1>
       </template>
       <template v-slot:card-body>
@@ -70,6 +70,7 @@ export default {
     return {
       email: "",
       password: "",
+      logo: require('@/assets/logo.png')
     };
   },
   components: {
