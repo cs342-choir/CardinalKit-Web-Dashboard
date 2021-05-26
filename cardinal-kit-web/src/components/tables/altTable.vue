@@ -45,7 +45,7 @@ export default {
   border-radius: .5rem;
   display: block;
   min-width: 100%;
-  overflow: hidden;
+  overflow: auto;
   box-shadow: $tw-shadow;
 
   &.info {

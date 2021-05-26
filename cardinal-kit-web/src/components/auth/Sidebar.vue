@@ -15,9 +15,9 @@
         :width="widthLogo" />
         <ul class="mb-5">
           <template v-for="(link, index) in menu" :key="index">
-            <li>
-              <i v-if="link?.icon" class="mr-2" v-html="link.icon"></i>
-              <router-link class="sb-link" :to="link.route">
+            <li class="flex sb-link">
+              <img alt="icon" v-if="link?.icon" class="mr-2" :src="link.icon" />
+              <router-link :to="link.route">
                 {{link.name}}
               </router-link>
             </li>
@@ -130,12 +130,18 @@ nav {
 
     .sb-link {
       padding: 1rem 0;
-      display: block;
       border-bottom: 1px solid;
-      text-decoration: none;
       font-size: 13pt;
       font-weight: 600;
       letter-spacing: 0.6px;
+
+      img {
+        width: 20px;
+      }
+       
+      a {
+        text-decoration: none;
+      }
     }
   }
 
