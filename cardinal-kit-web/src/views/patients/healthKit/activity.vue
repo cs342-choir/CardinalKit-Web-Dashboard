@@ -57,11 +57,12 @@ export default {
   },
   methods: {},
   computed: {
-    ...mapGetters('patient',['getSpecificHealthData'])
+    ...mapGetters('patient',['getActivityDataWebFormat'])
   },
   mounted(){
+    console.log(this.getActivityDataWebFormat)
     // let burnedDataArray = this.getSpecificHealthData('41981-2').data
-    this.activities = ACTIVITIES_PER_USER[this.$route.params.userId] || [];
+    this.activities = this.getActivityDataWebFormat
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([
