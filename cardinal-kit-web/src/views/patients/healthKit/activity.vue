@@ -65,7 +65,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([
-      store.dispatch("patient/FetchActivityUser",{ studyId:`${to.params.studyId}`  , userId:`${to.params.userId}`})
+      store.dispatch("patient/FetchLastActivityData",{ studyId:`${to.params.studyId}`  , userId:`${to.params.userId}`})
       ]).then(()=>{
         next()
       })
