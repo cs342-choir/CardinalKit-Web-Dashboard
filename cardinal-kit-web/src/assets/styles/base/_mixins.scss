@@ -1,6 +1,14 @@
 @mixin setBackground($bg, $color) {
     background-color: $bg;
-    a, p, label, span, i {
+    a, p, label, span, i, li {
         color: $color;
+    }
+
+    button {
+        background-color: $bg;
+    }
+
+    svg {
+        fill: $color;
     }
 }
