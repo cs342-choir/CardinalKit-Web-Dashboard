@@ -3,7 +3,7 @@
     <Card>
       <template v-slot:card-header>
         <div class="card-header">
-          <Logo :width="'100'" :className="'flex justify-center'"></Logo>
+          <Logo :path="logo" :width="'100'" :className="'flex justify-center'"></Logo>
           <h1 id="signup" class="mb-1 text-center">SIGN UP</h1>
           <span class="block text-center">
             Already have an account?
@@ -77,7 +77,8 @@ export default({
       email:'',
       password: '',
       firstName: '',
-      lastName: ''
+      lastName: '',
+      logo: require('@/assets/logo.png')
     }
   },
   components:{
