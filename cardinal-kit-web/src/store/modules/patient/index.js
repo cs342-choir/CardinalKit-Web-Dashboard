@@ -1,19 +1,6 @@
-import * as mutations from "./mutations";
-
-import * as getters from "./getters";
-
-
-//Actions
-import * as activityActions from "./HealthData/Activity/actions";
-import * as hearingActions from "./HealthData/Hearing/actions";
-
-
-//mutations
-
-import * as hearingMutations from "./HealthData/Hearing/mutations"
-import * as activityMutations from "./HealthData/Activity/mutations"
-
 import request from "@/Rest";
+
+import * as activityMutations from './HealthData/Activity/mutations'
 
 export const FetchCategoryTypeData = async (  
   categoryType,
@@ -58,6 +45,8 @@ const FetchGeneralData = async (payload) => {
 
 export const initialState = () => ({
   healthData: {},
+  // activityData: {},
+  // activityDataWebFormat: []
 });
 
 export default {
@@ -65,12 +54,16 @@ export default {
   state: initialState(),
   mutations:
   {
-    ...activityMutations,
-    ...hearingMutations,
+    ...require("./HealthData/Activity/mutations"),
+    ...require("./HealthData/Hearing/mutations"),
   },
   actions: {
-    ...activityActions,
-    ...hearingActions,
+    ...require("./HealthData/Activity/actions"),
+    ...require("./HealthData/Hearing/actions"),
   },
-  getters,
+  getters:{
+    ...require("./HealthData/Activity/getters"),
+    ...require("./HealthData/Hearing/getters"),
+    
+  }
 };
