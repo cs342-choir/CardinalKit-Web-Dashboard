@@ -13,10 +13,10 @@
       <div>
         <Logo class="flex justify-center mb-5" :path="logo"
         :width="widthLogo" />
-        <ul class="mb-5">
+        <ul v-if="menu" class="mb-5">
           <template v-for="(link, index) in menu" :key="index">
             <li class="flex sb-link">
-              <img alt="icon" v-if="link?.icon" class="mr-2" :src="link.icon" />
+              <Icon v-if="link?.icon" :icon="link.icon" />
               <router-link :to="link.route">
                 {{link.name}}
               </router-link>
@@ -33,13 +33,13 @@
 
 <script>
 import Logo from "@/components/auth/Logo";
+import Icon from "./Icon";
 import { ref } from 'vue';
 
 export default {
   props: {
     menu: {
       type: Array,
-      required: true
     },
     logout: {
       type: Boolean,
@@ -55,7 +55,7 @@ export default {
     },
     logo: String
   },
-  components: { Logo },
+  components: { Logo, Icon },
   setup(props, ctx) {
     const collapse = ref(false);
 
@@ -134,10 +134,6 @@ nav {
       font-size: 13pt;
       font-weight: 600;
       letter-spacing: 0.6px;
-
-      img {
-        width: 20px;
-      }
        
       a {
         text-decoration: none;
