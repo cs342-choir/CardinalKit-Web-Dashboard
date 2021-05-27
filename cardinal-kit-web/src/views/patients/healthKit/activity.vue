@@ -22,14 +22,14 @@
         </template>
       </activity-card>
       <template v-if="activities && activities.length" >
-          <activity-card v-for="activity in activities" :key="activity.id"
-          :name="activity.name" 
-          :date="activity.date"
-          :color-title="activity.color" 
-          :value="activity.value" 
-          :measure="activity.measure"
-          :logo="activity.logo"
-          :id="activity.id" />
+          <activity-card v-for="activity in activities" :key="activity.HkCode"
+          :name="activity.HkCodeName" 
+          :date="activity.Date.formatted"
+          :color-title="activity.Color" 
+          :value="''+activity.Value" 
+          :measure="activity.Unit"
+          :logo="activity.Logo"
+          :id="activity.HkCode" />
       </template>
     </div>
   </section>
