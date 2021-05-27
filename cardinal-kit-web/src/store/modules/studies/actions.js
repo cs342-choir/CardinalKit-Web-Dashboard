@@ -6,7 +6,7 @@ export function reset({ commit }) {
 
 export const FetchAllStudies = async ({ commit }) => {
   let studies = [];
-  const studiesSnap = await request.GET("studies");
+  const studiesSnap = await request.GET("studies").Execute();
   studiesSnap.forEach((study) => {
     studies.push({
       id: study.id,
@@ -20,7 +20,7 @@ export const FetchAllStudies = async ({ commit }) => {
 
 export const FetchStudyHealthData = async ({ commit }, payload) => {
   let allRecords = [];
-  const dataSnap = await request.GET(`studies/${payload.studyId}/users`);
+  const dataSnap = await request.GET(`studies/${payload.studyId}/users`).Execute();
   allRecords = await Promise.all(dataSnap.docs.map(async (user) => {
     const userSnap = await request.GET(
       `studies/${payload.studyId}/users/${user.id}/healthFhir`
@@ -37,7 +37,7 @@ export const FetchStudyHealthData = async ({ commit }, payload) => {
 
 export const FetchUsers = async ({commit},payload)=>{
   let allUsers = [];
-  const usersSnap = await request.GET(`studies/${payload.studyId}/users`);
+  const usersSnap = await request.GET(`studies/${payload.studyId}/users`).Execute();
   allUsers = usersSnap.docs.map((record) => {
     return {id:record.id,...record.data()}
   })
