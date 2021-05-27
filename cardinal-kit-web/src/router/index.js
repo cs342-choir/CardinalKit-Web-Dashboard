@@ -66,7 +66,7 @@ const routes = [
     },
   },
   {
-    path: "/healthGraph/:studyId/:userId/:hkWorkout",
+    path: "/healthGraph/:studyId/:userId/:hkCode",
     name: "healthGraph",
     component: () => import('@/views/patients/healthKit/healthKitGraphs'),
     props: true,
