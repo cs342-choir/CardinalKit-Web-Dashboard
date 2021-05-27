@@ -1,7 +1,7 @@
 <template>
 <div class="page">
   <h1 class="mb-5">Patient</h1>
-  <alt-table :columns="columns">
+  <alt-table :columns="columns" pagination @onPagination="handlePagination">
     <template #t-row>
       <tr v-for="(patient, index) in patients" :key="patient.id">
         <td>{{index + 1}}</td>
@@ -43,6 +43,9 @@ import altTable from '@/components/tables/altTable';
     methods: {
       handleSelecPatient(patientId){
         this.$router.push(`/healthKitUser/${this.studyId}/${patientId}`)
+      }, 
+      handlePagination(pagination) {
+        console.log('arraival from table', pagination);
       }
     }
   };
