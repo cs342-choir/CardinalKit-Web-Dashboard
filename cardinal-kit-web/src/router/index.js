@@ -8,7 +8,7 @@ import SignUp from "@/views/auth/signUp";
 import StudiesList from "@/views/studies/patientsList";
 import StudyDetail from "@/views/studies/studyDetail";
 import HealthUser from "@/views/patients/healthKit/healthKitUser";
-import Activity from "@/views/patients/healthKit/activity";
+import categoryDetail from "@/views/patients/healthKit/categoryDetail";
 
 const routes = [
   {
@@ -75,9 +75,9 @@ const routes = [
     },
   },
   {
-    path: "/userActivity/:studyId/:userId",
-    name: "userActivity",
-    component: Activity,
+    path: "/categoryDetail/:studyId/:userId/:categoryId",
+    name: "categoryDetail",
+    component: categoryDetail,
     meta: {
       requiresAuth: true,
     },
