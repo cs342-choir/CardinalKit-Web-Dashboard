@@ -1,6 +1,9 @@
 <template>
   <header :class="className">
-    <Logo :path="srcLogo"  :width="widthLogo" />
+    <router-link to="/" class="header-brand">
+      <Logo :path="srcLogo"  :width="widthLogo" />
+      <h3>CardinalKit</h3>
+    </router-link>
     <div class="header-menu" :class="{ show: showMenu }">
       <span @click="handleShowMenu" class="close-menu ev-link pointer">
         ✖
@@ -75,6 +78,13 @@ export default {
   }
 }
 
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+}
+
 header {
   display: flex;
   justify-content: space-between;
@@ -82,6 +92,7 @@ header {
   position: sticky;
   top: 0;
   padding: .5rem 2rem;
+  z-index: 2;
   box-shadow: $shadow-sm;
 
   .header-menu {
