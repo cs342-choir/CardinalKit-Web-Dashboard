@@ -14,7 +14,7 @@
 <script>
 import store from "@/store";
 import { mapActions, mapGetters } from 'vuex';
-import categories from '@/components/patients/healthKit/categories'
+import categories from '@/components/patients/healthKit/categoryList'
 export default {
   name: "StudyDetail",
   components:{
