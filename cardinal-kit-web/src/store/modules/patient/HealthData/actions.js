@@ -1,5 +1,5 @@
 import request from "@/Rest";
-import {transformHealthDataToGlobalFormat} from "@/helpers/healthKit"
+import {transformHealthDataToGlobalFormat} from "@/common/helpers/healthKit"
 
 export const FetchSpecificTypeData = async ({commit}, payload)=>{    
     let startDate =new Date()

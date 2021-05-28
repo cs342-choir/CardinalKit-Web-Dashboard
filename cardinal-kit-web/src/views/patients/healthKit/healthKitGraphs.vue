@@ -53,7 +53,7 @@ import LineChart from "@/components/apexCharts/LineChart";
 import { ANALYTICS_TO_GRAPH } from "@/plugins/mock/analytics";
 import MultipleRadialBars from "../../../components/apexCharts/multipleRadialBars.vue";
 import { mapGetters } from 'vuex';
-import {transformAppleCode} from "@/helpers/healthKit"
+import {transformAppleCode} from "@/common/helpers/healthKit"
 
 export default {
   components: {
