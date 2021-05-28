@@ -14,10 +14,54 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    redirect: "/studies",
+    component: () => import('@/common/layout/Main'),
     meta: {
       requiresAuth: true,
     },
+    children: [
+      {
+        path: "/studies",
+        name: "studies",
+        component: StudiesList,
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/studyDetail/:idStudy",
+        name: "studyDetail",
+        component: StudyDetail,
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/healthKitUser/:studyId/:userId",
+        name: "healthUser",
+        component: HealthUser,
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/healthGraph/:studyId/:userId/:hkCode",
+        name: "healthGraph",
+        component: () => import('@/views/patients/healthKit/healthKitGraphs'),
+        props: true,
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/categoryDetail/:studyId/:userId/:categoryId",
+        name: "categoryDetail",
+        component: categoryDetail,
+        meta: {
+          requiresAuth: true,
+        },
+      },
+    ]
   },
   {
     path: "/about",
@@ -41,49 +85,6 @@ const routes = [
       requiresAuth: true,
     },
   },
-  {
-    path: "/studies",
-    name: "studies",
-    component: StudiesList,
-    meta: {
-      requiresAuth: true,
-    },
-  },
-  {
-    path: "/studyDetail/:idStudy",
-    name: "studyDetail",
-    component: StudyDetail,
-    meta: {
-      requiresAuth: true,
-    },
-  },
-  {
-    path: "/healthKitUser/:studyId/:userId",
-    name: "healthUser",
-    component: HealthUser,
-    meta: {
-      requiresAuth: true,
-    },
-  },
-  {
-    path: "/healthGraph/:studyId/:userId/:hkCode",
-    name: "healthGraph",
-    component: () => import('@/views/patients/healthKit/healthKitGraphs'),
-    props: true,
-    meta: {
-      requiresAuth: true,
-    },
-  },
-  {
-    path: "/categoryDetail/:studyId/:userId/:categoryId",
-    name: "categoryDetail",
-    component: categoryDetail,
-    meta: {
-      requiresAuth: true,
-    },
-  },
-
-  
 ];
 
 const router = createRouter({
