@@ -26,3 +26,11 @@ export function getSpecificHealthDataGrapFormat(state){
     ]
   }
 }
+
+export function getCategoryDataWebFormat(state){
+  return (categoryId)=>{
+    console.log(categoryId)
+    console.log(state.healthWebFormat)
+    return state.healthWebFormat[categoryId]
+  }
+}

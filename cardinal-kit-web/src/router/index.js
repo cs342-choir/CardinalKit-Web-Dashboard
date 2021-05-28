@@ -53,6 +53,7 @@ const routes = [
         path: "/categoryDetail/:studyId/:userId/:categoryId",
         name: "categoryDetail",
         component: categoryDetail,
+        props:true,
         meta: {
           requiresAuth: true,
         },
