@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper-table" :class="[className, type]">
+  <div class="wrapper-table" :class="[className, type]">
     <table class="min-w-full leading-normal">
       <thead>
         <tr>
@@ -12,23 +12,43 @@
        <slot name="t-row" />
       </tbody>
     </table>
+    <Pagination v-if="pagination" :pagination="paginationOptions" @onChangePagination="handleChangePagination"/>
   </div>
 </template>
 
 <script>
+import Pagination from './Pagination'
 export default {
+  components: { Pagination },
   props: {
-      columns:{
-        type: Array,
-        required: true
-      },
-      className: {
-        type: Array
-      },
-      type: {
-        type: String,
-        default: 'default'
+    columns:{
+      type: Array,
+      required: true
+    },
+    className: {
+      type: Array
+    },
+    type: {
+      type: String,
+      default: 'default'
+    },
+    pagination: {
+      type: Boolean,
+      default: false
+    },
+    paginationOptions: {
+      type: Object,
+      default: {
+        limit: [10, 20],
+        total: 30,
+        currentPage: 1
       }
+    }
+  },
+  methods: {
+    handleChangePagination (params) {
+      this.$emit('onPagination', params);
+    }
   }
 }
 </script>
@@ -37,6 +57,9 @@ export default {
   .column-table {
     background-color: $bg;
     color: $color;
+  }
+  .pagination, .select-table {
+      border-color: $bg;
   }
 }
 
