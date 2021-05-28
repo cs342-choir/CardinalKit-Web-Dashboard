@@ -28,3 +28,14 @@ export const FetchSpecificTypeData = async ({commit}, payload)=>{
 
     commit("saveSpecificTypeData",{data:records,datatype:payload.dataType})
 }
+
+
+export const FetchLastCategoryData = async({dispatch }, payload)=>{
+    console.log("category",payload.category)
+    switch(payload.category){
+        case "activity":
+            return dispatch('FetchLastActivityData',payload)
+        case "body":
+            return dispatch('FetchLastBodyData',payload)
+    }
+}

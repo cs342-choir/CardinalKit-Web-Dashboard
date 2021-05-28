@@ -67,6 +67,7 @@ export default {
     ...require("./HealthData/Hearing/mutations"),
   },
   actions: {
+    ...require("./HealthData/BodyMeasurements/actions"),
     ...require("./HealthData/actions"),
     ...require("./HealthData/Activity/actions"),
     ...require("./HealthData/Hearing/actions"),
