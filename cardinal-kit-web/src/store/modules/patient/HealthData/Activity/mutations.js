@@ -7,7 +7,7 @@
 //   });
 // }
 
-import { transformAppleCode,transformHealthDataToGlobalFormat } from "@/helpers/healthKit"
+import { transformAppleCode,transformHealthDataToGlobalFormat } from "@/common/helpers/healthKit"
 
 export function saveHealthData(state, payload) {
   let healthData = {};

@@ -35,7 +35,7 @@
         },
         methods: {
             handleSubmit(){
-                this.$router.push(`/${this.data.path}/${this.studyId}/${this.userId}`)
+                this.$router.push(`/categoryDetail/${this.studyId}/${this.userId}/${this.data.id}/`)
             }
         },
         computed:{
