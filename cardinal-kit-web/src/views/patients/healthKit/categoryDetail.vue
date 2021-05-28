@@ -2,7 +2,7 @@
   <section class="page">
     <h1 class="mb-5"> Activity </h1>
     <div class="wrapper-activities">
-       <activity-card name="Actividad" date="7 may">
+       <!-- <activity-card name="Actividad" date="7 may">
         <template v-slot:card-body>
           <div class="card-info">
             <div class="card-info__group">
@@ -18,18 +18,18 @@
               <p>{{standUpTime}} h</p>
             </div>
           </div>
-          <!-- <multiple-radial-bars :series="[calories,exerciseTime,standUpTime]" :height="'250'" :labels="['Move','exercise','Stand Up']"/> -->
+           <multiple-radial-bars :series="[calories,exerciseTime,standUpTime]" :height="'250'" :labels="['Move','exercise','Stand Up']"/> 
         </template>
-      </activity-card>
+      </activity-card> -->
       <template v-if="activities && activities.length" >
-          <activity-card v-for="activity in activities" :key="activity.id"
-          :name="activity.name" 
-          :date="activity.date"
-          :color-title="activity.color" 
-          :value="activity.value" 
-          :measure="activity.measure"
-          :logo="activity.logo"
-          :id="activity.id" />
+          <activity-card v-for="activity in activities" :key="activity.HkCode"
+          :name="activity.HkCodeName" 
+          :date="activity.Date.formatted"
+          :color-title="activity.Color" 
+          :value="''+activity.Value" 
+          :measure="activity.Unit"
+          :logo="activity.Logo"
+          :id="activity.HkCode" />
       </template>
     </div>
   </section>
