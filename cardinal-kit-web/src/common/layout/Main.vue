@@ -2,7 +2,8 @@
 	<section>
 		<Header 
 			:src-logo="logo" 
-			className="bg-danger" 
+			className="bg-danger"
+			brandTitle="CardinalKit" 
 			logout 
 			width-logo="50" 
 			@handle-logout="handleLogout" 

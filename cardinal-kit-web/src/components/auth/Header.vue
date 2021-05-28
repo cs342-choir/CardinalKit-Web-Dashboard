@@ -2,7 +2,7 @@
   <header :class="className">
     <router-link to="/" class="header-brand">
       <Logo :path="srcLogo"  :width="widthLogo" />
-      <h3>CardinalKit</h3>
+      <h3 v-if="brandTitle">{{brandTitle}}</h3>
     </router-link>
     <div class="header-menu" :class="{ show: showMenu }">
       <span @click="handleShowMenu" class="close-menu ev-link pointer">
@@ -44,7 +44,8 @@ export default {
       type: String,
       default: 'bg-default'
     },
-    menu: Array
+    menu: Array,
+    brandTitle: String,
   },
   components: {
       Logo,
