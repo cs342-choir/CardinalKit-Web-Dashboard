@@ -36,20 +36,19 @@
        
       </template>
       <template v-slot:card-footer>
-         <div className="auth__social-networks">
+        <div className="auth__social-networks">
           <p class="mb-1 subtitle">Login with social networks</p>
-          <div className="google-btn" :onClick="handleGoogleLogin">
-            <div className="google-icon-wrapper">
-              <img
-                className="google-icon"
-                src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                alt="google button"
-              />
-            </div>
-            <p className="btn-text">
-              <b>Sign in with google</b>
-            </p>
-          </div>
+          <social-button 
+            @click="handleGoogleLogin"
+            icon="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" 
+            text="Sign in with google"
+            className="google-btn"
+          />
+          <social-button
+            @click="handleAppleLogin" 
+            icon="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/240px-Apple_logo_black.svg.png" 
+            text="Sign in with apple" 
+          />
         </div>
         <div class="text-center">
           <span class="ft-10">Not a member? </span>
@@ -64,6 +63,7 @@ import Logo from "@/components/auth/Logo";
 import Card from "@/components/auth/Card";
 import store from "@/store"
 import { mapActions } from "vuex";
+import SocialButton from '../../components/auth/SocialButton.vue';
 
 export default {
   data() {
@@ -76,9 +76,10 @@ export default {
   components: {
     Logo,
     Card,
+    SocialButton,
   },
   methods: {
-    ...mapActions("auth", ["SignIn","LogInWithGoogle"]),
+    ...mapActions("auth", ["SignIn","LogInWithGoogle", "LogInWithAppleId"]),
     handleSubmitLogin() {
       this.SignIn({ email: this.email, password: this.password })
       .then((response)=>{
@@ -94,6 +95,15 @@ export default {
           this.$router.push({name:"Home"});
         }
       })
+    },
+    handleAppleLogin() {
+      this.LogInWithAppleId()
+      .then((response)=>{
+        if(response.isLogged){
+          this.$router.push({ name: "Home" });
+        }
+      })
+      .catch((error) => console.log('Error from Server', error))
     }
   },
 };
@@ -140,13 +150,13 @@ export default {
   }
   
   .auth__social-networks {
+    margin-bottom: .5rem;
+    display: grid;
+    gap: 10px;
+
     .subtitle {
       margin-top: 0;
       text-align: center;
-    }
-
-    .google-btn {
-      margin-bottom: .5rem;
     }
   }
 }
