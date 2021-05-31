@@ -84,3 +84,62 @@
     }
 }
 
+.btn-ck {
+    padding: 15px;
+    cursor: pointer;
+    line-height: 1;
+    text-transform: uppercase;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    border: 0;
+    box-shadow: $box-shadow-ck-x $box-shadow-ck-y 0 0 rgba(0,0,0,.5);
+    transform: translateX(0) translateY(0);
+    display: inline-block;
+    transition: .3s;
+
+    &:hover {
+        transform: translateX(4px) translateY(4px);
+        box-shadow: calc(#{$box-shadow-ck-x}/2) calc(#{$box-shadow-ck-y}/2) 0 0 rgba(0,0,0,.5);
+    }
+
+    &.fill {
+        @include setBackground($primary, $text-primary-color);
+
+        &-secondary {
+            @include setBackground($secondary, $text-secondary-color);
+        }
+        &-success {
+            @include setBackground($success, $text-success);
+        }
+        &-danger {
+            @include setBackground($danger, $text-danger);
+        }
+        &-info {
+            @include setBackground($info, $text-info);
+        }
+        &-warning {
+            @include setBackground($warning, $text-warning);
+        }
+    }
+
+    &.otl {
+        @include buttonOutline($primary);
+
+        &-secondary {
+            @include buttonOutline($secondary);
+        }
+        &-success {
+            @include buttonOutline($success);
+        }
+        &-danger {
+            @include buttonOutline($danger);
+        }
+        &-info {
+            @include buttonOutline($info);
+        }
+        &-warning {
+            @include buttonOutline($warning);
+        }
+    }
+}
