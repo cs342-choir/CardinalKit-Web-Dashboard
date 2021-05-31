@@ -19,10 +19,12 @@ firebase.initializeApp(firebaseConfig)
 const db = firebase.firestore()
 const auth = firebase.auth()
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+const appleAuthProvider = new firebase.auth.OAuthProvider('apple.com');
 
 // export utils/refs
 export {
   db,
   auth,
-  googleAuthProvider
+  googleAuthProvider,
+  appleAuthProvider
 }
