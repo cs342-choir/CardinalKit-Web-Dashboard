@@ -24,7 +24,7 @@ export const transformHealthDataToGlobalFormat = (data) => {
   let HkCode,
     HkCodeName,
     HkValue,
-    Date,
+    _Date,
     Value,
     Unit,
     Id,
@@ -35,7 +35,9 @@ export const transformHealthDataToGlobalFormat = (data) => {
   //HkCode
   if (data.body.category_type) {
     HkCode = data.body.category_type;
-    HkValue = data.category_value;
+    HkValue = data.body.category_value;
+    Value = data.body.category_value
+    Unit = " "
   }
   if (data.body.quantity_type) {
     HkCode = data.body.quantity_type;
@@ -63,7 +65,7 @@ export const transformHealthDataToGlobalFormat = (data) => {
   HkCodeName=transformAppleCode(HkCode)
 
   //Date
-  Date = data.header.creation_date_time.toDate();
+  _Date = data.header.creation_date_time.toDate();
 
   console.log(data.body)
   //Unit and value
@@ -98,6 +100,7 @@ export const transformHealthDataToGlobalFormat = (data) => {
   }
   if (data.body.count) {
     Value = data.body.count;
+    Unit = " "
   }
   if (data.body.body_height) {
     Unit = data.body.body_height.unit;
@@ -125,8 +128,39 @@ export const transformHealthDataToGlobalFormat = (data) => {
   }
   //Dates
   if (data.body.effective_time_frame.time_interval) {
-    StartDate = data.body.effective_time_frame.time_interval.start_date_time;
-    EndDate = data.body.effective_time_frame.time_interval.end_date_time;
+    StartDate = new Date(data.body.effective_time_frame.time_interval.start_date_time);
+    EndDate = new Date(data.body.effective_time_frame.time_interval.end_date_time);
+
+    console.log(StartDate.getTime(),EndDate)
+    
+    let difference = EndDate.getTime()-StartDate.getTime()
+
+    //Secs 
+    let Secs = (difference/1000);
+    if(Secs>60){
+      let mins = Secs/60;
+
+      if(mins>60){
+        let hours = mins/60;
+        if(hours>24){
+          let days = hours/24
+          Unit = "Days"
+          Value = Math.trunc(days)
+        }
+        else{
+          Unit = "Hours"
+          Value = Math.trunc(hours)
+        }
+      }
+      else{
+        Unit = "Mins"
+        Value = Math.trunc(mins)
+      }
+    }
+    else{
+      Unit = "Secs"
+      Value = Math.trunc(Secs)
+    }
   }
 
   //Id
@@ -136,7 +170,7 @@ export const transformHealthDataToGlobalFormat = (data) => {
     HkCode: HkCode,
     HkCodeName: HkCodeName,
     HkValue: HkValue,
-    Date: {Date,formatted:Date.getDate()+" "+monthNames[Date.getMonth()]},
+    Date: {_Date,formatted:_Date.getDate()+" "+monthNames[_Date.getMonth()]},
     Value: Value,
     Unit: Unit,
     Id: Id,
