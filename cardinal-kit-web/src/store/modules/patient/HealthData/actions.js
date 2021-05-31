@@ -37,5 +37,27 @@ export const FetchLastCategoryData = async({dispatch }, payload)=>{
             return dispatch('FetchLastActivityData',payload)
         case "body":
             return dispatch('FetchLastBodyData',payload)
+        case "cycle":
+            return dispatch('FetchLastCycleData',payload)
+        case "hearing":
+            return dispatch('FetchLastHearingData',payload)
+        case "heart":
+            return dispatch('FetchLastHeartData',payload)
+        case "mindfulness":
+            return dispatch('FetchLastMindfulnessData',payload)
+        case "mobility":
+            return dispatch('FetchLastMobilityData',payload)
+        case "nutrition":
+            return dispatch('FetchLastNutritionData',payload)
+        case "respiratory":
+            return dispatch('FetchLastRespiratoryData',payload)
+        case "sleep":
+            return dispatch('FetchLastSleepData',payload)
+        case "symtoms":
+            return dispatch('FetchLastSymtomsData',payload)
+        case "vitals":
+            return dispatch('FetchLastVitalsData',payload)
+        case "other":
+            return dispatch('FetchLastOtherData',payload)
     }
 }

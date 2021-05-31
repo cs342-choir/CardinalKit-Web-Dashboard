@@ -1,7 +1,7 @@
 export const CategoriesList = [
   { id:"activity", name: "Activity", icon: require("@/assets/icons/Flame.png") },
   { id:"body", name: "Body Measurements", icon: require("@/assets/icons/Body.png") },
-  { id:"cycle", name: "Cycle Tracking", icon: require("@/assets/icons/Cycle.jpg") },
+  // { id:"cycle", name: "Cycle Tracking", icon: require("@/assets/icons/Cycle.jpg") },
   { id:"hearing", name: "Hearing", icon: require("@/assets/icons/Hearing.png") },
   { id:"heart", name: "Heart", icon: require("@/assets/icons/Heart.png") },
   { id:"mindfulness", name: "Mindfulness", icon: require("@/assets/icons/Mindfulness.png") },

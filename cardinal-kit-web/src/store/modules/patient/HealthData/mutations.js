@@ -9,7 +9,8 @@ export function saveSpecificTypeData(state, payload) {
 export function saveLastCategoryData(state, {category,data}){
     let categoryWebFormat = []
     data.forEach(element => {
-        if(element.length>0){
+        
+        if(element && element.length>0){
             categoryWebFormat.push(transformHealthDataToGlobalFormat(element[0]))
         }
     });
