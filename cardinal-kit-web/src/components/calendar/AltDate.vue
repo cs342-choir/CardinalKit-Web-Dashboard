@@ -1,7 +1,7 @@
 <template>
   <div ref="divElement" class="alt-date">
 		<label class="alt-datetime-wrapper">
-			<input autocomplete="off" class="alt-datetime-wrapper__input" placeholder="--/--/--" type="datetime" name="date" v-model="date"/>
+			<input autocomplete="off" class="alt-datetime-wrapper__input" placeholder="--/--/--" type="date" name="date" v-model="date"/>
 		</label>
 		<div v-if="showPopup" class="alt-popup">
 			<div class="alt-calendar">
@@ -40,12 +40,12 @@ export default {
 		const today = ref(new Date().getUTCDate());
 		const currentMonth = ref(new Date().getUTCMonth());
 		const currentYear = ref(new Date().getUTCFullYear());
-		const days = computed(() => getDayperMonthsandYear(2021, currentMonth.value));
+		const days = computed(() => getDayperMonthsandYear(currentYear.value, currentMonth.value));
 		const months = ref(MONTHS);
 		const years = computed(() => generateSelectableYears(currentYear.value));
 
 		function getDayperMonthsandYear(year, month) {
-			const days = new Date(year, month + 1, 0).getDate();
+			const days = new Date(year, Number(month) + 1, 0).getDate();
 			return [...Array(days).keys()].map((day) => day + 1);
 		}
 
