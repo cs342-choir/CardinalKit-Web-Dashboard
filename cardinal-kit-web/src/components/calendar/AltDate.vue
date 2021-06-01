@@ -1,25 +1,25 @@
 <template>
   <div ref="divElement" class="alt-date">
 		<label class="alt-datetime-wrapper">
-			<input autocomplete="off" class="alt-datetime-wrapper__input" placeholder="--/--/--" type="date" name="date" v-model="date"/>
+			<input autocomplete="off" class="alt-datetime-wrapper__input" placeholder="--/--/--" type="text" name="datetime" v-model="date"/>
 		</label>
 		<div v-if="showPopup" class="alt-popup">
 			<div class="alt-calendar">
 				<div class="alt-calendar-group">
-					<label for="days">Day: </label>
-					<select name="days" v-model="today" id="days">
+					<label class="alt-calendar-group__label" for="days">Day: </label>
+					<select @change="handleChangeDate" name="days" v-model="today" id="days">
 						<option v-for="(day, index) in days" :key="index + 'alt'" :value="day">{{day}}</option>
 					</select>
 				</div>
 				<div class="alt-calendar-group">
-					<label for="months">Month: </label>
-					<select name="month" v-model="currentMonth" id="months">
+					<label class="alt-calendar-group__label" for="months">Month: </label>
+					<select @change="handleChangeDate" name="month" v-model="currentMonth" id="months">
 						<option v-for="month in months" :key="month.id" :value="month.id">{{month.name}}</option>
 					</select>
 				</div>
 				<div class="alt-calendar-group">
-					<label for="years">Year: </label>
-					<select name="year" v-model="currentYear" id="years">
+					<label class="alt-calendar-group__label" for="years">Year: </label>
+					<select @change="handleChangeDate" name="year" v-model="currentYear" id="years">
 						<option v-for="(year, index) in years" :key="index + 'alt'" :value="year">{{year}}</option>
 					</select>
 				</div>
@@ -29,20 +29,26 @@
 </template>
 
 <script>
-import { computed, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { MONTHS } from './const';
 
 export default {
-	setup() {
+  props: {
+    modelValue: Date,
+  },
+  emits: ['update:modelValue'],
+	setup(props, ctx) {
 		const divElement = ref();
 		const showPopup = ref(false);
-		const date = ref('');
+		const date = computed(()  => `${today.value}/${Number(currentMonth.value) + 1}/${currentYear.value}`);
 		const today = ref(new Date().getUTCDate());
 		const currentMonth = ref(new Date().getUTCMonth());
 		const currentYear = ref(new Date().getUTCFullYear());
 		const days = computed(() => getDayperMonthsandYear(currentYear.value, currentMonth.value));
 		const months = ref(MONTHS);
 		const years = computed(() => generateSelectableYears(currentYear.value));
+
+    onMounted(() => ctx.emit('update:modelValue', new Date(currentYear.value, currentMonth.value, today.value)));
 
 		function getDayperMonthsandYear(year, month) {
 			const days = new Date(year, Number(month) + 1, 0).getDate();
@@ -55,12 +61,12 @@ export default {
 			return [...Array(countYears).keys()].map((index) => index + initYear);
 		}
 
-		function handleFocus() {
-			showPopup.value = true;
-		}
+    function handleChangeDate() {
+      const startDate = new Date(currentYear.value, currentMonth.value, today.value);
+      ctx.emit('update:modelValue', startDate)
+    }
 
 		function elementIsContain(element) {
-			// console.log(divElement.value?.contains(element.target));
 			showPopup.value = divElement.value?.contains(element.target);
 		}
 
@@ -76,9 +82,9 @@ export default {
 			years,
 			currentYear,
 			date,
-			handleFocus,
 			showPopup,
-			divElement
+			divElement,
+      handleChangeDate
 		}
 	}
 }
@@ -99,11 +105,38 @@ export default {
 	position: absolute;
 	top: 37px;
 	z-index: 2;
+
+  &:before {
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #fff;
+    top: -6px;
+    content: "";
+    height: 0;
+    left: 50%;
+    margin-left: -6px;
+    position: absolute;
+    width: 0;
+  }
 }
 
 .alt-calendar {
 	display: flex;
 	gap: 10px;
+
+  &-group {
+    &__label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    select {
+      padding: .2rem;
+      border: none;
+      border-radius: 3px;
+      background: #f7f7f7;
+    }
+  }
 }
 .alt-datetime-wrapper {
 	&__input {
