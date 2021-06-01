@@ -32,6 +32,22 @@ export const transformHealthDataToGlobalFormat = (data) => {
     EndDate,
     ExtraData = null;
 
+   //Dates
+   if (data.body.effective_time_frame.time_interval) {
+    StartDate = new Date(data.body.effective_time_frame.time_interval.start_date_time);
+    EndDate = new Date(data.body.effective_time_frame.time_interval.end_date_time);
+
+    console.log(StartDate.getTime(),EndDate)
+    
+    let difference = EndDate.getTime()-StartDate.getTime()
+
+    //Secs 
+    let transformTime = TransformTime(difference/1000);
+    Unit=transformTime.Unit
+    Value = transformTime.Value
+  }
+
+
   //HkCode
   if (data.body.category_type) {
     HkCode = data.body.category_type;
@@ -123,45 +139,17 @@ export const transformHealthDataToGlobalFormat = (data) => {
     Value = data.body.distance.value;
   }
   if (data.body.duration) {
-    Unit = data.body.duration.unit;
-    Value = data.body.duration.value;
-  }
-  //Dates
-  if (data.body.effective_time_frame.time_interval) {
-    StartDate = new Date(data.body.effective_time_frame.time_interval.start_date_time);
-    EndDate = new Date(data.body.effective_time_frame.time_interval.end_date_time);
-
-    console.log(StartDate.getTime(),EndDate)
-    
-    let difference = EndDate.getTime()-StartDate.getTime()
-
-    //Secs 
-    let Secs = (difference/1000);
-    if(Secs>60){
-      let mins = Secs/60;
-
-      if(mins>60){
-        let hours = mins/60;
-        if(hours>24){
-          let days = hours/24
-          Unit = "Days"
-          Value = Math.trunc(days)
-        }
-        else{
-          Unit = "Hours"
-          Value = Math.trunc(hours)
-        }
-      }
-      else{
-        Unit = "Mins"
-        Value = Math.trunc(mins)
-      }
+    if(data.body.duration.Unit="Secs"){
+      let transformTime = TransformTime(parseInt(data.body.duration.value));
+      Unit=transformTime.Unit
+      Value = transformTime.Value
     }
     else{
-      Unit = "Secs"
-      Value = Math.trunc(Secs)
+      Unit = data.body.duration.unit;
+      Value = data.body.duration.value;
     }
   }
+ 
 
   //Id
   Id = data.header.id;
@@ -188,3 +176,27 @@ export const transformAppleCode = (appleCode) => {
     .replace(/([A-Z]+)/g, " $1")
     .replace(/([A-Z][a-z])/g, " $1");
 };
+
+function TransformTime(timeInSecs){
+  let Secs = timeInSecs;
+  if(Secs>60){
+    let mins = Secs/60;
+
+    if(mins>60){
+      let hours = mins/60;
+      if(hours>24){
+        let days = hours/24
+        return {Unit:"Days",Value: Math.trunc(days)}
+      }
+      else{
+        return {Unit:"Hours",Value: Math.trunc(hours)}
+      }
+    }
+    else{
+      return {Unit:"Mins",Value: Math.trunc(mins)}
+    }
+  }
+  else{
+    return {Unit:"Secs",Value:Math.trunc(Secs)}
+  }
+}
