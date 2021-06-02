@@ -6,8 +6,8 @@ export const FetchSpecificTypeData = async ({ commit }, payload) => {
   startDate.setDate(startDate.getDate() - 30);
   let endDate = new Date();
   if (payload.dates) {
-    startDate = payload.startDate;
-    endDate = payload.endDate;
+    startDate = payload.dates.startDate;
+    endDate = payload.dates.endDate;
   }
   let Ref = request.GET(
     `studies/${payload.studyId}/users/${payload.userId}/healthKit`
@@ -25,8 +25,9 @@ export const FetchSpecificTypeData = async ({ commit }, payload) => {
   records = dataSnap.docs.map((record) => {
     return transformHealthDataToGlobalFormat(record.data());
   });
-
-  if (records.length == 0) {
+  console.log("Heeere",payload.dates,records.length)
+  if (records.length == 0 && payload.dates==undefined) {
+    console.log("Heeere")
     //Find Last and 1 month earlier
     let NewRef = Ref.CLONE()
       .ORDER_BY("header.creation_date_time", true)
