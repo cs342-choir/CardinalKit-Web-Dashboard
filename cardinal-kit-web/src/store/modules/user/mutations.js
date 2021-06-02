@@ -6,3 +6,9 @@ export function RESET(state){
         state[key] = newState[key]
     });
 }
+
+export function saveUserRol(state,{rol,studies,id}){
+    state.Rol=rol
+    state.Studies=studies
+    state.Id=id
+}
