@@ -1,7 +1,7 @@
 <template>
   <div class="alt-date">
-    <date-picker ref="startElement" :showPopup="startDateTooltip" @changeDate="handleChangeDates($event, 'startDate')" v-model="startDate"  label='Start Date' />
-    <date-picker v-if="range" ref="endElement" :showPopup="endDateTooltip" @changeDate="handleChangeDates($event, 'endDate')" v-model="endDate" label='End Date' />
+    <date-picker :calendar="calendar" ref="startElement" :showPopup="startDateTooltip" @changeDate="handleChangeDates($event, 'startDate')" v-model="startDate"  label='Start Date' />
+    <date-picker :calendar="calendar" v-if="range" ref="endElement" :showPopup="endDateTooltip" @changeDate="handleChangeDates($event, 'endDate')" v-model="endDate" label='End Date' />
   </div>
 </template>
 
@@ -17,6 +17,10 @@ export default {
       type: Boolean,
       default: false
     },
+    calendar: {
+      type: Boolean,
+      default: false
+    }
   },
   emits: ['update:modelValue'],
 	setup(props, ctx) {
