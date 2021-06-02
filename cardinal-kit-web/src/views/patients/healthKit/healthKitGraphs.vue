@@ -2,7 +2,7 @@
   <section class="page">
     <h1 class="mb-5">Statistics</h1>
     <div class="mb-5">
-      <alt-date range v-model="date"/>
+      <alt-date range @update:model-value="handleChangeDate"/>
     </div>
     <!-- <div class="flex mb-1">
       <p>study: {{studyId}}</p>
@@ -27,7 +27,7 @@
       />
       <scatter-chart
         v-if="GetGraphType=='scatter'"
-        :key="1"
+        :key="2"
         :series="getSpecificHealthDataGrapFormat(hkCode)"
         :labels="GetCategoriesByHkType(hkCode)"
       />
@@ -75,14 +75,15 @@ export default {
     const analytics = ANALYTICS_TO_GRAPH;
     const date = ref();
 
-    watchEffect(() => {
-      console.log('Date Parent', {...date.value});
-      // console.log('Date Parent', date.value);
-    });
+    function handleChangeDate(value) {
+      date.value = value;
+      console.log(date.value);
+    }
 
     return {
       analytics,
-      date
+      date,
+      handleChangeDate
     };
   },
   computed: {
