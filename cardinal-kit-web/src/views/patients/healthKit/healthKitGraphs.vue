@@ -1,6 +1,9 @@
 <template>
   <section class="page">
     <h1 class="mb-5">Statistics</h1>
+    <div class="mb-5">
+      <alt-date range v-model="date"/>
+    </div>
     <!-- <div class="flex mb-1">
       <p>study: {{studyId}}</p>
       <p>user: {{userId}}</p>
@@ -54,6 +57,8 @@ import { ANALYTICS_TO_GRAPH } from "@/plugins/mock/analytics";
 import MultipleRadialBars from "../../../components/apexCharts/multipleRadialBars.vue";
 import { mapGetters } from 'vuex';
 import {transformAppleCode} from "@/common/helpers/healthKit"
+import AltDate from '@/components/calendar/AltDate.vue';
+import { ref, watchEffect } from 'vue';
 
 export default {
   components: {
@@ -61,6 +66,7 @@ export default {
     BarChart,
     LineChart,
     MultipleRadialBars,
+    AltDate,
   },
   props: {
     studyId: {
@@ -78,8 +84,16 @@ export default {
   },
   setup() {
     const analytics = ANALYTICS_TO_GRAPH;
+    const date = ref();
+
+    watchEffect(() => {
+      console.log('Date Parent', {...date.value});
+      // console.log('Date Parent', date.value);
+    });
+
     return {
       analytics,
+      date
     };
   },
   computed:{
