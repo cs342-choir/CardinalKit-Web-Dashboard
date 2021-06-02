@@ -16,8 +16,10 @@ export const FetchActivityData = async ({commit}, payload)=>{
 }
 
 export const FetchLastActivityData = async ({commit}, payload)=>{
-  commit("saveLastActivityData", await
-    Promise.all([
+  console.log("fetchLat")
+  commit("saveLastCategoryData",{ 
+    category: payload.category,
+    data: await Promise.all([
       FetchQuantityData("HKQuantityTypeIdentifierDistanceWalkingRunning",{...payload,limit:1}),
       FetchQuantityData("HKQuantityTypeIdentifierActiveEnergyBurned",{...payload,limit:1}),
       FetchQuantityData("HKQuantityTypeIdentifierAppleStandTime",{...payload,limit:1}),      
@@ -34,6 +36,7 @@ export const FetchLastActivityData = async ({commit}, payload)=>{
       FetchQuantityData("HKQuantityTypeIdentifierStepCount",{...payload,limit:1}),
       FetchActivities({...payload,limit:1}),
     ])
+  }
   )
 }
       
