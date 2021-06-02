@@ -1,6 +1,7 @@
 @mixin setBackground($bg, $color) {
     background-color: $bg;
-    a, p, label, span, i, li {
+    color: $color;
+    a, p, label, span, i, li, h2, h3 {
         color: $color;
     }
 
@@ -11,4 +12,10 @@
     svg {
         fill: $color;
     }
+}
+
+@mixin buttonOutline($color) {
+    background-color: $background-app;
+    color: $color;
+    border: solid 2px $color;
 }

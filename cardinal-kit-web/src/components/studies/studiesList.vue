@@ -1,15 +1,20 @@
 <template>
-<div>
-  study
-   <div v-for="study in studies" :key="study.id">
-      <b-button @click="handleSelecStudy(study.id)">
-        {{ study.text }}
-      </b-button>
+<div class="page">
+  <h1 class="mb-5">Studies</h1>
+  <div class="grid-studies">
+    <small-card v-for="study in studies" :key="study.id"
+      @onClick="handleSelecStudy(study.id)" 
+      :title="study.text"
+      image="https://user-images.githubusercontent.com/82823662/120020717-b6ae7280-bfaf-11eb-8fdc-cd8b4ce10dde.png"
+      actionText="Go to study" />
   </div>
 </div>
 </template>
 <script>
+import SmallCard from '@/components/patients/healthKit/SmallCard';
+
   export default {
+  components: { SmallCard },
     name: 'studiesList',
     data(){
       return{
@@ -33,3 +38,11 @@
     },
   };
 </script>
+
+<style lang="scss" scoped>
+.grid-studies {
+  display: grid;
+  gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+</style>
