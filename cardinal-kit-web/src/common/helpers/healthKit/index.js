@@ -200,3 +200,27 @@ function TransformTime(timeInSecs){
     return {Unit:"Secs",Value:Math.trunc(Secs)}
   }
 }
+
+export const GetCategoriesByHkType=(HkCode)=>{
+  switch(HkCode){
+    case 'HKCategoryTypeIdentifierAppetiteChanges':
+      return ['No change','Unspecified','Decreased','Increased']
+    case 'HKCategoryTypeIdentifierSleepAnalysis':
+      return ['InBed','Asleep']
+    case 'HKCategoryTypeIdentifierAppleStandHour':
+      return ['Idle','Standing']
+    case 'HKCategoryTypeIdentifierCervicalMucusQuality':
+      return ['Creamy','Dry','Egg white','Sticky','Watery']
+    case 'HKCategoryTypeIdentifierIntermenstrualFlow':
+      return ['Unspecified','Light','Medium','Heavy']
+    case 'HKCategoryTypeIdentifierMoodChanges':
+    case 'HKCategoryTypeIdentifierSleepChanges':
+      return ['Not Present','Present']
+    case 'HKCategoryTypeIdentifierContraceptive':
+      return ['UnSpecified','Implant','Injection','Intrauterine Device','Intravaginal Ring','Oral','Patch']
+    case 'HKCategoryTypeIdentifierOvulationTestResult':
+      return ['Negative','Positive','Indeterminate']
+    default:
+      return ['Present','Not Present','Mild','Moderate','Severe']
+  }
+}
