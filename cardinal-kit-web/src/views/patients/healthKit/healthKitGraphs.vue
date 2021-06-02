@@ -103,11 +103,7 @@ export default {
     transformAppleCode,
     GetCategoriesByHkType,
     handleChangeDate(value) {
-      if (value) {
-        // this.date = value;
-        // console.log('Change value', value);
-        // console.log("chart",this.$refs.chart);
-        
+      if (value) {      
         if (this.$refs.chart) {
           if (value.endDate) {
             this.FetchSpecificTypeData({studyId:this.studyId,userId:this.userId,dataType:this.hkCode, dates:{startDate:value.startDate,endDate:value.endDate}} )
