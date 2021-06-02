@@ -3,6 +3,9 @@ import * as actions from './actions'
 import * as getters from './getters'
 
 export const initialState = () => ({
+    Rol:'',
+    Studies:[],
+    Id:''
 })
 
 export default {

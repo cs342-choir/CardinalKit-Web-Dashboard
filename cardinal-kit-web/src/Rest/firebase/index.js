@@ -47,8 +47,9 @@ export class Ref {
 
 export const GET= (path)=>{
     let parts = path.split('/')
+    
     let object
-    if(parts%2!=0){
+    if(parts.length%2!=0){
         object = db.collection(path);
     }
     else{
