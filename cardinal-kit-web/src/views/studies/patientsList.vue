@@ -1,12 +1,11 @@
 <template>
   <div>
-    <study-list v-if="showStudyList" :studies="getAllStudies" :handleSelecStudy="handleSelecStudy"/>
-    <patient-list v-else  :patients="getAllUsers" :studyId="studySelected"/>
-    <!-- <div v-for="(study, idx) in getAllStudies" :key="idx">
-      <b-button @click="handleSelecStudy(study.id)">
-        {{ study.text }}
-      </b-button>
-    </div> -->
+    <study-list
+      v-if="showStudyList"
+      :studies="getUserStudies"
+      :handleSelecStudy="handleSelecStudy"
+    />
+    <patient-list v-else :patients="getAllUsers" :studyId="studySelected" />
     <br />
   </div>
 </template>
@@ -16,58 +15,54 @@ import { mapActions, mapGetters } from "vuex";
 import store from "@/store";
 
 //Components
-import patientList from '@/components/studies/patientsList'
-import studyList from '@/components/studies/studiesList'
+import patientList from "@/components/studies/patientsList";
+import studyList from "@/components/studies/studiesList";
 
 export default {
   name: "Home",
-  data(){
+  data() {
     return {
-      showStudyList:true,
-      studySelected:''
-    }
+      showStudyList: true,
+      studySelected: "",
+    };
   },
-  components:{
+  components: {
     patientList,
-    studyList
+    studyList,
   },
   computed: {
-    ...mapGetters("studies", ["getAllStudies"]),
-    ...mapGetters("studies", ["getAllUsers"])
+    ...mapGetters("user", ["getUserRol", "getUserStudies", "getUserId"]),
   },
   methods: {
     ...mapActions("user", ["changeUserName"]),
     ...mapActions("auth", ["Logout"]),
-    ...mapActions("studies",["FetchUsers"]),
+    ...mapActions("studies", ["FetchUsers"]),
     handleLogout() {},
     handleSelecStudy(studyId) {
-      this.studySelected=studyId
-      this.FetchUsers({'studyId':studyId})
-        .then(()=>{
-          this.showStudyList=false
-        })
+      this.studySelected = studyId;
+      if (this.getUserRol == "user") {
+        this.$router.push(`/healthKitUser/${this.getUserStudies[0]}/${this.getUserId}`)
+      } else {
+        this.FetchUsers({ studyId: studyId }).then(() => {
+          this.showStudyList = false;
+        });
+      }
     },
   },
-  mounted(){
-    if(this.getAllStudies.length==1){
-      this.showStudyList=false
-      this.studySelected=this.getAllStudies[0].id
+  mounted() {
+    console.log(this.getUserStudies[0])
+    if (this.getUserStudies.length == 1) {
+      if (this.getUserRol == "user") {
+        this.$router.push(`/healthKitUser/${this.getUserStudies[0]}/${this.getUserId}`)
+      } else {
+        this.showStudyList = false;
+        this.studySelected = this.getUserStudies[0].id;
+      }
     }
   },
   beforeRouteEnter(to, from, next) {
-    store.dispatch("studies/FetchAllStudies").then((response) => {
-      console.log(response)
-      if (response.length == 1) {
-        store
-          .dispatch("studies/FetchUsers", {
-            studyId:response[0].id,
-          })
-          .then(() => {
-            next();
-          });
-      } else {
-        next();
-      }
+    Promise.all([store.dispatch("user/FetchUserRolesAndStudies")]).then(() => {
+      next();
     });
   },
 };
