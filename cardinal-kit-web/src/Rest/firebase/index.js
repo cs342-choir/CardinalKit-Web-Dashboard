@@ -35,6 +35,10 @@ export class Ref {
                 return await this.object.get()
         }
     }
+
+    CLONE(){
+        return new Ref(this.object,this.method,this.payload)
+    }
 }
 
 

@@ -1,3 +1,5 @@
+import { transformAppleCode,GetCategoriesByHkType } from "@/common/helpers/healthKit";
+
 export function getHealthData(state) {
   return state.healthData;
 }
@@ -14,8 +16,12 @@ export function getSpecificHealthDataGrapFormat(state){
     let data = state.healthData[code]
     let dataFormat = []
     data.forEach(record => {
-      console.log("record",record)
-      dataFormat.push({"x":record.Date.Date,"y":record.Value})
+      let yValue = record.Value
+      if(code.includes("Category")){
+        let array=GetCategoriesByHkType(code)
+        yValue = array.indexOf(yValue)
+      }
+      dataFormat.push({"x":record.Date.Date,"y":yValue})
     });
 
     return [

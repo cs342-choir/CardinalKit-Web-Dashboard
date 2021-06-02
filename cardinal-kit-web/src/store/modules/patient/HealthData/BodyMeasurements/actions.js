@@ -3,6 +3,7 @@ import {
 } from "../../index";
 
 export const FetchLastBodyData = async ({ commit }, payload) => {
+  console.log("FetchBody")
   commit("saveLastCategoryData", {
     category: payload.category,
     data: await Promise.all([
@@ -18,7 +19,3 @@ export const FetchLastBodyData = async ({ commit }, payload) => {
     ]),
   });
 };
-
-
-
-
