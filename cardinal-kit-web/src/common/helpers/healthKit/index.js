@@ -24,7 +24,7 @@ export const transformHealthDataToGlobalFormat = (data) => {
   let HkCode,
     HkCodeName,
     HkValue,
-    Date,
+    _Date,
     Value,
     Unit,
     Id,
@@ -32,10 +32,28 @@ export const transformHealthDataToGlobalFormat = (data) => {
     EndDate,
     ExtraData = null;
 
+   //Dates
+   if (data.body.effective_time_frame.time_interval) {
+    StartDate = new Date(data.body.effective_time_frame.time_interval.start_date_time);
+    EndDate = new Date(data.body.effective_time_frame.time_interval.end_date_time);
+
+    console.log(StartDate.getTime(),EndDate)
+    
+    let difference = EndDate.getTime()-StartDate.getTime()
+
+    //Secs 
+    let transformTime = TransformTime(difference/1000);
+    Unit=transformTime.Unit
+    Value = transformTime.Value
+  }
+
+
   //HkCode
   if (data.body.category_type) {
     HkCode = data.body.category_type;
-    HkValue = data.category_value;
+    HkValue = data.body.category_value;
+    Value = data.body.category_value
+    Unit = " "
   }
   if (data.body.quantity_type) {
     HkCode = data.body.quantity_type;
@@ -63,7 +81,7 @@ export const transformHealthDataToGlobalFormat = (data) => {
   HkCodeName=transformAppleCode(HkCode)
 
   //Date
-  Date = data.header.creation_date_time.toDate();
+  _Date = data.header.creation_date_time.toDate();
 
   console.log(data.body)
   //Unit and value
@@ -98,6 +116,7 @@ export const transformHealthDataToGlobalFormat = (data) => {
   }
   if (data.body.count) {
     Value = data.body.count;
+    Unit = " "
   }
   if (data.body.body_height) {
     Unit = data.body.body_height.unit;
@@ -120,14 +139,17 @@ export const transformHealthDataToGlobalFormat = (data) => {
     Value = data.body.distance.value;
   }
   if (data.body.duration) {
-    Unit = data.body.duration.unit;
-    Value = data.body.duration.value;
+    if(data.body.duration.Unit="Secs"){
+      let transformTime = TransformTime(parseInt(data.body.duration.value));
+      Unit=transformTime.Unit
+      Value = transformTime.Value
+    }
+    else{
+      Unit = data.body.duration.unit;
+      Value = data.body.duration.value;
+    }
   }
-  //Dates
-  if (data.body.effective_time_frame.time_interval) {
-    StartDate = data.body.effective_time_frame.time_interval.start_date_time;
-    EndDate = data.body.effective_time_frame.time_interval.end_date_time;
-  }
+ 
 
   //Id
   Id = data.header.id;
@@ -136,7 +158,7 @@ export const transformHealthDataToGlobalFormat = (data) => {
     HkCode: HkCode,
     HkCodeName: HkCodeName,
     HkValue: HkValue,
-    Date: {Date,formatted:Date.getDate()+" "+monthNames[Date.getMonth()]},
+    Date: {Date:_Date,formatted:_Date.getDate()+" "+monthNames[_Date.getMonth()]},
     Value: Value,
     Unit: Unit,
     Id: Id,
@@ -154,3 +176,51 @@ export const transformAppleCode = (appleCode) => {
     .replace(/([A-Z]+)/g, " $1")
     .replace(/([A-Z][a-z])/g, " $1");
 };
+
+function TransformTime(timeInSecs){
+  let Secs = timeInSecs;
+  if(Secs>60){
+    let mins = Secs/60;
+
+    if(mins>60){
+      let hours = mins/60;
+      if(hours>24){
+        let days = hours/24
+        return {Unit:"Days",Value: Math.trunc(days)}
+      }
+      else{
+        return {Unit:"Hours",Value: Math.trunc(hours)}
+      }
+    }
+    else{
+      return {Unit:"Mins",Value: Math.trunc(mins)}
+    }
+  }
+  else{
+    return {Unit:"Secs",Value:Math.trunc(Secs)}
+  }
+}
+
+export const GetCategoriesByHkType=(HkCode)=>{
+  switch(HkCode){
+    case 'HKCategoryTypeIdentifierAppetiteChanges':
+      return ['No change','Unspecified','Decreased','Increased']
+    case 'HKCategoryTypeIdentifierSleepAnalysis':
+      return ['InBed','Asleep']
+    case 'HKCategoryTypeIdentifierAppleStandHour':
+      return ['Idle','Standing']
+    case 'HKCategoryTypeIdentifierCervicalMucusQuality':
+      return ['Creamy','Dry','Egg white','Sticky','Watery']
+    case 'HKCategoryTypeIdentifierIntermenstrualFlow':
+      return ['Unspecified','Light','Medium','Heavy']
+    case 'HKCategoryTypeIdentifierMoodChanges':
+    case 'HKCategoryTypeIdentifierSleepChanges':
+      return ['Not Present','Present']
+    case 'HKCategoryTypeIdentifierContraceptive':
+      return ['UnSpecified','Implant','Injection','Intrauterine Device','Intravaginal Ring','Oral','Patch']
+    case 'HKCategoryTypeIdentifierOvulationTestResult':
+      return ['Negative','Positive','Indeterminate']
+    default:
+      return ['Present','Not Present','Mild','Moderate','Severe']
+  }
+}

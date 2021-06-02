@@ -10,6 +10,13 @@ export const FetchCategoryTypeData = async (
   return await FetchGeneralData({...payload,filterParams})
 };
 
+//TODO how is sample data export
+export const FetchSampleData = async(
+
+)=>{
+
+};
+
 export const FetchQuantityData = async(
   quantity_type,
   payload
@@ -67,10 +74,18 @@ export default {
     ...require("./HealthData/Hearing/mutations"),
   },
   actions: {
-    ...require("./HealthData/BodyMeasurements/actions"),
     ...require("./HealthData/actions"),
     ...require("./HealthData/Activity/actions"),
+    ...require("./HealthData/BodyMeasurements/actions"),
     ...require("./HealthData/Hearing/actions"),
+    ...require("./HealthData/Heart/actions"),
+    ...require("./HealthData/Mindfulness/actions"),
+    ...require("./HealthData/Mobilitiy/actions"),
+    ...require("./HealthData/Nutrition/actions"),
+    ...require("./HealthData/Respiratory/actions"),
+    ...require("./HealthData/Symtoms/actions"),
+    ...require("./HealthData/Vitals/actions"),
+    ...require("./HealthData/Other/actions"),
   },
   getters:{
     ...require("./HealthData/getters"),
