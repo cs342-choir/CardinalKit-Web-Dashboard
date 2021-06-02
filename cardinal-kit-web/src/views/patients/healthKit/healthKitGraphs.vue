@@ -17,30 +17,17 @@
       </div> -->
     </div>
     <div class="wrapper-graphs">
-      <line-chart
-          :key="1"
-          :series="getSpecificHealthDataGrapFormat(hkCode)"
-        />
-<!-- 
-      <template v-for="(analytic, index) in analytics">
-        <multiple-radial-bars
-          v-if="analytic.graph.type === 'radialBar'"
-          :key="index"
-          :series="analytic.graph.series"
-          :labels="analytic.graph.labels"
-        />
-        <bar-chart
-          v-if="analytic.graph.type === 'bar'"
-          :key="index"
-          :series="analytic.graph.series"
-          :categories="analytic.graph.categories"
-        />
-        <line-chart
-          v-if="analytic.graph.type === 'line'"
-          :key="index"
-          :series="analytic.graph.series"
-        />
-      </template> -->
+      <line-chart 
+        v-if="GetGraphType=='line'"
+        :key="1" 
+        :series="getSpecificHealthDataGrapFormat(hkCode)" 
+      />
+      <scatter-chart
+        v-if="GetGraphType=='scatter'"
+        :key="1"
+        :series="getSpecificHealthDataGrapFormat(hkCode)"
+        :labels="GetCategoriesByHkType(hkCode)"
+      />
     </div>
   </section>
 </template>
@@ -50,10 +37,11 @@ import store from "@/store";
 import multipleRadialBars from "@/components/apexCharts/multipleRadialBars";
 import BarChart from "@/components/apexCharts/BarChart";
 import LineChart from "@/components/apexCharts/LineChart";
+import ScatterChart from "@/components/apexCharts/ScatterChart";
 import { ANALYTICS_TO_GRAPH } from "@/plugins/mock/analytics";
 import MultipleRadialBars from "../../../components/apexCharts/multipleRadialBars.vue";
-import { mapGetters } from 'vuex';
-import {transformAppleCode} from "@/common/helpers/healthKit"
+import { mapGetters } from "vuex";
+import { transformAppleCode,GetCategoriesByHkType } from "@/common/helpers/healthKit";
 
 export default {
   components: {
@@ -61,6 +49,7 @@ export default {
     BarChart,
     LineChart,
     MultipleRadialBars,
+    ScatterChart,
   },
   props: {
     studyId: {
@@ -82,18 +71,27 @@ export default {
       analytics,
     };
   },
-  computed:{
-    ...mapGetters("patient",["getSpecificHealthDataGrapFormat"])
+  computed: {
+    ...mapGetters("patient", ["getSpecificHealthDataGrapFormat"]),
+    GetGraphType(){
+      if(this.hkCode.includes("Category")){
+        return "scatter"
+      }
+      else{
+        return "line"
+      }
+    }
   },
   methods: {
-    transformAppleCode
+    transformAppleCode,
+    GetCategoriesByHkType
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([
       store.dispatch("patient/FetchSpecificTypeData", {
         studyId: `${to.params.studyId}`,
         userId: `${to.params.userId}`,
-        dataType: `${to.params.hkCode}`
+        dataType: `${to.params.hkCode}`,
       }),
     ]).then(() => {
       next();
