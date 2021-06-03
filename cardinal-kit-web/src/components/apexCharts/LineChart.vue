@@ -1,6 +1,7 @@
 <template>
   <div>
     <apexchart
+      ref="chart"
       height="300"
       type="line"
       :options="chartOptions"
@@ -16,28 +17,45 @@ export default {
     apexchart: VueApexCharts,
   },
   props: {
-    series:{
-      type:Array,
-      required:true
-    }
+    series: {
+      type: Array,
+      required: true,
+    },
+  },
+  methods: {
+    zoomX(fromDate, toDate) {
+      if (this.$refs.chart.chart) {
+        this.$refs.chart.zoomX(fromDate.getTime(), toDate.getTime());
+      }
+    },
+  },
+  mounted(){
+    console.log("call ")
+    this.zoomX(new Date(),new Date().setDate(-30))
   },
   computed: {
-    chartOptions () {
+    chartOptions() {
       return {
         chart: {
           id: "vuechart-line",
+          toolbar:{
+            show:false
+          },
+           zoom:{
+             enabled:false
+           }
         },
         xaxis: {
-          type: 'datetime',
+          type: "datetime",
           // labels: {
           //   format: 'MMM dd HHH'
           // }
         },
         stroke: {
-          curve: 'smooth'
+          curve: "smooth",
         },
       };
-    }
+    },
   },
 };
 </script>
