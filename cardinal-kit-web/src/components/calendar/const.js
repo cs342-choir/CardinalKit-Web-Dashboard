@@ -1,4 +1,4 @@
-export const MONTHS = [
+const MONTHS = [
   {
 		name: 'Jan',
 		id: '0'
@@ -48,3 +48,21 @@ export const MONTHS = [
 		id: '11'
 	},
 ]
+
+const getNameDay = day => (
+	new Intl.DateTimeFormat('en-US', {
+	weekday: "short"
+	}).format(day)
+);
+
+const getWeekDays = () => {
+	const date = [1, 2, 3 ,4, 5 , 6, 7].map((day) => getNameDay(new Date(2018, 0, day)));
+	return date;
+} 
+
+const WEEKDAYS = getWeekDays();
+
+export {
+	MONTHS,
+	WEEKDAYS
+}

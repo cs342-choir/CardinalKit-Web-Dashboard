@@ -2,7 +2,7 @@
   <section class="page">
     <h1 class="mb-5">Statistics</h1>
     <div class="mb-5">
-      <alt-date :defaultStartDate="date.startDate" range @update:model-value="handleChangeDate" />
+      <alt-date withCalendar :defaultDate="date" range @update:model-value="handleChangeDate" />
     </div>
     <!-- <div class="flex mb-1">
       <p>study: {{studyId}}</p>
@@ -51,7 +51,6 @@ import {
   GetCategoriesByHkType,
 } from "@/common/helpers/healthKit";
 import AltDate from "@/components/calendar/AltDate.vue";
-import { ref, watchEffect } from "vue";
 
 export default {
   components: {

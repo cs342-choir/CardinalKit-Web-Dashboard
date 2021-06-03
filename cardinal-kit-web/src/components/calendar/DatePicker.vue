@@ -5,25 +5,25 @@
 			<input autocomplete="off" class="alt-datetime-wrapper__input" placeholder="--/--/--" type="text" name="datetime" v-model="date"/>
 		</label>
 		<div v-if="showPopup" class="alt-popup">
-			<div class="alt-calendar"> 
-				<div class="alt-calendar-group">
-					<label class="alt-calendar-group__label" for="days">
-						<span>Day </span>						 
+			<div v-if="!calendar" class="alt-date"> 
+				<div class="alt-date-group">
+					<label class="alt-date-group__label" for="days">
+						<span>Day</span>						 
 						<select @change="handleChangeDate" name="days" v-model="today" id="days">
-							<option v-for="(day, index) in days" :key="index + 'alt'" :value="day">{{day}}</option>
+							<option v-for="(day, index) in days" :key="index + 'alt'" :value="day.day">{{day.day}}</option>
 						</select>
 					</label>
 				</div>
-				<div class="alt-calendar-group">
-					<label class="alt-calendar-group__label" for="months">
+				<div class="alt-date-group">
+					<label class="alt-date-group__label" for="months">
 						<span>Month</span>
 					<select @change="handleChangeDate" name="month" v-model="currentMonth" id="months">
 						<option v-for="month in months" :key="month.id" :value="month.id">{{month.name}}</option>
 					</select>
 					</label>
 				</div>
-				<div class="alt-calendar-group">
-					<label class="alt-calendar-group__label" for="years">
+				<div class="alt-date-group">
+					<label class="alt-date-group__label" for="years">
 						<span>Year</span> 
 						<select @change="handleChangeDate" name="year" v-model="currentYear" id="years">
 							<option v-for="(year, index) in years" :key="index + 'alt'" :value="year">{{year}}</option>
@@ -31,39 +31,90 @@
 					</label>
 				</div>
 			</div>
+			<div v-else class="alt-calendar">
+				<div class="alt-calendar-header">
+					<div>
+						<select class="alt-calendar-header__months" @change="handleChangeDate" name="month" v-model="currentMonth" id="months">
+							<option v-for="month in months" :key="month.id" :value="month.id">{{month.name}}</option>
+						</select>
+						<select class="alt-calendar-header__years" @change="handleChangeDate" name="year" v-model="currentYear" id="years">
+							<option v-for="(year, index) in years" :key="index + 'alt'" :value="year">{{year}}</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="alt-calendar-body">
+					<ul class="alt-calendar-body__weekdays">
+						<li v-for="(day, index) in WEEKDAYS" :key="day" :value="index + 1">
+							{{day}}
+						</li>
+					</ul>
+					<div class="alt-calendar-body__days">
+						<span @click="selectedDay(day.day)" :class="{ active: today === day.day}" class="calendar-day" v-for="(day, index) in daysPerWeek" :key='index' :value="day.day">{{day.day}}</span>
+					</div>
+				</div>
+			</div>
 		</div>
-  </div>
+	</div>
 </template>
 
 <script>
-import { computed, ref } from 'vue';
-import { MONTHS } from './const';
+import { computed, ref, watch } from 'vue';
+import { MONTHS, WEEKDAYS } from './const';
 
 export default {
 props: {
 	label: String,
 	showPopup: Boolean,
-	defaultDate: Date
+	calendar: Boolean,
+	defaultDate: {
+		type: Date,
+		default: new Date()
+	}
 },
 emits: ['changeDate'],
 setup(props, ctx)  {
+	const defaultDate = computed(() => props.defaultDate)
 	const date = computed(()  => `${today.value}/${Number(currentMonth.value) + 1}/${currentYear.value}`);
-	const today = ref(props.defaultDate?.getUTCDate() || new Date().getUTCDate());
-	const currentMonth = ref(props.defaultDate?.getUTCMonth() || new Date().getUTCMonth());
-	const currentYear = ref(props.defaultDate?.getUTCFullYear() || new Date().getUTCFullYear());
+	const today = ref(props.defaultDate?.getUTCDate());
+	const currentMonth = ref(props.defaultDate?.getUTCMonth());
+	const currentYear = ref(props.defaultDate?.getUTCFullYear());
 	const days = computed(() => getDayperMonthsandYear(currentYear.value, currentMonth.value));
+	const daysPerWeek = computed(() => getCalendarDaysOfWeek(days.value));
 	const months = ref(MONTHS);
 	const years = computed(() => generateSelectableYears(currentYear.value));
 
+	watch(defaultDate, () => {
+		today.value = props.defaultDate?.getUTCDate();
+		currentMonth.value = props.defaultDate?.getUTCMonth();
+		currentYear.value = props.defaultDate?.getUTCFullYear();
+	});
+
 	function getDayperMonthsandYear(year, month) {
-			const days = new Date(year, Number(month) + 1, 0).getDate();
-			return [...Array(days).keys()].map((day) => day + 1);
+			const countDays = new Date(year, Number(month) + 1, 0).getDate();
+			const days = [...Array(countDays).keys()].map((day) => getDayofWeek(year, month, day + 1));
+			return days;
+	}
+
+	function getDayofWeek(year, month, day) {
+		const calendarDay = new Date(year, month, day).getDay();
+		return {day: day , calendarDay }
 	}
 
 	function generateSelectableYears(year) {
 		const countYears = 10;
 		const initYear = year - 3;
 		return [...Array(countYears).keys()].map((index) => index + initYear);
+	}
+
+	function getCalendarDaysOfWeek(calendarDays) {
+		const voidData = calendarDays[0].calendarDay;
+		return [...Array(voidData - 1).fill(0), ...calendarDays]
+	}
+
+	function selectedDay(day) {
+		today.value = day;
+		handleChangeDate();
 	}
 
 	function handleChangeDate() {
@@ -79,7 +130,10 @@ setup(props, ctx)  {
 		years,
 		currentYear,
 		date,
-		handleChangeDate
+		handleChangeDate,
+		WEEKDAYS,
+		daysPerWeek,
+		selectedDay
 	}
 }
 }
@@ -114,7 +168,7 @@ setup(props, ctx)  {
   }
 }
 
-.alt-calendar {
+.alt-date {
 	display: flex;
 	gap: 10px;
 
@@ -147,6 +201,64 @@ setup(props, ctx)  {
 		&::placeholder {
 			color: darkgrey;
 			opacity: 1;
+		}
+	}
+}
+
+.alt-calendar {
+	&-header {
+		div {
+			display: flex;
+			gap: 10px;
+			justify-content: center;
+		}
+		&__months, &__years {
+			padding: .5rem;
+			width: 100%;
+			border: none;
+			border-radius: 3px;
+			outline: none;
+			background: #f7f7f7;
+		}
+	}
+
+	&-body {
+		&__weekdays {
+			list-style: none;
+			padding: .5rem 0;
+			display: grid;
+			gap: 10px;
+			grid-template-columns: repeat(7, 1fr);
+			color: #90a4ae;
+
+			li {
+				min-width: 32px;
+    		text-align: center;
+			}
+		}
+		&__days {
+			display: grid;
+			gap: 10px;
+			grid-template-columns: repeat(7, 1fr);
+
+			.calendar-day {
+				text-align: center;
+				border-radius: 3px;
+				cursor: pointer;
+				padding: .2rem 0;
+    		display: flex;
+   		 	align-items: center;
+    		justify-content: center;
+
+				&:hover {
+					background: #f7f7f7;
+				}
+
+				&.active {
+					background: crimson;
+					color: white;
+				}
+			}
 		}
 	}
 }
