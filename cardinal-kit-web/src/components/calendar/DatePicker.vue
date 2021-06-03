@@ -36,26 +36,24 @@
 </template>
 
 <script>
-import { computed, onMounted, ref, watchEffect } from 'vue';
+import { computed, ref } from 'vue';
 import { MONTHS } from './const';
 
 export default {
 props: {
 	label: String,
 	showPopup: Boolean,
-	modelValue: Date,
+	defaultDate: Date
 },
-emits: ['update:modelValue', 'changeDate'],
+emits: ['changeDate'],
 setup(props, ctx)  {
 	const date = computed(()  => `${today.value}/${Number(currentMonth.value) + 1}/${currentYear.value}`);
-	const today = ref(new Date().getUTCDate());
-	const currentMonth = ref(new Date().getUTCMonth());
-	const currentYear = ref(new Date().getUTCFullYear());
+	const today = ref(props.defaultDate?.getUTCDate() || new Date().getUTCDate());
+	const currentMonth = ref(props.defaultDate?.getUTCMonth() || new Date().getUTCMonth());
+	const currentYear = ref(props.defaultDate?.getUTCFullYear() || new Date().getUTCFullYear());
 	const days = computed(() => getDayperMonthsandYear(currentYear.value, currentMonth.value));
 	const months = ref(MONTHS);
 	const years = computed(() => generateSelectableYears(currentYear.value));
-
-	onMounted(() => handleChangeDate());
 
 	function getDayperMonthsandYear(year, month) {
 			const days = new Date(year, Number(month) + 1, 0).getDate();
@@ -70,17 +68,8 @@ setup(props, ctx)  {
 
 	function handleChangeDate() {
 		const date = new Date(currentYear.value, currentMonth.value, today.value);
-		ctx.emit('update:modelValue', date)
 		ctx.emit('changeDate', date)
 	}
-
-	watchEffect(() => {
-		if(props.modelValue) {
-			today.value = props.modelValue?.getUTCDate();
-			currentMonth.value = props.modelValue?.getUTCMonth();
-			currentYear.value = props.modelValue?.getUTCFullYear();
-		}
-	});
 
 	return {
 		currentMonth,
