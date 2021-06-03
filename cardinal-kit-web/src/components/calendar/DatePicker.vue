@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { MONTHS, WEEKDAYS } from './const';
 
 export default {
@@ -67,18 +67,28 @@ props: {
 	label: String,
 	showPopup: Boolean,
 	calendar: Boolean,
-	defaultDate: Date
+	defaultDate: {
+		type: Date,
+		default: new Date()
+	}
 },
 emits: ['changeDate'],
 setup(props, ctx)  {
+	const defaultDate = computed(() => props.defaultDate)
 	const date = computed(()  => `${today.value}/${Number(currentMonth.value) + 1}/${currentYear.value}`);
-	const today = ref(props.defaultDate?.getUTCDate() || new Date().getUTCDate());
-	const currentMonth = ref(props.defaultDate?.getUTCMonth() || new Date().getUTCMonth());
-	const currentYear = ref(props.defaultDate?.getUTCFullYear() || new Date().getUTCFullYear());
+	const today = ref(props.defaultDate?.getUTCDate());
+	const currentMonth = ref(props.defaultDate?.getUTCMonth());
+	const currentYear = ref(props.defaultDate?.getUTCFullYear());
 	const days = computed(() => getDayperMonthsandYear(currentYear.value, currentMonth.value));
 	const daysPerWeek = computed(() => getCalendarDaysOfWeek(days.value));
 	const months = ref(MONTHS);
 	const years = computed(() => generateSelectableYears(currentYear.value));
+
+	watch(defaultDate, () => {
+		today.value = props.defaultDate?.getUTCDate();
+		currentMonth.value = props.defaultDate?.getUTCMonth();
+		currentYear.value = props.defaultDate?.getUTCFullYear();
+	});
 
 	function getDayperMonthsandYear(year, month) {
 			const countDays = new Date(year, Number(month) + 1, 0).getDate();
