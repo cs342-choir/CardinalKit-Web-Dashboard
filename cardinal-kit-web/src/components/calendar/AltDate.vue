@@ -1,12 +1,12 @@
 <template>
   <div class="alt-date">
-    <date-picker :calendar="calendar" ref="startElement" :showPopup="startDateTooltip" @changeDate="handleChangeDates($event, 'startDate')" v-model="startDate"  label='Start Date' />
-    <date-picker :calendar="calendar" v-if="range" ref="endElement" :showPopup="endDateTooltip" @changeDate="handleChangeDates($event, 'endDate')" v-model="endDate" label='End Date' />
+    <date-picker :calendar="calendar" ref="startElement" :showPopup="startDateTooltip" @changeDate="handleChangeDates($event, 'startDate')"  :defaultDate="defaultStartDate" label='Start Date' />
+    <date-picker :calendar="calendar" v-if="range" ref="endElement" :showPopup="endDateTooltip" @changeDate="handleChangeDates($event, 'endDate')" label='End Date' />
   </div>
 </template>
 
 <script>
-import { onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import DatePicker from './DatePicker.vue';
 
 export default {
@@ -20,7 +20,8 @@ export default {
     calendar: {
       type: Boolean,
       default: false
-    }
+    },
+    defaultStartDate: Date,
   },
   emits: ['update:modelValue'],
 	setup(props, ctx) {
@@ -29,8 +30,16 @@ export default {
 		const startDateTooltip = ref(false);
 		const endDateTooltip = ref(false);
     const date = ref();
-    const endDate = ref();
-    const startDate = ref();
+
+    onMounted(() => {
+      if(props.range) {
+        date.value = {
+          startDate: props.defaultStartDate || new Date(),
+          endDate: new Date()
+        }
+        ctx.emit('update:modelValue', date.value);
+      }
+    });
 
     function handleChangeDates(value, key) {
       if (value) {
@@ -41,11 +50,9 @@ export default {
 
     const rangeDates = (value,  key) => {
       if(key === 'startDate' && (date.value?.endDate < value)) {
-        endDate.value = value;
         return { startDate: value, endDate: value }
       }
       if(key === 'endDate' && (date.value?.startDate > value)) {
-        startDate.value = value;
         return { startDate: value, endDate: value };
       }
       return { ...date.value, [key]: value }
@@ -65,9 +72,7 @@ export default {
       endDateTooltip,
 			startElement,
       endElement,
-      handleChangeDates,
-      endDate,
-      startDate
+      handleChangeDates
 		}
 	}
 }
