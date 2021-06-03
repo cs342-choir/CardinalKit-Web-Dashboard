@@ -7,7 +7,7 @@
 			logout 
 			width-logo="50" 
 			@handle-logout="handleLogout" 
-			:menu="[{ name: 'Studies', route: '/studies'}]" 
+			:menu="[{ name: 'Home', route: '/studies'}]" 
 		/>
 		<div>
 			<router-view/>
