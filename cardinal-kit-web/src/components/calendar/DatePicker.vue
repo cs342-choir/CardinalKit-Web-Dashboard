@@ -5,28 +5,33 @@
 			<input autocomplete="off" class="alt-datetime-wrapper__input" placeholder="--/--/--" type="text" name="datetime" v-model="date"/>
 		</label>
 		<div v-if="showPopup" class="alt-popup">
-			<div v-if="!calendar" class="alt-date"> 
-				<div class="alt-date-group">
-					<label class="alt-date-group__label" for="days">Day: </label>
-					<select @change="handleChangeDate" name="days" v-model="today" id="days">
-						<option v-for="(day, index) in days" :key="index + 'alt'" :value="day.day">{{day.day}}</option>
-					</select>
+			<div v-if="!calendar" class="alt-calendar"> 
+				<div class="alt-calendar-group">
+					<label class="alt-calendar-group__label" for="days">
+						<span>Day </span>						 
+						<select @change="handleChangeDate" name="days" v-model="today" id="days">
+							<option v-for="(day, index) in days" :key="index + 'alt'" :value="day">{{day}}</option>
+						</select>
+					</label>
 				</div>
-				<div class="alt-date-group">
-					<label class="alt-date-group__label" for="months">Month: </label>
+				<div class="alt-calendar-group">
+					<label class="alt-calendar-group__label" for="months">
+						<span>Month</span>
 					<select @change="handleChangeDate" name="month" v-model="currentMonth" id="months">
 						<option v-for="month in months" :key="month.id" :value="month.id">{{month.name}}</option>
 					</select>
+					</label>
 				</div>
-				<div class="alt-date-group">
-					<label class="alt-date-group__label" for="years">Year: </label>
-					<select @change="handleChangeDate" name="year" v-model="currentYear" id="years">
-						<option v-for="(year, index) in years" :key="index + 'alt'" :value="year">{{year}}</option>
-					</select>
+				<div class="alt-calendar-group">
+					<label class="alt-calendar-group__label" for="years">000
+						<span>Year</span> 
+						<select @change="handleChangeDate" name="year" v-model="currentYear" id="years">
+							<option v-for="(year, index) in years" :key="index + 'alt'" :value="year">{{year}}</option>
+						</select>
+					</label>
 				</div>
 			</div>
 			<div v-else class="alt-calendar">
-
 				<div class="alt-calendar-header">
 					<div>
 						<select class="alt-calendar-header__months" @change="handleChangeDate" name="month" v-model="currentMonth" id="months">
@@ -53,7 +58,7 @@
 				</div>
 			</div>
 		</div>
-  </div>
+	</div>
 </template>
 
 <script>
@@ -153,7 +158,7 @@ setup(props, ctx)  {
     top: -6px;
     content: "";
     height: 0;
-    left: 50%;
+    left: 30%;
     margin-left: -6px;
     position: absolute;
     width: 0;
@@ -166,15 +171,19 @@ setup(props, ctx)  {
 
   &-group {
     &__label {
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    select {
-      padding: .2rem;
-      border: none;
+      display: flex;
+			border: solid 1px#f7f7f7;
       border-radius: 3px;
-      background: #f7f7f7;
+
+			span {
+				background: #f7f7f7;
+				padding: .3rem;
+			}
+
+			select {
+				padding: .3rem;
+				border: none;
+			}
     }
   }
 }
