@@ -2,7 +2,7 @@
   <section class="page">
     <h1 class="mb-5">Statistics</h1>
     <div class="mb-5">
-      <alt-date range @update:model-value="handleChangeDate" />
+      <alt-date :defaultStartDate="date.startDate" range @update:model-value="handleChangeDate" />
     </div>
     <!-- <div class="flex mb-1">
       <p>study: {{studyId}}</p>
@@ -95,7 +95,7 @@ export default {
   },
   data() {
     return {
-      date: {startDate:new Date().setDate(-30)},
+      date: {startDate: new Date(new Date().setDate(-30))},
     };
   },
   methods: {
@@ -103,16 +103,15 @@ export default {
     transformAppleCode,
     GetCategoriesByHkType,
     handleChangeDate(value) {
-      this.date = value;
-      // console.log("chart",this.$refs.chart);
-      
-      if (this.$refs.chart) {
-        if (value.endDate) {
-          this.FetchSpecificTypeData({studyId:this.studyId,userId:this.userId,dataType:this.hkCode,dates:{startDate:value.startDate,endDate:value.endDate}} )
-          this.$refs.chart.zoomX(
-            value.startDate,
-            value.endDate
-          );
+      if (value) {      
+        if (this.$refs.chart) {
+          if (value.endDate) {
+            this.FetchSpecificTypeData({studyId:this.studyId,userId:this.userId,dataType:this.hkCode, dates:{startDate:value.startDate,endDate:value.endDate}} )
+            this.$refs.chart.zoomX(
+              value.startDate,
+              value.endDate
+            );
+          }
         }
       }
     },
