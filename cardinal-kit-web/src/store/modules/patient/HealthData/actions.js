@@ -14,8 +14,11 @@ export const FetchSpecificTypeData = async ({ commit }, payload) => {
   );
   if (payload.dataType.includes("Quantity")) {
     Ref = Ref.WHERE(["body.quantity_type", "==", payload.dataType]);
-  } else {
+  } else if (payload.dataType.includes("Category")) {
     Ref = Ref.WHERE(["body.category_type", "==", payload.dataType]);
+  }
+  else{
+    Ref = Ref.WHERE(["body.activity_name", "==", payload.dataType]);
   }
   let RefCopy = Ref.CLONE();
   RefCopy = RefCopy.WHERE(["header.creation_date_time", ">=", startDate]);
