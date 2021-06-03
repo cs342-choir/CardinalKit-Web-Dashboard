@@ -2,7 +2,7 @@
   <section class="page">
     <h1 class="mb-5">Statistics</h1>
     <div class="mb-5">
-      <alt-date range @update:model-value="handleChangeDate"/>
+      <alt-date :defaultStartDate="date.startDate" range @update:model-value="handleChangeDate" />
     </div>
     <!-- <div class="flex mb-1">
       <p>study: {{studyId}}</p>
@@ -20,13 +20,15 @@
       </div> -->
     </div>
     <div class="wrapper-graphs">
-      <line-chart 
-        v-if="GetGraphType=='line'"
-        :key="1" 
-        :series="getSpecificHealthDataGrapFormat(hkCode)" 
+      <line-chart
+        v-if="GetGraphType == 'line'"
+        ref="chart"
+        :key="1"
+        :series="getSpecificHealthDataGrapFormat(hkCode)"
       />
       <scatter-chart
-        v-if="GetGraphType=='scatter'"
+        v-if="GetGraphType == 'scatter'"
+        ref="chart"
         :key="2"
         :series="getSpecificHealthDataGrapFormat(hkCode)"
         :labels="GetCategoriesByHkType(hkCode)"
@@ -43,10 +45,13 @@ import LineChart from "@/components/apexCharts/LineChart";
 import ScatterChart from "@/components/apexCharts/ScatterChart";
 import { ANALYTICS_TO_GRAPH } from "@/plugins/mock/analytics";
 import MultipleRadialBars from "../../../components/apexCharts/multipleRadialBars.vue";
-import { mapGetters } from "vuex";
-import { transformAppleCode,GetCategoriesByHkType } from "@/common/helpers/healthKit";
-import AltDate from '@/components/calendar/AltDate.vue';
-import { ref, watchEffect } from 'vue';
+import { mapActions, mapGetters } from "vuex";
+import {
+  transformAppleCode,
+  GetCategoriesByHkType,
+} from "@/common/helpers/healthKit";
+import AltDate from "@/components/calendar/AltDate.vue";
+import { ref, watchEffect } from "vue";
 
 export default {
   components: {
@@ -73,33 +78,43 @@ export default {
   },
   setup() {
     const analytics = ANALYTICS_TO_GRAPH;
-    const date = ref();
-
-    function handleChangeDate(value) {
-      date.value = value;
-      console.log(date.value);
-    }
 
     return {
       analytics,
-      date,
-      handleChangeDate
     };
   },
   computed: {
     ...mapGetters("patient", ["getSpecificHealthDataGrapFormat"]),
-    GetGraphType(){
-      if(this.hkCode.includes("Category")){
-        return "scatter"
+    GetGraphType() {
+      if (this.hkCode.includes("Category")) {
+        return "scatter";
+      } else {
+        return "line";
       }
-      else{
-        return "line"
-      }
-    }
+    },
+  },
+  data() {
+    return {
+      date: {startDate: new Date(new Date().setDate(-30))},
+    };
   },
   methods: {
+    ...mapActions("patient",["FetchSpecificTypeData"]),
     transformAppleCode,
-    GetCategoriesByHkType
+    GetCategoriesByHkType,
+    handleChangeDate(value) {
+      if (value) {      
+        if (this.$refs.chart) {
+          if (value.endDate) {
+            this.FetchSpecificTypeData({studyId:this.studyId,userId:this.userId,dataType:this.hkCode, dates:{startDate:value.startDate,endDate:value.endDate}} )
+            this.$refs.chart.zoomX(
+              value.startDate,
+              value.endDate
+            );
+          }
+        }
+      }
+    },
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([

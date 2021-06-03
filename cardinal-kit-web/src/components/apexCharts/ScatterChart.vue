@@ -14,6 +14,12 @@ export default {
   components: {
     apexchart: VueApexCharts,
   },
+  methods: {
+    zoomX(fromDate, toDate) {
+      console.log("filter");
+      this.$refs.chart.zoomX(fromDate.getTime(), toDate.getTime());
+    },
+  },
   props: {
     labels: {
       type: Array,
@@ -66,7 +72,7 @@ export default {
           logarithmic: false,
           tickAmount: this.labels.length,
           min: 0,
-          max: this.labels.length-1,
+          max: this.labels.length - 1,
           forceNiceScale: true,
           floating: false,
           decimalsInFloat: 0,
@@ -86,9 +92,9 @@ export default {
             offsetY: 0,
             rotate: -45,
             formatter: (value) => {
-              // return Math.floor( value ) 
-               return this.labels[ Math.floor( value )];
-             },
+              // return Math.floor( value )
+              return this.labels[Math.floor(value)];
+            },
           },
           axisBorder: {
             show: true,
