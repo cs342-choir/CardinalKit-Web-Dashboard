@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Login from "@/views/auth/login";
 import SignUp from "@/views/auth/signUp";
-import StudiesList from "@/views/studies/patientsList";
-import StudyDetail from "@/views/studies/studyDetail";
+import StudiesList from "@/views/studies/studiesList";
+import PatientsList from "@/views/studies/patientsList";
 import HealthUser from "@/views/patients/healthKit/healthKitUser";
 import categoryDetail from "@/views/patients/healthKit/categoryDetail";
 
@@ -25,9 +25,10 @@ const routes = [
         },
       },
       {
-        path: "/studyDetail/:idStudy",
-        name: "studyDetail",
-        component: StudyDetail,
+        path: "/patients/:idStudy",
+        name: "patients",
+        component: PatientsList,
+        props: true,
         meta: {
           requiresAuth: true,
         },
