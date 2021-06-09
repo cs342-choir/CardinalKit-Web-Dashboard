@@ -26,7 +26,7 @@ export default {
   methods: {
     handleSelecStudy(studyId) {
       this.studySelected = studyId;
-      if (this.getUserRol == "doctor" || this.getUserRol=="superadmin") {
+      if (this.getUserRol == "doctor" || this.getUserRol=="superAdmin") {
         this.$router.push(`/patients/${studyId}`)
       } else {
         this.$router.push(`/healthKitUser/${studyId}/${this.getUserId}`)
