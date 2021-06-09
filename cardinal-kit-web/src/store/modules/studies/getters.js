@@ -6,6 +6,8 @@ export function getAllRecords(state){
   return state.records
 }
 
-export function getAllUsers(state){
-  return state.users
+export function getUsersStudy(state){
+  return (idStudy)=>{
+      return state.users[idStudy]
+  }
 }
