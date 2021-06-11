@@ -59,11 +59,20 @@ export const GET= (path)=>{
 }
 
 export const  POST= (path,payload)=>{
-    if(payload.emptyDoc){
-        return new Ref(db.collection(path),"ADD",payload.data)
+    let parts = path.split('/')
+    let object
+    if(parts.length%2!=0){
+        object = db.collection(path);
     }
     else{
-        return new Ref(db.collection(path).doc(payload.docId),"SET",payload.data)
+        object = db.doc(path);
+    }
+
+    if(payload.emptyDoc){
+        return new Ref(object,"ADD",payload.data)
+    }
+    else{
+        return new Ref(object,"SET",payload.data)
     }
 }
 
