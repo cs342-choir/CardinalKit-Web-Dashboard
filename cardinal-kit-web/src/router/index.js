@@ -5,6 +5,7 @@ import StudiesList from "@/views/studies/studiesList";
 import PatientsList from "@/views/studies/patientsList";
 import HealthUser from "@/views/patients/healthKit/healthKitUser";
 import categoryDetail from "@/views/patients/healthKit/categoryDetail";
+import registerDoctor from "@/views/auth/registerDoctor"
 
 const routes = [
   {
@@ -54,6 +55,15 @@ const routes = [
         path: "/categoryDetail/:studyId/:userId/:categoryId",
         name: "categoryDetail",
         component: categoryDetail,
+        props:true,
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/register",
+        name: "register",
+        component: registerDoctor,
         props:true,
         meta: {
           requiresAuth: true,
