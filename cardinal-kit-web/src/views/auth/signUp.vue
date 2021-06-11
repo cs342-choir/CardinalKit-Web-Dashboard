@@ -4,11 +4,11 @@
       <template v-slot:card-header>
         <div class="card-header">
           <Logo :path="logo" :width="'100'" :className="'flex justify-center'"></Logo>
-          <h1 id="signup" class="mb-1 text-center">SIGN UP</h1>
-          <span class="block text-center">
+          <h1 id="signup" class="mb-1 text-center">Register doctor</h1>
+          <!-- <span class="block text-center">
             Already have an account?
             <router-link class="ev-link" to="/login">Sign in</router-link>
-          </span>
+          </span> -->
         </div>
       </template>
       <template v-slot:card-body>
@@ -46,7 +46,7 @@
               required
             />
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="password">Password</label>
             <input
               class="form-input"
@@ -57,7 +57,7 @@
               required
               autocomplete="on"
             />
-          </div>
+          </div> -->
           <button id="b-signup" class="btn btn-primary" type="submit">
             Register
           </button>
