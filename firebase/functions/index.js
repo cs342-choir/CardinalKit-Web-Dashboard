@@ -753,7 +753,7 @@ exports.omhToFhir =
           }
           catch(error){
             console.log(error);
-            console.log(`error when transforming the date ${stringDate}`);
+            console.log(`error when transforming the date ${stringDate} el header ${dataOmh['header']}`);
           }
           
 
