@@ -20,7 +20,7 @@ export const FetchUserRolesAndStudies= async ({commit})=>{
                     }
                     commit("saveUserRol",{...userSnap.data(),id:user.uid})
                 }
-                if(userSnap.data().rol=="superAdmin"){
+                else if(userSnap.data().rol=="superAdmin"){
                     const studiesSnap = await request.GET(`studies`).Execute()
                     let studies = []
                     studiesSnap.docs.forEach(element => {
@@ -28,7 +28,9 @@ export const FetchUserRolesAndStudies= async ({commit})=>{
                     });
                     commit("saveUserRol",{rol:"superAdmin",studies:studies,id:user.uid})
                 }
-                
+                else{
+                    commit("saveUserRol",{...userSnap.data(),id:user.uid})
+                }
                 resolve()
             }
             else{
