@@ -32,17 +32,7 @@ export const transformHealthDataToGlobalFormat = (data) => {
     EndDate,
     ExtraData = null;
 
-   //Dates
-   if (data.body.effective_time_frame.time_interval) {
-    StartDate = new Date(data.body.effective_time_frame.time_interval.start_date_time);
-    EndDate = new Date(data.body.effective_time_frame.time_interval.end_date_time);
-    let difference = EndDate.getTime()-StartDate.getTime()
-    //Secs 
-    let transformTime = TransformTime(difference/1000);
-    Unit=transformTime.Unit
-    Value = transformTime.Value
-    
-  }
+   
   //HkCode
   if (data.body.category_type) {
     HkCode = data.body.category_type;
@@ -51,8 +41,19 @@ export const transformHealthDataToGlobalFormat = (data) => {
       Value = data.body.category_value
       Unit = " "
     }
-
   }
+
+  //Dates
+  if (data.body.effective_time_frame.time_interval) {
+    StartDate = new Date(data.body.effective_time_frame.time_interval.start_date_time);
+    EndDate = new Date(data.body.effective_time_frame.time_interval.end_date_time);
+    let difference = EndDate.getTime()-StartDate.getTime()
+    //Secs 
+    let transformTime = TransformTime(difference/1000);
+    Unit=transformTime.Unit
+    Value = transformTime.Value 
+  }
+
   if (data.body.quantity_type) {
     HkCode = data.body.quantity_type;
   }
@@ -131,9 +132,18 @@ export const transformHealthDataToGlobalFormat = (data) => {
     Unit = "Steps";
     Value = data.body.step_count;
   }
+  if (data.body.heart_rate) {
+    Unit = data.body.heart_rate.unit;
+    Value = data.body.heart_rate.value;
+  }
   if (data.body.distance) {
     Unit = data.body.distance.unit;
     Value = data.body.distance.value;
+  }
+  if(data.body.sleep_duration){
+    let transformTime = TransformTime(parseInt(data.body.sleep_duration.value));
+    Unit=transformTime.Unit
+    Value = transformTime.Value
   }
   if (data.body.duration) {
     if(data.body.duration.Unit="Secs"){
@@ -146,8 +156,6 @@ export const transformHealthDataToGlobalFormat = (data) => {
       Value = data.body.duration.value;
     }
   }
- 
-
   //Id
   Id = data.header.id;
   

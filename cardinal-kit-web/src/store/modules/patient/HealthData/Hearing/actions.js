@@ -1,5 +1,5 @@
 
-import {FetchCategoryTypeData, FetchQuantityData, FetchSampleData} from "../../index"
+import {FetchCategoryTypeData, FetchQuantityData, FetchSampleData,FetchLastQuantityData} from "../../index"
 
 export function reset({ commit }) {
   commit("RESET");
@@ -18,6 +18,7 @@ export const FetchLastHearingData = async ({ commit }, payload) => {
     category: payload.category,
     data: await Promise.all([
       FetchSampleData("HKSampleTypeIdentifierAudiogram", {...payload,limit: 1,}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierEnvironmentalAudioExposure", {...payload,limit: 1,}),
     ]),
   });
 };

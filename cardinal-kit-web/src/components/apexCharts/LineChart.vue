@@ -43,9 +43,6 @@ export default {
         },
         xaxis: {
           type: "datetime",
-          // labels: {
-          //   format: 'MMM dd HHH'
-          // }
         },
         stroke: {
           curve: "smooth",
