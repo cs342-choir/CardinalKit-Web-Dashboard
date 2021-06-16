@@ -17,6 +17,31 @@ export const FetchSampleData = async(
 
 };
 
+export const FetchLastQuantityData = async(
+  quantity_type,
+  payload
+)=>{
+  let lastRecord = await FetchQuantityData(quantity_type,payload)
+  
+  if(lastRecord.length>0){
+    let date = lastRecord[0].header.creation_date_time.toDate()
+    date.setHours(0,0,0)
+    let endDate = new Date(date)
+    endDate.setHours(23,59,59)
+
+    let filterParams = [
+      ["body.quantity_type","==",quantity_type],
+      ["header.creation_date_time", ">=", date],
+      ["header.creation_date_time", "<=", endDate],
+    ]
+    delete payload['limit']
+    return await FetchGeneralData({...payload,filterParams})
+  }
+  else{
+    return lastRecord
+  }
+}
+
 export const FetchQuantityData = async(
   quantity_type,
   payload
@@ -83,6 +108,7 @@ export default {
     ...require("./HealthData/Mobilitiy/actions"),
     ...require("./HealthData/Nutrition/actions"),
     ...require("./HealthData/Respiratory/actions"),
+    ...require("./HealthData/Sleep/actions"),
     ...require("./HealthData/Symtoms/actions"),
     ...require("./HealthData/Vitals/actions"),
     ...require("./HealthData/Other/actions"),

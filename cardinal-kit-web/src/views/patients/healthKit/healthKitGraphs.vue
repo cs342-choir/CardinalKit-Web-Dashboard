@@ -4,20 +4,8 @@
     <div class="mb-5">
       <alt-date withCalendar :defaultDate="date" range @update:model-value="handleChangeDate" />
     </div>
-    <!-- <div class="flex mb-1">
-      <p>study: {{studyId}}</p>
-      <p>user: {{userId}}</p>
-      <p>health Kit Workout: {{hkCode}}</p>
-    </div> -->
     <div class="mb-1">
       <h3>{{ transformAppleCode(hkCode) }}</h3>
-      <!-- <div class="flex">
-        <p>34</p><label>brazadas</label>
-      </div>
-      <div class="date">
-        <p>Actividad</p>
-        <small>Jueves, 13 de mayo 2021</small>
-      </div> -->
     </div>
     <div class="wrapper-graphs">
       <line-chart
@@ -33,6 +21,12 @@
         :series="getSpecificHealthDataGrapFormat(hkCode)"
         :labels="GetCategoriesByHkType(hkCode)"
       />
+    <sleep-graph
+      v-if="GetGraphType == 'sleep'"
+      ref="chart"
+      :key="2"
+      :series="getSpecificHealthDataGrapFormat(hkCode)"
+    />
     </div>
   </section>
 </template>
@@ -43,6 +37,7 @@ import multipleRadialBars from "@/components/apexCharts/multipleRadialBars";
 import BarChart from "@/components/apexCharts/BarChart";
 import LineChart from "@/components/apexCharts/LineChart";
 import ScatterChart from "@/components/apexCharts/ScatterChart";
+import SleepGraph from "@/components/apexCharts/SleepGraph"
 import { ANALYTICS_TO_GRAPH } from "@/plugins/mock/analytics";
 import MultipleRadialBars from "../../../components/apexCharts/multipleRadialBars.vue";
 import { mapActions, mapGetters } from "vuex";
@@ -60,6 +55,7 @@ export default {
     MultipleRadialBars,
     ScatterChart,
     AltDate,
+    SleepGraph
   },
   props: {
     studyId: {
@@ -85,7 +81,10 @@ export default {
   computed: {
     ...mapGetters("patient", ["getSpecificHealthDataGrapFormat"]),
     GetGraphType() {
-      if (this.hkCode.includes("Category")) {
+      if(this.hkCode=="HKCategoryTypeIdentifierSleepAnalysis"){
+        return "sleep"
+      }
+      else if (this.hkCode.includes("Category")) {
         return "scatter";
       } else {
         return "line";
@@ -98,7 +97,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions("patient",["FetchSpecificTypeData"]),
+    ...mapActions("patient",["FetchSpecificTypeData","ReviewDates"]),
     transformAppleCode,
     GetCategoriesByHkType,
     handleChangeDate(value) {
@@ -114,6 +113,9 @@ export default {
         }
       }
     },
+  },
+  mounted(){
+      this.ReviewDates()
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([
