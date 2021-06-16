@@ -66,7 +66,6 @@ export default {
     ...mapGetters('patient',['getCategoryDataWebFormat'])
   },
   mounted(){
-    console.log("categoryId",(this.categoryId))
     // let burnedDataArray = this.getSpecificHealthData('41981-2').data
     this.activities = this.getCategoryDataWebFormat(this.categoryId)
   },
