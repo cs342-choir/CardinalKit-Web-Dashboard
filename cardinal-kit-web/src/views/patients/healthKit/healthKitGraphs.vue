@@ -51,6 +51,28 @@
       :horizontal=true
       :toolTipYFormat=" function(value) {return new Date(value).toISOString().substr(11, 8);}"
     />
+<alt-table :columns="[{ header: 'Date' }, { header: 'Value' }]">
+    <template #t-row>
+      <tr v-for="(data, index) in getSpecificHealthData(hkCode)" :key="index">
+        <td>
+          {{data.Date.Date}}
+        </td>
+        <td>
+        {{data.Value}} {{data.Unit}}
+        </td>
+        <!-- <td>{{index + 1}}</td>
+        <td>
+          {{patient.name || 'NN'}}
+        </td>
+        <td>
+          <span class="pointer" @click="handleSelecPatient(patient.id)">
+            detail
+          </span>
+        </td> -->
+      </tr>
+    </template>
+  </alt-table>
+
     </div>
   </section>
 </template>
@@ -70,6 +92,7 @@ import {
   GetCategoriesByHkType,
 } from "@/common/helpers/healthKit";
 import AltDate from "@/components/calendar/AltDate.vue";
+import altTable from '@/components/tables/altTable';
 
 export default {
   components: {
@@ -79,7 +102,8 @@ export default {
     MultipleRadialBars,
     ScatterChart,
     AltDate,
-    RangeChart
+    RangeChart,
+    altTable
   },
   props: {
     studyId: {
@@ -103,7 +127,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("patient", ["getSpecificHealthDataGrapFormat"]),
+    ...mapGetters("patient", ["getSpecificHealthDataGrapFormat","getSpecificHealthData"]),
     GetGraphType() {
       if(this.hkCode=="HKCategoryTypeIdentifierSleepAnalysis"){
         console.log("return sleep")
