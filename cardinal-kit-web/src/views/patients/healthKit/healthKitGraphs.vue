@@ -21,12 +21,28 @@
         :series="getSpecificHealthDataGrapFormat(hkCode)"
         :labels="GetCategoriesByHkType(hkCode)"
       />
-    <sleep-graph
+    <range-chart
       v-if="GetGraphType == 'sleep'"
       ref="chart"
       :key="2"
       :series="getSpecificHealthDataGrapFormat(hkCode)"
+      :yAxisFormat=" function(value) {return new Date(value * 1000).toISOString().substr(11, 8);}"
+    />  
+    <range-chart
+      v-if="GetGraphType == 'heart'"
+      ref="chart"
+      :key="2"
+      :series="getSpecificHealthDataGrapFormat(hkCode)"
+      :yMax = 100
+      :yMin = 0
+      :titleFormatter="(seriesName,{w,seriesIndex,dataPointIndex}) => {
+              x=w.globals.initialSeries[seriesIndex].data[dataPointIndex].x
+              hourStart = x.getHours()
+              hourEnd = hourStart+1
+              return seriesName +': '+ hourStart+' - '+hourEnd}"
     />
+
+
     </div>
   </section>
 </template>
@@ -37,7 +53,7 @@ import multipleRadialBars from "@/components/apexCharts/multipleRadialBars";
 import BarChart from "@/components/apexCharts/BarChart";
 import LineChart from "@/components/apexCharts/LineChart";
 import ScatterChart from "@/components/apexCharts/ScatterChart";
-import SleepGraph from "@/components/apexCharts/SleepGraph"
+import RangeChart from "@/components/apexCharts/RangeChart"
 import { ANALYTICS_TO_GRAPH } from "@/plugins/mock/analytics";
 import MultipleRadialBars from "../../../components/apexCharts/multipleRadialBars.vue";
 import { mapActions, mapGetters } from "vuex";
@@ -55,7 +71,7 @@ export default {
     MultipleRadialBars,
     ScatterChart,
     AltDate,
-    SleepGraph
+    RangeChart
   },
   props: {
     studyId: {
@@ -82,7 +98,12 @@ export default {
     ...mapGetters("patient", ["getSpecificHealthDataGrapFormat"]),
     GetGraphType() {
       if(this.hkCode=="HKCategoryTypeIdentifierSleepAnalysis"){
+        console.log("return sleep")
         return "sleep"
+      }
+      else if(this.hkCode=="HKQuantityTypeIdentifierHeartRate"){
+        console.log("return Heart")
+        return "heart"
       }
       else if (this.hkCode.includes("Category")) {
         return "scatter";
