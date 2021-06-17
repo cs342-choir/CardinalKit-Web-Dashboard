@@ -39,6 +39,26 @@ export default {
       type: Array,
       required: true,
     },
+    yAxisFormat:{
+      type: Function,
+      required: false
+    },
+    yMax:{
+      type: Number,
+      required: false
+    },
+     yMin:{
+      type: Number,
+      required: false
+    },
+    customTooltip:{
+      type: Function,
+      required: false
+    },
+    titleFormatter:{
+      type: Function,
+      required: false
+    }
   },
   methods: {
     zoomX(fromDate, toDate) {
@@ -49,7 +69,6 @@ export default {
   },
   computed: {
     format(val) {
-      console.log(val);
       if (Date.parse(value)) {
         let date = new Date(value);
         return date.getDate() + " - " + this.monthNames[date.getMonth()];
@@ -75,29 +94,27 @@ export default {
           type: "datetime",
         },
         tooltip: {
-          custom: ({ y1, y2, w, seriesIndex, dataPointIndex }) => {
-            let date =
-              w.globals.initialSeries[seriesIndex].data[dataPointIndex].x;
-            return (
-              w.globals.seriesNames[seriesIndex] +
-              "<br>" +
-              date.getDate() +
-              " - " +
-              this.monthNames[date.getMonth()] +
-              "<br>" +
-              new Date(y1 * 1000).toISOString().substr(11, 8) +
-              " --- " +
-              new Date(y2 * 1000).toISOString().substr(11, 8)
-            );
+          custom: this.customTooltip,
+          y:{
+            formatter:(value,{series,seriesIndex,dataPointIndex,w})=>{
+              let y = w.globals.initialSeries[seriesIndex].data[dataPointIndex].y
+
+              if(this.yAxisFormat){
+                y= [this.yAxisFormat(y[0]),this.yAxisFormat(y[1])]
+              }
+
+              return y[0]+" - "+y[1]
+            },
+            title: {
+              formatter: this.titleFormatter
           },
+          }        
         },
         yaxis: {
-          max: 24 * 3600 - 1,
+          max: this.yMax?this.yMax: 24 * 3600 - 1,
+          min: this.yMin?this.yMin:0,
           labels: {
-            formatter: (value) => {
-              // return Math.floor( value )
-              return new Date(value * 1000).toISOString().substr(11, 8);
-            },
+            formatter:this.yAxisFormat
           },
         },
       };

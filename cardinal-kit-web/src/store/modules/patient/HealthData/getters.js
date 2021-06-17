@@ -22,7 +22,11 @@ export function getSpecificHealthDataGrapFormat(state) {
     let data = state.healthData[code];
 
     let dataFormat = [];
-    if (code.includes("Quantity")) {
+    if (code == "HKCategoryTypeIdentifierSleepAnalysis") {
+      return SleepAnalisysData(data);
+    } else if (code == "HKQuantityTypeIdentifierHeartRate") {
+      return HeartRateData(data);
+    } else if (code.includes("Quantity")) {
       let dataDict = {};
       data.forEach((record) => {
         let value = record.Value;
@@ -44,68 +48,6 @@ export function getSpecificHealthDataGrapFormat(state) {
         }
         dataFormat.push({ x: value.date, y: value.value.toFixed(2) });
       }
-    } else if (code == "HKCategoryTypeIdentifierSleepAnalysis") {
-      let inBedArray = [];
-      let aSleepArray = [];
-      data.forEach((record) => {
-        let startTime = DateToSeconds(record.StartDate);
-        let endTime = DateToSeconds(record.EndDate);
-
-        if (record.EndDate.getDate() != record.StartDate.getDate()) {
-          let maxValue = (23 * 60 + 59) * 60 + 59;
-          let yValue1 = [startTime, maxValue];
-          let yValue2 = [0, endTime];
-
-          if(record.HkValue=="InBed"){
-            inBedArray.push({
-              x:record.StartDate,
-              y:yValue1
-            })
-            inBedArray.push({
-              x:record.EndDate,
-              y:yValue2
-            })
-          }
-          else{
-            aSleepArray.push({
-              x:record.StartDate,
-              y:yValue1
-            })
-            aSleepArray.push({
-              x:record.EndDate,
-              y:yValue2
-            })
-          }
-
-        } else {
-          let yValue = [startTime,endTime]
-          if(record.HkValue=="InBed"){
-            inBedArray.push({
-              x:record.StartDate,
-              y:yValue
-            })
-          }
-          else{
-            aSleepArray.push({
-              x:record.StartDate,
-              y:yValue
-            })
-          }
-        }
-      });
-
-      return [
-        {
-          name:"inBed",
-          data:inBedArray
-        },
-        {
-          name:"aSleep",
-          data:aSleepArray
-        }
-
-      ]
-
     } else {
       data.forEach((record) => {
         let yValue = record.Value;
@@ -135,6 +77,111 @@ function DateToSeconds(date) {
 
 function DateFormat(date) {
   return date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
+}
+
+function DateFormatHour(date) {
+  return date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate()+"/"+date.getHours();
+}
+
+
+function SleepAnalisysData(data) {
+  let inBedArray = [];
+  let aSleepArray = [];
+  data.forEach((record) => {
+    let startTime = DateToSeconds(record.StartDate);
+    let endTime = DateToSeconds(record.EndDate);
+
+    if (record.EndDate.getDate() != record.StartDate.getDate()) {
+      let maxValue = (23 * 60 + 59) * 60 + 59;
+      let yValue1 = [startTime, maxValue];
+      let yValue2 = [0, endTime];
+
+      if (record.HkValue == "InBed") {
+
+        inBedArray.push({
+          x: record.StartDate.setHours(0,0,0),
+          y: yValue1,
+        });
+        inBedArray.push({
+          x: record.EndDate.setHours(0,0,0),
+          y: yValue2,
+        });
+
+      } else {
+        aSleepArray.push({
+          x: record.StartDate.setHours(0,0,0),
+          y: yValue1,
+        });
+        aSleepArray.push({
+          x: record.EndDate.setHours(0,0,0),
+          y: yValue2,
+        });
+      }
+    } else {
+      let yValue = [startTime, endTime];
+      if (record.HkValue == "InBed") {
+        inBedArray.push({
+          x: record.StartDate.setHours(0,0,0),
+          y: yValue,
+        });
+      } else {
+        aSleepArray.push({
+          x: record.StartDate.setHours(0,0,0),
+          y: yValue,
+        });
+      }
+    }
+  });
+  
+  return [
+    {
+      name: "inBed",
+      data: inBedArray,
+    },
+    {
+      name: "aSleep",
+      data: aSleepArray,
+    },
+  ];
+}
+
+function HeartRateData(data) {
+  let dataFormat = []
+  let dataDict = {};
+  data.forEach((record) => {
+    let value = record.Value;
+    if(value%1!=0){
+      value = parseFloat(value.toFixed(2))
+    }
+    let dateFormat = DateFormatHour(record.Date.Date);
+    if (dateFormat in dataDict) {
+      if(value>dataDict[dateFormat].max){
+        dataDict[dateFormat].max= value;
+      }
+      if(value<dataDict[dateFormat].min){
+        dataDict[dateFormat].min= value;
+      }
+    } else {
+      let date = new Date(record.Date.Date.setMinutes(0,0))
+      dataDict[dateFormat] = {
+        date: date,
+        max: value,
+        min: value
+      };
+    }
+  });
+  for (const [key, value] of Object.entries(dataDict)) {
+    dataFormat.push({ x: value.date, y: [value.min,value.max] });
+  }
+  return [
+    {
+      name: "Heart Rate",
+      data: dataFormat,
+    },
+  ];
+
+  
+
 }
 
 export function getCategoryDataWebFormat(state) {
