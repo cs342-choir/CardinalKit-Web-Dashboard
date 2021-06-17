@@ -21,5 +21,6 @@ export const dataTypeToCalculateAverage = [
   "HKQuantityTypeIdentifierHeartRateVariabilitySDNN",
   "HKQuantityTypeIdentifierBodyFatPercentage",
   "HKQuantityTypeIdentifierEnvironmentalAudioExposure",
-  "HKQuantityTypeIdentifierOxygenSaturation"
+  "HKQuantityTypeIdentifierOxygenSaturation",
+  "HKQuantityTypeIdentifierBloodAlcoholContent"
 ]
