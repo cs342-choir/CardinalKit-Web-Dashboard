@@ -58,6 +58,15 @@ export default {
     titleFormatter:{
       type: Function,
       required: false
+    },
+    horizontal:{
+      type: Boolean,
+      required: false,
+      default:false
+    },
+    toolTipYFormat:{
+      type: Function,
+      required: false
     }
   },
   methods: {
@@ -84,7 +93,7 @@ export default {
         },
         plotOptions: {
           bar: {
-            horizontal: false,
+            horizontal: this.horizontal,
           },
         },
         dataLabels: {
@@ -98,9 +107,13 @@ export default {
           y:{
             formatter:(value,{series,seriesIndex,dataPointIndex,w})=>{
               let y = w.globals.initialSeries[seriesIndex].data[dataPointIndex].y
-
               if(this.yAxisFormat){
                 y= [this.yAxisFormat(y[0]),this.yAxisFormat(y[1])]
+                
+              }
+              if(this.toolTipYFormat){
+                y= [this.toolTipYFormat(y[0]),this.toolTipYFormat(y[1])]
+                
               }
 
               return y[0]+" - "+y[1]
@@ -111,8 +124,8 @@ export default {
           }        
         },
         yaxis: {
-          max: this.yMax?this.yMax: 24 * 3600 - 1,
-          min: this.yMin?this.yMin:0,
+          max: this.yMax,
+          min: this.yMin,
           labels: {
             formatter:this.yAxisFormat
           },

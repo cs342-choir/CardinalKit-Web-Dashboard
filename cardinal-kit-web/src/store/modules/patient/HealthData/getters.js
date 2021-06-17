@@ -26,6 +26,9 @@ export function getSpecificHealthDataGrapFormat(state) {
       return SleepAnalisysData(data);
     } else if (code == "HKQuantityTypeIdentifierHeartRate") {
       return HeartRateData(data);
+    }
+    else if(code == "HKCategoryTypeIdentifierMindfulSession"){
+      return MinfdfulData(data)
     } else if (code.includes("Quantity")) {
       let dataDict = {};
       data.forEach((record) => {
@@ -179,9 +182,19 @@ function HeartRateData(data) {
       data: dataFormat,
     },
   ];
+}
 
-  
+function MinfdfulData(data){
+  let dataFormat = []
+  // dataFormat.push({x:"TEST",y:[new Date(),]})
+  data.forEach((record)=>{
+    dataFormat.push({ x: "Mind", y: [record.StartDate.getTime() ,record.EndDate.getTime()] });
+  })
 
+  return[{
+    name: "Mindful Minutes",
+    data:dataFormat
+  }]
 }
 
 export function getCategoryDataWebFormat(state) {

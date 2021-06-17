@@ -24,14 +24,16 @@
     <range-chart
       v-if="GetGraphType == 'sleep'"
       ref="chart"
-      :key="2"
+      :key="3"
       :series="getSpecificHealthDataGrapFormat(hkCode)"
-      :yAxisFormat=" function(value) {return new Date(value * 1000).toISOString().substr(11, 8);}"
+      :yAxisFormat=" function(value) {return new Date(value).toISOString().substr(11, 8);}"
+      :yMax="24 * 3600 - 1"
+      :yMin="0"
     />  
     <range-chart
       v-if="GetGraphType == 'heart'"
       ref="chart"
-      :key="2"
+      :key="4"
       :series="getSpecificHealthDataGrapFormat(hkCode)"
       :yMax = 100
       :yMin = 0
@@ -41,8 +43,14 @@
               hourEnd = hourStart+1
               return seriesName +': '+ hourStart+' - '+hourEnd}"
     />
-
-
+    <range-chart
+      v-if="GetGraphType == 'mindful'"
+      ref="chart"
+      :key="5"
+      :series="getSpecificHealthDataGrapFormat(hkCode)"   
+      :horizontal=true
+      :toolTipYFormat=" function(value) {return new Date(value).toISOString().substr(11, 8);}"
+    />
     </div>
   </section>
 </template>
@@ -104,6 +112,9 @@ export default {
       else if(this.hkCode=="HKQuantityTypeIdentifierHeartRate"){
         console.log("return Heart")
         return "heart"
+      }
+      else if(this.hkCode=="HKCategoryTypeIdentifierMindfulSession"){
+        return "mindful"
       }
       else if (this.hkCode.includes("Category")) {
         return "scatter";
