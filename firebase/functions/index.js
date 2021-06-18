@@ -6,7 +6,8 @@ admin.initializeApp();
 const db = admin.firestore();
 const {dictionaryConcepMap} = require('./Dictionarys/dictionaryConceptMap')
 const {dictionaryAppleMap} = require('./Dictionarys/dictionaryAppleCodesMap')
-const {dictionaryLonicCodesMap} = require('./Dictionarys/dictionaryLonicCodesMap')
+const {dictionaryLonicCodesMap} = require('./Dictionarys/dictionaryLonicCodesMap');
+const { user } = require('firebase-functions/lib/providers/auth');
 
 String.prototype.formatUnicorn = String.prototype.formatUnicorn ||
 function () {
@@ -695,17 +696,13 @@ let items = [
   transformRule.copyValue('header.documentId','id'),
 ]
 
-function sendToFirestore(studyId,userId,recordId,data,date){
+function sendToFirestore(studyId,userId,recordId,data){
   db.doc(
     `studies/${studyId}`+
     `/users/${userId}`+
     `/healthFhir/${recordId}`
   ).set({ ...data });
-  db.doc(
-    `studies/${studyId}`+
-    `/users/${userId}`+
-    `/healthKit/${recordId}`
-  ).set({ header : {creation_date_time:date} },{merge:true});
+  
 }
 
 exports.omhToFhir =
@@ -737,11 +734,50 @@ exports.omhToFhir =
           if(array.length>0){
             _.remove(array, function(n) { return n == undefined});
             console.log("newarray",array)
-            _.set(dicFhir,'component[0].code.coding',array) 
+            _.set(dicFhir,'component[0].code.coding',array)           
           }
+          sendToFirestore(context.params.studyId,context.params.userId,context.params.healthId,dicFhir)
           let stringDate = dataOmh['header']['creation_date_time']
-          let dateJs = new Date(stringDate)
-          let dateFirebase = admin.firestore.Timestamp.fromDate(dateJs)
+          try{
+            let dateJs = new Date(stringDate)
+            let dateFirebase = admin.firestore.Timestamp.fromDate(dateJs)
+            db.doc(
+              `studies/${context.params.studyId}`+
+              `/users/${context.params.userId}`+
+              `/healthKit/${context.params.healthId}`
+            ).set({ header : 
+              {
+                creation_date_time_p:stringDate,
+                creation_date_time:dateFirebase
+              } },{merge:true});
+          }
+          catch(error){
+            console.log(error);
+            console.log(`error when transforming the date ${stringDate} el header ${dataOmh['header']}`);
+          }
+          
 
-          sendToFirestore(context.params.studyId,context.params.userId,context.params.healthId,dicFhir,dateFirebase)
         });
+
+
+exports.createUserRol = 
+        functions.firestore.document("/studies/{studyId}/users/{userId}")
+        .onCreate((snapshot,context)=>{
+          db.doc(`users_roles/${context.params.userId}`).get().then(userInfo=>{
+            if(!userInfo.exists){
+              db.doc(`users_roles/${context.params.userId}`).set({
+                rol:"user",
+                studies:[`${context.params.studyId}`]
+              })
+            }})
+          });
+exports.addUserEmail = 
+        functions.firestore.document("/studies/{studyId}/users/{userId}")
+        .onCreate((snapshot,context)=>{
+          admin.auth().getUser(context.params.userId).then((userRecord)=>{
+            console.log("este es el userRecord",userRecord.email)
+            db.doc(`/studies/${context.params.studyId}/users/${context.params.userId}`).set({
+              name:`${userRecord.email}`
+            },{merge:true})
+          })
+        })
