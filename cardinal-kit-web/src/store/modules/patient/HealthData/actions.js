@@ -81,21 +81,3 @@ export const FetchLastCategoryData = async ({ dispatch }, payload) => {
       return dispatch("FetchLastOtherData", payload);
   }
 };
-
-
-export const ReviewDates = async({commit})=>{
-  let refGet = await request.GET(`studies/com.alternova.example/users/eetPw3yVxig1Mkcp7ltGUHSXOHa2/healthKit`).WHERE(["header.creation_date_time",">","0"]).Execute()
-  refGet.docs.forEach(async(element) => {
-    let stringDate = element.data()['header']['creation_date_time']
-    let dateJs = new Date(stringDate)
-    let dateFirebase = timeTransform.fromDate(dateJs)
-    let newref= request.PATH(`studies/com.alternova.example/users/eetPw3yVxig1Mkcp7ltGUHSXOHa2/healthKit/${element.id}`,
-    {
-      header:{
-        creation_date_time_p:stringDate,
-        creation_date_time:dateFirebase
-      }
-    }) 
-    await newref.Execute() 
-  });
-}

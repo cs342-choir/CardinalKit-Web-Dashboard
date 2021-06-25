@@ -153,7 +153,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions("patient",["FetchSpecificTypeData","ReviewDates"]),
+    ...mapActions("patient",["FetchSpecificTypeData"]),
     transformAppleCode,
     GetCategoriesByHkType,
     handleChangeDate(value) {
@@ -171,7 +171,6 @@ export default {
     },
   },
   mounted(){
-      this.ReviewDates()
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([
