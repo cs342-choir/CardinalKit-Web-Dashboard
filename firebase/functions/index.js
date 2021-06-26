@@ -1044,21 +1044,21 @@ let items = [
   transformRule.copyValue("header.documentId", "id"),
 ];
 
-function sendToFirestore(studyId, userId, recordId, data) {
-  db.doc(
+async function sendToFirestore(studyId, userId, recordId, data) {
+  await db.doc(
     `studies/${studyId}` + `/users/${userId}` + `/healthFhir/${recordId}`
   ).set({ ...data });
 }
 
 exports.updateHour = functions.firestore
 .document("/studies/{studyId}/users/{userId}/healthKit/{healthId}")
-.onUpdate((change,context)=>{
+.onUpdate(async(change,context)=>{
   const newValue = change.after.data()
   if(!newValue["header"]["creation_date_time_p"]){
     let stringDate = newValue["header"]["creation_date_time"];
     let dateJs = new Date(stringDate);
     let dateFirebase = admin.firestore.Timestamp.fromDate(dateJs);
-    db.doc(
+    await db.doc(
       `studies/${context.params.studyId}` +
         `/users/${context.params.userId}` +
         `/healthKit/${context.params.healthId}`
@@ -1077,7 +1077,7 @@ exports.updateHour = functions.firestore
 
 exports.omhToFhir = functions.firestore
   .document("/studies/{studyId}/users/{userId}/healthKit/{healthId}")
-  .onCreate((snapshot, context) => {
+  .onCreate( async(snapshot, context) => {
     let dataOmh = { ...snapshot.data() };
     if (!("header" in dataOmh)) {
       dataOmh["header"] = {};
@@ -1109,7 +1109,7 @@ exports.omhToFhir = functions.firestore
       });
       _.set(dicFhir, "component[0].code.coding", array);
     }
-    sendToFirestore(
+    await sendToFirestore(
       context.params.studyId,
       context.params.userId,
       context.params.healthId,
@@ -1120,7 +1120,7 @@ exports.omhToFhir = functions.firestore
     let dateJs = new Date(stringDate);
     let dateFirebase = admin.firestore.Timestamp.fromDate(dateJs);
 
-    db.doc(
+    await db.doc(
       `studies/${context.params.studyId}` +
         `/users/${context.params.userId}` +
         `/healthKit/${context.params.healthId}`
@@ -1137,8 +1137,8 @@ exports.omhToFhir = functions.firestore
 
 exports.createUserRol = functions.firestore
   .document("/studies/{studyId}/users/{userId}")
-  .onCreate((snapshot, context) => {
-    db.doc(`users_roles/${context.params.userId}`)
+  .onCreate(async (snapshot, context) => {
+    await db.doc(`users_roles/${context.params.userId}`)
       .get()
       .then((userInfo) => {
         if (!userInfo.exists) {
