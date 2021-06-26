@@ -1,7 +1,12 @@
+/** To Transform units across the app in any other unit */
 import store from "@/store";
 
+/** transform time on seconds */
 export const transformTimeToSeconds=(Value,Unit)=>{
     switch(Unit){
+        case "Days":
+            return Value*3600*24;
+            break;
         case "Hours":
             return Value*3600
         case "Mins":
@@ -11,6 +16,7 @@ export const transformTimeToSeconds=(Value,Unit)=>{
     }
 }
 
+/** Transform Distance in any unit to the unit used Globally */
 export const transformDistanceToGlobalUnit=(Value,Unit)=>{
     // First Transform all to Cm
     let valueInCm = 0;
@@ -69,6 +75,7 @@ export const transformDistanceToGlobalUnit=(Value,Unit)=>{
     return ValueInGlobalMetric
 }
 
+/** Transform seconds into a larger unit */
 export const transformSecondsToBetterFormat=(Value)=>{
     let unit = "Secs"
     let newValue = Value
