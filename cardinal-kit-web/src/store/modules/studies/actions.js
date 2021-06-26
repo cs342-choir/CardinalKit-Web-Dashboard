@@ -41,5 +41,5 @@ export const FetchUsers = async ({commit},payload)=>{
   allUsers = usersSnap.docs.map((record) => {
     return {id:record.id,...record.data()}
   })
-  commit("SaveUsers", allUsers)
+  commit("SaveUsers", {idStudy:payload.studyId,users:allUsers})
 }

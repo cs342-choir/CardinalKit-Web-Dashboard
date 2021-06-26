@@ -1,4 +1,7 @@
 import { transformAppleCode,transformHealthDataToGlobalFormat } from "@/common/helpers/healthKit"
+import { dataTypeToCalculateAverage } from "@/common/static_data"
+
+
 
 export function saveSpecificTypeData(state, payload) {
     let copy = {...state.healthData}
@@ -6,12 +9,26 @@ export function saveSpecificTypeData(state, payload) {
     state.healthData=copy
 }
 
+
+
 export function saveLastCategoryData(state, {category,data}){
+    
     let categoryWebFormat = []
-    data.forEach(element => {
-        
+    data.forEach(element => {        
         if(element && element.length>0){
-            categoryWebFormat.push(transformHealthDataToGlobalFormat(element[0]))
+            let transform = transformHealthDataToGlobalFormat(element[0])
+            if(!transform.HkCode.includes("Category")){
+                    transform.Value = 0
+                element.forEach(record => {
+                    let NewRecord = transformHealthDataToGlobalFormat(record)
+                    transform.Value += NewRecord.Value
+                });        
+                if(dataTypeToCalculateAverage.includes(transform.HkCode)){
+                    transform.Value=transform.Value/element.length
+                }
+                transform.Value= parseFloat(parseFloat(transform.Value).toFixed(2))
+            }
+            categoryWebFormat.push(transform)
         }
     });
     let copyHealth = {...state.healthData}

@@ -1,6 +1,7 @@
 <template>
   <div>
     <apexchart
+      ref="chart"
       type="scatter"
       height="250"
       :options="chartOptions"
@@ -14,10 +15,11 @@ export default {
   components: {
     apexchart: VueApexCharts,
   },
-  methods: {
+   methods: {
     zoomX(fromDate, toDate) {
-      console.log("filter");
-      this.$refs.chart.zoomX(fromDate.getTime(), toDate.getTime());
+      if (this.$refs.chart.chart) {
+        this.$refs.chart.zoomX(fromDate.getTime(), toDate.getTime());
+      }
     },
   },
   props: {

@@ -50,10 +50,10 @@
             text="Sign in with apple" 
           />
         </div>
-        <div class="text-center">
+        <!-- <div class="text-center">
           <span class="ft-10">Not a member? </span>
           <router-link class="ev-link" to="/signup">Sign up</router-link>
-        </div>
+        </div> -->
       </template>
     </Card>
   </section>

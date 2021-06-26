@@ -1,5 +1,6 @@
 import {
   FetchQuantityData,
+  FetchLastQuantityData
 } from "../../index";
 
 export const FetchLastBodyData = async ({ commit }, payload) => {
@@ -7,15 +8,15 @@ export const FetchLastBodyData = async ({ commit }, payload) => {
   commit("saveLastCategoryData", {
     category: payload.category,
     data: await Promise.all([
-      FetchQuantityData("HKQuantityTypeIdentifierBasalBodyTemperature", {...payload,limit: 1,}),
-      FetchQuantityData("HKQuantityTypeIdentifierBodyFatPercentage", {...payload,limit: 1,}),
-      FetchQuantityData("HKQuantityTypeIdentifierLeanBodyMass", {...payload,limit: 1,}),
-      FetchQuantityData("HKQuantityTypeIdentifierBodyTemperature", {...payload,limit: 1,}),
-      FetchQuantityData("HKQuantityTypeIdentifierBodyMass", {...payload,limit: 1,}),
-      FetchQuantityData("HKQuantityTypeIdentifierBodyMassIndex", {...payload,limit: 1,}),
-      FetchQuantityData("HKQuantityTypeIdentifierElectrodermalActivity", {...payload,limit: 1,}),
-      FetchQuantityData("HKQuantityTypeIdentifierHeight", {...payload,limit: 1,}),
-      FetchQuantityData("HKQuantityTypeIdentifierWaistCircumference", {...payload,limit: 1,}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierBasalBodyTemperature", {...payload,limit: 1,}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierBodyFatPercentage", {...payload,limit: 1,}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierLeanBodyMass", {...payload,limit: 1,}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierBodyTemperature", {...payload,limit: 1,}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierBodyMass", {...payload,limit: 1,}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierBodyMassIndex", {...payload,limit: 1,}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierElectrodermalActivity", {...payload,limit: 1,}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierHeight", {...payload,limit: 1,}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierWaistCircumference", {...payload,limit: 1,}),
     ]),
   });
 };

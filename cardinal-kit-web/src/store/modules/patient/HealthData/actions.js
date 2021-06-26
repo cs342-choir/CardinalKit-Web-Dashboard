@@ -1,5 +1,6 @@
 import request from "@/Rest";
 import { transformHealthDataToGlobalFormat } from "@/common/helpers/healthKit";
+import {timeTransform} from "@/plugins/firebase/firebase"
 
 export const FetchSpecificTypeData = async ({ commit }, payload) => {
   let startDate = new Date();
@@ -28,9 +29,7 @@ export const FetchSpecificTypeData = async ({ commit }, payload) => {
   records = dataSnap.docs.map((record) => {
     return transformHealthDataToGlobalFormat(record.data());
   });
-  console.log("Heeere",payload.dates,records.length)
   if (records.length == 0 && payload.dates==undefined) {
-    console.log("Heeere")
     //Find Last and 1 month earlier
     let NewRef = Ref.CLONE()
       .ORDER_BY("header.creation_date_time", true)
@@ -53,7 +52,6 @@ export const FetchSpecificTypeData = async ({ commit }, payload) => {
 };
 
 export const FetchLastCategoryData = async ({ dispatch }, payload) => {
-  console.log("category", payload.category);
   switch (payload.category) {
     case "activity":
       return dispatch("FetchLastActivityData", payload);
