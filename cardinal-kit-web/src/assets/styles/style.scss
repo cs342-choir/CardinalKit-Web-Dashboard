@@ -1,0 +1,28 @@
+@import './base';
+@import './components/buttons';
+
+button {
+    cursor: pointer;
+}
+
+.ev-link {
+    text-decoration: none;
+    color: $link;
+}
+
+.border-blue-evt{
+    border-color: $link;
+}
+
+.form-input {
+    padding: .5rem;
+    border: solid 1px lightgray;
+}
+
+.page {
+    padding: 1rem 4rem;
+
+    @media screen and (max-width: 510px) {
+        padding: 1rem;
+    }
+}
