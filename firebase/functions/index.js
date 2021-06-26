@@ -11,6 +11,8 @@ const {
 } = require("./Dictionarys/dictionaryLonicCodesMap");
 const { user } = require("firebase-functions/lib/providers/auth");
 
+
+/** String Prototype to transform CammelCase in text with spaces  */
 String.prototype.formatUnicorn =
   String.prototype.formatUnicorn ||
   function () {
@@ -32,6 +34,7 @@ String.prototype.formatUnicorn =
     return str;
   };
 
+/** Enum with valid types of rules  */
 var typeRule = {
   copy: "copy",
   add: "add",
@@ -43,6 +46,22 @@ var typeRule = {
   addToArray: "addToArray",
 };
 
+/**  Class that defines the different methods or rules to transform a dictionary into some other required format 
+ * Examples
+ *   Copy exact value from key to another key
+ *   --  transformRule.copyValue('input.key','output.key'),
+ *  Add exact value in new format
+ *   --  transformRule.addValue('input.key','Value'),
+ *  add value by default if input dictionary has a key 
+ *   -- transformRule.addValueIfHasKey('input.key','Output.key','Value'),
+ * add a value depending on the value of a key in the input dictionary
+ *  (Needs a dictionary as parameter to  mapping input -> output
+ *  { 'inputA':'outputA', 'inputB':'outputB'}
+ * )
+ *  -- transformRule.addValueDependOnInput('input.key','output.key',{'granola':'TieneGranola'}),
+ *  Concat values in a output key
+ * -- transformRule.concatenation(['input.key1','input.key2'],'output.key','{0}/{1}')
+*/
 class transformRule {
   type = typeRule.copy;
   keyDependOn = null;
@@ -231,16 +250,7 @@ transformRule.prototype.AddDependendKey = function () {
   return rule;
 };
 let items = [
-  // // pass exact value to another key
-  // transformRule.copyValue('header.id','metadata.id'),
-  // //  add exact value
-  // transformRule.addValue('metadata.notDependend','NotDependend'),
-  // //  if input dict has a key add defect Value
-  // transformRule.addValueIfHasKey('header.id','metadata.valueDefect','testDefect'),
-  // //  if input dict has a expected value in a expected key add value
-  // transformRule.addValueDependOnInput('body.schema_id.namespace','metadata.namespace',{'granola':'TieneGranola'}),
-  // // output with concatenation
-  // transformRule.concatenation('header.id','metadata.concatenation','{0}-concat')
+
 
   transformRule.addValue("resourceType", "Observation"),
   //TODO add healthId
@@ -1044,12 +1054,16 @@ let items = [
   transformRule.copyValue("header.documentId", "id"),
 ];
 
+
+/** Send FhirFormat to firebase */
 async function sendToFirestore(studyId, userId, recordId, data) {
   await db.doc(
     `studies/${studyId}` + `/users/${userId}` + `/healthFhir/${recordId}`
   ).set({ ...data });
 }
 
+
+/** Firebase function to transform string date into firebase timestamp */
 exports.updateHour = functions.firestore
 .document("/studies/{studyId}/users/{userId}/healthKit/{healthId}")
 .onUpdate(async(change,context)=>{
@@ -1075,6 +1089,7 @@ exports.updateHour = functions.firestore
   }
 })
 
+/** Firebase function to transform ohm Format to FHIR format */
 exports.omhToFhir = functions.firestore
   .document("/studies/{studyId}/users/{userId}/healthKit/{healthId}")
   .onCreate( async(snapshot, context) => {
@@ -1135,6 +1150,8 @@ exports.omhToFhir = functions.firestore
     );
   });
 
+
+/** Firebase function to create user roles  on firebase*/
 exports.createUserRol = functions.firestore
   .document("/studies/{studyId}/users/{userId}")
   .onCreate(async (snapshot, context) => {
@@ -1149,6 +1166,8 @@ exports.createUserRol = functions.firestore
         }
       });
   });
+
+  /** Firebase function to add user email in firestore records*/
 exports.addUserEmail = functions.firestore
   .document("/studies/{studyId}/users/{userId}")
   .onCreate((snapshot, context) => {
