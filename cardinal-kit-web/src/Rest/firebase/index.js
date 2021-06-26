@@ -1,5 +1,4 @@
 import {db} from '@/plugins/firebase/firebase'
-import { RESET } from '../../store/modules/patient/mutations'
 
 export class Ref {
     constructor(object, method, payload = null) {

@@ -83,7 +83,6 @@ export function SignUp({ commit }, payload) {
     .catch((error) => {
       var errorCode = error.code;
       var errorMessage = error.message;
-      // ..
     });
 }
 
