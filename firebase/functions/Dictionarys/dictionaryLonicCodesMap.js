@@ -1,3 +1,4 @@
+/** Dictionary to mapping apple codes into Fhir Format with ionic system*/
 exports.dictionaryLonicCodesMap = {
     "HKCharacteristicTypeIdentifierBiologicalSex":{	
         code: "76689-9"	, 

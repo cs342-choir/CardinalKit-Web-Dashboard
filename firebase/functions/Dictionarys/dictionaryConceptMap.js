@@ -1,3 +1,4 @@
+/** Dictionary to mapping symbols into Fhir Format */
 exports.dictionaryConcepMap = {
   "%": {
     system: "http://unitsofmeasure.org",
