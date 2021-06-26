@@ -20,11 +20,14 @@ const db = firebase.firestore()
 const auth = firebase.auth()
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 const appleAuthProvider = new firebase.auth.OAuthProvider('apple.com');
-
+const timeTransform =  firebase.firestore.Timestamp
+const secondaryProvider = firebase.initializeApp(firebaseConfig, "Secondary").auth();
 // export utils/refs
 export {
   db,
   auth,
   googleAuthProvider,
-  appleAuthProvider
+  appleAuthProvider,
+  timeTransform,
+  secondaryProvider
 }

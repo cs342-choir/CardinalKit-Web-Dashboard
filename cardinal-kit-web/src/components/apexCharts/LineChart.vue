@@ -29,10 +29,6 @@ export default {
       }
     },
   },
-  mounted(){
-    console.log("call ")
-    this.zoomX(new Date(),new Date().setDate(-30))
-  },
   computed: {
     chartOptions() {
       return {
@@ -47,9 +43,6 @@ export default {
         },
         xaxis: {
           type: "datetime",
-          // labels: {
-          //   format: 'MMM dd HHH'
-          // }
         },
         stroke: {
           curve: "smooth",

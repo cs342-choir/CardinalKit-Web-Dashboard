@@ -28,7 +28,7 @@ export class Ref {
             case "SET":
                 return await this.object.set(this.payload)
             case "UPDATE":
-                return await this.object.update(this.payload)
+                return await this.object.set(this.payload,{merge:true})
             case "DELETE":
                 return await this.object.delete()
             default:
@@ -59,22 +59,40 @@ export const GET= (path)=>{
 }
 
 export const  POST= (path,payload)=>{
-    if(payload.emptyDoc){
-        return new Ref(db.collection(path),"ADD",payload.data)
+    let parts = path.split('/')
+    let object
+    if(parts.length%2!=0){
+        object = db.collection(path);
     }
     else{
-        return new Ref(db.collection(path).doc(payload.docId),"SET",payload.data)
+        object = db.doc(path);
+    }
+
+    if(payload.emptyDoc){
+        return new Ref(object,"ADD",payload.data)
+    }
+    else{
+        return new Ref(object,"SET",payload.data)
     }
 }
 
-export const PATH= async (path,payload)=>{
-    return new Ref(db.collection(path).doc(payload.docId),"UPDATE",payload.data)
+export const PATH= (path,payload)=>{
+    let parts = path.split('/')
+    
+    let object
+    if(parts.length%2!=0){
+        object = db.collection(path);
+    }
+    else{
+        object = db.doc(path);
+    }
+    return new Ref(object,"UPDATE",payload)
 }
 
-export const  PUT= async ()=>{
+export const  PUT= ()=>{
     return new Ref(db.collection(path).doc(payload.docId),"SET",payload.data)
 }
 
-export const DELETE= async (path,payload)=>{
+export const DELETE=(path,payload)=>{
     return new Ref(db.collection(path).doc(payload.docId),"DELETE")
 }

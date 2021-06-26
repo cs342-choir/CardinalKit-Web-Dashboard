@@ -1,4 +1,4 @@
-import {FetchCategoryTypeData,FetchQuantityData,FetchActivities} from "../../index"
+import {FetchCategoryTypeData,FetchQuantityData,FetchActivities, FetchLastQuantityData} from "../../index"
 
 export function reset({ commit }) {
   commit("RESET");
@@ -16,24 +16,23 @@ export const FetchActivityData = async ({commit}, payload)=>{
 }
 
 export const FetchLastActivityData = async ({commit}, payload)=>{
-  console.log("fetchLat")
   commit("saveLastCategoryData",{ 
     category: payload.category,
     data: await Promise.all([
-      FetchQuantityData("HKQuantityTypeIdentifierDistanceWalkingRunning",{...payload,limit:1}),
-      FetchQuantityData("HKQuantityTypeIdentifierActiveEnergyBurned",{...payload,limit:1}),
-      FetchQuantityData("HKQuantityTypeIdentifierAppleStandTime",{...payload,limit:1}),      
-      FetchQuantityData("HKQuantityTypeIdentifierAppleStandHour",{...payload,limit:1}),
-      FetchQuantityData("HKQuantityTypeIdentifierAppleExerciseTime",{...payload,limit:1}),
-      FetchQuantityData("HKQuantityTypeIdentifierFlightsClimbed",{...payload,limit:1}),
-      FetchQuantityData("HKQuantityTypeIdentifierPushCount",{...payload,limit:1}),
-      FetchQuantityData("HKQuantityTypeIdentifierDistanceWheelchair",{...payload,limit:1}),
-      FetchQuantityData("HKQuantityTypeIdentifierDistanceCycling",{...payload,limit:1}),
-      FetchQuantityData("HKQuantityTypeIdentifierDistanceDownhillSnowSports",{...payload,limit:1}),
-      FetchQuantityData("HKQuantityTypeIdentifierBasalEnergyBurned",{...payload,limit:1}),
-      FetchQuantityData("HKQuantityTypeIdentifierSwimmingStrokeCount",{...payload,limit:1}),
-      FetchQuantityData("HKQuantityTypeIdentifierDistanceSwimming",{...payload,limit:1}),
-      FetchQuantityData("HKQuantityTypeIdentifierStepCount",{...payload,limit:1}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierDistanceWalkingRunning",{...payload,limit:1}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierActiveEnergyBurned",{...payload,limit:1}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierAppleStandTime",{...payload,limit:1}),      
+      FetchLastQuantityData("HKQuantityTypeIdentifierAppleStandHour",{...payload,limit:1}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierAppleExerciseTime",{...payload,limit:1}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierFlightsClimbed",{...payload,limit:1}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierPushCount",{...payload,limit:1}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierDistanceWheelchair",{...payload,limit:1}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierDistanceCycling",{...payload,limit:1}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierDistanceDownhillSnowSports",{...payload,limit:1}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierBasalEnergyBurned",{...payload,limit:1}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierSwimmingStrokeCount",{...payload,limit:1}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierDistanceSwimming",{...payload,limit:1}),
+      FetchLastQuantityData("HKQuantityTypeIdentifierStepCount",{...payload,limit:1}),
       FetchActivities({...payload,limit:1}),
     ])
   }
