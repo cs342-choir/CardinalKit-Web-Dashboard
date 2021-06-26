@@ -1,3 +1,4 @@
+/** Dictionary with all Apple HKtypes display format */
 exports.dictionaryAppleMap = {    
     "HKQuantityTypeIdentifierAppleExerciseTime":{
         code: "HKQuantityTypeIdentifierAppleExerciseTime",
