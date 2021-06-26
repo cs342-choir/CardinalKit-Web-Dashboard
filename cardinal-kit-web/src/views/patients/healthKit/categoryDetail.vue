@@ -29,7 +29,8 @@
           :value="''+activity.Value" 
           :measure="activity.Unit"
           :logo="activity.Logo"
-          :id="activity.HkCode" />
+          :id="activity.HkCode">
+          </activity-card>
       </template>
     </div>
   </section>
