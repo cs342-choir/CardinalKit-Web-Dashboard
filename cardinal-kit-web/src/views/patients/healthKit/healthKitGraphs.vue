@@ -4,20 +4,13 @@
     <div class="mb-5">
       <alt-date withCalendar :defaultDate="date" range @update:model-value="handleChangeDate" />
     </div>
-    <!-- <div class="flex mb-1">
-      <p>study: {{studyId}}</p>
-      <p>user: {{userId}}</p>
-      <p>health Kit Workout: {{hkCode}}</p>
-    </div> -->
     <div class="mb-1">
       <h3>{{ transformAppleCode(hkCode) }}</h3>
-      <!-- <div class="flex">
-        <p>34</p><label>brazadas</label>
-      </div>
-      <div class="date">
-        <p>Actividad</p>
-        <small>Jueves, 13 de mayo 2021</small>
-      </div> -->
+     {{getHealthDataGraphResume(hkCode).title}}
+     <br>
+     {{getHealthDataGraphResume(hkCode).value}}
+     <br>
+     {{getHealthDataGraphResume(hkCode).date}}
     </div>
     <div class="wrapper-graphs">
       <line-chart
@@ -33,6 +26,49 @@
         :series="getSpecificHealthDataGrapFormat(hkCode)"
         :labels="GetCategoriesByHkType(hkCode)"
       />
+    <range-chart
+      v-if="GetGraphType == 'sleep'"
+      ref="chart"
+      :key="3"
+      :series="getSpecificHealthDataGrapFormat(hkCode)"
+      :yAxisFormat=" function(value) {return new Date(value).toISOString().substr(11, 8);}"
+      :yMax="24 * 3600 - 1"
+      :yMin="0"
+    />  
+    <range-chart
+      v-if="GetGraphType == 'heart'"
+      ref="chart"
+      :key="4"
+      :series="getSpecificHealthDataGrapFormat(hkCode)"
+      :yMax = 100
+      :yMin = 0
+      :titleFormatter="(seriesName,{w,seriesIndex,dataPointIndex}) => {
+              x=w.globals.initialSeries[seriesIndex].data[dataPointIndex].x
+              hourStart = x.getHours()
+              hourEnd = hourStart+1
+              return seriesName +': '+ hourStart+' - '+hourEnd}"
+    />
+    <range-chart
+      v-if="GetGraphType == 'mindful'"
+      ref="chart"
+      :key="5"
+      :series="getSpecificHealthDataGrapFormat(hkCode)"   
+      :horizontal=true
+      :toolTipYFormat=" function(value) {return new Date(value).toISOString().substr(11, 8);}"
+    />
+<alt-table :columns="[{ header: 'Date' }, { header: 'Value' }]">
+    <template #t-row>
+      <tr v-for="(data, index) in getSpecificHealthData(hkCode)" :key="index">
+        <td>
+          {{data.Date.Date}}
+        </td>
+        <td>
+        {{data.Value}} {{data.Unit}}
+        </td>
+      </tr>
+    </template>
+  </alt-table>
+
     </div>
   </section>
 </template>
@@ -43,6 +79,7 @@ import multipleRadialBars from "@/components/apexCharts/multipleRadialBars";
 import BarChart from "@/components/apexCharts/BarChart";
 import LineChart from "@/components/apexCharts/LineChart";
 import ScatterChart from "@/components/apexCharts/ScatterChart";
+import RangeChart from "@/components/apexCharts/RangeChart"
 import { ANALYTICS_TO_GRAPH } from "@/plugins/mock/analytics";
 import MultipleRadialBars from "../../../components/apexCharts/multipleRadialBars.vue";
 import { mapActions, mapGetters } from "vuex";
@@ -51,6 +88,7 @@ import {
   GetCategoriesByHkType,
 } from "@/common/helpers/healthKit";
 import AltDate from "@/components/calendar/AltDate.vue";
+import altTable from '@/components/tables/altTable';
 
 export default {
   components: {
@@ -60,6 +98,8 @@ export default {
     MultipleRadialBars,
     ScatterChart,
     AltDate,
+    RangeChart,
+    altTable
   },
   props: {
     studyId: {
@@ -83,9 +123,20 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("patient", ["getSpecificHealthDataGrapFormat"]),
+    ...mapGetters("patient", ["getSpecificHealthDataGrapFormat","getSpecificHealthData","getHealthDataGraphResume"]),
     GetGraphType() {
-      if (this.hkCode.includes("Category")) {
+      if(this.hkCode=="HKCategoryTypeIdentifierSleepAnalysis"){
+        console.log("return sleep")
+        return "sleep"
+      }
+      else if(this.hkCode=="HKQuantityTypeIdentifierHeartRate"){
+        console.log("return Heart")
+        return "heart"
+      }
+      else if(this.hkCode=="HKCategoryTypeIdentifierMindfulSession"){
+        return "mindful"
+      }
+      else if (this.hkCode.includes("Category")) {
         return "scatter";
       } else {
         return "line";
@@ -114,6 +165,8 @@ export default {
         }
       }
     },
+  },
+  mounted(){
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([

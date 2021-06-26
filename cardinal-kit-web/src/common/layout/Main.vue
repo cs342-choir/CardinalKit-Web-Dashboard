@@ -7,7 +7,7 @@
 			logout 
 			width-logo="50" 
 			@handle-logout="handleLogout" 
-			:menu="[{ name: 'Home', route: '/studies'}]" 
+			:menu="menu" 
 		/>
 		<div>
 			<router-view/>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import Header from '@/components/auth/Header';
 export default {
   components: {
@@ -25,6 +25,16 @@ export default {
   data: function () {
     return {
       logo: require('@/assets/logo.png')
+    }
+  },
+  computed:{
+    ...mapGetters("user", ["getUserRol"]),
+    menu(){
+      let main = [{ name: 'Home', route: '/'}]
+      if(this.getUserRol=="superAdmin"){
+        main.push({name: 'Register doctors', route:'/register'})
+      }
+      return main;
     }
   },
   methods: {

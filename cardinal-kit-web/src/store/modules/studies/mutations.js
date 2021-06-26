@@ -12,11 +12,9 @@ export function saveStudies(state,studies){
 }
 
 export function saveRecords(state,records){
-    //Map Data
-
     state.records=records
 }
 
-export function SaveUsers(state,users){
-    state.users=users
+export function SaveUsers(state,{idStudy,users}){
+    state.users[idStudy]=users
 }

@@ -13,3 +13,14 @@ export const CategoriesList = [
   { id:"vitals", name: "Vitals", icon: require("@/assets/icons/Vitals.png") },
   { id:"other", name: "Other Data", icon: require("@/assets/icons/Other.png") },
 ];
+
+
+export const dataTypeToCalculateAverage = [
+  "HKQuantityTypeIdentifierRestingHeartRate",
+  "HKQuantityTypeIdentifierHeartRate",
+  "HKQuantityTypeIdentifierHeartRateVariabilitySDNN",
+  "HKQuantityTypeIdentifierBodyFatPercentage",
+  "HKQuantityTypeIdentifierEnvironmentalAudioExposure",
+  "HKQuantityTypeIdentifierOxygenSaturation",
+  "HKQuantityTypeIdentifierBloodAlcoholContent"
+]
