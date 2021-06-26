@@ -2,6 +2,9 @@ import {
   transformAppleCode,
   GetCategoriesByHkType,
 } from "@/common/helpers/healthKit";
+import {transformDistanceToGlobalUnit, transformTimeToSeconds, transformSecondsToBetterFormat} from '@/common/helpers/units'
+import store from "@/store";
+
 
 import { dataTypeToCalculateAverage } from "@/common/static_data";
 
@@ -15,12 +18,102 @@ export function getSpecificHealthData(state) {
   };
 }
 
+function ResumeRange(data,transformValueCallBack,unit){
+  let min=transformValueCallBack(data[0].Value,unit);
+  let max=transformValueCallBack(data[0].Value,unit);
+  data.forEach(record=>{
+    let newValue = transformValueCallBack(record.Value,record.Unit)
+    if(newValue>max){
+      max = newValue
+    }
+    if(newValue<min)
+    {
+      console.log("new Min")
+      console.log(record)
+      min=newValue
+    }
+  })
+  return {title:"Range",value:`${min} - ${max}  ${unit}`}
+}
+function ResumeSum(data,transformValueCallBack, unit){
+  let total=0
+  data.forEach((record) => {
+    total+= transformValueCallBack(record.Value,record.Unit)
+  })
+  if(total%1!=0){
+    total=total.toFixed(2)
+  }
+  return {title:"Total",value:`${total} ${unit}`}
+  
+}
+function ResumeAverage(data,transformValueCallBack,unit){
+
+}
+
+function ResumeCount(data){
+  return {title:"Total",value:`${data.length} entries`}
+}
+
+function ResumeSleepAnalisis(data){
+  let sumInBedSeconds = 0;
+  let sumASleepSeconds = 0;
+  let countInBed = 0;
+  let countASleep=0;
+
+  data.forEach(record => {
+    if(record.HkValue=="InBed"){
+      sumInBedSeconds+=transformTimeToSeconds(record.Value,record.Unit)
+      countInBed++;
+    }
+    else{
+      
+      sumASleepSeconds+=transformTimeToSeconds(record.Value,record.Unit)
+      countASleep++;
+    }
+  });
+  let inBedAverage = transformSecondsToBetterFormat(sumInBedSeconds/countInBed);
+  let aSleepAverage =transformSecondsToBetterFormat(sumASleepSeconds/countASleep);
+
+
+
+  return {title:"Sleep Average",value:`Average In Bed: ${inBedAverage.Value} ${inBedAverage.Unit} / Average ASleep: ${aSleepAverage.Value} ${aSleepAverage.Unit}` }
+}
+
+export function getHealthDataGraphResume(state){
+  return (code)=>{
+    let data= state.healthData[code]
+
+    let result = { title:"", value:"",date:""}
+
+    switch(code){
+      case "HKQuantityTypeIdentifierHeartRate": 
+        result = ResumeRange(data,(param,unit)=>{return param},data[0].Unit)
+      break;
+      case "HKCategoryTypeIdentifierSleepAnalysis":
+        result = ResumeSleepAnalisis(data)
+        break;
+      case "HKQuantityTypeIdentifierDistanceWalkingRunning":
+        result = ResumeSum(data,transformDistanceToGlobalUnit,store.getters['units/getDistanceUnit'])
+      break;
+      case "HKQuantityTypeIdentifierFlightsClimbed":
+        result = ResumeSum(data,(param,unit)=>{return param},"floors")
+        break;
+      default:
+        if (code.includes("Quantity")) {          
+          result = ResumeSum(data,(param)=>{return param},data[0].Unit)
+        }
+        else{
+          result = ResumeCount(data)
+        }
+        break;
+    }    
+    return result
+  }
+}
+
 export function getSpecificHealthDataGrapFormat(state) {
   return (code) => {
-    //Merge Data Same Date
-
     let data = state.healthData[code];
-
     let dataFormat = [];
     if (code == "HKCategoryTypeIdentifierSleepAnalysis") {
       return SleepAnalisysData(data);
@@ -199,6 +292,7 @@ function MinfdfulData(data){
 
 export function getCategoryDataWebFormat(state) {
   return (categoryId) => {
+    console.log(" -- ",state.healthWebFormat[categoryId])
     return state.healthWebFormat[categoryId];
   };
 }

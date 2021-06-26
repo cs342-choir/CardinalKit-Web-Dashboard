@@ -12,7 +12,6 @@
         endDate: date
     }
 */
-
 const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
@@ -36,6 +35,7 @@ export const transformHealthDataToGlobalFormat = (data) => {
   //HkCode
   if (data.body.category_type) {
     HkCode = data.body.category_type;
+    
     if(data.body.category_value!="Not Applicable"){
       HkValue = data.body.category_value;
       Value = data.body.category_value
@@ -156,6 +156,11 @@ export const transformHealthDataToGlobalFormat = (data) => {
       Value = data.body.duration.value;
     }
   }
+
+  if(typeof Value === 'number' && Value%1!=0){
+    Value=  parseFloat(parseFloat(Value).toFixed(2))
+  }
+  
   //Id
   Id = data.header.id;
   

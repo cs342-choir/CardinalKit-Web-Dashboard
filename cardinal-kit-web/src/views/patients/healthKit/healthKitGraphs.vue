@@ -6,6 +6,11 @@
     </div>
     <div class="mb-1">
       <h3>{{ transformAppleCode(hkCode) }}</h3>
+     {{getHealthDataGraphResume(hkCode).title}}
+     <br>
+     {{getHealthDataGraphResume(hkCode).value}}
+     <br>
+     {{getHealthDataGraphResume(hkCode).date}}
     </div>
     <div class="wrapper-graphs">
       <line-chart
@@ -60,15 +65,6 @@
         <td>
         {{data.Value}} {{data.Unit}}
         </td>
-        <!-- <td>{{index + 1}}</td>
-        <td>
-          {{patient.name || 'NN'}}
-        </td>
-        <td>
-          <span class="pointer" @click="handleSelecPatient(patient.id)">
-            detail
-          </span>
-        </td> -->
       </tr>
     </template>
   </alt-table>
@@ -127,7 +123,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("patient", ["getSpecificHealthDataGrapFormat","getSpecificHealthData"]),
+    ...mapGetters("patient", ["getSpecificHealthDataGrapFormat","getSpecificHealthData","getHealthDataGraphResume"]),
     GetGraphType() {
       if(this.hkCode=="HKCategoryTypeIdentifierSleepAnalysis"){
         console.log("return sleep")
