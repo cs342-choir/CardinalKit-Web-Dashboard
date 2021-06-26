@@ -1,0 +1,99 @@
+* {
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100vh;
+    background-color: $background-app;
+}
+
+main {
+    width: 100%;
+}
+
+.mr {
+    &-1{
+       margin-right: .5rem; 
+    }
+    &-2{
+       margin-right: 1rem; 
+    }
+    &-3{
+       margin-right: 1.25rem; 
+    }
+}
+
+.mt-1 {
+    margin-top: 5px;
+}
+
+.mt-5 {
+    margin-top: 20px;
+}
+
+.mb-1 {
+    margin-bottom: 5px;
+}
+
+.mb-5 {
+    margin-bottom: 20px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.ft-10 {
+    font-size: 10pt;
+}
+
+.w-100 {
+ width: 100%;
+}
+
+.block{
+    display: block;
+}
+
+.flex {
+    display: flex;
+
+    &.justify-center {
+        justify-content: center;
+    }
+
+    &.justify-between {
+        justify-content: space-between;
+    }
+
+    &.align-center{
+        align-items: center;
+    }
+
+    &.flex-column {
+        flex-direction: column;
+    }
+}
+
+.bg {
+    &-info {
+        @include setBackground($info, $text-info);
+      }
+    
+      &-success {
+        @include setBackground($success, $text-success);
+      }
+    
+      &-warning {
+         @include setBackground($warning, $text-warning);
+      }
+    
+      &-danger {
+        @include setBackground($danger, $text-danger);
+    }
+}
