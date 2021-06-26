@@ -16,9 +16,9 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
 
+/** Function to transform OmhData into a format that works throughout the application */
 
 // TODO There is a case with distance duration and kcal  
-
 export const transformHealthDataToGlobalFormat = (data) => {
   let HkCode,
     HkCodeName,
@@ -179,6 +179,7 @@ export const transformHealthDataToGlobalFormat = (data) => {
   };
 };
 
+/** Function to transform apple code in string human readable */
 export const transformAppleCode = (appleCode) => {
   return appleCode
     .replace("HKQuantityTypeIdentifier", "")
@@ -187,6 +188,8 @@ export const transformAppleCode = (appleCode) => {
     .replace(/([A-Z][a-z])/g, " $1");
 };
 
+
+/** Function to transform Time units*/
 function TransformTime(timeInSecs){
   let Secs = timeInSecs;
   if(Secs>=60){
@@ -211,6 +214,8 @@ function TransformTime(timeInSecs){
   }
 }
 
+
+/** Get Category values by apple code  "HKCategoryTypes" */
 export const GetCategoriesByHkType=(HkCode)=>{
   switch(HkCode){
     case 'HKCategoryTypeIdentifierAppetiteChanges':
