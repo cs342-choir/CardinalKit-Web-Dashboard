@@ -1,14 +1,7 @@
 <template>
   <div>
     <categories :userId="$route.params.userId" :studyId="$route.params.studyId" />
-    <div v-for="(record, idx) in getHealthData" :key="idx">
-      <!-- <b-button @click="handleSelecStudy(study.id)"> -->
-        {{ record.name }}
-        <br/><br/><br/>
-        
-      <!-- </b-button> -->
-    </div>
-  </div>
+   </div>
 </template>
 
 <script>

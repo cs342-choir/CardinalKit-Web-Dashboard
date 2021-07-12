@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div :onClick="showStudySurveys" class="card-category">
+      <span class="subtitle">Surveys</span>
+    </div>
     <patient-list :patients="getUsersStudy(idStudy)" :studyId="idStudy" />
     <br />
   </div>
@@ -20,16 +23,23 @@ export default {
   },
   computed: {
     ...mapGetters("user", ["getUserRol", "getUserStudies", "getUserId"]),
-    ...mapGetters("studies",["getUsersStudy"])
+    ...mapGetters("studies", ["getUsersStudy"]),
   },
   props: {
-    idStudy:{
-      type:String,
-      required:true
+    idStudy: {
+      type: String,
+      required: true,
+    },
+  },
+  methods:{
+    showStudySurveys(){
+      this.$router.push(`/surveysList/${this.$route.params.idStudy}`);
     }
   },
   beforeRouteEnter(to, from, next) {
-    Promise.all([store.dispatch("studies/FetchUsers",{studyId:to.params.idStudy})]).then(() => {
+    Promise.all([
+      store.dispatch("studies/FetchUsers", { studyId: to.params.idStudy }),
+    ]).then(() => {
       next();
     });
   },
