@@ -4,5 +4,6 @@ const modules = {
     'auth': (process.env.VUE_APP_AUTH_MODE == "firebase")? require('./authFirebase').default:require('./authApi').default,
     'patient':require('./patient').default,
     'units':require('./units').default,
+    'surveys':require('./surveys').default
 };
 export default modules;
