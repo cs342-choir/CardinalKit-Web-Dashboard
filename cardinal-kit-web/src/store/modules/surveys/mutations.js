@@ -104,5 +104,13 @@ function transformAnswerFormat(question){
             answer=question.results.answer
             break;
     }
-    return {"userId":question.userId,"answer":answer }
+     let date = ""
+     try{
+         date = question.startDate.toDate()
+     }
+     catch{
+         date = ""
+     }
+
+    return {"userId":question.userId,"answer":answer, date:date }
 }
