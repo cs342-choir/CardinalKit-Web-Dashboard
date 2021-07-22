@@ -1,13 +1,10 @@
 <template>
   <div>
     <div v-for="(value, key) in getSurveyDetail(studyId)[surveyId]" :key="key">
-      {{ value.question.question }}
+      {{ value.question }}
       <br />
       <br />
-      <div
-        v-for="(option, optionKey) in value.question.options"
-        :key="optionKey"
-      >
+      <div v-for="(option, optionKey) in value.Options" :key="optionKey">
         {{ optionKey }}: {{ option }}
       </div>
       <br />
@@ -75,45 +72,70 @@ export default {
   },
   methods: {
     convert() {
-      console.log(
-        "before transform",
-        this.getSurveyDetail(this.studyId)[this.surveyId]
+      let surveyData = JSON.parse(
+        JSON.stringify(this.getSurveyDetail(this.studyId)[this.surveyId])
       );
-      let json = JSON.stringify(
-        this.getSurveyDetail(this.studyId)[this.surveyId]
+      console.log(surveyData);
+      let surveyTransformed = this.oneLineForEachAnswer(
+        this.optionsInOneLine(surveyData)
       );
-      const parsedJson = JSON.parse(json);
-      console.log("this is the parsedJson", parsedJson);
-      console.log("this is the json", json);
-
-
-      const objectToCsv = function (data) {
-        const csvRows = [];
-        const headers = Object.keys(data[0]);
-        csvRows.push(headers.join(","));
-        for (const row of data) {
-          const values = headers.map((header) => {
-            const escaped = ("" + row[header]).replace(/"/g, '\\"');
-            return `"${escaped}"`;
-          });
-          csvRows.push(values.join(","));
+      let stringData = JSON.stringify(surveyTransformed);
+      const jsonData = JSON.parse(stringData);
+      let csvData = this.objectToCsv(jsonData);
+      this.download(csvData);
+    },
+    optionsInOneLine(data) {
+      let result = [];
+      data.forEach((element) => {
+        let nElement = element;
+        if (nElement.Options) {
+          let optionsInString = JSON.stringify(nElement.Options).replaceAll('"',"'");
+          if (optionsInString) {
+            optionsInString = optionsInString;
+          }
+          nElement.Options = optionsInString;
         }
-        return csvRows.join("\n");
-      };
-
-
-      const download = function (data) {
-        const blob = new Blob([data], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const docu = document.createElement('a');
-        docu.setAttribute('hidden', '');
-        docu.setAttribute('href', url);
-        docu.setAttribute('download', 'csvname.csv');
-        docu.click();
-      };
-
-       download(json);
-
+        result.push(nElement);
+      });
+      return result;
+    },
+    oneLineForEachAnswer(data) {
+      let result = [];
+      data.forEach((element) => {
+        let answers = element.answers;
+        let nElement = element;
+        delete nElement["answers"];
+        answers.forEach((answer) => {
+          let nAnswer = answer;
+          Object.keys(nElement).map((key) => {
+            nAnswer[key] = nElement[key];
+          });
+          result.push(nAnswer);
+        });
+      });
+      return result;
+    },
+    objectToCsv(data) {
+      const csvRows = [];
+      const headers = Object.keys(data[0]);
+      csvRows.push(headers.join(","));
+      for (const row of data) {
+        const values = headers.map((header) => {
+          const escaped = ("" + row[header]).replace(/"/g, '\\"');
+          return `"${escaped}"`;
+        });
+        csvRows.push(values.join(","));
+      }
+      return csvRows.join("\n");
+    },
+    download(data) {
+      const blob = new Blob([data], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const docu = document.createElement("a");
+      docu.setAttribute("hidden", "");
+      docu.setAttribute("href", url);
+      docu.setAttribute("download", "csvname.csv");
+      docu.click();
     },
   },
   beforeRouteEnter(to, from, next) {
