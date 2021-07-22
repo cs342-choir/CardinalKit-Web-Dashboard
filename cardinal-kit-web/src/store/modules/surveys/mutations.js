@@ -20,10 +20,16 @@ export function saveSurveyDetail(state,{results,studyId,surveyId}){
                 //Each Question
                 record.results.forEach((question)=>{
                     if(question.results && (question.results.length>0) || (!Array.isArray(question.results))){
+                        
+                        console.log("this is the question",question)
                         let identifier = ""
                         let objet = []
                         let answers = []
                         if(question.questionType){
+
+
+
+
                             objet = transformQuestionFormat(question)
                             identifier=question.identifier
                             question["userId"]=records["userId"]
@@ -32,7 +38,7 @@ export function saveSurveyDetail(state,{results,studyId,surveyId}){
                         else{
                             //If no has question type is no a question
                             // if is form?
-                            console.log("question",question)
+
                             if(!Array.isArray(question.results)){
                                 objet = transformQuestionFormat(question)
                             }
@@ -64,6 +70,7 @@ export function saveSurveyDetail(state,{results,studyId,surveyId}){
     surveyDetail[studyId]=[]
     surveyDetail[studyId][surveyId]=dictResult
     state.surveyDetail=surveyDetail
+    console.log("Este es el dictResult",dictResult)
 }
 
 function transformQuestionFormat(question){    
@@ -83,7 +90,7 @@ function transformQuestionFormat(question){
 }
 
 function transformAnswerFormat(question){
-    console.log("answer",question)
+
     let answer=""
     if(question.fileURL){
         answer=question.fileURL
