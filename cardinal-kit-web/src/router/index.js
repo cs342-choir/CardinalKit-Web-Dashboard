@@ -6,6 +6,8 @@ import PatientsList from "@/views/studies/patientsList";
 import HealthUser from "@/views/patients/healthKit/healthKitUser";
 import categoryDetail from "@/views/patients/healthKit/categoryDetail";
 import registerDoctor from "@/views/auth/registerDoctor"
+import surveysList from "@/views/surveys/surveysList"
+import surveyDetail from "@/views/surveys/surveysDetail"
 
 const routes = [
   {
@@ -64,6 +66,24 @@ const routes = [
         path: "/register",
         name: "register",
         component: registerDoctor,
+        props:true,
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/surveysList/:studyId",
+        name: "surveysList",
+        component: surveysList,
+        props:true,
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/surveyDetail/:studyId/:surveyId",
+        name: "surveyDetail",
+        component: surveyDetail,
         props:true,
         meta: {
           requiresAuth: true,
