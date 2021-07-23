@@ -1,5 +1,7 @@
 <template>
   <div>
+    <br />
+    
     <alt-table :columns="columns">
     <template #t-row>
       <tr v-for="(survey, index) in getSurveysList(studyId)" :key="survey">
