@@ -1,15 +1,35 @@
 <template>
   <div>
-    <div v-for="(value, key) in getSurveyDetail(studyId)[surveyId]" :key="key">
+    <br />
+    <div
+      class="surveyQuestionTxt"
+      v-for="(value, key) in getSurveyDetail(studyId)[surveyId]"
+      :key="key"
+    >
       {{ value.question }}
+
       <br />
-      <br />
-      <div v-for="(option, optionKey) in value.Options" :key="optionKey">
-        {{ optionKey }}: {{ option }}
+      <div class="surveyOptionsTxt" v-if="value.questionType === 1">
+        <br />
+        <strong>Min: </strong>{{ value.Options['Min'] + ""}} {{ value.Options["MinDescription"] }} 
+        <strong>Max: </strong> {{ value.Options["Max"] }} {{ value.Options["MaxDescription"] }} 
+        <strong>Step: </strong> {{ value.Options["Step"] }}
+        <br />
+      </div>
+            <div class="surveyOptionsTxt" v-if="value.questionType === 2">
+        <br />
+        <strong>0: </strong>{{ value.Options[0]['text'] + ""}}  
+        <strong>1: </strong>{{ value.Options[1]['text'] + ""}} 
+        <strong>2: </strong>{{ value.Options[2]['text'] + ""}} 
+        <br />
+      </div>
+            <div class="surveyOptionsTxt" v-if="value.questionType === 7">
+        <br />
+        <strong>False: </strong>{{ value.Options['NoText'] + ""}}  
+        <strong>True: </strong>{{ value.Options['YesText'] + ""}} 
+        <br />
       </div>
       <br />
-      <br />
-
       <alt-table :columns="columns">
         <template #t-row>
           <tr v-for="(answer, index) in value.answers" :key="answer">
@@ -27,11 +47,10 @@
         </template>
       </alt-table>
       <br />
-      <br />
     </div>
   </div>
-  <div :onClick="convert" class="card-category">
-    <span class="subtitle">Download</span>
+  <div :onClick="convert" class="card-category footerBtn">
+    <span class="downloadBtn">Download</span>
   </div>
 </template>
 
@@ -89,7 +108,10 @@ export default {
       data.forEach((element) => {
         let nElement = element;
         if (nElement.Options) {
-          let optionsInString = JSON.stringify(nElement.Options).replaceAll('"',"'");
+          let optionsInString = JSON.stringify(nElement.Options).replaceAll(
+            '"',
+            "'"
+          );
           if (optionsInString) {
             optionsInString = optionsInString;
           }
@@ -151,3 +173,34 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.downloadBtn {
+  text-decoration: none;
+  font-weight: 300;
+  font-size: 20px;
+  color: #000000;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: transparent;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #000000;
+  margin: auto;
+  top: -20px;
+  box-shadow: 5px 5px 5px;
+}
+.footerBtn {
+  padding: 0px 25px 25px 25px;
+  width: 100%;
+  display: flex;
+}
+.surveyQuestionTxt {
+  font-size: 25px;
+  font-weight: 300;
+}
+.surveyOptionsTxt {
+  font-size: 15px;
+}
+</style>
