@@ -1,10 +1,16 @@
 <template>
   <div>
     <br />
+    Select a question
+    <br />
+    <br />
+     <alt-select :options="questions" v-model="questionSelected" />
+     <br />
     <div
       class="surveyQuestionTxt"
       v-for="(value, key) in getSurveyDetail(studyId)[surveyId]"
       :key="key"
+       v-show="questionSelected==value.identifier"
     >
       {{ value.question }}
 
@@ -72,9 +78,11 @@
 <script>
 import store from "@/store";
 import { mapGetters } from "vuex";
+import 'vue-select/dist/vue-select.css';
 
 //Components
 import altTable from "@/components/tables/altTable";
+import altSelect from "@/components/multiSelect/Select";
 
 export default {
   data() {
@@ -85,14 +93,23 @@ export default {
         { header: "Answer" },
         { header: "Date" },
       ],
+      questionSelected:null
     };
   },
   computed: {
     ...mapGetters("surveys", ["getSurveyDetail"]),
+    questions(){
+      let qs = []
+      this.getSurveyDetail(this.studyId)[this.surveyId].map((element)=>{
+        qs.push({"id":element.identifier,"name":element.question,"value":element.identifier})
+      })
+      return qs
+    }
   },
 
   components: {
     altTable,
+    altSelect
   },
   props: {
     studyId: {
@@ -181,6 +198,10 @@ export default {
       docu.setAttribute("download", "csvname.csv");
       docu.click();
     },
+  },
+  mounted(){
+    console.log("mounted")
+    this.questionSelected=this.questions?this.questions[0].id:null
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([
