@@ -9,38 +9,53 @@
       {{ value.question }}
 
       <br />
+
+      <!-- @TODO remove all conditionals and create a method that accepts all kinds of surveys.options and stylizes it in cardinal format-->
       <div class="surveyOptionsTxt" v-if="value.questionType === 1">
         <br />
-        <strong>Min: </strong>{{ value.Options['Min'] + ""}} {{ value.Options["MinDescription"] }} 
-        <strong>Max: </strong> {{ value.Options["Max"] }} {{ value.Options["MaxDescription"] }} 
+        <strong>Min: </strong>{{ value.Options["Min"] + "" }}
+        {{ value.Options["MinDescription"] }} <strong>Max: </strong>
+        {{ value.Options["Max"] }} {{ value.Options["MaxDescription"] }}
         <strong>Step: </strong> {{ value.Options["Step"] }}
         <br />
       </div>
-            <div class="surveyOptionsTxt" v-if="value.questionType === 2">
+      <div class="surveyOptionsTxt" v-else-if="value.questionType === 2">
         <br />
-        <strong>0: </strong>{{ value.Options[0]['text'] + ""}}  
-        <strong>1: </strong>{{ value.Options[1]['text'] + ""}} 
-        <strong>2: </strong>{{ value.Options[2]['text'] + ""}} 
-        <br />
-      </div>
-            <div class="surveyOptionsTxt" v-if="value.questionType === 7">
-        <br />
-        <strong>False: </strong>{{ value.Options['NoText'] + ""}}  
-        <strong>True: </strong>{{ value.Options['YesText'] + ""}} 
+        <strong>0: </strong>{{ value.Options[0]["text"] + "" }}
+        <strong>1: </strong>{{ value.Options[1]["text"] + "" }}
+        <strong>2: </strong>{{ value.Options[2]["text"] + "" }}
         <br />
       </div>
+      <div class="surveyOptionsTxt" v-else-if="value.questionType === 7">
+        <br />
+        <strong>False: </strong>{{ value.Options["NoText"] + "" }}
+        <strong>True: </strong>{{ value.Options["YesText"] + "" }}
+        <br />
+      </div>
+      <div    
+        class="surveyOptionsTxt"
+        v-else
+        v-for="(option, optionKey) in value.Options"
+        :key="optionKey"
+      >
+        {{ optionKey }}: {{ option }}
+      </div>
+      <!-- @TODO remove all conditionals and  create a method that accepts all kinds of surveys.options and stylizes it in cardinal format-->
+
+      <br />
+
       <br />
       <alt-table :columns="columns">
         <template #t-row>
           <tr v-for="(answer, index) in value.answers" :key="answer">
             <td>{{ index + 1 }}</td>
-            <td>
+            <td class="userIdTxt">
               {{ answer.userId }}
             </td>
-            <td>
+            <td class="answerTxt">
               {{ answer.answer }}
             </td>
-            <td>
+            <td class="dateTxt">
               {{ answer.date }}
             </td>
           </tr>
@@ -90,6 +105,13 @@ export default {
     },
   },
   methods: {
+
+    //   UTCtoLocalDate(date)  {           //@TODO decide whether to use local time or utc
+    //   const UTC = new Date(date || '');
+    //   const offSetDate = new Date(UTC.getTime() - UTC.getTimezoneOffset() * 120000);
+    //   const localDate = new Date(offSetDate).toISOString().substring(0, 19);
+    //   return localDate || '';
+    // },
     convert() {
       let surveyData = JSON.parse(
         JSON.stringify(this.getSurveyDetail(this.studyId)[this.surveyId])
@@ -202,5 +224,14 @@ export default {
 }
 .surveyOptionsTxt {
   font-size: 15px;
+}
+.userIdTxt {
+  font-family: sans-serif;
+}
+.answerTxt {
+  font-family: sans-serif;
+}
+.dateTxt {
+  font-family: sans-serif;
 }
 </style>
