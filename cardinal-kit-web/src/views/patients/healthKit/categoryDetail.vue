@@ -70,11 +70,17 @@ export default {
     this.activities = this.getCategoryDataWebFormat(this.categoryId)
   },
   beforeRouteEnter(to, from, next) {
-    Promise.all([
-      store.dispatch("patient/FetchLastCategoryData",{ studyId:`${to.params.studyId}`  , userId:`${to.params.userId}`,category:`${to.params.categoryId}`})
+    if(to.params.categoryId=="survey"){
+      console.lo
+    }
+    else
+    {
+      Promise.all([
+        store.dispatch("patient/FetchLastCategoryData",{ studyId:`${to.params.studyId}`  , userId:`${to.params.userId}`,category:`${to.params.categoryId}`})
       ]).then(()=>{
         next()
       })
+    }
   },
 };
 </script>

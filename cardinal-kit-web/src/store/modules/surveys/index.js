@@ -4,7 +4,8 @@ import * as getters from './getters'
 
 export const initialState = () => ({
     surveysList:[],
-    surveyDetail:[]
+    surveyDetail:[],
+    userSurveys:{},
 })
 
 export default {

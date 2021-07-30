@@ -8,6 +8,7 @@ import categoryDetail from "@/views/patients/healthKit/categoryDetail";
 import registerDoctor from "@/views/auth/registerDoctor"
 import surveysList from "@/views/surveys/surveysList"
 import surveyDetail from "@/views/surveys/surveysDetail"
+import surveyUser from "@/views/surveys/surveyUser"
 
 const routes = [
   {
@@ -88,6 +89,16 @@ const routes = [
         meta: {
           requiresAuth: true,
         },
+      },
+      {
+        path: "/surveyUser/:studyId/:userId/:extraInfo/",
+        name: "surveyUser",
+        component: surveyUser,
+        props:true,
+        meta: {
+          requiresAuth: true,
+        },
+        
       },
     ]
   },

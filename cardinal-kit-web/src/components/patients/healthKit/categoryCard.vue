@@ -35,7 +35,8 @@
         },
         methods: {
             handleSubmit(){
-                this.$router.push(`/categoryDetail/${this.studyId}/${this.userId}/${this.data.id}/`)
+              let route = this.data.customAction??"categoryDetail"
+              this.$router.push(`/${route}/${this.studyId}/${this.userId}/${this.data.id}/`)
             }
         },
         computed:{

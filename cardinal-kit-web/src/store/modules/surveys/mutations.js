@@ -118,3 +118,44 @@ function transformAnswerFormat(question) {
   }
   return { userId: question.userId, answer: answer, date: date };
 }
+
+
+export function saveUserSurveys(state,{results,userId}) {
+  console.log("results",userId)
+  let dictExternal = {}
+  for (const [key, value] of Object.entries(results)) {
+    let dictInternal = {};
+    value.forEach(record => {
+        if(record.results){
+          record.results.forEach((question) => {
+                  if (
+                    (question.results && question.results.length > 0) ||
+                    !Array.isArray(question.results)
+                  ) {
+                    if (Symbol.iterator in question.results) {
+                      question.results.forEach((Nquestion) => {
+                        addQuestionToDictionary(
+                          question,
+                          Nquestion,
+                          dictInternal,
+                          userId
+                        );
+                      });
+                      
+                    } else {
+                      addQuestionToDictionary(
+                        question,
+                        question.results,
+                        dictInternal,
+                        userId
+                      );
+                    }
+                  }
+                });
+        }
+    });
+    dictExternal[key]=dictInternal
+  }
+  
+  state.userSurveys = dictExternal
+}

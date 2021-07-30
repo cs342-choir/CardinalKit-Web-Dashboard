@@ -21,3 +21,16 @@ export const FetchSurveyByStudy = async ({ commit }, {studyId}) => {
     }))
     commit("saveSurveyDetail",{results:QuestionsResults,surveyId:surveyId,studyId:studyId})
   }
+
+export const FetchSurveyUserData = async ({commit},{studyId,userId})=>{
+  let surveyResults={}
+  let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute()
+  await Promise.all( surveysSnap.docs.map(async(survey)=>{
+    let surveyData = await request.GET(`studies/${studyId}/users/${userId}/surveys/${survey.id}`).Execute()
+    if(surveyData.exists){
+      surveyResults[survey.id]=surveyData.data().results
+    }
+  }))
+  console.log("userId",userId)
+  commit("saveUserSurveys",{results:surveyResults,userId:userId})
+}
