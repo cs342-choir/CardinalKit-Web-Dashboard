@@ -10,3 +10,7 @@ export function getSurveyDetail(state){
         return  state.surveyDetail[studyId]
     }
 }
+
+export function getUserSurveys(state){
+  return state.userSurveys
+}

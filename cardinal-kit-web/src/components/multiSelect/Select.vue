@@ -19,18 +19,24 @@ export default {
   components: { Multiselect },
   data() {
     return {
-      internalValue:this.options?this.options[0].id:null,      
+      internalValue:(this.options && this.options.length>0)?this.options[0].id:null,      
     };
   },
   watch:{
     internalValue: function(value){
       this.$emit('update:modelValue', value)
+      if(this.onChange) this.onChange()
     }
   },
   computed:{
       _placeholder(){
           return this.placeholder??"Select One"
       }
+  },
+  methods:{
+    setNewValue(value){
+      this.internalValue=value
+    }
   },
   props: {
     options:{
@@ -40,6 +46,10 @@ export default {
     placeholder:{
         type:String,
         require:false
+    },
+    onChange:{
+      type:Function,
+      require:false
     }
   },
 };

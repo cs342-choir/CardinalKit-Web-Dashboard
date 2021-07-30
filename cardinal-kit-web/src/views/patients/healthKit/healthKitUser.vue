@@ -8,10 +8,12 @@
 import store from "@/store";
 import { mapActions, mapGetters } from 'vuex';
 import categories from '@/components/patients/healthKit/categoryList'
+import category from "@/components/patients/healthKit/categoryCard";
 export default {
   name: "StudyDetail",
   components:{
-    categories
+    categories,
+    category
   },
   methods: {
     handleHealthKit() {
