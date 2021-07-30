@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div :onClick="showStudySurveys" class="card-category">
-      <span class="subtitle">Surveys</span>
-    </div>
     <patient-list :patients="getUsersStudy(idStudy)" :studyId="idStudy" />
     <br />
+  </div>
+  <div :onClick="showStudySurveys" class="card-category">
+    <span class="surveysBtn">Surveys</span>
   </div>
 </template>
 
@@ -31,10 +31,10 @@ export default {
       required: true,
     },
   },
-  methods:{
-    showStudySurveys(){
+  methods: {
+    showStudySurveys() {
       this.$router.push(`/surveysList/${this.$route.params.idStudy}`);
-    }
+    },
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([
@@ -45,3 +45,21 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.surveysBtn {
+  margin: 65px;
+  text-decoration: none;
+  font-weight: 300;
+  font-size: 20px;
+  color: #000000;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: transparent;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #000000;
+  box-shadow: 5px 5px 5px
+}
+</style>
