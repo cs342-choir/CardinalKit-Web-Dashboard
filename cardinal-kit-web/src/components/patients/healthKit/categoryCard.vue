@@ -1,48 +1,54 @@
 <template>
-<div :onClick="handleSubmit" class="card-category">
-  <div class="flex align-center">
-   <img width="15" class="icon" :src="data.icon"/> 
-   <span class="subtitle">{{data.name}}</span>
+  <div :onClick="handleSubmit" class="card-category">
+    <div class="flex align-center">
+      <img width="15" class="icon" :src="data.icon" />
+      <span class="subtitle">{{ data.name }}</span>
+    </div>
+    <loading-icon v-show="loading" size="10px"/>
+    <span class="arrow">›</span>
+    
   </div>
-  <span class="arrow">›</span>
-</div>
-
 </template>
 <script>
-    export default {
-        name: 'category',
-        props: {
-          data:{
-              type:Object,
-              required:true
-          },  
-          userId:{
-              type:String,
-              required:true
-          },
-          studyId:{
-              type:String,
-              required:true
-          },
-          icon: {
-            type: String
-          }
-        },
-        data(){
-            return{
-                
-            }
-        },
-        methods: {
-            handleSubmit(){
-              let route = this.data.customAction??"categoryDetail"
-              this.$router.push(`/${route}/${this.studyId}/${this.userId}/${this.data.id}/`)
-            }
-        },
-        computed:{
-            
-        },
+import loadingIcon from "@/components/loading";
+export default {
+  components:{
+    loadingIcon 
+  },
+  name: "category",
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+    userId: {
+      type: String,
+      required: true,
+    },
+    studyId: {
+      type: String,
+      required: true,
+    },
+    icon: {
+      type: String,
+    },
+  },
+  data() {
+    return {
+      loading:false
     };
+  },
+  methods: {
+    handleSubmit() {
+      this.loading=true
+      let route = this.data.customAction ?? "categoryDetail";
+      this.$router.push(
+        `/${route}/${this.studyId}/${this.userId}/${this.data.id}/`
+      );
+    },
+  },
+  computed: {},
+};
 </script>
 <style lang="scss" scoped>
 .card-category {
