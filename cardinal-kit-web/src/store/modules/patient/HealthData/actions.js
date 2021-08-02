@@ -57,8 +57,6 @@ export const FetchLastCategoryData = async ({ dispatch }, payload) => {
       return dispatch("FetchLastActivityData", payload);
     case "body":
       return dispatch("FetchLastBodyData", payload);
-    case "cycle":
-      return dispatch("FetchLastCycleData", payload);
     case "hearing":
       return dispatch("FetchLastHearingData", payload);
     case "heart":
@@ -81,3 +79,29 @@ export const FetchLastCategoryData = async ({ dispatch }, payload) => {
       return dispatch("FetchLastOtherData", payload);
   }
 };
+
+export const FetchLastSurveys = async ({},payload)=>{
+  let surveysSnap = await request.GET(`studies/${payload.studyId}/surveys`).Execute()
+  return {"name":"survey","data":surveysSnap.docs.filter(element=>element.exists)}
+}
+
+export const FecthCategoryWithData = async ({dispatch,commit},payload)=>{
+  let values = await Promise.all([
+    dispatch("FetchLastActivityData", payload),
+    dispatch("FetchLastBodyData", payload),
+    dispatch("FetchLastHearingData", payload),
+    dispatch("FetchLastHeartData", payload),
+    dispatch("FetchLastMindfulnessData", payload),
+    dispatch("FetchLastMobilityData", payload),
+    dispatch("FetchLastNutritionData", payload),
+    dispatch("FetchLastRespiratoryData", payload),
+    dispatch("FetchLastSleepData", payload),
+    dispatch("FetchLastSymtomsData", payload),
+    dispatch("FetchLastVitalsData", payload),
+    dispatch("FetchLastOtherData", payload),
+    dispatch("FetchLastSurveys",payload)
+  ])
+  let categories = values.filter(element=>element.data.length>0)
+  let categoriesNames = categories.map(element=>{return element.name})
+  commit("saveValidCategories",categoriesNames)
+}

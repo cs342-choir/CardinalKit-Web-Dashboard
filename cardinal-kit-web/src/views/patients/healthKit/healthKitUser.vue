@@ -9,6 +9,7 @@
 import { mapGetters } from 'vuex';
 import categories from '@/components/patients/healthKit/categoryList'
 import category from "@/components/patients/healthKit/categoryCard";
+import store from "@/store";
 
 export default {
   name: "StudyDetail",
@@ -23,6 +24,16 @@ export default {
   },
   computed:{
     ...mapGetters('patient',['getHealthData'])
+  },
+  beforeRouteEnter(to, from, next) {
+    Promise.all([
+      store.dispatch("patient/FecthCategoryWithData", {
+        studyId: `${to.params.studyId}`,
+        userId: `${to.params.userId}`
+      }),
+    ]).then(() => {
+      next();
+    });
   },
 };
 </script>
