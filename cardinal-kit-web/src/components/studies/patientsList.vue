@@ -10,8 +10,11 @@
         </td>
         <td>
           <span class="pointer" @click="handleSelecPatient(patient.id)">
-            detail
+            details
           </span>
+        </td>
+        <td>
+        <loading-icon v-show="loadingId == patient.id" size="3px"/>
         </td>
       </tr>
     </template>
@@ -20,6 +23,7 @@
 </template>
 <script>
 import altTable from '@/components/tables/altTable';
+import loadingIcon from "@/components/loading";
   export default {
     name: 'name',
     props: {
@@ -33,15 +37,18 @@ import altTable from '@/components/tables/altTable';
       }
     },
     components:{
-      altTable
+      altTable,
+      loadingIcon
     },
     data(){
       return{
-        columns: [{ header: 'N°' }, { header: 'Name' }, { header: 'Action' }]
+        columns: [{ header: 'N°' }, { header: 'Name' }, { header: 'Action' },{ header: '' }],
+        loadingId : 0
       }
     },
     methods: {
       handleSelecPatient(patientId){
+        this.loadingId = patientId
         this.$router.push(`/healthKitUser/${this.studyId}/${patientId}`)
       }, 
       handlePagination(pagination) {
