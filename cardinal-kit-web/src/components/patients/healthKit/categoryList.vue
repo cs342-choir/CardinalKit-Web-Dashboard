@@ -9,6 +9,7 @@
         :userId="userId"
         :studyId="studyId"
         :icon="category.icon"
+        v-show="getValidCategories.includes(category.id)"
       />
     </div>
   </div>
@@ -16,6 +17,7 @@
 <script>
 import category from "./categoryCard";
 import { CategoriesList } from '@/common/static_data'
+import { mapGetters } from 'vuex';
 export default {
   name: "categories",
   components: {
@@ -30,7 +32,7 @@ export default {
     studyId: {
       type: String,
       required: true,
-    },
+    }
   },
   data(){
     return{
@@ -38,10 +40,13 @@ export default {
     }
   },
   methods: {},
-  computed: {},
+  computed: {
+    ...mapGetters("patient",["getValidCategories"])
+  },
   mounted(){
     this.categories = CategoriesList
-  }
+  },
+  
 };
 </script>
 

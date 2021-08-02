@@ -12,7 +12,7 @@ export function saveSpecificTypeData(state, payload) {
 
 
 export function saveLastCategoryData(state, {category,data}){
-    
+    console.log("call save",data)
     let categoryWebFormat = []
     data.forEach(element => {        
         if(element && element.length>0){
@@ -39,3 +39,7 @@ export function saveLastCategoryData(state, {category,data}){
     copyWebFormat[category]=categoryWebFormat
     state.healthWebFormat=copyWebFormat
 }
+
+export function saveValidCategories(state,payload){
+    state.validCategories = payload
+  }

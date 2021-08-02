@@ -296,3 +296,7 @@ export function getCategoryDataWebFormat(state) {
     return state.healthWebFormat[categoryId];
   };
 }
+
+export function getValidCategories(state){
+  return state.validCategories
+}
