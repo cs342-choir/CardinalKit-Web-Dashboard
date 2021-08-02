@@ -1,11 +1,11 @@
 <template>
-  <div class="card">
+  <div  @click="showToGraph(id)" class="card pointer">
     <div class="card-header align-center">
       <div class="card-header__title">
         <img v-if="logo" :src="logo" alt="logo activity card">
         <h4 :style="{ color: colorTitle }"><b>{{ name }} </b></h4>
       </div>
-      <div @click="showToGraph(id)" class="card-header__link flex align-center pointer">
+      <div  class="card-header__link flex align-center">
         <span>{{ date }}</span>
         <span class="arrow-link">›</span>
       </div>
@@ -15,14 +15,21 @@
         <div class="card-body__info">
           <p class="info-value">{{value || 'Value'}}</p>
           <p class="info-measure">{{ measure || 'Type Measure' }}</p>
+          <loading-icon v-show="loading" size="3px"/>
         </div>
       </slot>
+      
     </div>
   </div>
 </template>
 <script>
+
+import loadingIcon from "@/components/loading";
 export default {
   name: "ActivityCard",
+  components:{
+    loadingIcon
+  },
   props: {
     name: {
       type: String,
@@ -52,6 +59,7 @@ export default {
     return {
       userId: '',
       studyId: '',
+      loading: false
     };
   },
   mounted () {
@@ -61,6 +69,7 @@ export default {
   },
   methods: {
     showToGraph: function (id) {
+      this.loading=true
       this.$router.push(`/healthGraph/${this.studyId}/${this.userId}/${id}`);
     },
   }
