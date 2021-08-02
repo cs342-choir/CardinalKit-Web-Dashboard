@@ -11,7 +11,7 @@
         </td>
         <td>
           <span class="pointer" @click="handleSelecStudy(survey)">
-            detail
+            details
           </span>
         </td>
       </tr>

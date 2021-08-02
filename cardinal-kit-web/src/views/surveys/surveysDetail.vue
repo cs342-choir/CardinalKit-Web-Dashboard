@@ -24,7 +24,6 @@
 <script>
 import store from "@/store";
 import { mapGetters } from "vuex";
-import "vue-select/dist/vue-select.css";
 import survey from "@/components/surveys/survey";
 
 //Components
