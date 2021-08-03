@@ -6,6 +6,11 @@
   <div :onClick="showStudySurveys" class="card-category">
     <span class="surveysBtn">Surveys</span>
   </div>
+      <br />
+      <br />
+    <div :onClick="openSurveysBuilder" class="card-category">
+    <span class="surveysBtn">Surveys Builder</span>
+  </div>
 </template>
 
 <script>
@@ -34,6 +39,9 @@ export default {
   methods: {
     showStudySurveys() {
       this.$router.push(`/surveysList/${this.$route.params.idStudy}`);
+    },
+    openSurveysBuilder() {
+      this.$router.push(`/surveysBuilder`);
     },
   },
   beforeRouteEnter(to, from, next) {
