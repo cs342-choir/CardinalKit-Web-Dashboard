@@ -9,6 +9,7 @@ import registerDoctor from "@/views/auth/registerDoctor"
 import surveysList from "@/views/surveys/surveysList"
 import surveyDetail from "@/views/surveys/surveysDetail"
 import surveyUser from "@/views/surveys/surveyUser"
+import store from "@/store";
 import surveysBuilder from "@/views/surveys/surveysBuilder"
 
 const routes = [
@@ -30,7 +31,7 @@ const routes = [
         },
       },
       {
-        path: "/patients/:idStudy",
+        path: "/patients/:studyId",
         name: "patients",
         component: PatientsList,
         props: true,
@@ -110,7 +111,6 @@ const routes = [
         },
         
       },
-      
     ]
   },
   {
@@ -143,6 +143,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  store.dispatch("user/FetchUserRolesAndStudies")
   if (process.env.VUE_APP_AUTH_MODE == "firebase") {
     let { auth } = require("@/plugins/firebase/firebase");
     let unsubscribe = auth.onAuthStateChanged(function(user){
