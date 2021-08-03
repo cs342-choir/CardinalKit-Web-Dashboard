@@ -9,6 +9,7 @@ import registerDoctor from "@/views/auth/registerDoctor"
 import surveysList from "@/views/surveys/surveysList"
 import surveyDetail from "@/views/surveys/surveysDetail"
 import surveyUser from "@/views/surveys/surveyUser"
+import surveysBuilder from "@/views/surveys/surveysBuilder"
 
 const routes = [
   {
@@ -91,6 +92,15 @@ const routes = [
         },
       },
       {
+        path: "/surveysBuilder",
+        name: "surveysBuilder",
+        component: surveysBuilder,
+        props:true,
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
         path: "/surveyUser/:studyId/:userId/:extraInfo/",
         name: "surveyUser",
         component: surveyUser,
@@ -100,6 +110,7 @@ const routes = [
         },
         
       },
+      
     ]
   },
   {
