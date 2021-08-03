@@ -9,8 +9,9 @@
            surveys"
           :key="index"
         >
+
           <div class="form-group col-md-6">
-            <label>id</label>
+            <label>ID:    </label>
             <input
               v-model="survey.id"
               :name="`
@@ -21,77 +22,73 @@
             />
           </div>
 
+          <br>          
           <div class="form-group col-md-6">
-            <label>id_form</label>
-            <input
-              v-model="survey.id_form"
-              :name="`
-               surveys[${index}][id_form]`"
-              type="text"
-              class="form-control"
-              placeholder="id_form"
-            />
-          </div>
-
-          <div class="form-group col-md-6">
-            <label>name</label>
-            <input
-              v-model="survey.name"
-              :name="`
-               surveys[${index}][name]`"
-              type="text"
-              class="form-control"
-              placeholder="name"
-            />
-          </div>
-
-          <div class="form-group col-md-6">
-            <label>type</label>
-            <input
-              v-model="survey.type"
-              :name="`
-               surveys[${index}][type]`"
-              type="text"
-              class="form-control"
-              placeholder="type"
-            />
-          </div>
-
-          <div class="form-group col-md-6">
-            <label>scope</label>
-            <input
+            <label>Scope: </label>
+            <altSelect
+              :options="scopeTypes"
               v-model="survey.scope"
               :name="`
                surveys[${index}][scope]`"
               type="text"
               class="form-control"
-              placeholder="scope"
+              placeholder="Select the scope"
             />
           </div>
 
+          <br>
           <div class="form-group col-md-6">
-            <label>required</label>
+            <label>Required: </label>
             <input type="checkbox" v-model="survey.required" 
               :name="`
                surveys[${index}][required]`"
               class="form-control"
               placeholder="required">   
           </div>
-
+          
+          <br>
           <div class="form-group col-md-6">
-            <label>description</label>
+            <label>Select the type of question: </label>
+            <altSelect
+              :options="questionTypes"
+              v-model="survey.type"
+              :name="`
+               surveys[${index}][type]`"
+              type="text"
+              class="form-control"
+              placeholder="Type of question"
+            />
+          </div>
+          <br>
+        
+          <div class="form-group col-md-6">
+            <label>Question: </label>
+            <input
+              v-model="survey.question"
+              :name="`
+               surveys[${index}][question]`"
+              type="text"
+              class="form-control"
+              placeholder="Question"
+            />
+          </div>
+
+          <br>
+          <div class="form-group col-md-6">
+            <label>Question description: </label>
             <input
               v-model="survey.description"
               :name="`
                surveys[${index}][description]`"
               type="text"
               class="form-control"
-              placeholder="description"
+              placeholder="Question description"
             />
           </div>
 
+          <br>
           <div class="form-group col-md-6">
-            <label>options</label>
+            <label>Options: </label>
             <input
               v-model="survey.options"
               :name="`
@@ -122,16 +119,20 @@
 </template>
 
 <script>
+import altSelect from "@/components/multiSelect/Select";
+
 export default {
   name: "App",
 
   data: () => ({
-    
+
+     questionTypes:['Area', 'Text', 'Checkbox' , 'Radio', 'Multiple'],
+     scopeTypes:['Public', 'Private'],
+
      surveys: [
       {
-        id: "tkd4",
-        id_form: "tkd-form-001",
-        name: "Qustion type radio",
+        id: uuidv4(),
+        question: "This is the question",
         type: "radio",
         scope: "public",
         required: true,
@@ -149,14 +150,17 @@ export default {
       },
     ],
   }),
+  components: {
+    altSelect,
+  },
 
   methods: {
+    
     addSurvey() {
       this.
        surveys.push({
-        id: "",
-        id_form: "",
-        name: "",
+        id: uuidv4(),
+        question: "",
         type: "",
         scope: "",
         required: "",
@@ -164,6 +168,7 @@ export default {
         options: [],
       });
     },
+    
 
     printJson() {
       const data = {
@@ -175,6 +180,16 @@ export default {
     },
   },
 };
+
+
+function uuidv4() {
+  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+}
+
+
+
 </script>
 
 <style lang="scss">
