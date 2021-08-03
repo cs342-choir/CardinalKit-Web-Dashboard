@@ -37,7 +37,12 @@
     <br />
 
     <br />
-    <alt-table :columns="columns">
+    <alt-table 
+      :columns="columns"
+      :pagination="data.answers.length>10"
+      :paginationOptions="paginationOptions"
+      @onPagination="handlePagination"
+    >
       <template #t-row>
         <tr v-for="(answer, index) in data.answers" :key="answer">
           <td>{{ index + 1 }}</td>
@@ -68,6 +73,8 @@ export default {
         { header: "Answer" },
         { header: "Date" },
       ],
+      currentPage: 1,
+      limit: 10,
     };
   },
   props: {
@@ -79,6 +86,25 @@ export default {
   components: {
     altTable,
   },
+  computed:{
+    paginationOptions() {
+      return {
+        limit: [10, 20],
+        total: this.data.answers.length,
+        currentPage: this.currentPage,
+      };
+    },
+  },
+  methods:{
+    handlePagination(pagination) {
+      this.currentPage=pagination.currentPage
+      this.limit=pagination.limit
+      let total = this.data.answers.length
+      if(this.currentPage > Math.ceil(total/this.limit)){
+        this.currentPage = Math.ceil(total/this.limit)
+      }
+    },
+  }
 };
 </script>
 <style lang="scss">
