@@ -93,7 +93,7 @@ const routes = [
         },
       },
       {
-        path: "/surveysBuilder",
+        path: "/surveysBuilder/:studyId",
         name: "surveysBuilder",
         component: surveysBuilder,
         props:true,

@@ -34,3 +34,41 @@ export const FetchSurveyUserData = async ({commit},{studyId,userId})=>{
   console.log("userId",userId)
   commit("saveUserSurveys",{results:surveyResults,userId:userId})
 }
+
+
+//Data format
+/* {
+    studyId: ...,
+    name: ...,
+    questions: [
+      identifier: ..,
+      question: ..,
+      options:[
+        {
+          name: ..,
+          value: ..
+        },
+        {
+          name: ..,
+          value: ..
+        }
+      ]
+    ],
+    ...
+  }
+}*/
+export const SaveSurvey = async({commit},data)=>{
+  let surveyName = data.name
+  let studyId = data.studyId
+  console.log("post in",`studies/${studyId}/surveys/${surveyName}`)
+  await request.POST(`studies/${studyId}/surveys/${surveyName}`,{
+    data: {
+      exist:true
+    }
+  }).Execute()
+  data.questions.forEach(async element => {
+    await request.POST(`studies/${studyId}/surveys/${surveyName}/questions/${element.id}`,{
+      data:element
+    }).Execute()
+  })
+}
