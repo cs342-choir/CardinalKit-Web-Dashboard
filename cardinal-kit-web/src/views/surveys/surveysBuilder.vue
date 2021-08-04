@@ -89,7 +89,7 @@
           </div>
 
           <br>
-          <div v-if="survey.type === 'Text' || survey.type === 'Area' " class="form-group col-md-6">
+          <div v-if="survey.type === 'Text'  " class="form-group col-md-6">
             <label>Options: </label>
             <input
               v-model="survey.options"
@@ -99,11 +99,42 @@
               class="form-control"
               placeholder="options"              
             />
+          </div>
+
+
+            <div v-if="survey.type === 'Multiple' || survey.type === 'Checkbox' || survey.type === 'Radio'  " class="form-group col-md-6">
+            <label>Options: </label>
+            <template v-for="(option, index) in survey.options" :key="index">
+              <input
+              v-model="option.text"
+              :name="`
+               options[${index}]`"
+              type="text"
+              class="form-control"
+              placeholder="options"              
+            />           
+            </template>
+            
+            <br>
+            <br>
             <div  class="form-group">
-            <button @click="addAnswer()" type="button" class="btn btn-terceary">
+            <button @click="addOptions(survey.id)" type="button" class="btn btn-terceary">
             Add Answer
             </button>
             </div>
+          </div>
+
+          <div v-if="survey.type === 'Area' " class="form-group col-md-6">
+            <label>Options: </label>
+            <textarea
+              rows="5" cols="100"
+              v-model="survey.options"
+              :name="`
+               surveys[${index}][options]`"
+              type="text"
+              class="form-control"
+              placeholder="options"              
+            />        
           </div>
 
         </div>
@@ -179,8 +210,9 @@ export default {
       });
     },
 
-    addAnswer(){
-       console.log("add answer");
+    addOptions(id){
+      const surveyIndex = this.surveys.findIndex((data) => data.id === id);
+      this.surveys[surveyIndex].options.push({text:'',value:''})
     },
     
 
