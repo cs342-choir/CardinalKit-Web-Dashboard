@@ -1,7 +1,7 @@
 <template>
 <div class="page">
   <h1 class="mb-5">Patient</h1>
-  <alt-table :columns="columns" pagination @onPagination="handlePagination">
+  <alt-table :columns="columns" pagination :paginationOptions="paginationOptions" @onPagination="handlePagination">
     <template #t-row>
       <tr v-for="(patient, index) in patients" :key="patient.id">
         <td>{{index + 1}}</td>
@@ -43,7 +43,9 @@ import loadingIcon from "@/components/loading";
     data(){
       return{
         columns: [{ header: 'N°' }, { header: 'Name' }, { header: 'Action' },{ header: '' }],
-        loadingId : 0
+        loadingId : 0,
+        currentPage: 1,
+        limit: 10,
       }
     },
     methods: {
@@ -52,8 +54,28 @@ import loadingIcon from "@/components/loading";
         this.$router.push(`/healthKitUser/${this.studyId}/${patientId}`)
       }, 
       handlePagination(pagination) {
-        console.log('arraival from table', pagination);
-      }
+        this.currentPage=pagination.currentPage
+        this.limit=pagination.limit
+        let total = this.patients.length
+        if(this.currentPage > Math.ceil(total/this.limit)){
+          this.currentPage = Math.ceil(total/this.limit)
+        }
+      },
+    },
+    computed:{
+      paginationOptions() {
+        return {
+          limit: [10, 20],
+          total: this.patients.length,
+          currentPage: this.currentPage,
+        };
+      },
+      getPageItems() {
+        let items = this.patients;
+        let lowerLimit = (this.currentPage - 1) * this.limit;
+        let upperLimit = this.currentPage * this.limit;
+        return items.slice(lowerLimit, upperLimit);
+      },
     }
   };
 </script>
