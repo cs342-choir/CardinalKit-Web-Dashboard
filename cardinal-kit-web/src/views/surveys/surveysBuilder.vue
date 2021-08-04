@@ -10,43 +10,7 @@
           :key="index"
         >
 
-          <div class="form-group col-md-6">
-            <label>ID:    </label>
-            <input
-              v-model="survey.id"
-              :name="`
-               surveys[${index}][id]`"
-              type="text"
-              class="form-control"
-              placeholder="id"
-            />
-          </div>
-
-          <br>          
-          <div class="form-group col-md-6">
-            <label>Scope: </label>
-            <altSelect
-              :options="scopeTypes"
-              v-model="survey.scope"
-              :name="`
-               surveys[${index}][scope]`"
-              type="text"
-              class="form-control"
-              placeholder="Select the scope"
-            />
-          </div>
-
-          <br>
-          <div class="form-group col-md-6">
-            <label>Required: </label>
-            <input type="checkbox" v-model="survey.required" 
-              :name="`
-               surveys[${index}][required]`"
-              class="form-control"
-              placeholder="required">   
-          </div>
           
-          <br>
           <div class="form-group col-md-6">
             <label>Select the type of question: </label>
             <altSelect
@@ -60,8 +24,46 @@
             />
           </div>
           <br>
+
+          <div v-if="survey.type != ''" class="form-group col-md-6">
+            <label>ID:    </label>
+            <input 
+              v-model="survey.id"
+              :name="`
+               surveys[${index}][id]`"
+              type="text"
+              class="form-control"
+              placeholder="id"
+            readonly/>
+          </div>
+
+          <br>          
+          <div v-if="survey.type != ''" class="form-group col-md-6">
+            <label>Scope: </label>
+            <altSelect
+              :options="scopeTypes"
+              v-model="survey.scope"
+              :name="`
+               surveys[${index}][scope]`"
+              type="text"
+              class="form-control"
+              placeholder="Select the scope"
+            />
+          </div>
+
+          <br>
+          <div v-if="survey.type != ''"  class="form-group col-md-6">
+            <label>Required: </label>
+            <input type="checkbox" v-model="survey.required" 
+              :name="`
+               surveys[${index}][required]`"
+              class="form-control"
+              placeholder="required">   
+          </div>
+          
+          <br>
         
-          <div class="form-group col-md-6">
+          <div v-if="survey.type != ''" class="form-group col-md-6">
             <label>Question: </label>
             <input
               v-model="survey.question"
@@ -74,7 +76,7 @@
           </div>
 
           <br>
-          <div class="form-group col-md-6">
+          <div v-if="survey.type != ''" class="form-group col-md-6">
             <label>Question description: </label>
             <input
               v-model="survey.description"
@@ -87,7 +89,7 @@
           </div>
 
           <br>
-          <div class="form-group col-md-6">
+          <div v-if="survey.type === 'Text' || survey.type === 'Area' " class="form-group col-md-6">
             <label>Options: </label>
             <input
               v-model="survey.options"
@@ -95,19 +97,27 @@
                surveys[${index}][options]`"
               type="text"
               class="form-control"
-              placeholder="options"
+              placeholder="options"              
             />
+            <div  class="form-group">
+            <button @click="addAnswer()" type="button" class="btn btn-terceary">
+            Add Answer
+            </button>
+            </div>
           </div>
+
         </div>
       </div>
 
-      <div class="form-group">
-        <button @click="addSurvey" type="button" class="btn btn-secondary">
+      <div  class="form-group">
+        <button @click="addQuestion" type="button" class="btn btn-secondary">
           Add question
         </button>
       </div>
+          <br>
 
       <hr />
+          <br>
 
       <div class="form-group">
         <button @click="printJson" type="button" class="btn btn-primary">
@@ -156,7 +166,7 @@ export default {
 
   methods: {
     
-    addSurvey() {
+    addQuestion() {
       this.
        surveys.push({
         id: uuidv4(),
@@ -167,6 +177,10 @@ export default {
         description: "",
         options: [],
       });
+    },
+
+    addAnswer(){
+       console.log("add answer");
     },
     
 
@@ -193,14 +207,47 @@ function uuidv4() {
 </script>
 
 <style lang="scss">
-.btn-secondary {
-  color: black;
-}
+
 .surveys > div {
-  margin: 20px 0;
+  margin: 10px 0;
   padding-bottom: 10px;
 }
 .surveys > div:not(:last-child) {
-  border-bottom: 1px solid rgb(206, 212, 218);
+  border-bottom: 1px solid black;
+
 }
+.btn {
+    text-decoration: underline;
+    color: black;    
+    background: transparent;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.btn-secondary {
+    text-decoration: none;
+    color: black;    
+    border-color: #000000;
+    background: #B71540;
+}
+.btn-terceary {
+    text-decoration: underline;
+    color: black;    
+    border-color: #000000;
+    background: transparent;
+}
+
+
 </style>
