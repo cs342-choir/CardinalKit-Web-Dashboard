@@ -161,10 +161,16 @@
 
 <script>
 import altSelect from "@/components/multiSelect/Select";
+import { mapActions } from 'vuex';
 
 export default {
   name: "App",
-
+  props: {
+    studyId:{
+      type:String,
+      required:true
+    }
+  },
   data: () => ({
 
      questionTypes:['Area', 'Text', 'Checkbox' , 'Radio', 'Multiple'],
@@ -196,7 +202,7 @@ export default {
   },
 
   methods: {
-    
+    ...mapActions('surveys',['SaveSurvey']),
     addQuestion() {
       this.
        surveys.push({
@@ -223,6 +229,14 @@ export default {
          surveys,
       };
       console.log(JSON.stringify(data, null, 2));
+
+      this.SaveSurvey({
+        studyId: this.studyId,
+        name: "custom1",
+        questions:this.surveys
+      })
+
+
     },
   },
 };

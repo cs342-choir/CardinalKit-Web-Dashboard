@@ -41,7 +41,7 @@ export default {
       this.$router.push(`/surveysList/${this.$route.params.studyId}`);
     },
     openSurveysBuilder() {
-      this.$router.push(`/surveysBuilder`);
+      this.$router.push(`/surveysBuilder/${this.$route.params.studyId}`);
     },
   },
   beforeRouteEnter(to, from, next) {
