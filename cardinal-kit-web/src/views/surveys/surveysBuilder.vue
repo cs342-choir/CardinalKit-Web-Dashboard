@@ -2,6 +2,9 @@
   <div id="app" class="container">
     <form>
       <h1>Surveys Builder</h1>
+      <br>
+      <h3>Enter The Survey Name</h3>
+      <input  v-model="surveyName" type="text" placeholder="Survey Name">
       <div class="surveys">
         <div
           class="form-row"
@@ -10,10 +13,11 @@
           :key="index"
         >
 
-          
+
           <div class="form-group col-md-6">
             <label>Select the type of question: </label>
-            <altSelect
+            <!-- @TODO hacer que solo se limpie si cambia de tipo -->
+            <altSelect 
               :options="questionTypes"
               v-model="survey.type"
               :name="`
@@ -21,14 +25,26 @@
               type="text"
               class="form-control"
               placeholder="Type of question"
+              :onChange="()=>{clearOptions(survey.id)}"
             />
           </div>
-          <br>
 
           <div v-if="survey.type != ''" class="form-group col-md-6">
-            <label>ID:    </label>
+          <br>
             <input 
               v-model="survey.id"
+              :name="`
+               surveys[${index}][id]`"
+              type="hidden"
+              class="form-control"
+              placeholder="identifier"
+            readonly/>
+          </div>
+
+          <div v-if="survey.type != ''" class="form-group col-md-6">
+            <label>Identifier: </label>
+            <input 
+              v-model="survey.identifier"
               :name="`
                surveys[${index}][id]`"
               type="text"
@@ -37,22 +53,20 @@
             readonly/>
           </div>
 
-          <br>          
-          <div v-if="survey.type != ''" class="form-group col-md-6">
-            <label>Scope: </label>
-            <altSelect
-              :options="scopeTypes"
+
+          <div v-if="survey.type != ''" class="form-group col-md-6">     
+            <input
               v-model="survey.scope"
               :name="`
                surveys[${index}][scope]`"
-              type="text"
+              type="hidden"
               class="form-control"
               placeholder="Select the scope"
             />
           </div>
 
-          <br>
           <div v-if="survey.type != ''"  class="form-group col-md-6">
+          <br>
             <label>Required: </label>
             <input type="checkbox" v-model="survey.required" 
               :name="`
@@ -60,10 +74,23 @@
               class="form-control"
               placeholder="required">   
           </div>
-          
+
+           <div v-if="survey.type == 'Form'" class="form-group col-md-6">
           <br>
+            <label>Description: </label>
+            <input
+              v-model="survey.description"
+              :name="`
+               surveys[${index}][description]`"
+              type="text"
+              class="form-control"
+              placeholder="description"
+            />
+          </div>
+
         
           <div v-if="survey.type != ''" class="form-group col-md-6">
+          <br>
             <label>Question: </label>
             <input
               v-model="survey.question"
@@ -75,21 +102,49 @@
             />
           </div>
 
-          <br>
-          <div v-if="survey.type != ''" class="form-group col-md-6">
-            <label>Question description: </label>
-            <input
-              v-model="survey.description"
+            <div v-if="survey.type === 'Scale'" class="form-group col-md-6">
+           <template v-for="(option, index) in survey.options" :key="index">
+            <br> 
+            <br>                  
+            <label>Min: </label>
+              <input
+              v-model="option.min"
               :name="`
-               surveys[${index}][description]`"
+               options[${index}]`"
               type="text"
               class="form-control"
-              placeholder="Question description"
-            />
-          </div>
+              placeholder="Max"              
+            /> 
+             <label>Max: </label>
+              <input
+              v-model="option.max"
+              :name="`
+               options[${index}]`"
+              type="text"
+              class="form-control"
+              placeholder="Min"              
+            /> 
+             <label>Step: </label>
+              <input
+              v-model="option.step"
+              :name="`
+               options[${index}]`"
+              type="text"
+              class="form-control"
+              placeholder="Step"              
+            />         
+            
+            </template>             
+            </div>
 
+
+
+
+
+
+          <!-- <div v-if="survey.type === 'Text'  " class="form-group col-md-6">
           <br>
-          <div v-if="survey.type === 'Text'  " class="form-group col-md-6">
+          
             <label>Options: </label>
             <input
               v-model="survey.options"
@@ -99,12 +154,14 @@
               class="form-control"
               placeholder="options"              
             />
-          </div>
+          </div> -->
 
 
             <div v-if="survey.type === 'Multiple' || survey.type === 'Checkbox' || survey.type === 'Radio'  " class="form-group col-md-6">
+            <br>
             <label>Options: </label>
             <template v-for="(option, index) in survey.options" :key="index">
+            <br>             
               <input
               v-model="option.text"
               :name="`
@@ -112,19 +169,22 @@
               type="text"
               class="form-control"
               placeholder="options"              
-            />           
+            />  
+            <button v-if="index > 1" @click="()=>{deleteOptions(survey.options,index,survey.id)}" type="button" >Delete</button>   
+          <br>
+
             </template>
             
             <br>
             <br>
             <div  class="form-group">
             <button @click="addOptions(survey.id)" type="button" class="btn btn-terceary">
-            Add Answer
+            Add Options
             </button>
             </div>
           </div>
 
-          <div v-if="survey.type === 'Area' " class="form-group col-md-6">
+          <!-- <div v-if="survey.type === 'Area' " class="form-group col-md-6">
             <label>Options: </label>
             <textarea
               rows="5" cols="100"
@@ -135,7 +195,13 @@
               class="form-control"
               placeholder="options"              
             />        
-          </div>
+          </div> -->
+            <br>
+            <button  @click="()=>{deleteQuestions(surveys,index)}" type="button" >Delete Question</button>   
+            <br>
+            <br>
+
+            <hr />
 
         </div>
       </div>
@@ -147,7 +213,6 @@
       </div>
           <br>
 
-      <hr />
           <br>
 
       <div class="form-group">
@@ -171,29 +236,22 @@ export default {
       required:true
     }
   },
+  
   data: () => ({
 
-     questionTypes:['Area', 'Text', 'Checkbox' , 'Radio', 'Multiple'],
+     questionTypes:['Area', 'Text', 'Checkbox' , 'Radio', 'Multiple','Form','Scale' , 'Boolean'],
      scopeTypes:['Public', 'Private'],
-
+     surveyName:'',
      surveys: [
       {
         id: uuidv4(),
+        identifier:'',
+        description:'',
         question: "This is the question",
-        type: "radio",
+        type: "Multiple",
         scope: "public",
         required: true,
-        description: "Radios is a unique select type",
-        options: [
-          {
-            text: "option 1",
-            value: "option1",
-          },
-          {
-            text: "option 2",
-            value: "option2",
-          },
-        ],
+        options: [{text:'',value:0}],
       },
     ],
   }),
@@ -207,22 +265,44 @@ export default {
       this.
        surveys.push({
         id: uuidv4(),
+        identifier:'',
+        description:'',
         question: "",
         type: "",
-        scope: "",
-        required: "",
-        description: "",
-        options: [],
+        scope: "public",
+        required: true,
+        options:[{}],
       });
     },
 
     addOptions(id){
       const surveyIndex = this.surveys.findIndex((data) => data.id === id);
-      this.surveys[surveyIndex].options.push({text:'',value:''})
+      const val = this.surveys[surveyIndex].options.length;
+      this.surveys[surveyIndex].options.push({text:'',value:val})
     },
     
+    clearOptions(id){
+        console.log("cambiando");
+        const surveyIndex = this.surveys.findIndex((data) => data.id === id);
+        this.surveys[surveyIndex].options = [{}];
+    },
+    
+    deleteOptions( data, index) {
+      console.log(data);     
+      data.splice(index,1);
+      console.log(data);
+    },
+
+    deleteQuestions( data, index) {
+      console.log(data);    
+      data.splice(index,1);
+      console.log(data);    
+
+      // console.log(data)
+    },
 
     printJson() {
+       console.log(this.surveyName)
       const data = {
         
          surveys: this.
@@ -230,11 +310,11 @@ export default {
       };
       console.log(JSON.stringify(data, null, 2));
 
-      this.SaveSurvey({
-        studyId: this.studyId,
-        name: "custom1",
-        questions:this.surveys
-      })
+      // this.SaveSurvey({
+      //   studyId: this.studyId,
+      //   name: this.surveyName,
+      //   questions:this.surveys
+      // })
 
 
     },
