@@ -1,296 +1,331 @@
 <template>
   <form>
     <div class="surveys">
-      <!-- <div class="form-row" v-for="(survey, index) in surveys" :key="index"> -->
-
-      <div v-if="QuestionType != ''" class="form-group col-md-6">
-        <br />
-        <input
-          @change="onChangeQuestion()"
-          v-model="Question.id"
-          :name="`
-               surveys[${Id}][id]`"
-          type="hidden"
-          class="form-control"
-          placeholder="identifier"
-          readonly
-        />
-      </div>
-
-      <div
-        v-if="QuestionType != '' && QuestionType != null"
-        class="form-group col-md-6"
-      >
-        <label>Identifier: </label>
-        <input
-          @change="onChangeQuestion()"
-
-          v-model="Question.identifier"
-          :name="`
-               surveys[${Id}][id]`"
-          type="text"
-          class="form-control"
-          placeholder="id"
-        />
-      </div>
-
-      <div
-        v-if="QuestionType != '' && QuestionType != null"
-        class="form-group col-md-6"
-      >
-        <br />
-        <label>Required: </label>
-        <input
-          @change="onChangeQuestion()"
-        
-          type="checkbox"
-          v-model="Question.required"
-          :name="`
-               surveys[${Id}][required]`"
-          class="form-control"
-          placeholder="required"
-        />
-      </div>
-
-      <div v-if="QuestionType == 'Form'" class="form-group col-md-6">
-        <br />
-        <label>Description: </label>
-        <input
-          @change="onChangeQuestion()"
-
-          v-model="Question.description"
-          :name="`
-               surveys[${Id}][description]`"
-          type="text"
-          class="form-control"
-          placeholder="description"
-        />
-      </div>
-
-      <div
-        v-if="QuestionType != '' && QuestionType != null"
-        class="form-group col-md-6"
-      >
-        <br />
-        <label>Question: </label>
-        <input
-          @change="onChangeQuestion()"
-
-          v-model="Question.question"
-          :name="`
-               surveys[${Id}][question]`"
-          type="text"
-          class="form-control"
-          placeholder="Question"
-        />
-      </div>
-
-      <div v-if="QuestionType === 'Scale'" class="form-group col-md-6">
-        <template v-for="(option, index) in Question.options" :key="index">
-          <br />
-          <br />
-          <label>Min: </label>
-          <input
-          @change="onChangeQuestion()"
-
-            v-model="option.min"
+      <div class="form-row" v-for="(survey, index) in Survey" :key="index">
+        <div class="form-group col-md-6">
+          <label>Select the type of question: </label>
+          <br>
+          <br>
+          <AltSelect
+            :options="questionTypes"
+            v-model="survey.type"
             :name="`
-               options[${index}]`"
-            type="number"
-            class="form-control"
-            placeholder="Max"
-          />
-          <label>Max: </label>
-          <input
-          @change="onChangeQuestion()"
-
-            v-model="option.max"
-            :name="`
-               options[${index}]`"
-            type="number"
-            class="form-control"
-            placeholder="Min"
-          />
-          <label>Step: </label>
-          <input
-          @change="onChangeQuestion()"
-
-            v-model="option.step"
-            :name="`
-               options[${index}]`"
-            type="number"
-            class="form-control"
-            placeholder="Step"
-          />
-        </template>
-      </div>
-
-      <div v-if="QuestionType === 'Boolean'" class="form-group col-md-6">
-        <template v-for="(option, index) in Question.options" :key="index">
-          <br />
-          <br />
-          <label>Answer Choices</label>
-          <br />
-          <input
-          @change="onChangeQuestion()"
-
-            v-model="option.yes"
-            :name="`
-               options[${index}][options]`"
+               surveys[${index}][type]`"
             type="text"
             class="form-control"
-            placeholder="Yes"
-          />
-          <br />
-          <br />
-
-          <input
-          @change="onChangeQuestion()"
-
-            v-model="option.no"
-            :name="`
-               options[${index}][options]`"
-            type="text"
-            class="form-control"
-            placeholder="No"
-          />
-        </template>
-      </div>
-
-      <div
-        v-if="
-          QuestionType === 'Multiple' ||
-          QuestionType === 'Checkbox' ||
-          QuestionType === 'Radio'
-        "
-        class="form-group col-md-6"
-      >
-        <br />
-        <label>Options: </label>
-        <template v-for="(option, index) in Question.options" :key="index">
-          <br />
-          <input
-          @change="onChangeQuestion()"
-
-            v-model="option.text"
-            :name="`
-               options[${index}]`"
-            type="text"
-            class="form-control"
-            placeholder="options"
-          />
-          <button
-            v-if="index > 1"
-            @click="
+            placeholder="Type of question"
+            :onChange="
               () => {
-                deleteOptions(Question.options, index, Question.id);
+                createQuestionOptions(survey.type,survey.id);
               }
             "
-            type="button"
-          >
-            Delete
-          </button>
-          <br />
-        </template>
-
-        <br />
-        <br />
-        <div class="form-group">
-          <button
-            @click="addOptions(Question.id)"
-            type="button"
-            class="btn btn-terceary"
-          >
-            Add Options
-          </button>
+          />
+          <br>
+          
         </div>
+
+        <div
+          v-if="survey.type != '' && survey.type != null"
+          class="form-group col-md-6"
+        >
+          <label>Identifier: </label>
+          <input
+            
+            v-model="survey.identifier"
+            :name="`
+               surveys[${index}][id]`"
+            type="text"
+            class="TextInput"
+            placeholder="id"
+          />
+        </div>
+
+      
+
+
+        <div
+          v-if="survey.type != '' && survey.type != null"
+        >
+          <input            
+            type="checkbox"
+            v-model="survey.required"
+            :name="`
+               surveys[${index}][required]`"
+            hidden
+          />
+        </div>
+
+        <div v-if="survey.type == 'Form'" class="form-group col-md-6">
+          <br />
+          <label>Description: </label>
+          <textarea
+            
+            v-model="survey.description"
+            :name="`
+               surveys[${index}][description]`"
+            class="TextInput"
+            placeholder="Description"
+            rows="5" cols="100"
+          />
+        </div>
+
+        <div v-if="survey.type == 'Form'">
+          <Form :Questions="survey.questions"  />          
+        </div>
+
+        
+
+
+        <div
+          v-if="survey.type != '' && survey.type != null && survey.type != 'Form'"
+          class="form-group col-md-6"
+        >
+          <br />
+          <label>Question: </label>
+          <input
+            
+            v-model="survey.questions"
+            :name="`
+               surveys[${index}][question]`"
+            type="text"
+            class="TextInput"
+            placeholder="Question"
+          />
+        </div>
+
+        <div v-if="survey.type === 'Scale'" class="form-group col-md-6">
+          <template v-for="(option, index) in survey.options" :key="index">
+            <br />
+            <br />
+            <label>Min: </label>
+            <input
+              
+              v-model="option.min"
+              :name="`
+               options[${index}]`"
+              type="number"
+              class="TextInput"
+              placeholder="Max"
+            />
+            <label>Max: </label>
+            <input
+              
+              v-model="option.max"
+              :name="`
+               options[${index}]`"
+              type="number"
+              class="TextInput"
+              placeholder="Min"
+            />
+            <label>Step: </label>
+            <input
+              
+              v-model="option.step"
+              :name="`
+               options[${index}]`"
+              type="number"
+              class="TextInput"
+              placeholder="Step"
+            />
+          </template>
+        </div>
+
+        <div v-if="survey.type === 'Boolean'" class="form-group col-md-6">
+          <template v-for="(option, index) in survey.options" :key="index">
+            <br />
+            <br />
+            <label>Answer Choices</label>
+            <br />
+            <input
+              
+              v-model="option.yes"
+              :name="`
+               options[${index}][options]`"
+              type="text"
+              class="TextInput"
+              placeholder="Yes"
+            />
+            <br />
+            <br />
+
+            <input
+              
+              v-model="option.no"
+              :name="`
+               options[${index}][options]`"
+              type="text"
+              class="TextInput"
+              placeholder="No"
+            />
+          </template>
+        </div>
+
+        <div
+          v-if="
+            survey.type === 'Multiple' ||
+            survey.type === 'Checkbox' ||
+            survey.type === 'Radio'
+          "
+          class="form-group col-md-6"
+        >
+          <br />
+          <label>Options: </label>
+          <template v-for="(option, index) in survey.options" :key="index">
+            <br />
+
+            <input
+              class="CheckBoxInput"
+              v-if="survey.type == 'Checkbox' || survey.type == 'Multiple'"
+              type="checkbox"
+              disabled
+            />
+            <input
+              class="RadioInput"
+              v-if="survey.type == 'Radio'"
+              type="radio"
+              disabled
+            />
+
+            <input
+              
+              v-model="option.text"
+              :name="`
+               options[${index}]`"
+              type="text"
+              class="TextInput"
+              :placeholder="placeholderSetter(index)"
+            />
+
+            <button
+              v-if="index > 1"
+              @click="
+                () => {
+                  deleteOptions(survey.options, index, survey.id);
+                }
+              "
+              type="button"
+            >
+              Delete
+            </button>
+            <br />
+          </template>
+
+          <br />
+          <br />
+          <div class="form-group">
+            <button
+              @click="addOptions(survey.id)"
+              type="button"
+              class="btn btn-terceary"
+            >
+              Add Options
+            </button>
+          </div>
+        </div>
+        <br>
+        <br>
+
+ 
+         <button 
+      @click="
+        () => {
+          deleteQuestion(index);
+        }
+      "
+      type="button"
+    >
+      Delete Question
+    </button>
+    <br>
+    <br>
+    <hr>
       </div>
-      <hr />
-      <!-- </div> -->
     </div>
   </form>
 </template>
 
 <script>
 import AltSelect from "@/components/multiSelect/Select";
+import Form from "@/components/surveys/SurveyBuilder/Forms";
 
 export default {
   props: {
+    Survey: Object,
 
-    QuestionType: String,
-    Id: String,
   },
-
 
   components: {
     AltSelect,
+    Form,
   },
 
   data: () => ({
-    Question: {
-      identifier: "",
-      description: "",
-      question: "",
-      required: true,
-      options: [],
-    },
+    Question: {},
+    questionTypes: [
+      "Area",
+      "Text",
+      "Checkbox",
+      "Radio",
+      "Multiple",
+      "Form",
+      "Scale",
+      "Boolean",
+      "Instruction",
+      "Signature",
+    ],
   }),
-
-
-  watch: {
-    QuestionType(){
-       this.createQuestionOptions(this.Id, this.QuestionType);
-       console.log("Este es el survey",this.Survey)
-       console.log("Este es el question",this.Question)
-
-       this.Survey = {...this.Survey,...this.Question}
-       console.log("Este es el survey despues",this.Survey)
-
-    }
-  },
 
   methods: {
     addOptions(id) {
-      //   const surveyIndex = this.surveys.findIndex((data) => data.id === id);
-
-      this.Question.options.push({ text: "", value: "" });
+      const surveyIndex = this.Survey.findIndex((data) => data.id === id);
+      const val = this.Survey[surveyIndex].options.length;
+      this.Survey[surveyIndex].options.push({ text: "", value: val });
     },
 
     deleteOptions(data, index) {
       data.splice(index, 1);
     },
 
-    createQuestionOptions(id, type) {
-      console.log(type);
-      //   const surveyIndex = this.surveys.findIndex((data) => data.id === id);
+    createQuestionOptions(type, id) {
+      const surveyIndex = this.Survey.findIndex((data) => data.id === id);
       switch (type) {
-        case "Checkbox":
-        case "Radio":
-        case "Multiple":
-          this.Question.options = [
+        case 'Checkbox':
+        case 'Radio':
+        case 'Multiple':
+          this.Survey[surveyIndex].options = [
             { text: "", value: 0 },
             { text: "", value: 1 },
           ];
           break;
-        case "Boolean":
-          this.Question.options = [{ yes: "", no: "" }];
+        case 'Boolean':
+          this.Survey[surveyIndex].options = [{ yes: "", no: "" }];
           break;
-        case "Scale":
-          this.Question.options = [{ min: "", max: "", step: "" }];
+        case 'Scale':
+          this.Survey[surveyIndex].options = [{ min: "", max: "", step: "" }];
           break;
-        default:
-          this.Question.options = [{}];
+        default:          
+          this.Survey[surveyIndex].options = [{}];
       }
-
     },
 
-    onChangeQuestion(){
-        this.$emit('OnChange',{question: this.Question, id:this.Id} )
-    }
+    deleteQuestion( index){
+      this.$emit('DeleteQuestion', index)
+    },
 
+    placeholderSetter(index) {
+      return "Option " + (index + 1);
+    },
   },
 };
 </script>
 
-<style>
+<style lang="scss">
+.CheckBoxInput {
+  margin: 0px 10px 0px 10px;
+  width: 15px;
+  height: 15px;
+}
+.TextInput {
+  margin: 0px 0px 0px 0px;
+}
 </style>

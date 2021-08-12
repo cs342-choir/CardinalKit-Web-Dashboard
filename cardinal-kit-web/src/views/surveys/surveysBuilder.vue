@@ -3,16 +3,18 @@
       <h1>Surveys Builder</h1>
       <br />
       <h3>Enter The Survey Name</h3>
+      <br />
+      <br />
       <input v-model="surveyName" type="text" placeholder="Survey Name" />
-      <template v-if="surveys.length">
-      <FormBuilder v-for="form in surveys" :key="form.id"  :surveys = "form.survey" />
+      <template v-if="surveys.length"> 
+      <Question  :Survey ="surveys"  @DeleteQuestion="deleteQuestions"/>
+
       </template>
-
-
+      <br>
       <div class="form-group">
-        <button @click="addSurvey" type="button" class="btn btn-primary">
-          Add Section
-        </button>
+      <button @click="addQuestion" type="button" class="btn btn-secondary">
+        Add question
+      </button>
       </div>
 
 
@@ -25,7 +27,8 @@
 </template>
 
 <script>
-import FormBuilder from "@/components/surveys/SurveyBuilder/Forms";
+import FormQuestion from "@/components/surveys/SurveyBuilder/Forms";
+import Question from "@/components/surveys/SurveyBuilder/Questions";
 import { mapActions } from "vuex";
 import {uuidv4} from "@/helpers"
 
@@ -46,15 +49,39 @@ export default {
     surveys: [],
   }),
   components: {
-    FormBuilder,
+    FormQuestion,
+    Question,
   },
 
   methods: {
     ...mapActions("surveys", ["SaveSurvey"]),
     
-    addSurvey(){
-      this.surveys.push({id:uuidv4(),survey:[]});
+    addQuestion() {
+      this.surveys.push({    
+        surveyName:this.surveyName,   
+        id: uuidv4(),
+        type: "",
+        scope: "public",
+        identifier: "",
+        description: "",
+        questions: [],
+        required: true,
+        options: [],
+      });
     },
+      
+    deleteQuestions(index) {
+        console.log("Esta seria la que voy a eliminar",this.surveys[index] )
+        this.surveys.splice(index, 1);
+     },
+
+    
+
+
+    // handleChangeQuestion({ question, id }) {
+    //   const surveyIndex = this.surveys.findIndex((data) => data.id === id);
+    //   this.surveys[surveyIndex] = { ...this.surveys[surveyIndex], ...question };
+    // },
 
     printJson() {
       console.log(this.surveyName);
@@ -78,9 +105,6 @@ export default {
 .surveys > div {
   margin: 10px 0;
   padding-bottom: 10px;
-}
-.surveys > div:not(:last-child) {
-  border-bottom: 1px solid black;
 }
 .btn {
   text-decoration: underline;
