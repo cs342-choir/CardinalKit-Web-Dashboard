@@ -1,37 +1,48 @@
 <template>
   <div id="app" class="container">
-      <h1>Surveys Builder</h1>
-      <br />
-      <h3>Enter The Survey Name</h3>
-      <br />
-      <br />
+    <h1>Surveys Builder</h1>
+    <br />
+    <div>
+      <label>Enter The Survey Name:</label>
       <input v-model="surveyName" type="text" placeholder="Survey Name" />
-      <template v-if="surveys.length"> 
-      <Question  :Survey ="surveys"  @DeleteQuestion="deleteQuestions"/>
+    </div>
+    
+    <label>Enter the title: </label>
+    <input v-model="title" type="text" placeholder="Title" />
+     <br>
+    <label>Enter the subtitle: </label>
+    <input v-model="subtitle" type="text" placeholder="Subtitle" />
+     <br>
+    <label>Section: </label>
+    <input v-model="section" type="text" placeholder="Section" />
+     <br>
 
-      </template>
-      <br>
-      <div class="form-group">
+    <label>Icon: </label>
+    <input type="file" placeholder="Icon" accept="image/*" />
+     <br>
+
+    <template v-if="surveys.length">
+      <Question :Survey="surveys" @DeleteQuestion="deleteQuestions" />
+    </template>
+    <br />
+    <div class="form-group">
       <button @click="addQuestion" type="button" class="btn btn-secondary">
         Add question
       </button>
-      </div>
+    </div>
 
-
-      <div class="form-group">
-        <button @click="printJson" type="button" class="btn btn-primary">
-          Print
+    <div class="form-group">
+      <button @click="printJson" type="button" class="btn btn-primary">
+        Print
       </button>
-      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import FormQuestion from "@/components/surveys/SurveyBuilder/Forms";
 import Question from "@/components/surveys/SurveyBuilder/Questions";
 import { mapActions } from "vuex";
-import {uuidv4} from "@/helpers"
-
+import { uuidv4 } from "@/helpers";
 
 export default {
   name: "App",
@@ -43,45 +54,39 @@ export default {
   },
 
   data: () => ({
-
+    image: null,
+    section: "",
+    subtitle: "",
+    title: "",
     scopeTypes: ["Public", "Private"],
     surveyName: "",
     surveys: [],
   }),
   components: {
-    FormQuestion,
     Question,
   },
 
   methods: {
     ...mapActions("surveys", ["SaveSurvey"]),
-    
+
     addQuestion() {
-      this.surveys.push({    
-        surveyName:this.surveyName,   
+      this.surveys.push({
+        surveyName: this.surveyName,
         id: uuidv4(),
         type: "",
         scope: "public",
         identifier: "",
         description: "",
-        questions: [],
+        question: [],
         required: true,
         options: [],
       });
     },
-      
+
     deleteQuestions(index) {
-        console.log("Esta seria la que voy a eliminar",this.surveys[index] )
-        this.surveys.splice(index, 1);
-     },
+      this.surveys.splice(index, 1);
+    },
 
-    
-
-
-    // handleChangeQuestion({ question, id }) {
-    //   const surveyIndex = this.surveys.findIndex((data) => data.id === id);
-    //   this.surveys[surveyIndex] = { ...this.surveys[surveyIndex], ...question };
-    // },
 
     printJson() {
       console.log(this.surveyName);
@@ -98,7 +103,6 @@ export default {
     },
   },
 };
-
 </script>
 
 <style lang="scss">
