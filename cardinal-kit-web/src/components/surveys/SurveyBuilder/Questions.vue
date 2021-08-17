@@ -1,24 +1,24 @@
 <template>
   <form>
     <div class="surveys">
-      <div class="form-row" v-for="(survey, index) in Survey" :key="index">
+      
         <div class="form-group col-md-6">
           <label>Select the type of question: </label>
           <br />
           <br />
+          {{survey.type}}
           <AltSelect
+          :ref="survey.id"
             :options="questionTypes"
             v-model="survey.type"
-            :name="`
-               surveys[${index}][type]`"
+            :name="`surveys[${survey.id}][type]`"
             type="text"
             class="form-control"
             placeholder="Type of question"
             :onChange="
               () => {
                 createQuestionOptions(survey.type, survey.id);
-              }
-            "
+              }"
           />
           <br />
         </div>
@@ -31,7 +31,7 @@
           <input
             v-model="survey.identifier"
             :name="`
-               surveys[${index}][id]`"
+               surveys[${survey.id}][id]`"
             type="text"
             class="TextInput"
             placeholder="id"
@@ -43,7 +43,7 @@
             type="checkbox"
             v-model="survey.required"
             :name="`
-               surveys[${index}][required]`"
+               surveys[${survey.id}][required]`"
             hidden
           />
         </div>
@@ -62,7 +62,7 @@
           <input
             v-model="survey.question"
             :name="`
-               surveys[${index}][question]`"
+               surveys[${survey.id}][question]`"
             type="text"
             class="TextInput"
             placeholder="Question"
@@ -172,7 +172,7 @@
         <button
           @click="
             () => {
-              deleteQuestion(index);
+              deleteQuestion(survey.id);
             }
           "
           type="button"
@@ -182,7 +182,7 @@
         <br />
         <br />
         <hr />
-      </div>
+      
     </div>
   </form>
 </template>
@@ -212,7 +212,7 @@ import Weight from "@/components/surveys/SurveyBuilder/questionsTypes/Weight";
 
 export default {
   props: {
-    Survey: Object,
+    survey: Object,
   },
 
   components: {
@@ -267,31 +267,31 @@ export default {
 
   methods: {
     createQuestionOptions(type, id) {
-      const surveyIndex = this.Survey.findIndex((data) => data.id === id);
-      switch (type) {
-        case "single choice":
-          this.Survey[surveyIndex].type = "radio";
-          this.Survey[surveyIndex].options = [
-            { text: "", value: 0 },
-            { text: "", value: 1 },
-          ];
-          break;
-        case "multiple choice":
-          this.Survey[surveyIndex].type = "checkbox";
-          this.Survey[surveyIndex].options = [
-            { text: "", value: 0 },
-            { text: "", value: 1 },
-          ];
-          break;
-        case "boolean":
-          this.Survey[surveyIndex].options = [{ yes: "", no: "" }];
-          break;
-        case "scale":
-          this.Survey[surveyIndex].options = [{ min: "", max: "", step: "" }];
-          break;
-        default:
-          this.Survey[surveyIndex].options = [{}];
-      }
+    //   const surveyIndex = this.Survey.findIndex((data) => data.id === id);
+    //   switch (type) {
+    //     case "single choice":
+    //       this.Survey[surveyIndex].type = "radio";
+    //       this.Survey[surveyIndex].options = [
+    //         { text: "", value: 0 },
+    //         { text: "", value: 1 },
+    //       ];
+    //       break;
+    //     case "multiple choice":
+    //       this.Survey[surveyIndex].type = "checkbox";
+    //       this.Survey[surveyIndex].options = [
+    //         { text: "", value: 0 },
+    //         { text: "", value: 1 },
+    //       ];
+    //       break;
+    //     case "boolean":
+    //       this.Survey[surveyIndex].options = [{ yes: "", no: "" }];
+    //       break;
+    //     case "scale":
+    //       this.Survey[surveyIndex].options = [{ min: "", max: "", step: "" }];
+    //       break;
+    //     default:
+    //       this.Survey[surveyIndex].options = [{}];
+    //   }
     },
 
     deleteQuestion(index) {

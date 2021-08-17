@@ -21,9 +21,9 @@
     <input type="file" placeholder="Icon" accept="image/*" />
      <br>
 
-    <template v-if="surveys.length">
-      <Question :Survey="surveys" @DeleteQuestion="deleteQuestions" />
-    </template>
+    <!-- <template v-if="surveys.count"> -->
+      <Question :survey="survey" @DeleteQuestion="deleteQuestions"   v-for="survey in surveys" :key="survey.id"  />
+    <!-- </template> -->
     <br />
     <div class="form-group">
       <button @click="addQuestion" type="button" class="btn btn-secondary">
@@ -60,7 +60,7 @@ export default {
     title: "",
     scopeTypes: ["Public", "Private"],
     surveyName: "",
-    surveys: [],
+    surveys: {},
   }),
   components: {
     Question,
@@ -70,9 +70,10 @@ export default {
     ...mapActions("surveys", ["SaveSurvey"]),
 
     addQuestion() {
-      this.surveys.push({
+      let id = uuidv4()
+      this.surveys[id]={
         surveyName: this.surveyName,
-        id: uuidv4(),
+        id: id,
         type: "",
         scope: "public",
         identifier: "",
@@ -80,11 +81,12 @@ export default {
         question: [],
         required: true,
         options: [],
-      });
+      }
     },
 
     deleteQuestions(index) {
-      this.surveys.splice(index, 1);
+      delete this.surveys[index]
+      // this.surveys.splice(index, 1);
     },
 
 
