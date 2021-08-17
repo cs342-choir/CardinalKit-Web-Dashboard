@@ -6,7 +6,10 @@
       <tr v-for="(patient, index) in patients" :key="patient.id">
         <td>{{index + 1}}</td>
         <td>
-          {{patient.name || 'NN'}}
+          {{patient.email || 'NN'}}
+        </td>
+         <td>
+          {{patient.id || 'NN'}}
         </td>
         <td>
           <span class="pointer" @click="handleSelecPatient(patient.id)">
@@ -42,7 +45,7 @@ import loadingIcon from "@/components/loading";
     },
     data(){
       return{
-        columns: [{ header: 'N°' }, { header: 'Name' }, { header: 'Action' },{ header: '' }],
+        columns: [{ header: 'N°' }, { header: 'Email' } ,{header: 'userId'},{ header: 'Action' },{ header: '' }],
         loadingId : 0,
         currentPage: 1,
         limit: 10,
