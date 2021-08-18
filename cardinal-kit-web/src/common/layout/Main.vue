@@ -30,7 +30,9 @@ export default {
   computed: {
     ...mapGetters("user", ["getUserRol"]),
     menu() {
-      let main = [{ name: "Home", route: "/" }];
+      let main = [
+        { name: "Home", route: "/" },
+      ];
       if (this.getUserRol == "superAdmin") {
         main.push({ name: "Register doctors", route: "/register" });
       }
@@ -41,9 +43,14 @@ export default {
       ) {
         if (this.$route.name != "surveysList") {
           main.push({
-            name: "Surveys",
-            route: `/surveysList/${this.$route.params.studyId}`,
-          });
+              name: "Surveys List",
+              route: `/surveysList/${this.$route.params.studyId}`
+            }, 
+            { 
+              name: "Surveys Builder",
+              route: `/surveysBuilder/${this.$route.params.studyId}`
+            }
+          );
         }
         if (this.$route.name != "patients") {
           main.push({
