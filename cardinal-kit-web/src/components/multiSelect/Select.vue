@@ -1,15 +1,14 @@
 <template>
-   <div> 
-   <Multiselect  
-    trackBy="id"
-    label="name"
-   v-model="internalValue" 
-   :options="options" 
-   :placeholder="_placeholder" 
-   :canClear="false"
-   :canDeselect="false"
-   /> 
-
+  <div> 
+    <Multiselect  
+      trackBy="id"
+      label="name"
+      v-model="internalValue" 
+      :options="options" 
+      :placeholder="_placeholder" 
+      :canClear="false"
+      :canDeselect="false"
+    />
   </div>
 </template>
 
@@ -22,36 +21,36 @@ export default {
       internalValue:(this.options && this.options.length>0)?this.options[0].id:null,      
     };
   },
-  watch:{
+  watch: {
     internalValue: function(value){
       this.$emit('update:modelValue', value)
       if(this.onChange) this.onChange()
     }
   },
-  computed:{
-      _placeholder(){
-          return this.placeholder??"Select One"
-      }
+  computed: {
+    _placeholder() {
+      return this.placeholder??"Select One"
+    }
   },
-  methods:{
+  methods: {
     setNewValue(value){
-      this.internalValue=value
+      this.internalValue = value
     }
   },
   props: {
-    options:{
+    options: {
       type:Array,
       require:true
     },
-    placeholder:{
-        type:String,
-        require:false
+    placeholder: {
+      type:String,
+      require:false
     },
-    onChange:{
+    onChange: {
       type:Function,
       require:false
     }
-  },
+  }
 };
 </script>
 

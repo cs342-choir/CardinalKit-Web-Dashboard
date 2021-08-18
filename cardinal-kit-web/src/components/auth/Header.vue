@@ -10,9 +10,9 @@
       </span>
       <slot name="menu">
          <template v-for="(item, index) in menu" :key="index">
-           <router-link class="ev-link" :to="item.route">
-              {{item.name}}
-            </router-link>
+              <router-link class="ev-link" :to="item.route">
+                {{item.name}}
+              </router-link>
          </template>
          <span v-if="logout" class="ev-link pointer logout" @click="emitLogout()">Logout</span>
       </slot>
@@ -48,7 +48,7 @@ export default {
     brandTitle: String,
   },
   components: {
-      Logo,
+    Logo,
   },
   setup(props, context) {
     const showMenu = ref(false);
