@@ -18,6 +18,7 @@
 import category from "./categoryCard";
 import { CategoriesList } from '@/common/static_data'
 import { mapGetters } from 'vuex';
+
 export default {
   name: "categories",
   components: {

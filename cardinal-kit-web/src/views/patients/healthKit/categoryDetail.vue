@@ -22,7 +22,8 @@
         </template>
       </activity-card> -->
       <template v-if="activities && activities.length" >
-          <activity-card v-for="activity in activities" :key="activity.HkCode"
+        <activity-card 
+          v-for="activity in activities" :key="activity.HkCode"
           :name="activity.HkCodeName" 
           :date="activity.Date.formatted"
           :color-title="activity.Color" 
@@ -30,7 +31,7 @@
           :measure="activity.Unit"
           :logo="activity.Logo"
           :id="activity.HkCode">
-          </activity-card>
+        </activity-card>
       </template>
     </div>
   </section>

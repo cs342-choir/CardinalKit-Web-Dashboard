@@ -10,21 +10,23 @@
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 export default {
   name: "loading",
-  data() {
-    return {
-      color: "#b71540",
-    };
+  components: {
+    PulseLoader
   },
   props: {
     size: {
       type: String,
       required: true,
     },
-  },
-  methods: {},
-  computed: {},
-  components: {
-    PulseLoader,
+    color: {
+      type: String,
+      required: false,
+      default: "#b71540"
+    }
+    /* data() {
+      return {
+      };
+    }, */
   },
   mounted() {
     if (this.size) {
