@@ -1,15 +1,17 @@
 <template>
-  <div :onClick="handleSubmit" class="card-category">
-    <div class="flex align-center">
-      <img width="15" class="icon" :src="data.icon" />
-      <span class="subtitle">{{ data.name }}</span>
+  <div>
+    <div v-if="!loading" :onClick="handleSubmit" class="card-category">
+      <div class="flex align-center">
+        <img width="15" class="icon" :src="data.icon" />
+        <span class="subtitle">{{ data.name }}</span>
+      </div>
+      <span class="arrow">›</span>
     </div>
     <loading-icon v-show="loading" size="10px"/>
-    <span class="arrow">›</span>
-    
   </div>
 </template>
 <script>
+
 import loadingIcon from "@/components/loading";
 export default {
   components:{

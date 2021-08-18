@@ -86,12 +86,8 @@ export default {
 
     deleteQuestions(index) {
       delete this.surveys[index]
-      // this.surveys.splice(index, 1);
     },
-
-
     printJson() {
-      console.log(this.surveyName);
       const data = {
         surveys: this.surveys,
       };
