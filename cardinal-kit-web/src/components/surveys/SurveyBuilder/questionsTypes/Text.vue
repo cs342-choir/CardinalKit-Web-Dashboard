@@ -1,5 +1,7 @@
 <template>
+<div>
   <input type="text" class="TextInput" placeholder="text" disabled/>
+</div>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-
+<div>
     <br />
     <br />
     <label>Signature: </label> 
@@ -11,7 +11,7 @@
             disabled
           />
   </div>
-
+</div>
 </template>
 
 <script>

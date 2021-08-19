@@ -1,4 +1,5 @@
 <template>
+<div>
     <input      
       type="number"
       class="TextInput"
@@ -6,6 +7,7 @@
       step="1"
       value="199"
       disabled>
+</div>
 </template>
 
 <script>
