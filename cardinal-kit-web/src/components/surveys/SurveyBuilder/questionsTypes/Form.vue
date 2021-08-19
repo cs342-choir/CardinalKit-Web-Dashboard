@@ -79,7 +79,6 @@
           />
         </div>
 
-
         <div v-if="question.type === 'scale'" class="form-group col-md-6">
           <Scale :Options="question.options" />
         </div>
@@ -227,7 +226,6 @@ export default {
   props: {
     Survey: Object,
   },
-
   components: {
     AltSelect,
     Checkbox,
@@ -296,6 +294,8 @@ export default {
 
 
     createFormQuestionOptions(type, index) {
+   //   const surveyIndex = this.Survey.findIndex((data) => data.id === id);
+
       switch (type) {
         case 'single choice':
           this.Survey.question[index].type = "radio"

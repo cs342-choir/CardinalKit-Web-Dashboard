@@ -1,4 +1,5 @@
 <template >
+  <div>
   <label>Options: </label>
   <div v-for="(option, index) in Options" :key="index">
     <br />
@@ -31,6 +32,7 @@
     <button @click="addOptions(Options)" type="button" class="btn btn-terceary">
       Add Options
     </button>
+  </div>
   </div>
 </template>
 

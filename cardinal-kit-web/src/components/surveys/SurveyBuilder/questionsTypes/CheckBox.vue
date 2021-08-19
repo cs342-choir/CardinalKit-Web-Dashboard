@@ -1,10 +1,9 @@
 <template >
+<div>
   <label>Options: </label>
   <div v-for="(option, index) in Options" :key="index">
     <br />
-
-<div>
-
+  <div>
     <input class="CheckBoxInput" type="checkbox" disabled />
     <input
       v-model="option.text"
@@ -24,7 +23,7 @@
     >
       Delete
     </button>
-</div>
+  </div>
     <br />
   </div>
   <br />
@@ -34,6 +33,7 @@
       Add Options
     </button>
   </div>
+</div>
 </template>
 
 <script>

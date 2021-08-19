@@ -1,4 +1,5 @@
 <template>
+<div>
   <div v-for="(option, index) in Options" :key="index">
     <br />
     <br />
@@ -12,8 +13,8 @@
             disabled
           />
   </div>
+  </div>
 </div>
-
 </template>
 
 <script>

@@ -263,31 +263,31 @@ export default {
   }),
   methods: {
     createQuestionOptions(type, id) {
-      /*const surveyIndex = this.Survey.findIndex((data) => data.id === id);
+      console.log(this.survey, "survey")
       switch (type) {
         case "single choice":
-          this.Survey[surveyIndex].type = "radio";
-          this.Survey[surveyIndex].options = [
+          this.survey.type = "radio";
+          this.survey.options = [
             { text: "", value: 0 },
             { text: "", value: 1 },
           ];
           break;
         case "multiple choice":
-          this.Survey[surveyIndex].type = "checkbox";
-          this.Survey[surveyIndex].options = [
+          this.survey.type = "checkbox";
+          this.survey.options = [
             { text: "", value: 0 },
             { text: "", value: 1 },
           ];
           break;
         case "boolean":
-          this.Survey[surveyIndex].options = [{ yes: "", no: "" }];
+          this.survey.options = [{ yes: "", no: "" }];
           break;
         case "scale":
-          this.Survey[surveyIndex].options = [{ min: "", max: "", step: "" }];
+          this.survey.options = [{ min: "", max: "", step: "" }];
           break;
         default:
-          this.Survey[surveyIndex].options = [{}];
-      }*/
+          this.survey.options = [{}];
+      }
     },
     deleteQuestion(index) {
       this.$emit("DeleteQuestion", index);

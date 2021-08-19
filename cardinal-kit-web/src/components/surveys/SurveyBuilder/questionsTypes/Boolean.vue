@@ -1,4 +1,5 @@
 <template>
+<div>
   <div v-for="(option, index) in Options" :key="index">
     <br />
     <br />
@@ -24,6 +25,7 @@
       placeholder="No"
     />
   </div>
+</div>
 </template>
 
 <script>
