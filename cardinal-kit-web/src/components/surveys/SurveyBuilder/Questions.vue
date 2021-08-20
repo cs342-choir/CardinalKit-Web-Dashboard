@@ -93,7 +93,7 @@
       </div>
 
       <div v-if="survey.type === 'scale'" class="form-group col-md-6">
-        <Scale :Options="survey.options" />
+        <Scale :Options="survey" /> 
       </div>
 
       <div v-if="survey.type === 'continuosScale'" class="form-group col-md-6">
@@ -101,15 +101,15 @@
       </div>
 
       <div v-if="survey.type === 'boolean'" class="form-group col-md-6">
-        <Boolean :Options="survey.options" />
+        <Boolean :Options="survey" />
       </div>
 
-      <div v-if="survey.type === 'SingleChoice'" class="form-group col-md-6">
+      <div v-if="survey.type === 'singleChoice'" class="form-group col-md-6">
         <br />
         <Radio :Options="survey.options" />
       </div>
 
-      <div v-if="survey.type === 'MultipleChoice'" class="form-group col-md-6">
+      <div v-if="survey.type === 'multipleChoice'" class="form-group col-md-6">
         <br />
         <Checkbox :Options="survey.options" />
       </div>
@@ -291,24 +291,31 @@ export default {
     createQuestionOptions(type, id) {
       switch (type) {
         case "single choice":
-          this.survey.type = "SingleChoice";
+          this.survey.type = "singleChoice";
           this.survey.options = [
             { text: "", value: "0" },
             { text: "", value: "1" },
           ];
           break;
         case "multiple choice":
-          this.survey.type = "MultipleChoice";
+          this.survey.type = "multipleChoice";
           this.survey.options = [
             { text: "", value: "0" },
             { text: "", value: "1" },
           ];
           break;
         case "boolean":
-          this.survey.options = [{ yes: "", no: "" }];
+          this.survey['yes'] = "" 
+          this.survey['no'] = "" 
           break;
         case "scale":
-          this.survey.options = [{ min: "", max: "", step: "", default: "", vertical: false }];
+         this.survey["min"] = ""
+         this.survey["minValueDescription"] = ""
+         this.survey["max"] = ""
+         this.survey["maxValueDescription"] = ""
+         this.survey["step"] = ""
+         this.survey["default"] = ""
+         this.survey["vertical"] = false
           break;
         default:
           this.survey.options = [{}];
@@ -333,11 +340,7 @@ export default {
 
 /* Form element setup */
 form {
- /* position: absolute;
-  top: 0;
-  left: 50%;
-  width: 300px;
-  transform: translateX(-50%);*/
+
   margin: 2rem 0;
   z-index: 1;
 }

@@ -43,7 +43,7 @@ export default {
   methods: {
     addOptions() {
       const val = this.Options.length;
-      this.Options.push({ text: "", value: val });
+      this.Options.push({ text: "", value: ""+val });
     },
     deleteOptions(index) {
       this.Options.splice(index, 1);

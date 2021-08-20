@@ -1,19 +1,18 @@
 <template>
-<div>
-  <div v-for="(option, index) in Options" :key="index">
+  <div>
     <br />
     <br />
     <div class="wrap-input">
       <label>Min: </label>
       <input
-        v-model="option.min"
-        :name="`options[${index}]`"
+        v-model="Options.min"
+        :name="`options[${Options.id}]`"
         type="number"
         placeholder="1"
       />
       <label> Description: </label>
       <input
-        v-model="option.minValueLabel"
+        v-model="Options.minValueDescription"
         class="TextInput"
         type="text"
         placeholder="Poor"
@@ -23,14 +22,14 @@
     <div class="wrap-input">
       <label>Max: </label>
       <input
-        v-model="option.max"
-        :name="`options[${index}]`"
+        v-model="Options.max"
+        :name="`options[${Options.id}]`"
         type="number"
         placeholder="5"
       />
       <label> Description: </label>
       <input
-        v-model="option.maxValueLabel"
+        v-model="Options.maxValueDescription"
         class="TextInput"
         placeholder="Excellent"
         type="text"
@@ -40,7 +39,7 @@
     <div>
       <label>Vertical: </label>
       <input
-        v-model="option.vertical"
+        v-model="Options.vertical"
         type="checkbox"
         class="TextInput"
       />
@@ -49,8 +48,8 @@
     <div>
       <label>Step: </label>
       <input
-        v-model="option.step"
-        :name="`options[${index}]`"
+        v-model="Options.step"
+        :name="`options[${Options.id}]`"
         type="number"
         class="TextInput"
         placeholder="1"
@@ -60,25 +59,21 @@
     <div>
       <label>Default: </label>
       <input
-        v-model="option.default"
-        :name="`default[${index}]`"
+        v-model="Options.default"
+        :name="`default[${Options.id}]`"
         type="number"
         class="TextInput"
         placeholder="1"
       />
     </div>
   </div>
-</div>
 </template>
 
 <script>
 export default {
   props: {
-    Options: Array,
-  }/*,
-   created(){
-    console.log(this.Options, "options")
-  } */
+    Options: Object
+  }
 };
 </script>
 

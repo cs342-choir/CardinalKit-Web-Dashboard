@@ -80,19 +80,19 @@
         </div>
 
         <div v-if="question.type === 'scale'" class="form-group col-md-6">
-          <Scale :Options="question.options" />
+            <Scale :Options="question" />
         </div>
 
         <div v-if="question.type === 'boolean'" class="form-group col-md-6">
-          <Boolean :Options="question.options" />
+          <Boolean :Options="question" />
         </div>
 
-        <div v-if=" question.type === 'SingleChoice' " class="form-group col-md-6" >
+        <div v-if=" question.type === 'singleChoice' " class="form-group col-md-6" >
           <br />
           <Radio :Options="question.options" />
         </div>
 
-        <div v-if=" question.type === 'MultipleChoice' " class="form-group col-md-6" >
+        <div v-if=" question.type === 'multipleChoice' " class="form-group col-md-6" >
           <br />
           <Checkbox :Options="question.options" />
         </div>
@@ -275,7 +275,9 @@ export default {
 
   methods: {
     addFormQuestion() {
-  
+      if(!this.Survey.question){
+        this.Survey.question=[]
+      }
       this.Survey.question.push({
         id: uuidv4(),
         type: "",
@@ -298,24 +300,33 @@ export default {
 
       switch (type) {
         case 'single choice':
-          this.Survey.question[index].type = "SingleChoice"
+          this.Survey.question[index].type = "singleChoice"
           this.Survey.question[index].options = [
             { text: "", value: 0 },
             { text: "", value: 1 },
           ];
           break;
         case 'multiple choice':
-          this.Survey.question[index].type = "MultipleChoice"
+          this.Survey.question[index].type = "multipleChoice"
           this.Survey.question[index].options = [
             { text: "", value: 0 },
             { text: "", value: 1 },
           ];
           break;
         case "boolean":
-          this.Survey.question[index].options = [{ yes: "", no: "" }];
+          this.Survey.question[index].yes = "" 
+          this.Survey.question[index].no = "" 
+          //this.Survey.question[index].options = [{ yes: "", no: "" }];
           break;
         case "scale":
-          this.Survey.question[index].options = [{ min: "", max: "", step: "" }];
+         this.Survey.question[index].min = ""
+         this.Survey.question[index].minValueDescription = ""
+         this.Survey.question[index].max = ""
+         this.Survey.question[index].maxValueDescription = ""
+         this.Survey.question[index].step = ""
+         this.Survey.question[index].default = ""
+         this.Survey.question[index].vertical = false
+         // this.Survey.question[index].options = [{ min: "", max: "", step: "" }];
           break;
         default:
           this.Survey.question[index].options = [{}];
