@@ -62,6 +62,8 @@ export default {
     title: "",
     scopeTypes: ["Public", "Private"],
     surveyName: "",
+    orderQuestion:0,
+    orderSurvey:"1",
     surveys: {},
   }),
   components: {
@@ -71,9 +73,10 @@ export default {
   methods: {
     ...mapActions("surveys", ["SaveSurvey"]),
     addQuestion() {
+      this.orderQuestion+=1
       let id = uuidv4()
       this.surveys[id]={
-        surveyName: this.surveyName,
+        title: "",
         id: id,
         type: "",
         scope: "public",
@@ -81,7 +84,8 @@ export default {
         description: "",
         question: [],
         required: true,
-        options: []
+        options: [],
+        order:""+this.orderQuestion
       }
     },
 
@@ -89,16 +93,32 @@ export default {
       delete this.surveys[index]
     },
     printJson() {
-      const data = {
-        surveys: this.surveys,
-      };
-      console.log(JSON.stringify(data, null, 2));
+      // const data = {
+      //   surveys: this.surveys,
+      // };
+      // console.log(JSON.stringify(data, null, 2));
+      let questionData={
+        'image':"SurveyIcon",
+        'order':this.orderSurvey,
+        'section':this.section,
+        'subtitle':this.subtitle,
+        'title':this.title
+      }
 
-      // this.SaveSurvey({
-      //   studyId: this.studyId,
+      // const data = {
+      //  studyId: this.studyId,
       //   name: this.surveyName,
-      //   questions:this.surveys
-      // })
+      //   questions:this.surveys,
+      //   data: questionData,
+      // };
+      // console.log(JSON.stringify(data, null, 2));
+
+      this.SaveSurvey({
+        studyId: this.studyId,
+        name: this.surveyName,
+        questions:this.surveys,
+        data: questionData,
+      })
     },
   },
 };
