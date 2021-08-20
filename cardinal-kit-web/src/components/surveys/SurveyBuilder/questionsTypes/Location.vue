@@ -1,14 +1,14 @@
 <template>
-<div>
- <label>Location: </label> 
-    <div>
+  <div>
+    <!-- <div> 
+      <label>Location: </label> 
       <textarea           
         class="TextInput"
         rows="5" cols="50"
         disabled
       />
+    </div> -->
   </div>
-</div>
 </template>
 
 <script>

@@ -109,7 +109,7 @@
         <Radio :Options="survey.options" />
       </div>
 
-      <div v-if="survey.type === 'checkbox'" class="form-group col-md-6">
+      <div v-if="survey.type === 'MultipleChoice'" class="form-group col-md-6">
         <br />
         <Checkbox :Options="survey.options" />
       </div>

@@ -1,13 +1,14 @@
 <template>
-<div>
+  <div>
     <input      
       type="number"
       class="TextInput"
       placeholder=""
       step="1"
       value="199"
-      disabled>
-</div>
+      disabled
+     />
+  </div>
 </template>
 
 <script>

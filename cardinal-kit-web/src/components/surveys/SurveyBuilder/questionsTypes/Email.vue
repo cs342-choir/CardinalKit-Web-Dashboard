@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input type="email"  disabled  value="youremail@email.com" />
+<!--     <input type="email"  disabled  value="youremail@email.com" /> -->
   </div>
 </template>
 

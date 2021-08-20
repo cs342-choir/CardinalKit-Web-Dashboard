@@ -2,7 +2,7 @@
   <div>
     <br />
     <br />
-    <label>Signature: </label> 
+    <!-- <label>Signature: </label> 
     <div>
       <textarea           
         class="TextInput"
@@ -10,7 +10,7 @@
         rows="5" cols="100"
         disabled
       />
-    </div>
+    </div> -->
   </div>
 </template>
 

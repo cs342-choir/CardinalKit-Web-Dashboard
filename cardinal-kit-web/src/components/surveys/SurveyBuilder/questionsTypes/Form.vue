@@ -1,7 +1,7 @@
 <template>
   <form>
     <div class="Form">
-        <div>
+      <!--   <div>
           <br />
           <label>Description: </label>
           <textarea           
@@ -10,7 +10,7 @@
             placeholder="Description"
             rows="5" cols="100"
           />
-        </div>
+        </div> -->
         <br />
         <br />
       <div class="form-row" v-for="(question, index) in Survey.question" :key="index">
@@ -87,12 +87,12 @@
           <Boolean :Options="question.options" />
         </div>
 
-        <div v-if=" question.type === 'radio' " class="form-group col-md-6" >
+        <div v-if=" question.type === 'SingleChoice' " class="form-group col-md-6" >
           <br />
           <Radio :Options="question.options" />
         </div>
 
-        <div v-if=" question.type === 'checkbox' " class="form-group col-md-6" >
+        <div v-if=" question.type === 'MultipleChoice' " class="form-group col-md-6" >
           <br />
           <Checkbox :Options="question.options" />
         </div>
@@ -298,14 +298,14 @@ export default {
 
       switch (type) {
         case 'single choice':
-          this.Survey.question[index].type = "radio"
+          this.Survey.question[index].type = "SingleChoice"
           this.Survey.question[index].options = [
             { text: "", value: 0 },
             { text: "", value: 1 },
           ];
           break;
         case 'multiple choice':
-          this.Survey.question[index].type = "checkbox"
+          this.Survey.question[index].type = "MultipleChoice"
           this.Survey.question[index].options = [
             { text: "", value: 0 },
             { text: "", value: 1 },
