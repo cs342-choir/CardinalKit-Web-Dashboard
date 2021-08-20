@@ -14,13 +14,16 @@
       <label>Enter the subtitle: </label>
       <input v-model="subtitle" type="text" placeholder="Subtitle" />
       <br>
+      <label>Order: </label>
+      <input v-model="orderSurvey" type="number"  min="1" pattern="^[0-9]+"/>
+      <br>
       <label>Section: </label>
       <input v-model="section" type="text" placeholder="Section" />
       <br>
-
       <label>Icon: </label>
       <input type="file" placeholder="Icon" accept="image/*" />
       <br>
+
       <div v-for="survey in surveys" :key="survey.id">
      <!--    {{survey}} -->
         <Question :survey="survey" @DeleteQuestion="deleteQuestions" />
