@@ -75,10 +75,10 @@
 export default {
   props: {
     Options: Array,
-  },
-  created(){
+  }/*,
+   created(){
     console.log(this.Options, "options")
-  }
+  } */
 };
 </script>
 
