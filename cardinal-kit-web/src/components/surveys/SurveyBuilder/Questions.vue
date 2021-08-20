@@ -331,14 +331,6 @@ export default {
   margin: 0px 0px 0px 0px;
 }
 
-/*body {
-  height: 100%;
-  font-family: Roboto, san-serif;
-  font-weight: 300;
-  background-color: #f5f6f7;
-}*/
-
-
 /* Form element setup */
 form {
  /* position: absolute;
@@ -394,6 +386,19 @@ textarea {
 input[type='text'],
 select {
   height: 34px;
+}
+
+input[type='number'],
+select {
+   // height: 34px;
+    display: block;
+    padding: .5rem;
+    width: 30%;
+    background-color: white;
+    border-radius: .25rem;
+    border: 1px solid #e5e5e5;
+    outline: none;
+    transition-property: none;
 }
 
 select {

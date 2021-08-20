@@ -3,30 +3,29 @@
   <div v-for="(option, index) in Options" :key="index">
     <br />
     <br />
-    <div>
+    <div class="wrap-input">
       <label>Min: </label>
       <input
         v-model="option.min"
         :name="`options[${index}]`"
         type="number"
-        class="TextInput"
         placeholder="1"
       />
       <label> Description: </label>
       <input
         v-model="option.minValueLabel"
         class="TextInput"
+        type="text"
         placeholder="Poor"
       />    
     </div>
     <br/>
-    <div>
+    <div class="wrap-input">
       <label>Max: </label>
       <input
         v-model="option.max"
         :name="`options[${index}]`"
         type="number"
-        class="TextInput"
         placeholder="5"
       />
       <label> Description: </label>
@@ -34,6 +33,7 @@
         v-model="option.maxValueLabel"
         class="TextInput"
         placeholder="Excellent"
+        type="text"
       />   
     </div>
      <br/>
@@ -82,5 +82,11 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+  .wrap-input{
+    display: flex;
+  }
+  div > label {
+    margin: 0px 5px 0px 5px;
+  }
 </style>
