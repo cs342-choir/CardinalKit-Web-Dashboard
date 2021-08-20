@@ -82,7 +82,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
   .wrap-input{
     display: flex;
   }
