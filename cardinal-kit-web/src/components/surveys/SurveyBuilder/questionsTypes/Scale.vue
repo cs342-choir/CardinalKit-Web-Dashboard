@@ -1,19 +1,18 @@
 <template>
 <div>
-  <div v-for="(option, index) in Options" :key="index">
+ 
     <br />
     <br />
     <div class="wrap-input">
       <label>Min: </label>
       <input
-        v-model="option.min"
-        :name="`options[${index}]`"
+        v-model="Survey.min"
         type="number"
         placeholder="1"
       />
       <label> Description: </label>
       <input
-        v-model="option.minValueLabel"
+        v-model="Survey.minValueDescription"
         class="TextInput"
         type="text"
         placeholder="Poor"
@@ -23,14 +22,13 @@
     <div class="wrap-input">
       <label>Max: </label>
       <input
-        v-model="option.max"
-        :name="`options[${index}]`"
+        v-model="Survey.max"
         type="number"
         placeholder="5"
       />
       <label> Description: </label>
       <input
-        v-model="option.maxValueLabel"
+        v-model="Survey.maxValueDescription"
         class="TextInput"
         placeholder="Excellent"
         type="text"
@@ -40,7 +38,7 @@
     <div>
       <label>Vertical: </label>
       <input
-        v-model="option.vertical"
+        v-model="Survey.vertical"
         type="checkbox"
         class="TextInput"
       />
@@ -49,8 +47,7 @@
     <div>
       <label>Step: </label>
       <input
-        v-model="option.step"
-        :name="`options[${index}]`"
+        v-model="Survey.step"
         type="number"
         class="TextInput"
         placeholder="1"
@@ -60,21 +57,19 @@
     <div>
       <label>Default: </label>
       <input
-        v-model="option.default"
-        :name="`default[${index}]`"
+        v-model="Survey.default"
         type="number"
         class="TextInput"
         placeholder="1"
       />
     </div>
   </div>
-</div>
 </template>
 
 <script>
 export default {
   props: {
-    Options: Array,
+    Survey: Object,
   },
   created(){
     console.log(this.Options, "options")
