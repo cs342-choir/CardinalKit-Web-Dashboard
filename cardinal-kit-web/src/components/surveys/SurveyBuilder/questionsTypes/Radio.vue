@@ -7,8 +7,7 @@
         <input class="RadioInput" type="radio" disabled />
         <input
           v-model="option.text"
-          :name="`
-                  options[${index}]`"
+          :name="`options[${index}]`"
           type="text"
           class="TextInput"
         />

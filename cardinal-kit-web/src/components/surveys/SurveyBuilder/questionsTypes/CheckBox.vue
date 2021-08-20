@@ -1,4 +1,4 @@
-<template >
+<template>
   <div>
     <label>Options: </label>
     <div v-for="(option, index) in Options" :key="index">
