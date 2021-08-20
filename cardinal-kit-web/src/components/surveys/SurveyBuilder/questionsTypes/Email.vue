@@ -1,10 +1,10 @@
 <template>
-  <input type="email"  disabled  value="youremail@email.com" />
+  <div>
+    <input type="email"  disabled  value="youremail@email.com" />
+  </div>
 </template>
 
 <script>
 export default {};
 </script>
 
-<style>
-</style>

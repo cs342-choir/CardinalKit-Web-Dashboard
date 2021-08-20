@@ -359,6 +359,7 @@ label {
 }
 
 input[type='text'],
+input[type='email'],
 textarea,
 select {
   display: block;
@@ -384,21 +385,23 @@ textarea {
 }
 
 input[type='text'],
+input[type='email'],
 select {
   height: 34px;
 }
 
 input[type='number'],
+input[type='time'],
 select {
-   // height: 34px;
-    display: block;
-    padding: .5rem;
-    width: 30%;
-    background-color: white;
-    border-radius: .25rem;
-    border: 1px solid #e5e5e5;
-    outline: none;
-    transition-property: none;
+  // height: 34px;
+  display: block;
+  padding: .5rem;
+  width: 30%;
+  background-color: white;
+  border-radius: .25rem;
+  border: 1px solid #e5e5e5;
+  outline: none;
+  transition-property: none;
 }
 
 select {
