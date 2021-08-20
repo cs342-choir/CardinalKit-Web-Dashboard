@@ -13,7 +13,7 @@
         </div> -->
         <br />
         <br />
-      <div class="form-row" v-for="(question, index) in Survey.questions" :key="index">
+      <div class="form-row" v-for="(question, index) in Survey.question" :key="index">
         <div class="form-group col-md-6">
           <label>Select the type of question: </label>
           <br />
@@ -26,6 +26,11 @@
             type="text"
             class="form-control"
             placeholder="Type of question"
+            :onChange="
+              () => {
+                createFormQuestionOptions(question.type, index);
+              }
+            "
           />
           <br />
         </div>
@@ -73,9 +78,9 @@
             placeholder="Question"
           />
         </div>
-{{question}}
+
         <div v-if="question.type === 'scale'" class="form-group col-md-6">
-          <Scale :Survey="question" />
+          <Scale :Options="question.options" />
         </div>
 
         <div v-if="question.type === 'boolean'" class="form-group col-md-6">
@@ -270,10 +275,8 @@ export default {
 
   methods: {
     addFormQuestion() {
-      if(!this.Survey.questions){
-        this.Survey.questions=[]
-      }
-      this.Survey.questions.push({
+  
+      this.Survey.question.push({
         id: uuidv4(),
         type: "",
         scope: "public",

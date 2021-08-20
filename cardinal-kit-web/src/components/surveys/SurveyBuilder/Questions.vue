@@ -13,7 +13,11 @@
           type="text"
           class="form-control"
           placeholder="Type of question"
-          
+          :onChange="
+            () => {
+              createQuestionOptions(survey.type, survey.id);
+            }
+          "
         />
         <br />
       </div>
@@ -89,7 +93,7 @@
       </div>
 
       <div v-if="survey.type === 'scale'" class="form-group col-md-6">
-        <Scale :Survey="survey" />
+        <Scale :Options="survey.options" />
       </div>
 
       <div v-if="survey.type === 'continuosScale'" class="form-group col-md-6">
@@ -284,32 +288,32 @@ export default {
     questionValues: [],
   }),
   methods: {
-    // createQuestionOptions(type, id) {
-    //   switch (type) {
-    //     case "single choice":
-    //       this.survey.type = "SingleChoice";
-    //       this.survey.options = [
-    //         { text: "", value: "0" },
-    //         { text: "", value: "1" },
-    //       ];
-    //       break;
-    //     case "multiple choice":
-    //       this.survey.type = "MultipleChoice";
-    //       this.survey.options = [
-    //         { text: "", value: "0" },
-    //         { text: "", value: "1" },
-    //       ];
-    //       break;
-    //     case "boolean":
-    //       this.survey.options = [{ yes: "", no: "" }];
-    //       break;
-    //     case "scale":
-    //       this.survey.options = [{ min: "", max: "", step: "", default: "", vertical: false }];
-    //       break;
-    //     default:
-    //       this.survey.options = [{}];
-    //   }
-    // },
+    createQuestionOptions(type, id) {
+      switch (type) {
+        case "single choice":
+          this.survey.type = "SingleChoice";
+          this.survey.options = [
+            { text: "", value: "0" },
+            { text: "", value: "1" },
+          ];
+          break;
+        case "multiple choice":
+          this.survey.type = "MultipleChoice";
+          this.survey.options = [
+            { text: "", value: "0" },
+            { text: "", value: "1" },
+          ];
+          break;
+        case "boolean":
+          this.survey.options = [{ yes: "", no: "" }];
+          break;
+        case "scale":
+          this.survey.options = [{ min: "", max: "", step: "", default: "", vertical: false }];
+          break;
+        default:
+          this.survey.options = [{}];
+      }
+    },
     deleteQuestion(index) {
       this.$emit("DeleteQuestion", index);
     }
