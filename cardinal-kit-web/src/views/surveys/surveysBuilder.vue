@@ -81,7 +81,7 @@ export default {
         description: "",
         question: [],
         required: true,
-        options: [],
+        options: []
       }
     },
 
