@@ -37,7 +37,7 @@
 
       <div class="form-group">
         <button @click="printJson" type="button" class="btn btn-primary">
-          Print
+          Save
         </button>
       </div>
     </div>
