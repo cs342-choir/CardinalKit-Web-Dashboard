@@ -96,7 +96,7 @@
         <Scale :Options="survey.options" />
       </div>
 
-      <div v-if="survey.type === 'continuos_scale'" class="form-group col-md-6">
+      <div v-if="survey.type === 'continuosScale'" class="form-group col-md-6">
         <ContinuosScale :Options="survey.options" />
       </div>
 
@@ -447,11 +447,8 @@ input[type='radio'] {
   }
 }
 
-
-
 button {
   display: block;
-  margin: 3em auto;
   padding: .5rem 2rem;
   font-size: 125%;
   color: white;

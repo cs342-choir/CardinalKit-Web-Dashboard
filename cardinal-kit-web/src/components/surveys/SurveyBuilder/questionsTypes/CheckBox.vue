@@ -1,38 +1,38 @@
 <template >
-<div>
-  <label>Options: </label>
-  <div v-for="(option, index) in Options" :key="index">
-    <br />
   <div>
-    <input class="CheckBoxInput" type="checkbox" disabled />
-    <input
-      v-model="option.text"
-      :name="`options[${index}]`"
-      type="text"
-      class="TextInput"
-    />
-    <button
-      v-if="index > 1"
-      @click="
-        () => {
-          deleteOptions(index);
-        }
-      "
-      type="button"
-    >
-      Delete
-    </button>
-  </div>
+    <label>Options: </label>
+    <div v-for="(option, index) in Options" :key="index">
+      <br />
+      <div style="display: flex;">
+        <input class="CheckBoxInput" type="checkbox" disabled />
+        <input
+          v-model="option.text"
+          :name="`options[${index}]`"
+          type="text"
+          class="TextInput"
+        />
+        <button
+          v-if="index > 1"
+          @click="
+            () => {
+              deleteOptions(index);
+            }
+          "
+          type="button"
+        >
+          Delete
+        </button>
+      </div>
+      <br />
+    </div>
     <br />
+    <br />
+    <div class="form-group">
+      <button @click="addOptions(Options)" type="button" class="btn btn-terceary">
+        Add Options
+      </button>
+    </div>
   </div>
-  <br />
-  <br />
-  <div class="form-group">
-    <button @click="addOptions(Options)" type="button" class="btn btn-terceary">
-      Add Options
-    </button>
-  </div>
-</div>
 </template>
 
 <script>
