@@ -58,7 +58,7 @@
     </div>
     <br/>
     <div>
-      <label>max Fraction Digits: </label>
+      <label>Max Fraction Digits: </label>
       <input
         v-model="option.default"
         :name="`maxFractionDigits[${index}]`"
