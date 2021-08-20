@@ -27,8 +27,8 @@
       >
         <label>Title: </label>
         <input
-          v-model="survey.surveyName"
-          :name="`surveys[${survey.id}][surveyName]`"
+          v-model="survey.title"
+          :name="`surveys[${survey.id}][title]`"
           type="text"
           placeholder="Title"
         />
@@ -104,7 +104,7 @@
         <Boolean :Options="survey.options" />
       </div>
 
-      <div v-if="survey.type === 'radio'" class="form-group col-md-6">
+      <div v-if="survey.type === 'SingleChoice'" class="form-group col-md-6">
         <br />
         <Radio :Options="survey.options" />
       </div>
@@ -291,17 +291,17 @@ export default {
     createQuestionOptions(type, id) {
       switch (type) {
         case "single choice":
-          this.survey.type = "radio";
+          this.survey.type = "SingleChoice";
           this.survey.options = [
-            { text: "", value: 0 },
-            { text: "", value: 1 },
+            { text: "", value: "0" },
+            { text: "", value: "1" },
           ];
           break;
         case "multiple choice":
-          this.survey.type = "checkbox";
+          this.survey.type = "MultipleChoice";
           this.survey.options = [
-            { text: "", value: 0 },
-            { text: "", value: 1 },
+            { text: "", value: "0" },
+            { text: "", value: "1" },
           ];
           break;
         case "boolean":
