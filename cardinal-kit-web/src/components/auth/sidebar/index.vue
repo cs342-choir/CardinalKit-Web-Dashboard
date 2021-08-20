@@ -14,14 +14,14 @@
         <Logo class="flex justify-center mb-5" :path="logo"
         :width="widthLogo" />
         <ul v-if="menu" class="mb-5">
-          <template v-for="(link, index) in menu" :key="index">
+          <div v-for="(link, index) in menu" :key="index">
             <li class="flex sb-link">
               <Icon v-if="link?.icon" :icon="link.icon" />
               <router-link :to="link.route">
                 {{link.name}}
               </router-link>
             </li>
-          </template>
+          </div>
         </ul>
       </div>
       <div v-if="logout">

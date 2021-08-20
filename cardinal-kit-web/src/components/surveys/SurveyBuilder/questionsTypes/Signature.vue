@@ -1,17 +1,17 @@
 <template>
-<div>
+  <div>
     <br />
     <br />
     <label>Signature: </label> 
     <div>
-          <textarea           
-            class="TextInput"
-            placeholder="Description"
-            rows="5" cols="100"
-            disabled
-          />
+      <textarea           
+        class="TextInput"
+        placeholder="Description"
+        rows="5" cols="100"
+        disabled
+      />
+    </div>
   </div>
-</div>
 </template>
 
 <script>

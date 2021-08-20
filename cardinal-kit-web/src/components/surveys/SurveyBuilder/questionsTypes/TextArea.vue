@@ -1,4 +1,5 @@
 <template>
+<div>
   <br />
   <br />
   <label>Text Area: </label>
@@ -11,6 +12,7 @@
       disabled
     />
   </div>
+</div>
 </template>
 
 <script>

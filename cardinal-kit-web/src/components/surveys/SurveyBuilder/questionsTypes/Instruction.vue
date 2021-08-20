@@ -5,13 +5,13 @@
     <br />
     <div>
     <label>Instruction: </label> 
-          <textarea           
-            v-model="option.instruction"
-            class="TextInput"
-            placeholder="Instruction"
-            rows="5" cols="100"
-            disabled
-          />
+      <textarea           
+        v-model="option.instruction"
+        class="TextInput"
+        placeholder="Instruction"
+        rows="5" cols="100"
+        disabled
+      />
   </div>
   </div>
 </div>
@@ -21,7 +21,7 @@
 export default {
   props: {
     Options: Array,
-  },
+  }
 };
 </script>
 
