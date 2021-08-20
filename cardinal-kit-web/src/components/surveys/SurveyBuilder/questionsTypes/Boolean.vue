@@ -1,14 +1,13 @@
 <template>
 <div>
-  <div v-for="(option, index) in Options" :key="index">
     <br />
     <br />
     <label>Answer Choices</label>
     <br />
     <input
-      v-model="option.yes"
+      v-model="Options.yes"
       :name="`
-      options[${index}][options]`"
+      options[${Options.id}][options]`"
       type="text"
       class="TextInput"
       placeholder="Yes"
@@ -17,21 +16,20 @@
     <br />
 
     <input
-      v-model="option.no"
+      v-model="Options.no"
       :name="`
-      options[${index}][options]`"
+      options[${Options.id}][options]`"
       type="text"
       class="TextInput"
       placeholder="No"
     />
-  </div>
 </div>
 </template>
 
 <script>
 export default {
   props: {
-    Options: Array,
+    Options: Object
   },
 };
 </script>
