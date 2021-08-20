@@ -62,11 +62,11 @@ export const SaveSurvey = async({commit},data)=>{
   let studyId = data.studyId
   console.log("post in",`studies/${studyId}/surveys/${surveyName}`)
   await request.POST(`studies/${studyId}/surveys/${surveyName}`,{
-    data: {
-      exist:true
-    }
+    data:data.data
   }).Execute()
-  data.questions.forEach(async element => {
+  console.log(data)
+  Object.keys(data.questions).forEach(async key => {
+    let element = data.questions[key]
     await request.POST(`studies/${studyId}/surveys/${surveyName}/questions/${element.id}`,{
       data:element
     }).Execute()
