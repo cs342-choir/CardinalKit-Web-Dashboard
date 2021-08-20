@@ -21,7 +21,18 @@
         />
         <br />
       </div>
-
+      <div
+        v-if="survey.type != '' && survey.type != null"
+        class="form-group col-md-6"
+      >
+        <label>Title: </label>
+        <input
+          v-model="survey.surveyName"
+          :name="`surveys[${survey.id}][surveyName]`"
+          type="text"
+          placeholder="Title"
+        />
+      </div>
       <div
         v-if="survey.type != '' && survey.type != null"
         class="form-group col-md-6"
@@ -29,11 +40,21 @@
         <label>Identifier: </label>
         <input
           v-model="survey.identifier"
-          :name="`
-              surveys[${survey.id}][id]`"
+          :name="`surveys[${survey.id}][identifier]`"
           type="text"
-          class="TextInput"
-          placeholder="id"
+          placeholder="Identifier"
+        />
+      </div>
+      <div
+        v-if="survey.type != '' && survey.type != null"
+        class="form-group col-md-6"
+      >
+        <label>Description: </label>
+        <input
+          v-model="survey.description"
+          :name="`surveys[${survey.id}][description]`"
+          type="text"
+          placeholder="Description here..."
         />
       </div>
 
@@ -41,8 +62,7 @@
         <input
           type="checkbox"
           v-model="survey.required"
-          :name="`
-              surveys[${survey.id}][required]`"
+          :name="`surveys[${survey.id}][required]`"
           hidden
         />
       </div>
@@ -74,6 +94,10 @@
 
       <div v-if="survey.type === 'scale'" class="form-group col-md-6">
         <Scale :Options="survey.options" />
+      </div>
+
+      <div v-if="survey.type === 'continuos_scale'" class="form-group col-md-6">
+        <ContinuosScale :Options="survey.options" />
       </div>
 
       <div v-if="survey.type === 'boolean'" class="form-group col-md-6">
@@ -207,6 +231,7 @@ import TextScale from "@/components/surveys/SurveyBuilder/questionsTypes/TextSca
 import TimeInterval from "@/components/surveys/SurveyBuilder/questionsTypes/TimeInterval";
 import TimeOfDay from "@/components/surveys/SurveyBuilder/questionsTypes/TimeOfDay";
 import Weight from "@/components/surveys/SurveyBuilder/questionsTypes/Weight";
+import ContinuosScale from "@/components/surveys/SurveyBuilder/questionsTypes/ContinuosScale.vue"
 
 export default {
   props: {
@@ -234,6 +259,7 @@ export default {
     TimeInterval,
     TimeOfDay,
     Weight,
+    ContinuosScale
   },
 
   data: () => ({
@@ -263,7 +289,6 @@ export default {
   }),
   methods: {
     createQuestionOptions(type, id) {
-      console.log(this.survey, "survey")
       switch (type) {
         case "single choice":
           this.survey.type = "radio";
@@ -283,7 +308,7 @@ export default {
           this.survey.options = [{ yes: "", no: "" }];
           break;
         case "scale":
-          this.survey.options = [{ min: "", max: "", step: "" }];
+          this.survey.options = [{ min: "", max: "", step: "", default: "", vertical: false }];
           break;
         default:
           this.survey.options = [{}];

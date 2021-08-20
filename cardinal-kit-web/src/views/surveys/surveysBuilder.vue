@@ -1,40 +1,42 @@
 <template>
-  <div id="app" class="container">
-    <h1>Surveys Builder</h1>
-    <br />
-    <div>
-      <label>Enter The Survey Name:</label>
-      <input v-model="surveyName" type="text" placeholder="Survey Name" />
-    </div>
-    
-    <label>Enter the title: </label>
-    <input v-model="title" type="text" placeholder="Title" />
-     <br>
-    <label>Enter the subtitle: </label>
-    <input v-model="subtitle" type="text" placeholder="Subtitle" />
-     <br>
-    <label>Section: </label>
-    <input v-model="section" type="text" placeholder="Section" />
-     <br>
+  <div  id="app">
+    <div class="wrapper">
+      <h1>Surveys Builder</h1>
+      <br />
+      <div>
+        <label>Enter The Survey Name:</label>
+        <input v-model="surveyName" type="text" placeholder="Survey Name" />
+      </div>
+      
+      <label>Enter the title: </label>
+      <input v-model="title" type="text" placeholder="Title" />
+      <br>
+      <label>Enter the subtitle: </label>
+      <input v-model="subtitle" type="text" placeholder="Subtitle" />
+      <br>
+      <label>Section: </label>
+      <input v-model="section" type="text" placeholder="Section" />
+      <br>
 
-    <label>Icon: </label>
-    <input type="file" placeholder="Icon" accept="image/*" />
-     <br>
+      <label>Icon: </label>
+      <input type="file" placeholder="Icon" accept="image/*" />
+      <br>
+      <div v-for="survey in surveys" :key="survey.id">
+     <!--    {{survey}} -->
+        <Question :survey="survey" @DeleteQuestion="deleteQuestions" />
+      </div>
+      <br />
+      <div class="form-group">
+        <button @click="addQuestion" type="button" class="btn btn-secondary">
+          Add question
+        </button>
+      </div>
 
-    <!-- <template v-if="surveys.count"> -->
-      <Question :survey="survey" @DeleteQuestion="deleteQuestions"   v-for="survey in surveys" :key="survey.id"  />
-    <!-- </template> -->
-    <br />
-    <div class="form-group">
-      <button @click="addQuestion" type="button" class="btn btn-secondary">
-        Add question
-      </button>
-    </div>
-
-    <div class="form-group">
-      <button @click="printJson" type="button" class="btn btn-primary">
-        Print
-      </button>
+      <div class="form-group">
+        <button @click="printJson" type="button" class="btn btn-primary">
+          Print
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -68,7 +70,6 @@ export default {
 
   methods: {
     ...mapActions("surveys", ["SaveSurvey"]),
-
     addQuestion() {
       let id = uuidv4()
       this.surveys[id]={
@@ -104,6 +105,9 @@ export default {
 </script>
 
 <style lang="scss">
+.wrapper {
+  margin: 5%;
+}
 .surveys > div {
   margin: 10px 0;
   padding-bottom: 10px;

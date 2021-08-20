@@ -7,8 +7,7 @@
     <input class="CheckBoxInput" type="checkbox" disabled />
     <input
       v-model="option.text"
-      :name="`
-               options[${index}]`"
+      :name="`options[${index}]`"
       type="text"
       class="TextInput"
     />
@@ -46,10 +45,9 @@ export default {
       const val = this.Options.length;
       this.Options.push({ text: "", value: val });
     },
-
     deleteOptions(index) {
       this.Options.splice(index, 1);
-    },
+    }
   },
 };
 </script>

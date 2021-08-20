@@ -47,17 +47,6 @@
     </div>
     <br/>
     <div>
-      <label>Step: </label>
-      <input
-        v-model="option.step"
-        :name="`options[${index}]`"
-        type="number"
-        class="TextInput"
-        placeholder="1"
-      />
-    </div>
-    <br/>
-    <div>
       <label>Default: </label>
       <input
         v-model="option.default"
@@ -67,6 +56,16 @@
         placeholder="1"
       />
     </div>
+    <br/>
+    <div>
+      <label>max Fraction Digits: </label>
+      <input
+        v-model="option.default"
+        :name="`maxFractionDigits[${index}]`"
+        type="number"
+        class="TextInput"
+      />
+    </div>
   </div>
 </div>
 </template>
@@ -74,10 +73,10 @@
 <script>
 export default {
   props: {
-    Options: Array,
+    Options: Array
   },
   created(){
-    console.log(this.Options, "options")
+    console.log(this.Options, "continuos scale options")
   }
 };
 </script>
