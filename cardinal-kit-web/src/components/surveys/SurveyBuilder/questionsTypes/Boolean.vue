@@ -5,7 +5,7 @@
     <label>Answer Choices</label>
     <br />
     <input
-      v-model="Options.yes"
+      v-model="Options.yesText"
       :name="`
       options[${Options.id}][options]`"
       type="text"
@@ -16,7 +16,7 @@
     <br />
 
     <input
-      v-model="Options.no"
+      v-model="Options.noText"
       :name="`
       options[${Options.id}][options]`"
       type="text"

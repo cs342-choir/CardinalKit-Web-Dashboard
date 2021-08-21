@@ -154,9 +154,9 @@
         <Height />
       </div>
 
-      <div v-if="survey.type === 'integer'" class="form-group col-md-6">
+      <div v-if="survey.type === 'numeric'" class="form-group col-md-6">
         <br />
-        <Integer />
+        <Integer :Options="survey" />
       </div>
 
       <div v-if="survey.type === 'location'" class="form-group col-md-6">
@@ -166,12 +166,12 @@
 
       <div v-if="survey.type === 'socioeconomic'" class="form-group col-md-6">
         <br />
-        <SocioEconomic />
+        <SocioEconomic :Options="survey" />
       </div>
 
       <div v-if="survey.type === 'textscale'" class="form-group col-md-6">
         <br />
-        <TextScale />
+        <TextScale  :Survey="survey"/>
       </div>
 
       <div v-if="survey.type === 'timeinterval'" class="form-group col-md-6">
@@ -274,13 +274,12 @@ export default {
       "instruction",
       "signature",
       "date",
-      "integer",
-      "decimal",
+      "numeric",
       "email",
       "location",
-      "textscale",
-      "timeinterval",
-      "timeofday",
+      "textScale",
+      "timeInterval",
+      "timeOfDay",
       "height",
       "weight",
       "socioeconomic",
@@ -317,6 +316,12 @@ export default {
          this.survey["default"] = ""
          this.survey["vertical"] = false
           break;
+          case "numeric":
+            this.survey["max"]=""
+            this.survey["min"]=""
+            this.survey["maxFractionDigits"]=""
+            this.survey["unit"]=""
+            break;
         default:
           this.survey.options = [{}];
       }

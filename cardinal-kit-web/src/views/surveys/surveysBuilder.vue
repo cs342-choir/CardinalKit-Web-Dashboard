@@ -121,6 +121,8 @@ export default {
         name: this.surveyName,
         questions:this.surveys,
         data: questionData,
+      }).then(()=>{
+        this.$router.go(0);
       })
     },
   },
