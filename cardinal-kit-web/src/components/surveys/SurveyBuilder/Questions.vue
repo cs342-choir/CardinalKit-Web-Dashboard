@@ -97,7 +97,11 @@
       </div>
 
       <div v-if="survey.type === 'continuosScale'" class="form-group col-md-6">
-        <ContinuosScale :Options="survey.options" />
+        <ContinuosScale :Options="survey" />
+      </div>
+
+      <div v-if="survey.type === 'picker'" class="form-group col-md-6">
+        <Picker :Options="survey.options" />
       </div>
 
       <div v-if="survey.type === 'boolean'" class="form-group col-md-6">
@@ -232,6 +236,7 @@ import TimeInterval from "@/components/surveys/SurveyBuilder/questionsTypes/Time
 import TimeOfDay from "@/components/surveys/SurveyBuilder/questionsTypes/TimeOfDay";
 import Weight from "@/components/surveys/SurveyBuilder/questionsTypes/Weight";
 import ContinuosScale from "@/components/surveys/SurveyBuilder/questionsTypes/ContinuosScale.vue"
+import Picker from "@/components/surveys/SurveyBuilder/questionsTypes/Picker.vue"
 
 export default {
   props: {
@@ -239,6 +244,7 @@ export default {
   },
   components: {
     AltSelect,
+    Picker,
     Form,
     Checkbox,
     Radio,
@@ -283,6 +289,8 @@ export default {
       "height",
       "weight",
       "socioeconomic",
+      "continuosScale",
+      "picker"
     ],
     questionValues: [],
   }),
@@ -316,11 +324,26 @@ export default {
          this.survey["default"] = ""
          this.survey["vertical"] = false
           break;
-          case "numeric":
+        case "numeric":
             this.survey["max"]=""
             this.survey["min"]=""
             this.survey["maxFractionDigits"]=""
             this.survey["unit"]=""
+            break;
+        case "continuosScale":
+            this.survey["min"] = ""
+            this.survey["minValueDescription"] = ""
+            this.survey["max"] = ""
+            this.survey["maxValueDescription"] = ""
+            this.survey["default"] = ""
+            this.survey["maxFractionDigits"]=""
+            this.survey["vertical"] = false
+            break;
+        case "picker":
+          this.survey.options = [
+            { text: "", value: "0" },
+            { text: "", value: "1" },
+          ];
             break;
         default:
           this.survey.options = [{}];
