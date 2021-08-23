@@ -1,28 +1,28 @@
 <template>
-<div class="page">
-  <h1 class="mb-5">Patient</h1>
-  <alt-table :columns="columns" pagination :paginationOptions="paginationOptions" @onPagination="handlePagination">
-    <template #t-row>
-      <tr v-for="(patient, index) in patients" :key="patient.id">
-        <td>{{index + 1}}</td>
-        <td>
-          {{patient.email || 'NN'}}
-        </td>
-         <td>
-          {{patient.id || 'NN'}}
-        </td>
-        <td>
-          <span class="pointer" @click="handleSelecPatient(patient.id)">
-            details
-          </span>
-        </td>
-        <td>
-        <loading-icon v-show="loadingId == patient.id" size="3px"/>
-        </td>
-      </tr>
-    </template>
-  </alt-table>
-</div>
+  <div class="page">
+    <h1 class="mb-5">Patient</h1>
+    <alt-table :columns="columns" pagination :paginationOptions="paginationOptions" @onPagination="handlePagination">
+      <template #t-row>
+        <tr v-for="(patient, index) in patients" :key="patient.id">
+          <td>{{index + 1}}</td>
+          <td>
+            {{patient.email || 'NN'}}
+          </td>
+          <td>
+            {{patient.id || 'NN'}}
+          </td>
+          <td>
+            <span class="pointer" @click="handleSelecPatient(patient.id)">
+              details
+            </span>
+          </td>
+          <td>
+          <loading-icon v-show="loadingId == patient.id" size="3px"/>
+          </td>
+        </tr>
+      </template>
+    </alt-table>
+  </div>
 </template>
 <script>
 import altTable from '@/components/tables/altTable';

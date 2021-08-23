@@ -25,7 +25,6 @@
       <br>
 
       <div v-for="survey in surveys" :key="survey.id">
-  <!--       {{survey}} -->
         <Question :survey="survey" @DeleteQuestion="deleteQuestions" />
       </div>
       <br />
@@ -138,7 +137,6 @@ export default {
   padding-bottom: 10px;
 }
 .btn {
-  text-decoration: underline;
   color: black;
   background: transparent;
   display: inline-block;

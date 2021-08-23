@@ -48,7 +48,7 @@ export default {
             }, 
             { 
               name: "Surveys Builder",
-              route: `/surveysBuilder/${this.$route.params.studyId}`
+              route: `/surveysBuilderTable/${this.$route.params.studyId}`
             }
           );
         }

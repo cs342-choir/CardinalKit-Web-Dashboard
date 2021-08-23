@@ -13,13 +13,9 @@
       v-model="questionSelected"
       ref="questionSelect"
     />
-<br/>
-<br/>
-
+    <br/>
+    <br/>
     <survey :data="surveyData" />
-
-
-
   </div>
 </template>
 <script>

@@ -1,12 +1,17 @@
 import request from "@/Rest";
 export const FetchSurveyByStudy = async ({ commit }, {studyId}) => {
-   let surveysList = []
-   let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute()
-   surveysSnap.forEach((survey)=>{
-     surveysList.push(survey.id)
-   })
-   commit("saveSurveysList",{idStudy:studyId,surveys:surveysList})
-  };
+  let surveysList = []
+  let surveysListData = []
+  let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute()
+  surveysSnap.forEach((survey)=>{
+    surveysList.push(survey.id)
+    if(Object.keys(survey.data()).length){
+      surveysListData.push(survey.data())
+    }
+  })
+  commit("saveSurveysList",{idStudy:studyId,surveys:surveysList})
+  commit("saveSurveysListData",{idStudy:studyId,surveys:surveysListData})
+};
 
   export const FetchSurveyAllData = async ({commit},{studyId,surveyId})=>{
     let QuestionsResults=[]

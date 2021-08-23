@@ -4,6 +4,12 @@ export function getSurveysList(state) {
   };
 }
 
+export function getSurveysListData(state) {
+  return (idStudy) => {
+    return state.surveysListData[idStudy];
+  };
+}
+
 export function getSurveyDetail(state){
     return (studyId)=>{
         console.log(state.surveyDetail[studyId])

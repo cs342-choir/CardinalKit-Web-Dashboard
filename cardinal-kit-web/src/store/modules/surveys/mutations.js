@@ -7,6 +7,10 @@ export function RESET(state) {
   });
 }
 
+export function saveSurveysListData(state, { idStudy, surveys }) {
+  state.surveysListData[idStudy] = surveys;
+}
+
 export function saveSurveysList(state, { idStudy, surveys }) {
   state.surveysList[idStudy] = surveys;
 }
