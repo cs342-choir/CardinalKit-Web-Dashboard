@@ -24,8 +24,8 @@
       <label>Icon: </label>
       <input type="file" placeholder="Icon" accept="image/*" />
       <br>
-      <div>
-        <Question :survey="surveyData" @DeleteQuestion="deleteQuestions" />
+      <div v-for="survey in surveys" :key="survey.id">
+        <Question :survey="survey" @DeleteQuestion="deleteQuestions" />
       </div>
       <br />
       <div class="form-group">
@@ -67,9 +67,8 @@ export default {
       scopeTypes: ["Public", "Private"],
       surveyName: "",
       orderQuestion:0,
-      order:"1",
+      order:"",
       surveys: {},
-
       surveyData:null
     }
   },
@@ -93,6 +92,7 @@ export default {
         options: [],
         order:""+this.orderQuestion
       }
+      //console.log(this.surveys, "surveyData")
     },
 
     deleteQuestions(index) {
@@ -135,10 +135,9 @@ export default {
   },
   created(){
     this.surveyData = this.getUserSurveysBuilder[this.questionId]
-      // falta que llegue con id
-
-    //console.log(this.questionId, "questionId")
-    console.log(this.getUserSurveysBuilder[this.questionId], "QUESTION")
+    this.surveys[this.surveyData.id] = this.surveyData
+    //console.log(this.getUserSurveysBuilder[this.questionId], "QUESTION")
+    console.log(this.surveys, "surveys")
   },
   beforeRouteEnter(to, from, next) {
     store.dispatch("surveys/FetchSurveyBuilderUser", {

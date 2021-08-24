@@ -13,7 +13,7 @@
         v-model="Options.minValueDescription"
         class="TextInput"
         type="text"
-        placeholder="Poor"
+        placeholder="Min value description"
       />    
     </div>
     <br/>
@@ -29,7 +29,7 @@
       <input
         v-model="Options.maxValueDescription"
         class="TextInput"
-        placeholder="Excellent"
+        placeholder="Máx value description"
         type="text"
       />   
     </div>

@@ -53,7 +53,7 @@ export default {
       this.surveyData = [...data]
     },
     remove(name) {
-      this.surveyData =  this.surveyData.filter((obj) => obj.name != name)
+      this.surveyData = this.surveyData.filter((obj) => obj.name != name)
     },
     create(){
       this.$router.push(`/surveysBuilder/${this.studyId}/`)
