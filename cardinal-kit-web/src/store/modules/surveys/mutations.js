@@ -123,7 +123,9 @@ function transformAnswerFormat(question) {
   return { userId: question.userId, answer: answer, date: date };
 }
 
-
+export function saveSurveysBuilderUser(state,{results}) {
+  state.SurveyBuilderUser = results
+}
 export function saveUserSurveys(state,{results,userId}) {
   console.log("results",userId)
   let dictExternal = {}

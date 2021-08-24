@@ -7,6 +7,7 @@ export const initialState = () => ({
     surveysListData:[],
     surveyDetail:[],
     userSurveys:{},
+    SurveyBuilderUser:[],
 })
 
 export default {

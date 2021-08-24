@@ -1,25 +1,13 @@
 <template>
   <div>
-    <div>
       <patient-list :patients="getUsersStudy(studyId)" :studyId="studyId" />
       <br />
-    </div>
-    <!-- <div :onClick="showStudySurveys" class="card-category">
-      <span class="surveysBtn">Surveys</span>
-    </div>
-    <br />
-    <br />
-    <div :onClick="openSurveysBuilder" class="card-category">
-      <span class="surveysBtn">Surveys Builder</span>
-    </div> -->
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import store from "@/store";
-
-//Components
 import patientList from "@/components/studies/patientsList";
 
 export default {
@@ -28,7 +16,6 @@ export default {
     patientList,
   },
   computed: {
-  //  ...mapGetters("user", ["getUserRol", "getUserStudies", "getUserId"]),
     ...mapGetters("studies", ["getUsersStudy"]),
   },
   props: {
@@ -37,14 +24,6 @@ export default {
       required: true,
     },
   },
- /*  methods: {
-    showStudySurveys() {
-      this.$router.push(`/surveysList/${this.$route.params.studyId}`);
-    },
-    openSurveysBuilder() {
-      this.$router.push(`/surveysBuilder/${this.$route.params.studyId}`);
-    }
-  }, */
   beforeRouteEnter(to, from, next) {
     store.dispatch("studies/FetchUsers", { studyId: to.params.studyId })
     .then(() => {

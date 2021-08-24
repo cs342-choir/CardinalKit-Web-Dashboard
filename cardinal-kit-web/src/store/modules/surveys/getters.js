@@ -11,12 +11,16 @@ export function getSurveysListData(state) {
 }
 
 export function getSurveyDetail(state){
-    return (studyId)=>{
-        console.log(state.surveyDetail[studyId])
-        return  state.surveyDetail[studyId]
-    }
+  return (studyId)=>{
+    console.log(state.surveyDetail[studyId])
+    return  state.surveyDetail[studyId];
+  }
 }
 
 export function getUserSurveys(state){
-  return state.userSurveys
+  return state.userSurveys;
+}
+
+export function getUserSurveysBuilder(state){
+  return state.SurveyBuilderUser;
 }

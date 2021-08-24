@@ -12,7 +12,7 @@
           {{survey.title}}
         </td>
         <td>
-            <button class="btn" @click="edit">Edit</button>
+            <button class="btn" @click="edit(id)">Edit</button>
             <button class="btn" @click="remove(index)">Delete</button>
         </td>
       </tr>
@@ -26,10 +26,11 @@ import { mapGetters } from "vuex";
 import store from "@/store";
 import altTable from '@/components/tables/altTable';
 
+
 export default {
-    props: {
-        studyId: {
-            type: String,
+  props: {
+    studyId: {
+      type: String,
             required: true
         }
     },
@@ -44,8 +45,9 @@ export default {
     },
   computed: {
     ...mapGetters("surveys",["getSurveysListData"]),
+    ...mapGetters("user", ["getUserId"]),
     surveyList(){
-        return this.surveyData
+      return this.surveyData
     }
   },
   methods: {
@@ -55,8 +57,9 @@ export default {
     create(){
       this.$router.push(`/surveysBuilder/${this.studyId}/`)
     },
-    edit(){
-      this.$router.push(`/surveysBuilder/${this.studyId}/`)
+    edit(id){
+      console.log(id)
+      this.$router.push(`/edit/surveyBuilder/${this.studyId}/${id}`)
     }
   },
   created(){

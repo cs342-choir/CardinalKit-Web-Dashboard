@@ -29,9 +29,11 @@ export const FetchSurveyByStudy = async ({ commit }, {studyId}) => {
 
 export const FetchSurveyUserData = async ({commit},{studyId,userId})=>{
   let surveyResults={}
+ // let surveyResultsData=[]
   let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute()
   await Promise.all( surveysSnap.docs.map(async(survey)=>{
     let surveyData = await request.GET(`studies/${studyId}/users/${userId}/surveys/${survey.id}`).Execute()
+
     if(surveyData.exists){
       surveyResults[survey.id]=surveyData.data().results
     }
@@ -40,6 +42,20 @@ export const FetchSurveyUserData = async ({commit},{studyId,userId})=>{
   commit("saveUserSurveys",{results:surveyResults,userId:userId})
 }
 
+export const FetchSurveyBuilderUser = async ({commit},{studyId})=>{
+  let surveyResults={}
+  let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute()
+  await Promise.all(surveysSnap.docs.map(async(survey)=>{
+    let surveyData = await request.GET(`studies/${studyId}/surveys/${survey.id}/questions`).Execute()
+    if (surveyData.docs.length){
+      surveyData.docs.map((o) => {
+        surveyResults[survey.id]=o.data()
+      })
+    }
+  }))
+  //console.log(surveyResults, "surveyResults")
+  commit("saveSurveysBuilderUser",{results:surveyResults})
+}
 
 //Data format
 /* {
@@ -66,7 +82,7 @@ export const SaveSurvey = async({commit},data)=>{
   let surveyName = data.name
   let studyId = data.studyId
   console.log("post in",`studies/${studyId}/surveys/${surveyName}`)
-  await request.POST(`studies/${studyId}/surveys/${surveyName}`,{
+  await request.POST(`/studies/${studyId}/surveys/${surveyName}`,{
     data:data.data
   }).Execute()
   console.log(data)

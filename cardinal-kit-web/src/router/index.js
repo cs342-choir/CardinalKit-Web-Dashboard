@@ -12,6 +12,7 @@ import surveyUser from "@/views/surveys/surveyUser"
 import store from "@/store";
 import surveysBuilder from "@/views/surveys/surveysBuilder"
 import surveysBuilderTable from "@/components/surveys/SurveyBuilder/surveyBuilderTable.vue"
+import editSurveyBuilder from "@/components/surveys/SurveyBuilder/editSurveyBuilder.vue"
 
 const routes = [
   {
@@ -106,6 +107,15 @@ const routes = [
         path: "/surveysBuilderTable/:studyId",
         name: "surveysBuilderTable",
         component: surveysBuilderTable,
+        props:true,
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/edit/surveyBuilder/:studyId/:questionId/",
+        name: "editSurveyBuilder",
+        component: editSurveyBuilder,
         props:true,
         meta: {
           requiresAuth: true,
