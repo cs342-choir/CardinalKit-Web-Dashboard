@@ -18,7 +18,7 @@
       <label>Icon: </label>
       <input type="file" placeholder="Icon" accept="image/*" />
       <br>
-      {{surveys}}
+<!--       {{surveys}} -->
       <div v-for="survey in surveys" :key="survey.id">
         <Question :survey="survey" @DeleteQuestion="deleteQuestions" />
       </div>

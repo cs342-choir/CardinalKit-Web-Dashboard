@@ -355,9 +355,9 @@ export default {
       this.$emit("DeleteQuestion", index);
     }
   },
-  created(){
+  /* created(){
     console.log(this.survey, "lo quie llega")
-  }
+  } */
 };
 </script>
 
