@@ -4,8 +4,8 @@ export const FetchSurveyByStudy = async ({ commit }, {studyId}) => {
   let surveysListData = []
   let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute()
   surveysSnap.forEach((survey)=>{
-    surveysList.push(survey.id)
     if(Object.keys(survey.data()).length){
+      surveysList.push(survey.id)
       surveysListData.push(survey.data())
     }
   })
@@ -79,16 +79,15 @@ export const FetchSurveyBuilderUser = async ({commit},{studyId})=>{
   }
 }*/
 export const SaveSurvey = async({commit},data)=>{
-  let surveyName = data.name
   let studyId = data.studyId
-  console.log("post in",`studies/${studyId}/surveys/${surveyName}`)
-  await request.POST(`/studies/${studyId}/surveys/${surveyName}`,{
+  console.log("post in",`studies/${studyId}/surveys/${data.id}`)
+  await request.POST(`/studies/${studyId}/surveys/${data.id}`,{
     data:data.data
   }).Execute()
   console.log(data)
   Object.keys(data.questions).forEach(async key => {
     let element = data.questions[key]
-    await request.POST(`studies/${studyId}/surveys/${surveyName}/questions/${element.id}`,{
+    await request.POST(`/studies/${studyId}/surveys/${data.id}/questions/${element.id}`,{
       data:element
     }).Execute()
   })

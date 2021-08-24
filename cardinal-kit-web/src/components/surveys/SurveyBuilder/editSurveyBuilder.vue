@@ -1,30 +1,31 @@
 <template>
   <div  id="app">
-    <div class="wrapper">
+    <div class="wrapper" v-if="surveyData">
       <h1>Edit Surveys Builder</h1>
       <br />
       <div>
         <label>Enter The Survey Name:</label>
-        <input v-model="surveyName" type="text" placeholder="Survey Name" />
+        <input v-model="questionId" type="text" placeholder="Survey Name" />
       </div>
       <label>Enter the title: </label>
-      <input v-model="title" type="text" placeholder="Title" />
+      <input v-model="surveyData.title" type="text" placeholder="Title" />
       <br>
+      <!-- nunca se llena porque no hay key subtitle -->
       <label>Enter the subtitle: </label>
-      <input v-model="subtitle" type="text" placeholder="Subtitle" />
+      <input v-model="surveyData.subtitle" type="text" placeholder="Subtitle" />
       <br>
       <label>Order: </label>
-      <input v-model="orderSurvey" type="number"  min="1" pattern="^[0-9]+"/>
+      <input v-model="surveyData.order" type="number"  min="1" pattern="^[0-9]+"/>
       <br>
+      <!-- nunca se llena porque no hay key section -->
       <label>Section: </label>
-      <input v-model="section" type="text" placeholder="Section" />
+      <input v-model="surveyData.section" type="text" placeholder="Section" />
       <br>
       <label>Icon: </label>
       <input type="file" placeholder="Icon" accept="image/*" />
       <br>
-
-      <div v-for="survey in surveys" :key="survey.id">
-        <Question :survey="survey" @DeleteQuestion="deleteQuestions" />
+      <div>
+        <Question :survey="surveyData" @DeleteQuestion="deleteQuestions" />
       </div>
       <br />
       <div class="form-group">
@@ -56,17 +57,22 @@ export default {
       required: true,
     }
   },
-  data: () => ({
-    image: null,
-    section: "",
-    subtitle: "",
-    title: "",
-    scopeTypes: ["Public", "Private"],
-    surveyName: "",
-    orderQuestion:0,
-    orderSurvey:"1",
-    surveys: {},
-  }),
+  data() {
+    return {
+      questionId: this.$route.params.questionId,
+      image: null,
+      section: "",
+      subtitle: "",
+      title: "",
+      scopeTypes: ["Public", "Private"],
+      surveyName: "",
+      orderQuestion:0,
+      order:"1",
+      surveys: {},
+
+      surveyData:null
+    }
+  },
   components: {
     Question,
   },
@@ -99,7 +105,7 @@ export default {
       // console.log(JSON.stringify(data, null, 2));
       let questionData={
         'image':"SurveyIcon",
-        'order':this.orderSurvey,
+        'order':this.order,
         'section':this.section,
         'subtitle':this.subtitle,
         'title':this.title
@@ -128,8 +134,11 @@ export default {
     ...mapGetters("user", ["getUserId"]),
   },
   created(){
+    this.surveyData = this.getUserSurveysBuilder[this.questionId]
       // falta que llegue con id
-    console.log(this.getUserSurveysBuilder)
+
+    //console.log(this.questionId, "questionId")
+    console.log(this.getUserSurveysBuilder[this.questionId], "QUESTION")
   },
   beforeRouteEnter(to, from, next) {
     store.dispatch("surveys/FetchSurveyBuilderUser", {
@@ -139,7 +148,7 @@ export default {
     .then(() => {
       next();
     });
-  },
+  }
 };
 </script>
 

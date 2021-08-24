@@ -1,5 +1,5 @@
 <template>
-  <div> 
+  <div>
     <Multiselect  
       trackBy="id"
       label="name"
@@ -18,7 +18,7 @@ export default {
   components: { Multiselect },
   data() {
     return {
-      internalValue:(this.options && this.options.length>0)?this.options[0].id:null,      
+      internalValue: null,      
     };
   },
   watch: {
@@ -30,11 +30,6 @@ export default {
   computed: {
     _placeholder() {
       return this.placeholder??"Select One"
-    }
-  },
-  methods: {
-    setNewValue(value){
-      this.internalValue = value
     }
   },
   props: {
@@ -49,6 +44,15 @@ export default {
     onChange: {
       type:Function,
       require:false
+    },
+    typeQuestion:{
+      type: String,
+      require: false
+    }
+  },
+  created(){
+    if (this.typeQuestion){
+      this.internalValue = this.typeQuestion
     }
   }
 };

@@ -42,13 +42,10 @@ export default {
         (this.getUserRol == "superAdmin" || this.getUserRol == "doctor")
       ) {
         if (this.$route.name != "surveysList") {
-          main.push({
+          main.push(
+            {
               name: "Surveys List",
               route: `/surveysList/${this.$route.params.studyId}`
-            }, 
-            { 
-              name: "Surveys Builder",
-              route: `/surveysBuilderTable/${this.$route.params.studyId}`
             }
           );
         }
@@ -61,7 +58,7 @@ export default {
       }
 
       return main;
-    },
+    }
   },
   methods: {
     ...mapActions("auth", ["Logout"]),

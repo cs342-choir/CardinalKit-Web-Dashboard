@@ -5,7 +5,9 @@
         <label>Select the type of question: </label>
         <br />
         <br />
+        {{survey.type}}
         <AltSelect
+          :typeQuestion="survey.type"
           :ref="survey.id"
           :options="questionTypes"
           v-model="survey.type"

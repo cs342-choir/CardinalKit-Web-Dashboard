@@ -3,11 +3,6 @@
     <div class="wrapper">
       <h1>Surveys Builder</h1>
       <br />
-      <div>
-        <label>Enter The Survey Name:</label>
-        <input v-model="surveyName" type="text" placeholder="Survey Name" />
-      </div>
-      
       <label>Enter the title: </label>
       <input v-model="title" type="text" placeholder="Title" />
       <br>
@@ -23,7 +18,6 @@
       <label>Icon: </label>
       <input type="file" placeholder="Icon" accept="image/*" />
       <br>
-
       <div v-for="survey in surveys" :key="survey.id">
         <Question :survey="survey" @DeleteQuestion="deleteQuestions" />
       </div>
@@ -116,8 +110,8 @@ export default {
       // console.log(JSON.stringify(data, null, 2));
 
       this.SaveSurvey({
+        id: uuidv4(),
         studyId: this.studyId,
-        name: this.surveyName,
         questions:this.surveys,
         data: questionData,
       }).then(()=>{
