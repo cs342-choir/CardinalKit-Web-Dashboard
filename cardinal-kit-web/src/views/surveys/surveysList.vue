@@ -3,13 +3,13 @@
     <br />
     <alt-table :columns="columns">
     <template #t-row>
-      <tr v-for="survey in surveyData" :key="survey.name">
+      <tr v-for="(survey, index ) in surveyData" :key="survey.name">
         <td>
           {{survey.title}}
         </td>
          <td>
           <button class="btn" @click="details(survey.name)">Details</button>
-          <button class="btn" @click="edit(survey.name)">Edit</button>
+          <button class="btn" @click="edit(survey.name, index)">Edit</button>
           <button class="btn" @click="remove(survey.name)">Delete</button>
         </td>
       </tr>
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import store from "@/store";
 import altTable from '@/components/tables/altTable';
 
@@ -43,6 +43,7 @@ export default {
     ...mapGetters("surveys",["getSurveysList", "getSurveysListData"]),
   },
   methods: {
+    ...mapActions("surveys", ["DeleteSurvey"]),
     surveysListData(){
       let data = []
       let ids = this.getSurveysList(this.studyId)
@@ -53,13 +54,17 @@ export default {
       this.surveyData = [...data]
     },
     remove(name) {
-      this.surveyData = this.surveyData.filter((obj) => obj.name != name)
+      let question = this.surveyData.filter((obj) => obj.name == name)[0]
+      question["studyId"] = this.studyId
+      this.DeleteSurvey(question).then(() => {
+        this.surveyData = this.surveyData.filter((obj) => obj.name != name)
+      })
     },
     create(){
       this.$router.push(`/surveysBuilder/${this.studyId}/`)
     },
-    edit(id){
-      this.$router.push(`/edit/surveyBuilder/${this.studyId}/${id}`)
+    edit(id, index){
+      this.$router.push(`/edit/surveyBuilder/${this.studyId}/${id}/${index}`)
     },
     details(survey) {
       this.$router.push(`/surveyDetail/${this.studyId}/${survey}`)

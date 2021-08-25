@@ -66,7 +66,6 @@ export default {
   components: {
     Question,
   },
-
   methods: {
     ...mapActions("surveys", ["SaveSurvey"]),
     addQuestion() {
@@ -109,13 +108,13 @@ export default {
       //   data: questionData,
       // };
       // console.log(JSON.stringify(data, null, 2));
-
       this.SaveSurvey({
         id: uuidv4(),
         studyId: this.studyId,
         questions:this.surveys,
         data: questionData,
       }).then(()=>{
+        console.log("created")
         this.$router.go(0);
       })
     },

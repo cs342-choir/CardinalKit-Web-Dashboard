@@ -12,7 +12,6 @@ export function getSurveysListData(state) {
 
 export function getSurveyDetail(state){
   return (studyId)=>{
-    console.log(state.surveyDetail[studyId])
     return  state.surveyDetail[studyId];
   }
 }

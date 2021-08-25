@@ -27,7 +27,7 @@ export class Ref {
             case "SET":
                 return await this.object.set(this.payload)
             case "UPDATE":
-                return await this.object.set(this.payload,{merge:true})
+                return await this.object.update(this.payload,{merge:true})
             case "DELETE":
                 return await this.object.delete()
             default:
@@ -39,12 +39,7 @@ export class Ref {
         return new Ref(this.object,this.method,this.payload)
     }
 }
-
-
-
-
-
-export const GET= (path)=>{
+const objectFirebase = (path) => {
     let parts = path.split('/')
     
     let object
@@ -54,19 +49,16 @@ export const GET= (path)=>{
     else{
         object = db.doc(path);
     }
+    return object
+}
+
+export const GET= (path)=>{
+    let object = objectFirebase(path)
     return new Ref(object,"GET")    
 }
 
 export const  POST= (path,payload)=>{
-    let parts = path.split('/')
-    let object
-    if(parts.length%2!=0){
-        object = db.collection(path);
-    }
-    else{
-        object = db.doc(path);
-    }
-
+    let object = objectFirebase(path)
     if(payload.emptyDoc){
         return new Ref(object,"ADD",payload.data)
     }
@@ -76,22 +68,17 @@ export const  POST= (path,payload)=>{
 }
 
 export const PATH= (path,payload)=>{
-    let parts = path.split('/')
-    
-    let object
-    if(parts.length%2!=0){
-        object = db.collection(path);
-    }
-    else{
-        object = db.doc(path);
-    }
-    return new Ref(object,"UPDATE",payload)
+    let object = objectFirebase(path)
+    return new Ref(object,"SET",payload.data)
 }
 
-export const  PUT= ()=>{
-    return new Ref(db.collection(path).doc(payload.docId),"SET",payload.data)
+export const  PUT= (path,payload)=>{
+    let object = objectFirebase(path)
+    return new Ref(object,"UPDATE",payload.data)
+
 }
 
 export const DELETE=(path,payload)=>{
-    return new Ref(db.collection(path).doc(payload.docId),"DELETE")
+    let object = objectFirebase(path)
+    return new Ref(object,"DELETE")
 }

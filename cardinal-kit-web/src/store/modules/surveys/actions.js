@@ -53,7 +53,6 @@ export const FetchSurveyBuilderUser = async ({commit},{studyId})=>{
       })
     }
   }))
-  //console.log(surveyResults, "surveyResults")
   commit("saveSurveysBuilderUser",{results:surveyResults})
 }
 
@@ -80,15 +79,36 @@ export const FetchSurveyBuilderUser = async ({commit},{studyId})=>{
 }*/
 export const SaveSurvey = async({commit},data)=>{
   let studyId = data.studyId
-  console.log("post in",`studies/${studyId}/surveys/${data.id}`)
-  await request.POST(`/studies/${studyId}/surveys/${data.id}`,{
+  await request.POST(`/studies/${studyId}/surveys/${data.id}/`,{
     data:data.data
   }).Execute()
-  console.log(data)
   Object.keys(data.questions).forEach(async key => {
     let element = data.questions[key]
-    await request.POST(`/studies/${studyId}/surveys/${data.id}/questions/${element.id}`,{
+    await request.POST(`/studies/${studyId}/surveys/${data.id}/questions/${element.id}/`,{
       data:element
     }).Execute()
   })
+}
+
+export const UpdateSurvey = async({commit},data)=>{
+  let studyId = data.studyId    
+/*   console.log(data, "data update survey")
+  console.log("put in",`/studies/${studyId}/surveys/${data.id}`) */
+  await request.PUT(`/studies/${studyId}/surveys/${data.id}/`,{
+    data:data
+  }).Execute()
+  // las questions no actualizan
+  Object.keys(data.questions).forEach(async key => {
+    let element = data.questions[key]
+    await request.PUT(`/studies/${studyId}/surveys/${data.id}/questions/${element.id}/`,{
+      data:element
+    }).Execute()
+  })
+}
+
+export const DeleteSurvey = async({commit},data)=>{
+  let studyId = data.studyId
+  await request.DELETE(`/studies/${studyId}/surveys/${data.name}/`,{
+    data:data
+  }).Execute()
 }

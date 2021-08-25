@@ -3,21 +3,15 @@
     <div class="wrapper" v-if="surveyData">
       <h1>Edit Surveys Builder</h1>
       <br />
-      <div>
-        <label>Enter The Survey Name:</label>
-        <input v-model="questionId" type="text" placeholder="Survey Name" />
-      </div>
       <label>Enter the title: </label>
       <input v-model="surveyData.title" type="text" placeholder="Title" />
       <br>
-      <!-- nunca se llena porque no hay key subtitle -->
       <label>Enter the subtitle: </label>
       <input v-model="surveyData.subtitle" type="text" placeholder="Subtitle" />
       <br>
       <label>Order: </label>
       <input v-model="surveyData.order" type="number"  min="1" pattern="^[0-9]+"/>
       <br>
-      <!-- nunca se llena porque no hay key section -->
       <label>Section: </label>
       <input v-model="surveyData.section" type="text" placeholder="Section" />
       <br>
@@ -35,7 +29,7 @@
       </div>
 
       <div class="form-group">
-        <button @click="printJson" type="button" class="btn btn-primary">
+        <button @click="update" type="button" class="btn btn-primary">
           Update
         </button>
       </div>
@@ -60,6 +54,7 @@ export default {
   data() {
     return {
       questionId: this.$route.params.questionId,
+      index: this.$route.params.index,
       image: null,
       section: "",
       subtitle: "",
@@ -69,14 +64,15 @@ export default {
       orderQuestion:0,
       order:"",
       surveys: {},
-      surveyData:null
+      surveyData:null,
+      questionData: {}
     }
   },
   components: {
     Question,
   },
   methods: {
-    ...mapActions("surveys", ["SaveSurvey"]),
+    ...mapActions("surveys", ["SaveSurvey", "UpdateSurvey"]),
     addQuestion() {
       this.orderQuestion+=1
       let id = uuidv4()
@@ -92,58 +88,56 @@ export default {
         options: [],
         order:""+this.orderQuestion
       }
-      //console.log(this.surveys, "surveyData")
     },
-
     deleteQuestions(index) {
       delete this.surveys[index]
     },
-    printJson() {
-      // const data = {
-      //   surveys: this.surveys,
-      // };
-      // console.log(JSON.stringify(data, null, 2));
-      let questionData={
-        'image':"SurveyIcon",
-        'order':this.order,
-        'section':this.section,
-        'subtitle':this.subtitle,
-        'title':this.title
-      }
-
-      // const data = {
-      //  studyId: this.studyId,
-      //   name: this.surveyName,
-      //   questions:this.surveys,
-      //   data: questionData,
-      // };
-      // console.log(JSON.stringify(data, null, 2));
-
-    /*   this.SaveSurvey({
+    update() {
+      this.UpdateSurvey({
         studyId: this.studyId,
-        name: this.surveyName,
-        questions:this.surveys,
-        data: questionData,
-      }).then(()=>{
-        this.$router.go(0);
-      }) */
+        id: this.questionId,
+        questions: this.surveys,
+        data: this.questionData,
+      }).then((res)=>{
+        console.log(res,"updated")
+        //this.$router.go(0);
+      })
     },
+    setSurvey(){
+      if(this.getUserSurveysBuilder[this.questionId]){
+        let id = {...this.getUserSurveysBuilder[this.questionId]}
+        this.surveys[id.id]=id
+      }
+    },
+    setSurveyData(){
+      this.surveyData = this.getSurveysListData(this.studyId)[this.index]
+      if (this.surveyData) {
+        this.questionData={
+          'image':this.surveyData.image,
+          'order':this.surveyData.order,
+          'section':this.surveyData.section,
+          'subtitle':this.surveyData.subtitle,
+          'title':this.surveyData.title
+        }
+      }
+    }
   },
   computed: {
-    ...mapGetters("surveys", ["getUserSurveysBuilder"]),
-    ...mapGetters("user", ["getUserId"]),
+    ...mapGetters("surveys", ["getSurveysListData", "getUserSurveysBuilder"]),
   },
   created(){
-    this.surveyData = this.getUserSurveysBuilder[this.questionId]
-    this.surveys[this.surveyData.id] = this.surveyData
-    //console.log(this.getUserSurveysBuilder[this.questionId], "QUESTION")
-    console.log(this.surveys, "surveys")
+    this.setSurveyData()
+    this.setSurvey()
   },
   beforeRouteEnter(to, from, next) {
-    store.dispatch("surveys/FetchSurveyBuilderUser", {
-        studyId: to.params.studyId,
-        //questionId: to.params.questionId,
-    })
+    Promise.all([
+      store.dispatch("surveys/FetchSurveyBuilderUser", {
+        studyId: to.params.studyId
+      }),
+      store.dispatch("surveys/FetchSurveyByStudy", {
+        studyId: to.params.studyId
+      })
+    ])
     .then(() => {
       next();
     });
