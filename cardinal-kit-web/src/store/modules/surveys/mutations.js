@@ -122,7 +122,9 @@ function transformAnswerFormat(question) {
   }
   return { userId: question.userId, answer: answer, date: date };
 }
-
+export function saveSurveysBuilderUserQuestions(state,{results}) {
+  state.SurveyBuilderUserQuestions = results
+}
 export function saveSurveysBuilderUser(state,{results}) {
   state.SurveyBuilderUser = results
 }

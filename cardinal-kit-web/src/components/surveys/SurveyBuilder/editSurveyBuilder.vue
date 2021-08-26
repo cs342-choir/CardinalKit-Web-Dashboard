@@ -1,24 +1,24 @@
 <template>
   <div  id="app">
-    <div class="wrapper" v-if="surveyData">
+    <div class="wrapper" v-if="surveys">
       <h1>Edit Surveys Builder</h1>
       <br />
       <label>Enter the title: </label>
-      <input v-model="surveyData.title" type="text" placeholder="Title" />
+      <input v-model="surveys.title" type="text" placeholder="Title" />
       <br>
       <label>Enter the subtitle: </label>
-      <input v-model="surveyData.subtitle" type="text" placeholder="Subtitle" />
+      <input v-model="surveys.subtitle" type="text" placeholder="Subtitle" />
       <br>
       <label>Order: </label>
-      <input v-model="surveyData.order" type="number"  min="1" pattern="^[0-9]+"/>
+      <input v-model="surveys.order" type="number"  min="1" pattern="^[0-9]+"/>
       <br>
       <label>Section: </label>
-      <input v-model="surveyData.section" type="text" placeholder="Section" />
+      <input v-model="surveys.section" type="text" placeholder="Section" />
       <br>
       <label>Icon: </label>
       <input type="file" placeholder="Icon" accept="image/*" />
       <br>
-      <div v-for="survey in surveys" :key="survey.id">
+      <div v-for="survey in newData" :key="survey.id">
         <Question :survey="survey" @DeleteQuestion="deleteQuestions" />
       </div>
       <br />
@@ -27,9 +27,8 @@
           Add question
         </button>
       </div>
-
       <div class="form-group">
-        <button @click="update" type="button" class="btn btn-primary">
+        <button @click="saveNewSurveys" type="button" class="btn btn-primary">
           Update
         </button>
       </div>
@@ -65,18 +64,19 @@ export default {
       order:"",
       surveys: {},
       surveyData:null,
-      questionData: {}
+      questionData: {},
+      newData:{}
     }
   },
   components: {
     Question,
   },
   methods: {
-    ...mapActions("surveys", ["SaveSurvey", "UpdateSurvey"]),
+    ...mapActions("surveys", ["SaveQuestion", "UpdateSurveyData"]),
     addQuestion() {
       this.orderQuestion+=1
       let id = uuidv4()
-      this.surveys[id]={
+      this.newData[id]={
         title: "",
         id: id,
         type: "",
@@ -90,29 +90,51 @@ export default {
       }
     },
     deleteQuestions(index) {
-      delete this.surveys[index]
+      delete this.questionData[index]
     },
     update() {
-      this.UpdateSurvey({
+      this.UpdateSurveyData({
         studyId: this.studyId,
         id: this.questionId,
-        questions: this.surveys,
-        data: this.questionData,
+        data: this.surveys,
+        questions: this.questionData,
       }).then((res)=>{
         console.log(res,"updated")
-        //this.$router.go(0);
+      //  this.$router.go(0);
+      }).catch(err => console.log(err, "err"))
+    },
+    saveNewSurveys(){
+      let newQuestions = {}
+      Object.keys(this.newData).forEach((key) => {
+        if (!Object.keys(this.questionData).includes(key)){
+          newQuestions[key] = this.newData[key]
+        }
       })
+      if(Object.keys(newQuestions).length){
+        this.SaveQuestion({
+          id: this.questionId,
+          studyId: this.studyId,
+          questions: newQuestions,
+        }).then(()=>{
+          console.log("created")
+          //this.$router.go(0);
+        })
+      }
+      this.update()
     },
     setSurvey(){
-      if(this.getUserSurveysBuilder[this.questionId]){
-        let id = {...this.getUserSurveysBuilder[this.questionId]}
-        this.surveys[id.id]=id
+      let questions = this.getUserSurveysBuilderQuestion[this.questionId]
+      if(questions.length){
+        questions.forEach(obj => {
+          this.questionData[obj.id]=obj
+        })
       }
+      this.newData = {...this.questionData}
     },
     setSurveyData(){
       this.surveyData = this.getSurveysListData(this.studyId)[this.index]
       if (this.surveyData) {
-        this.questionData={
+        this.surveys={
           'image':this.surveyData.image,
           'order':this.surveyData.order,
           'section':this.surveyData.section,
@@ -123,7 +145,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("surveys", ["getSurveysListData", "getUserSurveysBuilder"]),
+    ...mapGetters("surveys", ["getSurveysListData", "getUserSurveysBuilder", "getUserSurveysBuilderQuestion"]),
   },
   created(){
     this.setSurveyData()
@@ -132,7 +154,8 @@ export default {
   beforeRouteEnter(to, from, next) {
     Promise.all([
       store.dispatch("surveys/FetchSurveyBuilderUser", {
-        studyId: to.params.studyId
+        studyId: to.params.studyId,
+        questionId: to.params.questionId
       }),
       store.dispatch("surveys/FetchSurveyByStudy", {
         studyId: to.params.studyId

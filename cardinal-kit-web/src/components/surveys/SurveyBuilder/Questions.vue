@@ -5,7 +5,7 @@
         <label>Select the type of question: </label>
         <br />
         <br />
-        {{survey.type}}
+        {{survey}}
         <AltSelect
           :typeQuestion="survey.type"
           :ref="survey.id"
@@ -354,11 +354,8 @@ export default {
     deleteQuestion(index) {
       this.$emit("DeleteQuestion", index);
     }
-  },
-  /* created(){
-    console.log(this.survey, "lo quie llega")
-  } */
-};
+  }
+ };
 </script>
 
 <style lang="scss">

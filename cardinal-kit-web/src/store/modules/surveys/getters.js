@@ -23,3 +23,7 @@ export function getUserSurveys(state){
 export function getUserSurveysBuilder(state){
   return state.SurveyBuilderUser;
 }
+
+export function getUserSurveysBuilderQuestion(state){
+  return state.SurveyBuilderUserQuestions;
+}

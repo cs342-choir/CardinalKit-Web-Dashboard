@@ -42,17 +42,25 @@ export const FetchSurveyUserData = async ({commit},{studyId,userId})=>{
   commit("saveUserSurveys",{results:surveyResults,userId:userId})
 }
 
-export const FetchSurveyBuilderUser = async ({commit},{studyId})=>{
+export const FetchSurveyBuilderUser = async ({commit},{studyId, questionId})=>{
   let surveyResults={}
+  let surveyquestionsIds={}
+  let questions=[]
   let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute()
   await Promise.all(surveysSnap.docs.map(async(survey)=>{
     let surveyData = await request.GET(`studies/${studyId}/surveys/${survey.id}/questions`).Execute()
     if (surveyData.docs.length){
       surveyData.docs.map((o) => {
         surveyResults[survey.id]=o.data()
+        if (survey.id == questionId){
+          questions.push(o.data())
+          surveyquestionsIds[survey.id]=questions
+        }
       })
     }
   }))
+  //console.log(surveyquestionsIds, "here")
+  commit("saveSurveysBuilderUserQuestions",{results:surveyquestionsIds})
   commit("saveSurveysBuilderUser",{results:surveyResults})
 }
 
@@ -89,18 +97,28 @@ export const SaveSurvey = async({commit},data)=>{
     }).Execute()
   })
 }
-
-export const UpdateSurvey = async({commit},data)=>{
-  let studyId = data.studyId    
-/*   console.log(data, "data update survey")
-  console.log("put in",`/studies/${studyId}/surveys/${data.id}`) */
-  await request.PUT(`/studies/${studyId}/surveys/${data.id}/`,{
-    data:data
-  }).Execute()
-  // las questions no actualizan
+export const SaveQuestion = async({commit},data)=>{
+   let studyId = data.studyId
+ /* await request.POST(`/studies/${studyId}/surveys/${data.id}/`,{
+    data:data.data
+  }).Execute() */
   Object.keys(data.questions).forEach(async key => {
     let element = data.questions[key]
-    await request.PUT(`/studies/${studyId}/surveys/${data.id}/questions/${element.id}/`,{
+    await request.POST(`/studies/${studyId}/surveys/${data.id}/questions/${element.id}/`,{
+      data:element
+    }).Execute()
+  })
+}
+
+export const UpdateSurveyData = async({commit},data)=>{
+  console.log(data, "data actions")
+  let studyId = data.studyId    
+  await request.PUT(`/studies/${studyId}/surveys/${data.id}/`,{
+    data:data.data
+  }).Execute()
+  Object.keys(data.questions).forEach(async key => {
+    let element = data.questions[key]
+    await request.PUT(`/studies/${studyId}/surveys/${data.id}/questions/${element.id}/`, {
       data:element
     }).Execute()
   })
