@@ -100,13 +100,12 @@ export default {
       })
     },
     update() {
-      console.log( this.questionData, "question data")
       this.UpdateSurveyData({
         studyId: this.studyId,
         id: this.questionId,
         data: this.surveys,
         questions: this.questionData,
-      }).then((res)=>{
+      }).then(()=>{
         console.log(res,"updated")
       //  this.$router.go(0);
       }).catch(err => console.log(err, "err"))
@@ -202,7 +201,7 @@ export default {
   line-height: 1.5;
   border-radius: 0.25rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 .btn-secondary {
   text-decoration: none;

@@ -4,10 +4,10 @@
     <alt-table :columns="columns">
     <template #t-row>
       <tr v-for="(survey, index ) in surveyData" :key="survey.name">
-        <td>
+        <td v-if="!survey.deleted">
           {{survey.title}}
         </td>
-         <td>
+         <td v-if="!survey.deleted">
           <button class="btn" @click="details(survey.name)">Details</button>
           <button class="btn" @click="edit(survey.name, index)">Edit</button>
           <button class="btn" @click="remove(survey.name)">Delete</button>
@@ -43,7 +43,7 @@ export default {
     ...mapGetters("surveys",["getSurveysList", "getSurveysListData"]),
   },
   methods: {
-    ...mapActions("surveys", ["DeleteSurvey"]),
+    ...mapActions("surveys", ["DeleteSurvey", "UpdateSurveyData"]),
     surveysListData(){
       let data = []
       let ids = this.getSurveysList(this.studyId)
@@ -52,11 +52,16 @@ export default {
         data.push({...obj, name: ids[i]})
       });
       this.surveyData = [...data]
+      console.log(this.surveyData, "key delete")
     },
     remove(name) {
-      let question = this.surveyData.filter((obj) => obj.name == name)[0]
-      question["studyId"] = this.studyId
-      this.DeleteSurvey(question).then(() => {
+      let item = this.surveyData.filter((obj) => obj.name == name)[0]
+      item["deleted"] = true
+      this.UpdateSurveyData({
+        studyId: this.studyId,
+        id: name,
+        data: item
+      }).then(()=>{
         this.surveyData = this.surveyData.filter((obj) => obj.name != name)
       })
     },

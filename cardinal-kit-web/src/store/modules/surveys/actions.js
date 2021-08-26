@@ -88,12 +88,14 @@ export const UpdateSurveyData = async({commit},data)=>{
   await request.PUT(`/studies/${studyId}/surveys/${data.id}/`,{
     data:data.data
   }).Execute()
-  Object.keys(data.questions).forEach(async key => {
-    let element = data.questions[key]
-    await request.PUT(`/studies/${studyId}/surveys/${data.id}/questions/${element.id}/`, {
-      data:element
-    }).Execute()
-  })
+  if(data.questions){
+    Object.keys(data.questions).forEach(async key => {
+      let element = data.questions[key]
+      await request.PUT(`/studies/${studyId}/surveys/${data.id}/questions/${element.id}/`, {
+        data:element
+      }).Execute()
+    })
+  }
 }
 
 export const DeleteSurvey = async({commit},data)=>{
