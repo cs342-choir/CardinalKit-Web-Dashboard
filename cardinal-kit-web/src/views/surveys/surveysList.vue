@@ -52,7 +52,6 @@ export default {
         data.push({...obj, name: ids[i]})
       });
       this.surveyData = [...data]
-      console.log(this.surveyData, "key delete")
     },
     remove(name) {
       let item = this.surveyData.filter((obj) => obj.name == name)[0]
