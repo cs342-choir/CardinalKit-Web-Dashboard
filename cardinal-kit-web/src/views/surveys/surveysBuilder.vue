@@ -83,15 +83,10 @@ export default {
         order:""+this.orderQuestion
       }
     },
-
     deleteQuestions(index) {
       delete this.surveys[index]
     },
     printJson() {
-      // const data = {
-      //   surveys: this.surveys,
-      // };
-      // console.log(JSON.stringify(data, null, 2));
       let questionData={
         'image':"SurveyIcon",
         'order':this.orderSurvey,
@@ -100,13 +95,6 @@ export default {
         'title':this.title
       }
 
-      // const data = {
-      //  studyId: this.studyId,
-      //   name: this.surveyName,
-      //   questions:this.surveys,
-      //   data: questionData,
-      // };
-      // console.log(JSON.stringify(data, null, 2));
       this.SaveSurvey({
         id: uuidv4(),
         studyId: this.studyId,

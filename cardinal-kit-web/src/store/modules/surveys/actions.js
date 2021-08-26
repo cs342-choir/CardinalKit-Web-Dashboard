@@ -13,23 +13,22 @@ export const FetchSurveyByStudy = async ({ commit }, {studyId}) => {
   commit("saveSurveysListData",{idStudy:studyId,surveys:surveysListData})
 };
 
-  export const FetchSurveyAllData = async ({commit},{studyId,surveyId})=>{
-    let QuestionsResults=[]
-    let users = await request.GET(`studies/${studyId}/users`).Execute()
-    await Promise.all(users.docs.map(async(user)=>{
-      let surveyData = await request.GET(`studies/${studyId}/users/${user.id}/surveys/${surveyId}`).Execute()
-      if(surveyData.exists){
-        let dataResuls = surveyData.data().results
-        dataResuls["userId"] = user.id
-        QuestionsResults.push(dataResuls)
-      }
-    }))
-    commit("saveSurveyDetail",{results:QuestionsResults,surveyId:surveyId,studyId:studyId})
-  }
+export const FetchSurveyAllData = async ({commit},{studyId,surveyId})=>{
+  let QuestionsResults=[]
+  let users = await request.GET(`studies/${studyId}/users`).Execute()
+  await Promise.all(users.docs.map(async(user)=>{
+    let surveyData = await request.GET(`studies/${studyId}/users/${user.id}/surveys/${surveyId}`).Execute()
+    if(surveyData.exists){
+      let dataResuls = surveyData.data().results
+      dataResuls["userId"] = user.id
+      QuestionsResults.push(dataResuls)
+    }
+  }))
+  commit("saveSurveyDetail",{results:QuestionsResults,surveyId:surveyId,studyId:studyId})
+}
 
 export const FetchSurveyUserData = async ({commit},{studyId,userId})=>{
   let surveyResults={}
- // let surveyResultsData=[]
   let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute()
   await Promise.all( surveysSnap.docs.map(async(survey)=>{
     let surveyData = await request.GET(`studies/${studyId}/users/${userId}/surveys/${survey.id}`).Execute()
@@ -38,7 +37,6 @@ export const FetchSurveyUserData = async ({commit},{studyId,userId})=>{
       surveyResults[survey.id]=surveyData.data().results
     }
   }))
-  console.log("userId",userId)
   commit("saveUserSurveys",{results:surveyResults,userId:userId})
 }
 
@@ -59,32 +57,10 @@ export const FetchSurveyBuilderUser = async ({commit},{studyId, questionId})=>{
       })
     }
   }))
-  //console.log(surveyquestionsIds, "here")
   commit("saveSurveysBuilderUserQuestions",{results:surveyquestionsIds})
   commit("saveSurveysBuilderUser",{results:surveyResults})
 }
 
-//Data format
-/* {
-    studyId: ...,
-    name: ...,
-    questions: [
-      identifier: ..,
-      question: ..,
-      options:[
-        {
-          name: ..,
-          value: ..
-        },
-        {
-          name: ..,
-          value: ..
-        }
-      ]
-    ],
-    ...
-  }
-}*/
 export const SaveSurvey = async({commit},data)=>{
   let studyId = data.studyId
   await request.POST(`/studies/${studyId}/surveys/${data.id}/`,{
@@ -99,9 +75,6 @@ export const SaveSurvey = async({commit},data)=>{
 }
 export const SaveQuestion = async({commit},data)=>{
    let studyId = data.studyId
- /* await request.POST(`/studies/${studyId}/surveys/${data.id}/`,{
-    data:data.data
-  }).Execute() */
   Object.keys(data.questions).forEach(async key => {
     let element = data.questions[key]
     await request.POST(`/studies/${studyId}/surveys/${data.id}/questions/${element.id}/`,{
@@ -111,7 +84,6 @@ export const SaveQuestion = async({commit},data)=>{
 }
 
 export const UpdateSurveyData = async({commit},data)=>{
-  console.log(data, "data actions")
   let studyId = data.studyId    
   await request.PUT(`/studies/${studyId}/surveys/${data.id}/`,{
     data:data.data
@@ -126,7 +98,10 @@ export const UpdateSurveyData = async({commit},data)=>{
 
 export const DeleteSurvey = async({commit},data)=>{
   let studyId = data.studyId
-  await request.DELETE(`/studies/${studyId}/surveys/${data.name}/`,{
-    data:data
-  }).Execute()
+  await request.DELETE(`/studies/${studyId}/surveys/${data.name}/`).Execute()
+}
+
+export const DeleteSurveyQuestion = async({commit},data)=>{
+  let studyId = data.studyId
+  await request.DELETE(`/studies/${studyId}/surveys/${data.name}/questions/${data.id}/`).Execute()
 }

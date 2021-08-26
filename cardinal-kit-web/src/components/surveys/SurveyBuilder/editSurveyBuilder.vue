@@ -72,7 +72,7 @@ export default {
     Question,
   },
   methods: {
-    ...mapActions("surveys", ["SaveQuestion", "UpdateSurveyData"]),
+    ...mapActions("surveys", ["DeleteSurveyQuestion", "SaveQuestion", "UpdateSurveyData"]),
     addQuestion() {
       this.orderQuestion+=1
       let id = uuidv4()
@@ -90,9 +90,17 @@ export default {
       }
     },
     deleteQuestions(index) {
-      delete this.questionData[index]
+      this.DeleteSurveyQuestion({...this.newData[index],
+       name: this.questionId,
+       studyId: this.studyId
+      }).then(() => {
+        delete this.questionData[index]
+        delete this.newData[index]
+        console.log("deleted")
+      })
     },
     update() {
+      console.log( this.questionData, "question data")
       this.UpdateSurveyData({
         studyId: this.studyId,
         id: this.questionId,
@@ -124,7 +132,7 @@ export default {
     },
     setSurvey(){
       let questions = this.getUserSurveysBuilderQuestion[this.questionId]
-      if(questions.length){
+      if(questions && questions.length){
         questions.forEach(obj => {
           this.questionData[obj.id]=obj
         })
