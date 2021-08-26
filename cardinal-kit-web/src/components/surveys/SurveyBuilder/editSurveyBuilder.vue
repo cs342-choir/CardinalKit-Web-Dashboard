@@ -106,7 +106,7 @@ export default {
         data: this.surveys,
         questions: this.questionData,
       }).then(()=>{
-        console.log(res,"updated")
+        console.log("updated")
       //  this.$router.go(0);
       }).catch(err => console.log(err, "err"))
     },
