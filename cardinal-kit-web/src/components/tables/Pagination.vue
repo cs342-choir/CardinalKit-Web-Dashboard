@@ -72,11 +72,12 @@ export default {
     border-radius: 5px;
     border-color: $light-grey;
     outline: none;
+    width: 70px;
   }
   
 .pagination {
   padding: .5rem 1rem;
-  // display: flex;
+  display: flex;
   justify-content: flex-end;
   align-items: center;
   border-top: 1px solid;
