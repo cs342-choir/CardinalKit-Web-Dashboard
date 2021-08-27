@@ -5,7 +5,7 @@
         <label>Select the type of question: </label>
         <br />
         <br />
-     <!--    {{survey}} -->
+      <!--   {{survey}} -->
         <AltSelect
           :typeQuestion="survey.type"
           :ref="survey.id"
@@ -112,17 +112,17 @@
 
       <div v-if="survey.type === 'singleChoice'" class="form-group col-md-6">
         <br />
-        <Radio :Options="survey.options" />
+        <Radio :Options="survey.option" />
       </div>
 
       <div v-if="survey.type === 'multipleChoice'" class="form-group col-md-6">
         <br />
-        <Checkbox :Options="survey.options" />
+        <Checkbox :Options="survey.option" />
       </div>
 
       <div v-if="survey.type === 'instruction'" class="form-group col-md-6">
         <br />
-        <Instruction :Options="survey.options" />
+        <Instruction :Options="survey.option" />
       </div>
 
       <div v-if="survey.type === 'text'" class="form-group col-md-6">

@@ -130,7 +130,7 @@ export default {
       this.update()
     },
     setSurvey(){
-      let questions = this.getUserSurveysBuilderQuestion[this.questionId]
+      let questions = this.getUserSurveyQuestion[this.questionId]
       if(questions && questions.length){
         questions.forEach(obj => {
           this.questionData[obj.id]=obj
@@ -152,7 +152,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("surveys", ["getSurveysListData", "getUserSurveysBuilder", "getUserSurveysBuilderQuestion"]),
+    ...mapGetters("surveys", ["getSurveysListData", "getUserSurveysBuilder", "getUserSurveyQuestion"]),
   },
   created(){
     this.setSurveyData()
@@ -160,7 +160,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([
-      store.dispatch("surveys/FetchSurveyBuilderUser", {
+      store.dispatch("surveys/FetchSurveyData", {
         studyId: to.params.studyId,
         questionId: to.params.questionId
       }),

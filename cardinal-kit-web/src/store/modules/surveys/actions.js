@@ -26,8 +26,7 @@ export const FetchSurveyAllData = async ({commit},{studyId,surveyId})=>{
   }))
   commit("saveSurveyDetail",{results:QuestionsResults,surveyId:surveyId,studyId:studyId})
 }
-
-export const FetchSurveyUserData = async ({commit},{studyId,userId})=>{
+export const FetchSurveyDataByUser = async ({commit},{studyId,userId})=>{
   let surveyResults={}
   let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute()
   await Promise.all( surveysSnap.docs.map(async(survey)=>{
@@ -40,25 +39,21 @@ export const FetchSurveyUserData = async ({commit},{studyId,userId})=>{
   commit("saveUserSurveys",{results:surveyResults,userId:userId})
 }
 
-export const FetchSurveyBuilderUser = async ({commit},{studyId, questionId})=>{
-  let surveyResults={}
-  let surveyquestionsIds={}
-  let questions=[]
-  let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute()
-  await Promise.all(surveysSnap.docs.map(async(survey)=>{
-    let surveyData = await request.GET(`studies/${studyId}/surveys/${survey.id}/questions`).Execute()
-    if (surveyData.docs.length){
-      surveyData.docs.map((o) => {
-        surveyResults[survey.id]=o.data()
-        if (survey.id == questionId){
-          questions.push(o.data())
-          surveyquestionsIds[survey.id]=questions
-        }
-      })
-    }
-  }))
-  commit("saveSurveysBuilderUserQuestions",{results:surveyquestionsIds})
-  commit("saveSurveysBuilderUser",{results:surveyResults})
+export const FetchSurveyData = async ({commit},{studyId, questionId})=>{
+  let questions = [] 
+  let questionsbyId = {}
+  let surveyData = await request.GET(`studies/${studyId}/surveys/${questionId}/questions`).Execute()
+  if (surveyData.docs.length){
+    surveyData.docs.map((o) => {
+      // el options no se cambia 
+      let data = o.data()
+      data.option = o.data().options
+      questions.push(data) 
+    })
+    questionsbyId[questionId]=questions
+  }
+  console.log(questionsbyId, "tiene que salir las options")
+  commit("saveSurveysUserQuestions",{results:questionsbyId})
 }
 
 export const SaveSurvey = async({commit},data)=>{

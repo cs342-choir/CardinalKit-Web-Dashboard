@@ -24,6 +24,6 @@ export function getUserSurveysBuilder(state){
   return state.SurveyBuilderUser;
 }
 
-export function getUserSurveysBuilderQuestion(state){
-  return state.SurveyBuilderUserQuestions;
+export function getUserSurveyQuestion(state){
+  return state.SurveyUserQuestions
 }

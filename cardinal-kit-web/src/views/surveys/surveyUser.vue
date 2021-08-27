@@ -100,7 +100,6 @@ export default {
       this.surveyTypes && this.surveyTypes.length > 0
         ? this.surveyTypes[0].id
         : null;
-    console.log("types", this.surveyQuestions);
     this.$refs.questionSelect.setNewValue(
       this.surveyQuestions && this.surveyQuestions.length > 0
         ? this.surveyQuestions[0].id
@@ -112,7 +111,7 @@ export default {
       store.dispatch("surveys/FetchSurveyByStudy", {
         studyId: to.params.studyId,
       }),
-      store.dispatch("surveys/FetchSurveyUserData", {
+      store.dispatch("surveys/FetchSurveyDataByUser", {
         studyId: to.params.studyId,
         userId: to.params.userId,
       }),
