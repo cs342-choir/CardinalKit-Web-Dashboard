@@ -17,7 +17,7 @@
     </alt-table>
     <br />
     <div>
-      <button @click="create">Create Survey Builder</button>
+      <button @click="create">Create Survey</button>
     </div>
   </div>
 </template>

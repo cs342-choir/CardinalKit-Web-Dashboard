@@ -103,7 +103,7 @@ const routes = [
         }
       },
       {
-        path: "/edit/surveyBuilder/:studyId/:questionId/:index",
+        path: "/edit/surveyBuilder/:studyId/:surveyId/:index",
         name: "editSurveyBuilder",
         component: editSurveyBuilder,
         props:true,

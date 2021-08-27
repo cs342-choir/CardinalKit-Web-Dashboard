@@ -39,20 +39,17 @@ export const FetchSurveyDataByUser = async ({commit},{studyId,userId})=>{
   commit("saveUserSurveys",{results:surveyResults,userId:userId})
 }
 
-export const FetchSurveyData = async ({commit},{studyId, questionId})=>{
+export const FetchSurveyData = async ({commit},{studyId, surveyId})=>{
   let questions = [] 
   let questionsbyId = {}
-  let surveyData = await request.GET(`studies/${studyId}/surveys/${questionId}/questions`).Execute()
+  let surveyData = await request.GET(`studies/${studyId}/surveys/${surveyId}/questions`).Execute()
   if (surveyData.docs.length){
     surveyData.docs.map((o) => {
-      // el options no se cambia 
-      let data = o.data()
-      data.option = o.data().options
-      questions.push(data) 
+      questions.push(o.data()) 
     })
-    questionsbyId[questionId]=questions
+    questionsbyId[surveyId]=questions
   }
-  console.log(questionsbyId, "tiene que salir las options")
+ // console.log(questionsbyId, "questions optionjs")
   commit("saveSurveysUserQuestions",{results:questionsbyId})
 }
 

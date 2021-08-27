@@ -52,7 +52,7 @@ export default {
   },
   data() {
     return {
-      questionId: this.$route.params.questionId,
+      surveyId: this.$route.params.surveyId,
       index: this.$route.params.index,
       image: null,
       section: "",
@@ -91,7 +91,7 @@ export default {
     },
     deleteQuestions(index) {
       this.DeleteSurveyQuestion({...this.newData[index],
-       name: this.questionId,
+       name: this.surveyId,
        studyId: this.studyId
       }).then(() => {
         delete this.questionData[index]
@@ -102,7 +102,7 @@ export default {
     update() {
       this.UpdateSurveyData({
         studyId: this.studyId,
-        id: this.questionId,
+        id: this.surveyId,
         data: this.surveys,
         questions: this.questionData,
       }).then(()=>{
@@ -119,7 +119,7 @@ export default {
       })
       if(Object.keys(newQuestions).length){
         this.SaveQuestion({
-          id: this.questionId,
+          id: this.surveyId,
           studyId: this.studyId,
           questions: newQuestions,
         }).then(()=>{
@@ -130,7 +130,7 @@ export default {
       this.update()
     },
     setSurvey(){
-      let questions = this.getUserSurveyQuestion[this.questionId]
+      let questions = this.getUserSurveyQuestion[this.surveyId]
       if(questions && questions.length){
         questions.forEach(obj => {
           this.questionData[obj.id]=obj
@@ -162,7 +162,7 @@ export default {
     Promise.all([
       store.dispatch("surveys/FetchSurveyData", {
         studyId: to.params.studyId,
-        questionId: to.params.questionId
+        surveyId: to.params.surveyId
       }),
       store.dispatch("surveys/FetchSurveyByStudy", {
         studyId: to.params.studyId

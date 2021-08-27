@@ -111,17 +111,17 @@
 
       <div v-if="survey.type === 'singleChoice'" class="form-group col-md-6">
         <br />
-        <Radio :Options="survey.option" />
+        <Radio :Options="survey.options" />
       </div>
 
       <div v-if="survey.type === 'multipleChoice'" class="form-group col-md-6">
         <br />
-        <Checkbox :Options="survey.option" />
+        <Checkbox :Options="survey.options" />
       </div>
 
       <div v-if="survey.type === 'instruction'" class="form-group col-md-6">
         <br />
-        <Instruction :Options="survey.option" />
+        <Instruction :Options="survey.options" />
       </div>
 
       <div v-if="survey.type === 'text'" class="form-group col-md-6">
@@ -300,30 +300,34 @@ export default {
       switch (type) {
         case "singleChoice":
           this.survey.type = "singleChoice";
-          this.survey.options = [
-            { text: "", value: "0" },
-            { text: "", value: "1" },
-          ];
+          if (!this.survey.options.length){
+            this.survey.options = [
+              { text: "", value: "0" },
+              { text: "", value: "1" },
+            ];
+          }
           break;
         case "multipleChoice":
           this.survey.type = "multipleChoice";
-          this.survey.options = [
-            { text: "", value: "0" },
-            { text: "", value: "1" },
-          ];
+          if (!this.survey.options.length){
+            this.survey.options = [
+              { text: "", value: "0" },
+              { text: "", value: "1" },
+            ]; 
+          }
           break;
         case "boolean":
           this.survey['yes'] = "" 
           this.survey['no'] = "" 
           break;
         case "scale":
-         this.survey["min"] = ""
-         this.survey["minValueDescription"] = ""
-         this.survey["max"] = ""
-         this.survey["maxValueDescription"] = ""
-         this.survey["step"] = ""
-         this.survey["default"] = ""
-         this.survey["vertical"] = false
+          this.survey["min"] = ""
+          this.survey["minValueDescription"] = ""
+          this.survey["max"] = ""
+          this.survey["maxValueDescription"] = ""
+          this.survey["step"] = ""
+          this.survey["default"] = ""
+          this.survey["vertical"] = false
           break;
         case "numeric":
             this.survey["max"]=""
@@ -341,10 +345,12 @@ export default {
             this.survey["vertical"] = false
             break;
         case "picker":
-          this.survey.options = [
-            { text: "", value: "0" },
-            { text: "", value: "1" },
-          ];
+          if (!this.survey.options.length){
+            this.survey.options = [
+              { text: "", value: "0" },
+              { text: "", value: "1" },
+            ];
+          }
             break;
         default:
           this.survey.options = [{}];
