@@ -42,3 +42,7 @@ export function saveLastCategoryData(state, {category,data}){
 export function saveValidCategories(state,payload){
     state.validCategories = payload
   }
+
+export function saveMetricData(state,metricData){
+    state.userMetricData=metricData 
+}
