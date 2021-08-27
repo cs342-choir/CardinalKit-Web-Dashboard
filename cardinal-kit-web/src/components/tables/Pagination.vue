@@ -76,7 +76,7 @@ export default {
   
 .pagination {
   padding: .5rem 1rem;
-  display: flex;
+  // display: flex;
   justify-content: flex-end;
   align-items: center;
   border-top: 1px solid;
