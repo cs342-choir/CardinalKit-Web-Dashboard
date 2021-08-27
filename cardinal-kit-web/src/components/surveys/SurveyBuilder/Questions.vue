@@ -353,7 +353,9 @@ export default {
           }
             break;
         default:
-          this.survey.options = [{}];
+          if (!this.survey.options.length){
+            this.survey.options = [{}];
+          }
       }
     },
     deleteQuestion(index) {

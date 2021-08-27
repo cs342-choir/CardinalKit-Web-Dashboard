@@ -1,5 +1,6 @@
 <template>
   <div>
+  <div>
     <br />
     Select a question
     <br />
@@ -18,6 +19,7 @@
   </div>
   <div :onClick="convert" class="card-category footerBtn">
     <span class="downloadBtn">Download</span>
+  </div>
   </div>
 </template>
 
