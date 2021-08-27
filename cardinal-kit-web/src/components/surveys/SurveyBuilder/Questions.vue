@@ -5,7 +5,6 @@
         <label>Select the type of question: </label>
         <br />
         <br />
-      <!--   {{survey}} -->
         <AltSelect
           :typeQuestion="survey.type"
           :ref="survey.id"
@@ -274,8 +273,8 @@ export default {
     questionTypes: [
       "text",
       "textarea",
-      "single choice",
-      "multiple choice",
+      "singleChoice",
+      "multipleChoice",
       "form",
       "scale",
       "boolean",
@@ -299,14 +298,14 @@ export default {
   methods: {
     createQuestionOptions(type, id) {
       switch (type) {
-        case "single choice":
+        case "singleChoice":
           this.survey.type = "singleChoice";
           this.survey.options = [
             { text: "", value: "0" },
             { text: "", value: "1" },
           ];
           break;
-        case "multiple choice":
+        case "multipleChoice":
           this.survey.type = "multipleChoice";
           this.survey.options = [
             { text: "", value: "0" },

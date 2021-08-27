@@ -19,6 +19,7 @@
           <br />
           <br />
           <AltSelect
+            :typeQuestion="question.type"
             :options="formQuestionTypes"
             v-model="question.type"
             :name="`
@@ -253,8 +254,8 @@ export default {
     formQuestionTypes: [
       "text",
       "textarea",
-      "single choice",
-      "multiple choice",
+      "singleChoice",
+      "multipleChoice",
       "scale",
       "boolean",
       "instruction",
@@ -298,14 +299,14 @@ export default {
    //   const surveyIndex = this.Survey.findIndex((data) => data.id === id);
 
       switch (type) {
-        case 'single choice':
+        case 'singleChoice':
           this.Survey.question[index].type = "singleChoice"
           this.Survey.question[index].options = [
             { text: "", value: 0 },
             { text: "", value: 1 },
           ];
           break;
-        case 'multiple choice':
+        case 'multipleChoice':
           this.Survey.question[index].type = "multipleChoice"
           this.Survey.question[index].options = [
             { text: "", value: 0 },
