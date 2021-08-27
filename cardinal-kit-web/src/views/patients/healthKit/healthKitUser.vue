@@ -1,13 +1,14 @@
 <template>
   <div>
-    <div class="wrapper-graphs">
-    <line-chart
-      ref="chart"
-      :key="1"
-      :series="getActivityIndexDataToGraphic"
-    />
-    </div>
     <categories :userId="$route.params.userId" :studyId="$route.params.studyId" />
+    <div class="wrapper-graphs content">
+      <h1>Activity Index</h1>
+      <line-chart
+        ref="chart"
+        :key="1"
+        :series="getActivityIndexDataToGraphic"
+      />
+    </div>
     
    </div>
 </template>
@@ -58,4 +59,16 @@ export default {
   max-width: 1200px;
   margin: auto;
 }
+@media (max-width: 360px) {
+  .content{
+    padding: 1rem;
+  }
+}
+@media (min-width: 361px) {
+  .content{
+      padding: 1rem 4rem;
+
+  }
+}
+
 </style>
