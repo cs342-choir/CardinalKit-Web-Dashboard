@@ -3,7 +3,7 @@
     <h1 class="mb-5">Patient</h1>
     <alt-table :columns="columns" pagination :paginationOptions="paginationOptions" @onPagination="handlePagination">
       <template #t-row>
-        <tr v-for="(patient, index) in patients" :key="patient.id">
+        <tr v-for="(patient, index) in getPageItems" :key="patient.id">
           <td>{{index + 1}}</td>
           <td>
             {{patient.email || 'NN'}}

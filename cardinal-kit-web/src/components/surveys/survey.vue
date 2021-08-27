@@ -44,7 +44,7 @@
       @onPagination="handlePagination"
     >
       <template #t-row>
-        <tr v-for="(answer, index) in data.answers" :key="answer">
+        <tr v-for="(answer, index) in getPageItems" :key="answer">
           <td>{{ index + 1 }}</td>
           <td class="userIdTxt">
             {{ answer.userId }}
@@ -93,6 +93,12 @@ export default {
         total: this.data.answers.length,
         currentPage: this.currentPage,
       };
+    },
+     getPageItems() {
+      let items = this.data.answers;
+      let lowerLimit = (this.currentPage - 1) * this.limit;
+      let upperLimit = this.currentPage * this.limit;
+      return items.slice(lowerLimit, upperLimit);
     },
   },
   methods:{
