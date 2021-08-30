@@ -1,7 +1,7 @@
 <template>
   <div>
     <br />
-    <alt-table :columns="columns">
+    <alt-table :columns="columns" pagination >
     <template #t-row>
       <tr v-for="(survey, index ) in surveyData" :key="survey.name">
         <td v-if="!survey.deleted">
