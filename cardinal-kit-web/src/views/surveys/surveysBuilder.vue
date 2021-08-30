@@ -1,6 +1,9 @@
 <template>
   <div  id="app">
     <div class="wrapper">
+      <div class="errMsg" v-if="errMsg">
+        {{msg}}
+      </div>
       <h1>Surveys Builder</h1>
       <br />
       <label>Enter the title: </label>
@@ -61,6 +64,8 @@ export default {
     orderQuestion:0,
     orderSurvey:"1",
     surveys: {},
+    errMsg: false,
+    msg:""
   }),
   components: {
     Question,
@@ -68,6 +73,8 @@ export default {
   methods: {
     ...mapActions("surveys", ["SaveSurvey"]),
     addQuestion() {
+      this.errMsg = false
+      this.msg = ""
       this.orderQuestion+=1
       let id = uuidv4()
       this.surveys[id]={
@@ -87,23 +94,35 @@ export default {
       delete this.surveys[index]
     },
     printJson() {
-      let questionData={
-        'image':"SurveyIcon",
-        'order':this.orderSurvey,
-        'section':this.section,
-        'subtitle':this.subtitle,
-        'title':this.title
+      this.errMsg = false
+      this.msg=""
+      if(this.section && this.subtitle && this.title){
+        let questionData={
+          'image':"SurveyIcon",
+          'order':this.orderSurvey,
+          'section':this.section,
+          'subtitle':this.subtitle,
+          'title':this.title
+        }
+        if(Object.keys(this.surveys).length){
+          this.SaveSurvey({
+            id: uuidv4(),
+            studyId: this.studyId,
+            questions:this.surveys,
+            data: questionData,
+          }).then(()=>{
+            this.errMsg = false
+            console.log("created")
+            this.$router.go(0);
+          })
+        }else{
+          this.errMsg = true
+          this.msg = "The questions cannot be empty"
+        }
+      }else{
+        this.errMsg = true
+        this.msg = "The fields can't be blank"
       }
-
-      this.SaveSurvey({
-        id: uuidv4(),
-        studyId: this.studyId,
-        questions:this.surveys,
-        data: questionData,
-      }).then(()=>{
-        console.log("created")
-        this.$router.go(0);
-      })
     },
   },
 };
@@ -148,5 +167,13 @@ export default {
   color: black;
   border-color: #000000;
   background: transparent;
+}
+.errMsg{
+  margin: 15px 0px 15px 0px;
+  padding: .8rem;
+  border: 2px solid #b71540;
+  border-radius: 5px;
+  background: #b7154038;
+  color: #b71540;
 }
 </style>

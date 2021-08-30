@@ -1,6 +1,9 @@
 <template>
   <div  id="app">
     <div class="wrapper" v-if="surveys">
+      <div class="errMsg" v-if="errMsg">
+        {{msg}}
+      </div>
       <h1>Edit Surveys Builder</h1>
       <br />
       <label>Enter the title: </label>
@@ -65,7 +68,9 @@ export default {
       surveys: {},
       surveyData:null,
       questionData: {},
-      newData:{}
+      newData:{},
+      errMsg: false,
+      msg: ""
     }
   },
   components: {
@@ -100,15 +105,33 @@ export default {
       })
     },
     update() {
-      this.UpdateSurveyData({
-        studyId: this.studyId,
-        id: this.surveyId,
-        data: this.surveys,
-        questions: this.questionData,
-      }).then(()=>{
-        console.log("updated")
-      //  this.$router.go(0);
-      }).catch(err => console.log(err, "err"))
+      this.errMsg = false
+      this.msg=""
+      if (
+        this.surveys.title && 
+        this.surveys.subtitle && 
+        this.surveys.order && 
+        this.surveys.section
+      ){
+        if(Object.keys(this.newData).length){
+          this.UpdateSurveyData({
+            studyId: this.studyId,
+            id: this.surveyId,
+            data: this.surveys,
+            questions: this.questionData,
+          }).then(()=>{
+            console.log("updated")
+            this.errMsg = false
+            this.$router.push(`/surveysList/${this.studyId}`);
+          })
+        }else{
+          this.errMsg = true
+          this.msg = "The questions cannot be empty"
+        }
+      }else{
+        this.errMsg = true
+        this.msg = "The fields can't be blank"
+      }
     },
     saveNewSurveys(){
       let newQuestions = {}
@@ -124,8 +147,7 @@ export default {
           questions: newQuestions,
         }).then(()=>{
           console.log("created")
-          //this.$router.go(0);
-        })
+         })
       }
       this.update()
     },
