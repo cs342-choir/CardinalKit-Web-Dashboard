@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex justify-between flex-column h-50" :class="{[className]: className , 'collapse-nav': collapse }">
+  <nav class="flex justify-between flex-column" :class="{[className]: className , 'collapse-nav': collapse }">
     <div class="collapse">
       <button @click="handleCollapse" class="btn-collapse">
         <svg viewBox="0 0 100 80" width="40" height="40">

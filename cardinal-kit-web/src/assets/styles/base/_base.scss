@@ -92,6 +92,9 @@ main {
 
 .flex {
     display: flex;
+    &-inline {
+        display: inline-flex;
+    }
 
     &.justify-center {
         justify-content: center;
@@ -107,6 +110,9 @@ main {
 
     &.flex-column {
         flex-direction: column;
+    }
+    &.flex-row {
+        flex-direction: row;
     }
 }
 

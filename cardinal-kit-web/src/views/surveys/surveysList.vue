@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     <br />
     <alt-table :columns="columns" pagination >
     <template #t-row>

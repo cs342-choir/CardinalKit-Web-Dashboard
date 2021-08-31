@@ -16,7 +16,7 @@
         logout
         @handle-logout="handleLogout"
       />
-    <div>
+    <div class="w-100">
       <router-view />
     </div>
   </div>
