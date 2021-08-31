@@ -168,12 +168,5 @@ export default {
   border-color: #000000;
   background: transparent;
 }
-.errMsg{
-  margin: 15px 0px 15px 0px;
-  padding: .8rem;
-  border: 2px solid #b71540;
-  border-radius: 5px;
-  background: #b7154038;
-  color: #b71540;
-}
+
 </style>

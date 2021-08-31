@@ -114,7 +114,7 @@
             @include setBackground($success, $text-success);
         }
         &-danger {
-            @include setBackground($danger, $text-danger);
+            @include setBackground($danger, $text-white);
         }
         &-info {
             @include setBackground($info, $text-info);

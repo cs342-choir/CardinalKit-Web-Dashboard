@@ -11,7 +11,31 @@ html, body {
 main {
     width: 100%;
 }
-
+.m {
+    &-auto{
+        margin: auto; 
+     }
+    &-1{
+       margin: .5rem; 
+    }
+    &-2{
+       margin: 1rem; 
+    }
+    &-3{
+       margin: 1.25rem; 
+    }
+}
+.my {
+    &-1{
+       margin: .5rem 0 .5rem 0;
+    }
+    &-2{
+       margin: 1rem 0 1rem 0;
+    }
+    &-3{
+       margin: 1.25rem 0 1.25rem 0;
+    }
+}
 .mr {
     &-1{
        margin-right: .5rem; 
@@ -52,10 +76,6 @@ main {
     font-size: 10pt;
 }
 
-.w-100 {
- width: 100%;
-}
-
 .block{
     display: block;
 }
@@ -94,6 +114,32 @@ main {
       }
     
       &-danger {
-        @include setBackground($danger, $text-danger);
+        @include setBackground($danger, $text-white);
     }
+}
+.text-danger {
+    color: #b61440;
+}
+.errMsg{
+    margin: 15px 0px 15px 0px;
+    padding: .8rem;
+    border: 2px solid #b71540;
+    border-radius: 5px;
+    background: #b7154038;
+    color: #b71540;
+}
+.text-muted {
+    color: #6c757d
+}
+// width
+.w-100 {
+    width: 100%;
+} 
+
+$num: 5;
+@while $num < 101 {
+  .w-#{$num} {
+    width: $num +0% !important;
+  }
+  $num: $num +5;
 }
