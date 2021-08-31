@@ -1,7 +1,7 @@
 <template>
-  <nav class="flex justify-between flex-column" :class="{[className]: className , 'collapse-nav': collapse }">
+  <nav class="flex justify-between flex-column h-50" :class="{[className]: className , 'collapse-nav': collapse }">
     <div class="collapse">
-      <button @click="handleCollapse" type="button" class="btn-collapse">
+      <button @click="handleCollapse" class="btn-collapse">
         <svg viewBox="0 0 100 80" width="40" height="40">
           <rect width="100" height="20"></rect>
           <rect y="33" width="100" height="15"></rect>
@@ -11,8 +11,12 @@
     </div>
     <slot name="side-content">
       <div>
-        <Logo class="flex justify-center mb-5" :path="logo"
-        :width="widthLogo" />
+        <Logo
+          :path="logo" 
+          :className="'text-center'"
+          :title="'CardinalKit'"
+          :width="widthLogo">
+        </Logo>
         <ul v-if="menu" class="mb-5">
           <div v-for="(link, index) in menu" :key="index">
             <li class="flex sb-link">
@@ -53,27 +57,28 @@ export default {
       type: String,
       default: 'bg-info'
     },
-    logo: String
+    logo:{
+      type: String
+    } 
   },
   components: { Logo, Icon },
+
   setup(props, ctx) {
     const collapse = ref(false);
-
     function handleClickLogout() {
-      ctx.emit('emitLogout', true);
+      ctx.emit('handleLogout', true);
     }
-
     const handleCollapse = () => (collapse.value = !collapse.value);
-
     return {
       handleClickLogout,
       handleCollapse,
-      collapse
+      collapse,
     }
   },
 }
 </script>
 <style lang="scss" scoped>
+
 nav {
   height: 100%;
   padding: 1.5rem;
@@ -94,8 +99,7 @@ nav {
     display: inline-block;
     position: absolute;
     top: 20px;
-    right: 0;
-    margin-right: -20px;
+    right: 6px;
     transition: .3s;
   }
 
@@ -104,6 +108,7 @@ nav {
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    padding: unset;
 
     &:before {
       content:'';

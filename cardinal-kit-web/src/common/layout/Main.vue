@@ -1,6 +1,6 @@
 <template>
-  <section>
-    <Header
+  <div class="flex">
+    <!--  <Header
       :src-logo="logo"
       className="bg-danger"
       brandTitle="CardinalKit"
@@ -8,19 +8,28 @@
       width-logo="50"
       @handle-logout="handleLogout"
       :menu="menu"
-    />
+    /> -->
+      <Sidebar
+        :menu="menu"
+        :className="'h-auto bg-danger'"
+        :logo="logo"
+        logout
+        @handle-logout="handleLogout"
+      />
     <div>
       <router-view />
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import Header from "@/components/auth/Header";
+/* import Header from "@/components/auth/Header"; */
+import Sidebar from "@/components/auth/sidebar/index.vue";
 export default {
   components: {
-    Header,
+  /*   Header, */
+    Sidebar
   },
   data: function() {
     return {

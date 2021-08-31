@@ -48,12 +48,22 @@ main {
     }
 }
 
-.mt-1 {
-    margin-top: 5px;
-}
-
-.mt-5 {
-    margin-top: 20px;
+.mt {
+    &-1{
+       margin-top: .25rem; 
+    }
+    &-2{
+       margin-top: .5rem; 
+    }
+    &-3{
+       margin-top: 1rem; 
+    }
+    &-4{
+        margin-top: 1.25rem; 
+    }
+    &-5{
+        margin-top: 1.5rem; 
+    }
 }
 
 .mb-1 {
@@ -142,4 +152,8 @@ $num: 5;
     width: $num +0% !important;
   }
   $num: $num +5;
+}
+//Heigth
+.h-auto {
+    height: auto !important;
 }
