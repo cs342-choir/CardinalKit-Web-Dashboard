@@ -7,6 +7,14 @@ export function RESET(state) {
   });
 }
 
+export function saveQuestionBySurveyId(state,questions){
+  state.questionBySurveyId = questions.results;
+} 
+
+export function saveAllQuestions(state,questions){
+  state.allQuestions = questions.results;
+} 
+
 export function saveSurveysListData(state, { idStudy, surveys }) {
   state.surveysListData[idStudy] = surveys;
 } 

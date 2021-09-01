@@ -27,3 +27,11 @@ export function getUserSurveysBuilder(state){
 export function getUserSurveyQuestion(state){
   return state.SurveyUserQuestions
 }
+
+export function getAllQuestion(state){
+  return state.allQuestions
+}
+
+export function getQuestionBySurveyId(state){
+  return state.questionBySurveyId
+}

@@ -1,4 +1,25 @@
 import request from "@/Rest";
+
+export const FetchSurveyQuestions = async ({commit},{studyId})=>{
+  let surveyquestions={}
+  let questions=[]
+  let allQuestions=[]
+  let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute()
+  await Promise.all(surveysSnap.docs.map(async(survey)=>{
+    let surveyData = await request.GET(`studies/${studyId}/surveys/${survey.id}/questions`).Execute()
+    if (surveyData.docs.length){
+      surveyData.docs.map((o) => {
+        allQuestions.push(o.data())
+        questions.push(o.data())
+      })
+      surveyquestions[survey.id]=questions
+      questions=[]
+    }
+  }))
+  commit("saveQuestionBySurveyId",{results:surveyquestions})
+  commit("saveAllQuestions",{results:allQuestions})
+}
+
 export const FetchSurveyByStudy = async ({ commit }, {studyId}) => {
   let surveysList = []
   let surveysListData = []
@@ -9,6 +30,7 @@ export const FetchSurveyByStudy = async ({ commit }, {studyId}) => {
       surveysListData.push(survey.data())
     }
   })
+
   commit("saveSurveysList",{idStudy:studyId,surveys:surveysList})
   commit("saveSurveysListData",{idStudy:studyId,surveys:surveysListData})
 };
@@ -31,7 +53,7 @@ export const FetchSurveyDataByUser = async ({commit},{studyId,userId})=>{
   let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute()
   await Promise.all( surveysSnap.docs.map(async(survey)=>{
     let surveyData = await request.GET(`studies/${studyId}/users/${userId}/surveys/${survey.id}`).Execute()
-
+    
     if(surveyData.exists){
       surveyResults[survey.id]=surveyData.data().results
     }
@@ -49,7 +71,6 @@ export const FetchSurveyData = async ({commit},{studyId, surveyId})=>{
     })
     questionsbyId[surveyId]=questions
   }
- // console.log(questionsbyId, "questions optionjs")
   commit("saveSurveysUserQuestions",{results:questionsbyId})
 }
 
@@ -66,7 +87,7 @@ export const SaveSurvey = async({commit},data)=>{
   })
 }
 export const SaveQuestion = async({commit},data)=>{
-   let studyId = data.studyId
+  let studyId = data.studyId
   Object.keys(data.questions).forEach(async key => {
     let element = data.questions[key]
     await request.POST(`/studies/${studyId}/surveys/${data.id}/questions/${element.id}/`,{

@@ -136,13 +136,23 @@ main {
 .text-danger {
     color: #b61440;
 }
-.errMsg{
-    margin: 15px 0px 15px 0px;
-    padding: .8rem;
-    border: 2px solid #b71540;
-    border-radius: 5px;
-    background: #b7154038;
-    color: #b71540;
+.alert {
+    &-err {
+        margin: 15px 0px 15px 0px;
+        padding: .8rem;
+        border-radius: 5px;
+        border: 2px solid #b71540;
+        background: #b7154038;
+        color: #b71540;
+    }
+    &-success {
+        margin: 15px 0px 15px 0px;
+        padding: .8rem;
+        border-radius: 5px;
+        border: 2px solid #5bd83c;
+        background: #caecc1a6;
+        color: #5bd83c
+    }
 }
 .text-muted {
     color: #6c757d

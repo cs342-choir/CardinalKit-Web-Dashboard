@@ -8,7 +8,9 @@ export const initialState = () => ({
     surveyDetail:[],
     userSurveys:{},
     SurveyBuilderUser:[],
-    SurveyUserQuestions:{}
+    SurveyUserQuestions:{},
+    allQuestions:[],
+    questionBySurveyId:{}
 })
 
 export default {

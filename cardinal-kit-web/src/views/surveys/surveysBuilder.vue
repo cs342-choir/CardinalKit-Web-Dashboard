@@ -1,7 +1,7 @@
 <template>
   <div  id="app">
     <div class="wrapper">
-      <div class="errMsg" v-if="errMsg">
+      <div :class="cl" v-if="errMsg">
         {{msg}}
       </div>
       <h1>Surveys Builder</h1>
@@ -42,8 +42,9 @@
 
 <script>
 import Question from "@/components/surveys/SurveyBuilder/Questions";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import { uuidv4 } from "@/helpers";
+import store from "@/store";
 
 export default {
   name: "App",
@@ -53,22 +54,22 @@ export default {
       required: true,
     },
   },
-
   data: () => ({
-    image: null,
-    section: "",
-    subtitle: "",
-    title: "",
-    scopeTypes: ["Public", "Private"],
-    surveyName: "",
-    orderQuestion:0,
-    orderSurvey:"1",
-    surveys: {},
-    errMsg: false,
-    msg:""
+      image: null,
+      section: "",
+      subtitle: "",
+      title: "",
+      scopeTypes: ["Public", "Private"],
+      surveyName: "",
+      orderQuestion:0,
+      orderSurvey:"1",
+      surveys: {},
+      errMsg: false,
+      msg:"",
+      cl: ""
   }),
   components: {
-    Question,
+      Question,
   },
   methods: {
     ...mapActions("surveys", ["SaveSurvey"]),
@@ -93,6 +94,34 @@ export default {
     deleteQuestions(index) {
       delete this.surveys[index]
     },
+    validSurvey(surveys, questionData){
+      this.errMsg = false
+      this.msg=""
+      let allIdentifiers = this.getAllQuestion.map(obj => obj.identifier)
+      let identifiers = Object.values(surveys).map(obj => obj.identifier)
+      let unique = true
+      for (const key of identifiers) {
+        if (allIdentifiers.includes(key)){
+          unique = false
+        }
+      }
+      if (unique){
+        this.SaveSurvey({
+          id: uuidv4(),
+          studyId: this.studyId,
+          questions: surveys,
+          data: questionData,
+        }).then(()=>{
+          this.errMsg = true
+          this.msg="Surveys Builder has been created successfully"
+          this.cl= "alert-success"
+        })
+      }else{
+        this.errMsg = true
+        this.cl = "alert-err"
+        this.msg="Identifier should be unique"
+      }
+    },
     printJson() {
       this.errMsg = false
       this.msg=""
@@ -105,26 +134,32 @@ export default {
           'title':this.title
         }
         if(Object.keys(this.surveys).length){
-          this.SaveSurvey({
-            id: uuidv4(),
-            studyId: this.studyId,
-            questions:this.surveys,
-            data: questionData,
-          }).then(()=>{
-            this.errMsg = false
-            console.log("created")
-            this.$router.go(0);
-          })
+          this.validSurvey(this.surveys, questionData)
         }else{
           this.errMsg = true
+          this.cl = "alert-err"
           this.msg = "The questions cannot be empty"
         }
       }else{
         this.errMsg = true
+        this.cl = "alert-err"
         this.msg = "The fields can't be blank"
       }
     },
   },
+  computed:{
+    ...mapGetters("surveys", ["getAllQuestion"]),
+  },
+  beforeRouteEnter(to, from, next) {
+    Promise.all([
+      store.dispatch("surveys/FetchSurveyQuestions", {
+        studyId: to.params.studyId
+      })
+    ])
+    .then(() => {
+      next();
+    });
+  }
 };
 </script>
 

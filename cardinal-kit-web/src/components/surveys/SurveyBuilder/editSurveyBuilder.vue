@@ -1,7 +1,7 @@
 <template>
   <div  id="app">
     <div class="wrapper" v-if="surveys">
-      <div class="errMsg" v-if="errMsg">
+      <div class="alert-err" v-if="errMsg">
         {{msg}}
       </div>
       <h1>Edit Surveys Builder</h1>
