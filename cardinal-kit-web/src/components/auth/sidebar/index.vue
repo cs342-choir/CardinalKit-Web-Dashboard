@@ -19,11 +19,22 @@
         </Logo>
         <ul v-if="menu" class="mb-5">
           <div v-for="(link, index) in menu" :key="index">
-            <li class="flex sb-link">
-              <Icon v-if="link?.icon" :icon="link.icon" />
-              <router-link :to="link.route">
-                {{link.name}}
-              </router-link>
+            <li class="sb-link">
+              <div>
+                <Icon v-if="link?.icon" :icon="link.icon" />
+                <router-link :to="link.route">
+                  {{link.name}}
+                </router-link>
+              </div>
+              <div v-if="link.children && link.children.length">
+                <div v-for="(child, index) in link.children" :key="index">
+                  <div class="ml-5">
+                    <router-link :to="child.route">
+                      {{child.name}}
+                    </router-link>
+                  </div>
+                </div>
+              </div>
             </li>
           </div>
         </ul>
@@ -78,6 +89,23 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
 
 nav {
   height: 100%;

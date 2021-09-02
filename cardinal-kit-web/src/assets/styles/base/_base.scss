@@ -65,7 +65,23 @@ main {
         margin-top: 1.5rem; 
     }
 }
-
+.ml {
+    &-1{
+       margin-left: .25rem; 
+    }
+    &-2{
+       margin-left: .5rem; 
+    }
+    &-3{
+       margin-left: 1rem; 
+    }
+    &-4{
+        margin-left: 1.25rem; 
+    }
+    &-5{
+        margin-left: 1.5rem; 
+    }
+}
 .mb-1 {
     margin-bottom: 5px;
 }
