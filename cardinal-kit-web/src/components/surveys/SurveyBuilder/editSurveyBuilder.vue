@@ -147,7 +147,7 @@ export default {
           questions: newQuestions,
         }).then(()=>{
           console.log("created")
-         })
+        })
       }
       this.update()
     },

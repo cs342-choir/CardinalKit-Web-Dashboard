@@ -1,6 +1,18 @@
 <template>
-   <div> 
-   <Multiselect v-model="internalValue" :options="options" mode="tags" /> 
+  <div > 
+  <Multiselect v-model="internalValue" :options="options" mode="tags" class="multiselect"
+  > 
+    <template v-slot:tag="{ option, handleTagRemove, disabled }">
+      <div class="multiselect-tag is-user">
+        {{option.label}}
+        <i
+          v-if="!disabled"
+          @click.prevent
+          @mousedown.prevent.stop="handleTagRemove(option, $event)"
+        />
+      </div>
+    </template>
+  </Multiselect>
   </div>
 </template>
 
@@ -28,4 +40,16 @@ export default {
 };
 </script>
 
-<style src="@vueform/multiselect/themes/default.css"></style>
+<style lang="scss" scoped>
+  .multiselect-tag.is-user {
+    padding: 5px 8px;
+    border-radius: 22px;
+    background: #B61440;
+    margin: 3px 3px 8px;
+  }
+
+  .multiselect-tag.is-user i:before {
+    color: #ffffff;
+    border-radius: 50%;;
+  }
+</style>

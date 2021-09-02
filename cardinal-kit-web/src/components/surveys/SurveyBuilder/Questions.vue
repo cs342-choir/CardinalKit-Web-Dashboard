@@ -44,6 +44,7 @@
           :name="`surveys[${survey.id}][identifier]`"
           type="text"
           placeholder="Identifier"
+          readonly
         />
       </div>
       <div
@@ -428,6 +429,9 @@ input[type='text'],
 input[type='email'],
 select {
   height: 34px;
+  border: 0px;
+  border-radius: 0px;
+  border-bottom: 1px solid #7F7F7F;
 }
 
 input[type='number'],
