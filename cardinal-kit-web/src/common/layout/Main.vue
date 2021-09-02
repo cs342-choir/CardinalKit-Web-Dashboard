@@ -40,7 +40,7 @@ export default {
     ...mapGetters("user", ["getUserRol"]),
     menu() {
       let main = [
-        { name: "Study", route: "/" },
+        { name: "Studies", route: "/" },
       ];
       if (this.getUserRol == "superAdmin") {
         main.push({ name: "Register doctors", route: "/register" });
@@ -49,15 +49,15 @@ export default {
         this.$route.params.studyId &&
         (this.getUserRol == "superAdmin" || this.getUserRol == "doctor")
       ) {
-        if (this.$route.name != "Study") {
+        if (this.$route.name != "Studies") {
           main[0].children = [
-            {
-              name: "Surveys",
-              route: `/surveysList/${this.$route.params.studyId}`
-            },
             {
               name: "Patients",
               route: `/patients/${this.$route.params.studyId}`,
+            },
+            {
+              name: "Surveys",
+              route: `/surveysList/${this.$route.params.studyId}`
             }
           ];
         }
