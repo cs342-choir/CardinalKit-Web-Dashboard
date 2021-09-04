@@ -1,6 +1,10 @@
 <template>
   <div class="page">
     <br />
+    <div class="header">
+      <h1 class="text-muted">Survey</h1>
+      <button @click="create">Create new survey</button>
+    </div>
     <alt-table :columns="columns" pagination >
     <template #t-row>
       <tr v-for="(survey, index ) in surveyData" :key="survey.name">
@@ -16,9 +20,6 @@
     </template>
     </alt-table>
     <br />
-    <div>
-      <button @click="create">Create Survey</button>
-    </div>
   </div>
 </template>
 
@@ -92,3 +93,10 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+  .header {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>

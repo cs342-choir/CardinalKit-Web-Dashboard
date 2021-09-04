@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <h1 class="mb-5">Patient</h1>
+    <h1 class="mb-5 text-muted">Patients</h1>
     <alt-table :columns="columns" pagination :paginationOptions="paginationOptions" @onPagination="handlePagination">
       <template #t-row>
         <tr v-for="(patient, index) in getPageItems" :key="patient.id">
@@ -12,8 +12,8 @@
             {{patient.id || 'NN'}}
           </td>
           <td>
-            <span class="pointer" @click="handleSelecPatient(patient.id)">
-              details
+            <span class="pointer btn-view" @click="handleSelecPatient(patient.id)">
+              View
             </span>
           </td>
           <td>
@@ -41,7 +41,7 @@ import loadingIcon from "@/components/loading";
     },
     components:{
       altTable,
-      loadingIcon
+      loadingIcon,
     },
     data(){
       return{
@@ -82,3 +82,10 @@ import loadingIcon from "@/components/loading";
     }
   };
 </script>
+<style lang="scss" scoped>
+  .btn-view{
+    padding: 0.4rem 1.8em;
+    background: #b71540;
+    color: white;
+  }
+</style>
