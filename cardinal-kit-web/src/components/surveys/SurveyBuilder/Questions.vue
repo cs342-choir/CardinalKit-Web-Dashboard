@@ -399,6 +399,7 @@ label {
   margin-bottom: .5rem;
 }
 
+
 input[type='text'],
 input[type='email'],
 textarea,
@@ -406,9 +407,9 @@ select {
   display: block;
   padding: .5rem;
   width: 100%;
-  background-color: white;
+  background-color: transparent;
   border-radius: .25rem;
-  border: 1px solid #e5e5e5;
+  border: 1.5px solid #6c757d7d;//#e5e5e5;
   outline: none;
       
   /* List some properties that might change */
@@ -419,12 +420,6 @@ select {
     border-color: rgb(239,126,173);
   }
 }
-
-textarea {
-  max-width: 300px;
-  height: 100px;
-}
-
 input[type='text'],
 input[type='email'],
 select {
@@ -433,6 +428,13 @@ select {
   border-radius: 0px;
   border-bottom: 1px solid #7F7F7F;
 }
+
+textarea {
+  max-width: 300px;
+  height: 100px;
+}
+
+
 
 input[type='number'],
 input[type='time'],

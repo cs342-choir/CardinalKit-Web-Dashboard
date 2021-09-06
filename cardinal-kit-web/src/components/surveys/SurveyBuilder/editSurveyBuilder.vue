@@ -4,36 +4,38 @@
       <div class="alert-err" v-if="errMsg">
         {{msg}}
       </div>
-      <h1>Edit Surveys Builder</h1>
-      <br />
-      <label>Enter the title: </label>
-      <input v-model="surveys.title" type="text" placeholder="Title" />
-      <br>
-      <label>Enter the subtitle: </label>
-      <input v-model="surveys.subtitle" type="text" placeholder="Subtitle" />
-      <br>
-      <label>Order: </label>
-      <input v-model="surveys.order" type="number"  min="1" pattern="^[0-9]+"/>
-      <br>
-      <label>Section: </label>
-      <input v-model="surveys.section" type="text" placeholder="Section" />
-      <br>
-      <label>Icon: </label>
-      <input type="file" placeholder="Icon" accept="image/*" />
-      <br>
-      <div v-for="survey in newData" :key="survey.id">
-        <Question :survey="survey" @DeleteQuestion="deleteQuestions" />
-      </div>
-      <br />
-      <div class="form-group">
-        <button @click="addQuestion" type="button" class="btn btn-secondary">
-          Add question
-        </button>
-      </div>
-      <div class="form-group">
-        <button @click="saveNewSurveys" type="button" class="btn btn-primary">
-          Update
-        </button>
+      <div class="input-form">
+        <h1>Edit Surveys Builder</h1>
+        <br />
+        <label>Enter the title: </label>
+        <input v-model="surveys.title" type="text" placeholder="Title" />
+        <br>
+        <label>Enter the subtitle: </label>
+        <input v-model="surveys.subtitle" type="text" placeholder="Subtitle" />
+        <br>
+        <label>Order: </label>
+        <input v-model="surveys.order" type="number"  min="1" pattern="^[0-9]+"/>
+        <br>
+        <label>Section: </label>
+        <input v-model="surveys.section" type="text" placeholder="Section" />
+        <br>
+        <label>Icon: </label>
+        <input type="file" placeholder="Icon" accept="image/*" />
+        <br>
+        <div v-for="survey in newData" :key="survey.id">
+          <Question :survey="survey" @DeleteQuestion="deleteQuestions" />
+        </div>
+        <br />
+        <div class="form-group">
+          <button @click="addQuestion" type="button" class="btn btn-secondary">
+            Add question
+          </button>
+        </div>
+        <div class="form-group">
+          <button @click="saveNewSurveys" type="button" class="btn btn-primary">
+            Update
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -199,7 +201,12 @@ export default {
 
 <style lang="scss">
 .wrapper {
-  margin: 5%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+.input-form{
+  margin: auto;
+  width: 60%;
 }
 .surveys > div {
   margin: 10px 0;
