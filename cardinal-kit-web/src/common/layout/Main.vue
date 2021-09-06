@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div class="flex sidebar">
     <!--  <Header
       :src-logo="logo"
       className="bg-danger"
@@ -77,4 +77,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.sidebar { 
+  min-height: 100vh;
+  height: 100%;
+  position: inherit;
+}
+</style>

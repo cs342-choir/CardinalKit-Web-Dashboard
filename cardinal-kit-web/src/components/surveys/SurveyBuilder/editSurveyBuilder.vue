@@ -1,10 +1,10 @@
 <template>
   <div  id="app">
     <div class="wrapper" v-if="surveys">
-      <div class="alert-err" v-if="errMsg">
-        {{msg}}
-      </div>
       <div class="input-form">
+        <div class="alert-err" v-if="errMsg">
+          {{msg}}
+        </div>
         <h1>Edit Surveys Builder</h1>
         <br />
         <label>Enter the title: </label>

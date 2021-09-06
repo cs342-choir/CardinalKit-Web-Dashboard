@@ -354,8 +354,8 @@ export default {
           }
             break;
         default:
-          if (!this.survey.options.length){
-            this.survey.options = [{}];
+          if (!this.survey.options || !this.survey.options.length){
+            this.survey["options"] = [{}];
           }
       }
     },

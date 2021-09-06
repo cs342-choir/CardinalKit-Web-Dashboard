@@ -1,12 +1,12 @@
 <template>
   <div id="app">
     <div class="wrapper">
-      <div :class="cl" v-if="errMsg">
-        {{msg}}
-      </div>
       <h1 class="text-center text-muted font-weight-bold">Surveys Builder</h1>
       <br />
       <div class="input-form">
+        <div :class="cl" v-if="errMsg">
+          {{msg}}
+        </div>
         <label>Title: </label>
         <input v-model="title" type="text" placeholder="Enter the title" />
         <br>
