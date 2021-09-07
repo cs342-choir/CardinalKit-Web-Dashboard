@@ -1,6 +1,6 @@
 <template>
   <section class="page">
-    <h1 class="mb-5"> {{categoryId}} </h1>
+    <h1 class="mb-5 text-capitalize"> {{categoryId}}</h1>
     <div class="wrapper-activities">
        <!-- <activity-card name="Actividad" date="7 may">
         <template v-slot:card-body>

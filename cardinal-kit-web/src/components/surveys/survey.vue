@@ -37,9 +37,10 @@
     <br />
 
     <br />
+    
     <alt-table 
       :columns="columns"
-      :pagination="data.answers.length>10"
+      :pagination="answers"
       :paginationOptions="paginationOptions"
       @onPagination="handlePagination"
     >
@@ -87,18 +88,37 @@ export default {
     altTable,
   },
   computed:{
+    answers(){
+      if (this.data.answers && this.data.answers.length > 10){
+        return true 
+      }else{
+        return false
+      }
+    },
     paginationOptions() {
+      if (Object.keys(this.data).length){
+        if (Object.keys(this.data).includes("answers")){
+          return {
+            limit: [10, 20],
+            total: this.data.answers.length,
+            currentPage: this.currentPage,
+          };
+        }
+      }
       return {
         limit: [10, 20],
-        total: this.data.answers.length,
+        total: 0,
         currentPage: this.currentPage,
       };
     },
      getPageItems() {
-      let items = this.data.answers;
-      let lowerLimit = (this.currentPage - 1) * this.limit;
-      let upperLimit = this.currentPage * this.limit;
-      return items.slice(lowerLimit, upperLimit);
+      if (this.data.answers){
+        let items = this.data.answers;
+        let lowerLimit = (this.currentPage - 1) * this.limit;
+        let upperLimit = this.currentPage * this.limit;
+        return items.slice(lowerLimit, upperLimit);
+      }
+      return {}
     },
   },
   methods:{

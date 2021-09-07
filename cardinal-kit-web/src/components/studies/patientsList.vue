@@ -12,12 +12,10 @@
             {{patient.id || 'NN'}}
           </td>
           <td>
-            <span class="pointer btn-view" @click="handleSelecPatient(patient.id)">
+            <loading-icon v-if="loadingId == patient.id" size="3px"/>
+            <span v-else class="pointer btn-view" @click="handleSelecPatient(patient.id)">
               View
             </span>
-          </td>
-          <td>
-          <loading-icon v-show="loadingId == patient.id" size="3px"/>
           </td>
         </tr>
       </template>

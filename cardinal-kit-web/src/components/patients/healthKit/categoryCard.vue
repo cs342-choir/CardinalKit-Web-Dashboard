@@ -7,7 +7,7 @@
       </div>
       <span class="arrow">›</span>
     </div>
-    <loading-icon v-show="loading" size="10px"/>
+    <loading-icon v-else size="10px"/>
   </div>
 </template>
 <script>

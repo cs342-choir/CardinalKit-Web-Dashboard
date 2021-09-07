@@ -37,7 +37,6 @@ export default {
   },
   methods: {
     onSurveyTypeChange() {
-      console.log("change");
       this.$refs.questionSelect.setNewValue(
         this.surveyQuestions && this.surveyQuestions.length > 0
           ? this.surveyQuestions[0].id
