@@ -23,7 +23,7 @@
         <input type="file" placeholder="Icon" accept="image/*" />
         <br>
         <div v-for="survey in surveys" :key="survey.id">
-          <Question :survey="survey" @DeleteQuestion="deleteQuestions" />
+          <Question :survey="survey" :readonly="false" @DeleteQuestion="deleteQuestions" />
         </div>
         <br />
         <div class="form-group my-4">
@@ -54,7 +54,7 @@ export default {
     studyId: {
       type: String,
       required: true,
-    },
+    }
   },
   data: () => ({
       image: null,

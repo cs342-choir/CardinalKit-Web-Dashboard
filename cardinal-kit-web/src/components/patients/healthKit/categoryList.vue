@@ -46,15 +46,16 @@ export default {
   },
   mounted(){
     this.categories = CategoriesList
-  },
-  
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-.categories-grid {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
+  .categories-grid {
+    display: grid;
+    gap: 20px 40px;
+    grid-template-columns: repeat(2, minmax(300px, 1fr));
+    justify-content: center;
+    align-items: center;
+  }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     Select survey type
     <alt-select
       :options="surveyTypes"

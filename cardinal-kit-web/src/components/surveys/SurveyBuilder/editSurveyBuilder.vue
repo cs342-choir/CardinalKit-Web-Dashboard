@@ -23,7 +23,7 @@
         <input type="file" placeholder="Icon" accept="image/*" />
         <br>
         <div v-for="survey in newData" :key="survey.id">
-          <Question :survey="survey" @DeleteQuestion="deleteQuestions" />
+          <Question :survey="survey" :readonly="true" @DeleteQuestion="deleteQuestions" />
         </div>
         <br />
         <div class="form-group">

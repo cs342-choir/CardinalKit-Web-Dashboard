@@ -41,10 +41,10 @@ import SmallCard from '@/components/patients/healthKit/SmallCard';
 </script>
 
 <style lang="scss" scoped>
-.grid-studies {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 20px; 
-}
+  .grid-studies {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 20px; 
+  }
 </style>

@@ -14,7 +14,13 @@
          <td v-if="!survey.deleted">
           <button class="btn" @click="details(survey.name)">Details</button>
           <button class="btn" @click="edit(survey.name, index)">Edit</button>
-          <button class="btn" @click="remove(survey.name)">Delete</button>
+          <modal
+            :label="'Remove'"
+            :name="survey.name"
+            title="Are you sure?"
+            content="Do you want to delete the survey?"
+            @remove="remove"
+          />
         </td>
       </tr>
     </template>
@@ -27,6 +33,7 @@
 import { mapGetters, mapActions } from "vuex";
 import store from "@/store";
 import altTable from '@/components/tables/altTable';
+import modal from "@/components/modals/modal.vue"
 
 export default {
   name: "SurveysList",
@@ -38,6 +45,7 @@ export default {
   },
   components: {
     altTable,
+    modal
   },
   computed: {
     ...mapGetters("user", ["getUserRol","getUserId"]),
@@ -99,4 +107,6 @@ export default {
     display: flex;
     justify-content: space-between;
   }
+
+
 </style>

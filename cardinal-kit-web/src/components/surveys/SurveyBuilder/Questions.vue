@@ -44,7 +44,7 @@
           :name="`surveys[${survey.id}][identifier]`"
           type="text"
           placeholder="Identifier"
-          readonly
+          :readonly="readonly"
         />
       </div>
       <div
@@ -243,6 +243,7 @@ import Picker from "@/components/surveys/SurveyBuilder/questionsTypes/Picker.vue
 export default {
   props: {
     survey: Object,
+    readonly: Boolean
   },
   components: {
     AltSelect,

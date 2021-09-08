@@ -47,34 +47,34 @@ export default {
       this.$router.push(
         `/${route}/${this.studyId}/${this.userId}/${this.data.id}/`
       );
-    },
+    }
   },
   computed: {},
 };
 </script>
 <style lang="scss" scoped>
-.card-category {
-  padding: 1rem;
-  background: white;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  border-radius: 8px;
-  box-shadow: $shadow-sm;
+  .card-category {
+    padding: 1rem;
+    background: white;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: $shadow-sm;
 
-  .icon {
-    margin-right: 1rem;
-  }
+    .icon {
+      margin-right: 1rem;
+    }
 
-  .subtitle {
-    font-weight: 700;
-    text-transform: capitalize;
-  }
+    .subtitle {
+      font-weight: 700;
+      text-transform: capitalize;
+    }
 
-  .arrow {
-    font-weight: 700;
+    .arrow {
+      font-weight: 700;
+    }
   }
-}
 </style>
