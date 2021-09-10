@@ -45,14 +45,14 @@ export default {
       type:Function,
       require:false
     },
-    typeQuestion:{
+    defaultValue:{
       type: String,
       require: false
     }
   },
   created(){
-    if (this.typeQuestion){
-      this.internalValue = this.typeQuestion
+    if (this.defaultValue){
+      this.internalValue = this.defaultValue
     }
   }
 };

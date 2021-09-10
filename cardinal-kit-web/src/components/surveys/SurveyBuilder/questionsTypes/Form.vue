@@ -19,7 +19,7 @@
           <br />
           <br />
           <AltSelect
-            :typeQuestion="question.type"
+            :defaultValue="question.type"
             :options="formQuestionTypes"
             v-model="question.type"
             :name="`

@@ -6,7 +6,7 @@
         <br />
         <br />
         <AltSelect
-          :typeQuestion="survey.type"
+          :defaultValue="survey.type"
           :ref="survey.id"
           :options="questionTypes"
           v-model="survey.type"

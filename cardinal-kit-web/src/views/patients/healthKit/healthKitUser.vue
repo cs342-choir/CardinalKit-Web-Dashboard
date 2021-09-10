@@ -1,50 +1,36 @@
 <template>
   <div>
-    esta es una ruta
-    <div v-for="obj in breadCrumb" :key="obj.label">
-      <span>{{obj.label}}</span>
-    </div>
+    <bread-crumb :data="breadCrumb"></bread-crumb>
     <router-view></router-view>
    <!--  <categories :userId="$route.query.userId" :studyId="$route.query.studyId" /> -->
-    <div class="wrapper-graphs content">
-      <h1>Activity Index</h1>
-      <line-chart
-        ref="chart"
-        :key="1"
-        :series="getActivityIndexDataToGraphic"
-      />
-    </div>
-    
    </div>
 </template>
 
 <script>
+import breadCrumb from "@/components/breadcrumb.vue"
 import { mapGetters } from 'vuex';
 import categories from '@/components/patients/healthKit/categoryList'
 import category from "@/components/patients/healthKit/categoryCard";
 import store from "@/store";
-import LineChart from "@/components/apexCharts/LineChart";
 export default {
   name: "StudyDetail",
   components:{
     categories,
-    category,
-    LineChart
+    breadCrumb,
+    category
   },
   data(){
     return{
       path: [
         {label: "Health Categories", path: "/healthKitUser"},
         {label: "Activity", path: "/healthKitUser/categories", param: "categoryId"},
-        {label: "Statistics", path: "/healthKitUser/categories/stadistics"},
+        {label: "Stadistics", path: "/healthKitUser/categories/stadistics"},
       ]
     }
   },
-  methods: {
-    
-  },
+  methods: {},
   computed:{
-    ...mapGetters('patient',['getHealthData','getActivityIndexDataToGraphic']),
+    ...mapGetters('patient',['getHealthData']),
     getActivityIndexData(){
       return ","
     },
@@ -92,23 +78,3 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.wrapper-graphs {
-  display: grid;
-  gap: 15px;
-  max-width: 1200px;
-  margin: auto;
-}
-@media (max-width: 360px) {
-  .content{
-    padding: 1rem;
-  }
-}
-@media (min-width: 361px) {
-  .content{
-      padding: 1rem 4rem;
-
-  }
-}
-
-</style>

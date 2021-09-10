@@ -44,7 +44,7 @@ const routes = [
         },
       },
       {
-        path: "/healthKitUser",///:studyId/:userId",
+        path: "/healthKitUser",
         name: "healthUser",
         component: HealthUser,
         meta: {
