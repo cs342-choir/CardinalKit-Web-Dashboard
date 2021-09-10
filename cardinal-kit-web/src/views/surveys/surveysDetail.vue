@@ -1,25 +1,23 @@
 <template>
-  <div>
-  <div>
-    <br />
-    Select a question
-    <br />
-    <br />
-    {{ questionSelected }}
-    <alt-select :options="questions" v-model="questionSelected" />
-    <br />
-    <div
-      class="surveyQuestionTxt"
-      v-for="(value, key) in getSurveyDetail(studyId)[surveyId]"
-      :key="key"
-      v-show="questionSelected == value.identifier"
-    >
-      <survey :data="value" />
+  <div class="page">
+    <div>
+      <br />
+      Select a question
+      <br />
+      <br />
+      {{ questionSelected }}
+      <alt-select :options="questions" v-model="questionSelected" />
+      <br />
+      <div
+        class="surveyQuestionTxt"
+        v-for="(value, key) in getSurveyDetail(studyId)[surveyId]"
+        :key="key"
+        v-show="questionSelected == value.identifier"
+      >
+        <survey :data="value" />
+      </div>
+      <button @click="convert">Download</button>
     </div>
-  </div>
-  <div :onClick="convert" class="card-category footerBtn">
-    <span class="downloadBtn">Download</span>
-  </div>
   </div>
 </template>
 
@@ -169,7 +167,7 @@ export default {
 };
 </script>
 <style lang="scss">
-.downloadBtn {
+/* .downloadBtn {
   text-decoration: none;
   font-weight: 300;
   font-size: 20px;
@@ -185,12 +183,12 @@ export default {
   margin: auto;
   top: -20px;
   box-shadow: 5px 5px 5px;
-}
+} 
 .footerBtn {
   padding: 0px 25px 25px 25px;
   width: 100%;
   display: flex;
-}
+}*/
 .surveyQuestionTxt {
   font-size: 25px;
   font-weight: 300;

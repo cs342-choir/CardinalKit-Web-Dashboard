@@ -44,6 +44,8 @@ export default {
     handleSubmit() {
       this.loading=true
       let route = this.data.customAction ?? "categoryDetail";
+   /*    console.log(route, "aca")
+      console.log(this.data.customAction) */
       this.$router.push(
         `/${route}/${this.studyId}/${this.userId}/${this.data.id}/`
       );

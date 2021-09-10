@@ -1,23 +1,23 @@
 <template>
-  <div>
+  <div class="w-65">
     <div v-if="!loading" @click="showToGraph(id)" class="card pointer">
-      <div class="card-header align-center">
+      <div class="card-header align-center m-1">
         <div class="card-header__title">
-          <img v-if="logo" :src="logo" alt="logo activity card">
           <h4 :style="{ color: colorTitle }"><b>{{ name }} </b></h4>
         </div>
-        <div  class="card-header__link flex align-center">
-          <span>{{ date }}</span>
-          <span class="arrow-link">›</span>
+        <div  class="card-header__link  text-center m-1">
+          <img v-if="logo" :src="logo" width="50" alt="logo activity card">
+          <!-- <span class="arrow-link">›</span> -->
         </div>
       </div>
-      <div class="card-body">
+      <div class="card-body m-1">
         <slot name="card-body">
           <div class="card-body__info">
             <p class="info-value">{{value || 'Value'}}</p>
             <p class="info-measure">{{ measure || 'Type Measure' }}</p>
           </div>
         </slot>
+          <span class="m-2">{{ date }}</span>
       </div>
     </div>
     <loading-icon v-show="loading" size="12px"/>
@@ -77,18 +77,22 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.wi {
+  width: 65%;
+}
 .card {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
   min-width: 40%;
+  padding-bottom: 5px;
   border-radius: 5px;
-  display: flex;
-  flex-flow: column;
-  justify-content: space-between;
+ /*  width: 65%; */
+  height: auto;
   background-color: $bg-card;
+  justify-content: space-between;
 
   .card-header {
-    display: flex;
+    //display: flex;
     justify-content: space-between;
     padding: .7rem;
 

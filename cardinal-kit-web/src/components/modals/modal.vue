@@ -46,8 +46,9 @@ export default {
 
 .modal-content {
   position: relative;
-  width: 45%;
+  width: 30%;
   background-color: white;
+  text-align: center;
 }
 
 .modal:target {

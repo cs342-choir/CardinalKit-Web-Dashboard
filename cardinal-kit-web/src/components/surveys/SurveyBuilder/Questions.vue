@@ -440,15 +440,18 @@ textarea {
 input[type='number'],
 input[type='time'],
 select {
-  // height: 34px;
   display: block;
   padding: .5rem;
   width: 30%;
-  background-color: white;
-  border-radius: .25rem;
-  border: 1px solid #e5e5e5;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #b9b9ba;
   outline: none;
   transition-property: none;
+
+  &:focus {
+    border-bottom: 1px solid rgb(255,150,200);
+  }
 }
 
 select {

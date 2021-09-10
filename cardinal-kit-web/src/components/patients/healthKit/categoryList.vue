@@ -1,6 +1,7 @@
 <template>
   <div class="page">
     <h1 class="mb-5">Health Categories</h1>
+   <!--  <router-view></router-view> -->
     <div class="categories-grid">
       <category
         v-for="category in categories"
@@ -12,6 +13,7 @@
         v-show="getValidCategories.includes(category.id)"
       />
     </div>
+
   </div>
 </template>
 <script>

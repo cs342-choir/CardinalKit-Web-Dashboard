@@ -72,7 +72,6 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     if(to.params.categoryId=="survey"){
-      console.lo
     }
     else
     {
@@ -88,6 +87,12 @@ export default {
 
 <style lang="scss" scoped>
 .wrapper-activities {
+/*   justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center; */
+
   display: grid;
   gap: 10px;
   grid-template-columns: repeat(auto-fit, minmax(290px, 350px));

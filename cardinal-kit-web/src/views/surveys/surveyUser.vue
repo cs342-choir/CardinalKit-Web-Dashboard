@@ -69,13 +69,11 @@ export default {
       return qs;
     },
     surveyData(){
-        
-        if(this.questionSelected){
-            console.log("selected",this.getUserSurveys[this.surveySelected][this.questionSelected])
-            
-            return this.getUserSurveys[this.surveySelected][this.questionSelected]
-        }
-        return {}
+      if(this.questionSelected){
+        console.log("selected",this.getUserSurveys[this.surveySelected][this.questionSelected])
+        return this.getUserSurveys[this.surveySelected][this.questionSelected]
+      }
+      return {}
     }
   },
   props: {
