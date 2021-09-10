@@ -64,14 +64,14 @@ export default {
     };
   },
   mounted () {
-    const { studyId, userId } = this.$route?.params;
+    const { studyId, userId } = this.$route?.query;
     this.userId = userId;
     this.studyId = studyId;
   },
   methods: {
-    showToGraph: function (id) {
+    showToGraph(id) {
       this.loading=true
-      this.$router.push(`/healthGraph/${this.studyId}/${this.userId}/${id}`);
+      this.$router.push({name: "stadistic", params: {hkCode: id}, query: {studyId: this.studyId, userId: this.userId}});
     }
   }
 };

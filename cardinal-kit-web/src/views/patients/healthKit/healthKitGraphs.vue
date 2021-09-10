@@ -115,7 +115,17 @@ export default {
     RangeChart,
     altTable,
   },
-  props: {
+   data() {
+    return {
+      date: { startDate: new Date(new Date().setDate(-30)) },
+      currentPage: 1,
+      limit: 10,
+      studyId: this.$route.query.studyId,
+      userId: this.$route.query.userId,
+      hkCode: this.$route.params.hkCode
+    };
+  },
+/*   props: {
     studyId: {
       type: String,
       required: true,
@@ -128,7 +138,7 @@ export default {
       type: String,
       required: true,
     },
-  },
+  }, */
   computed: {
     ...mapGetters("patient", [
       "getSpecificHealthDataGrapFormat",
@@ -164,13 +174,7 @@ export default {
       };
     },
   },
-  data() {
-    return {
-      date: { startDate: new Date(new Date().setDate(-30)) },
-      currentPage: 1,
-      limit: 10,
-    };
-  },
+ 
   methods: {
     ...mapActions("patient", ["FetchSpecificTypeData"]),
     transformAppleCode,
@@ -206,8 +210,8 @@ export default {
   beforeRouteEnter(to, from, next) {
     Promise.all([
       store.dispatch("patient/FetchSpecificTypeData", {
-        studyId: `${to.params.studyId}`,
-        userId: `${to.params.userId}`,
+        studyId: `${to.query.studyId}`,
+        userId: `${to.query.userId}`,
         dataType: `${to.params.hkCode}`,
       }),
     ]).then(() => {

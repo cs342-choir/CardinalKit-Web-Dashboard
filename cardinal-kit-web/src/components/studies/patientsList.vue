@@ -52,7 +52,7 @@ import loadingIcon from "@/components/loading";
     methods: {
       handleSelecPatient(patientId){
         this.loadingId = patientId
-        this.$router.push(`/healthKitUser/${this.studyId}/${patientId}`)
+        this.$router.push({name: "healthUser", query: {studyId: this.studyId, userId: patientId }})
       }, 
       handlePagination(pagination) {
         this.currentPage=pagination.currentPage
@@ -67,7 +67,7 @@ import loadingIcon from "@/components/loading";
       paginationOptions() {
         return {
           limit: [10, 20],
-          total: this.patients.length,
+          total: this.patients?.length,
           currentPage: this.currentPage,
         };
       },

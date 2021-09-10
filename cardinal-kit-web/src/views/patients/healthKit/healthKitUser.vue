@@ -1,6 +1,11 @@
 <template>
   <div>
-    <categories :userId="$route.params.userId" :studyId="$route.params.studyId" />
+    esta es una ruta
+    <div v-for="obj in breadCrumb" :key="obj.label">
+      <span>{{obj.label}}</span>
+    </div>
+    <router-view></router-view>
+   <!--  <categories :userId="$route.query.userId" :studyId="$route.query.studyId" /> -->
     <div class="wrapper-graphs content">
       <h1>Activity Index</h1>
       <line-chart
@@ -26,6 +31,15 @@ export default {
     category,
     LineChart
   },
+  data(){
+    return{
+      path: [
+        {label: "Health Categories", path: "/healthKitUser"},
+        {label: "Activity", path: "/healthKitUser/categories", param: "categoryId"},
+        {label: "Statistics", path: "/healthKitUser/categories/stadistics"},
+      ]
+    }
+  },
   methods: {
     
   },
@@ -33,22 +47,48 @@ export default {
     ...mapGetters('patient',['getHealthData','getActivityIndexDataToGraphic']),
     getActivityIndexData(){
       return ","
+    },
+    breadCrumb(){
+      let index = this.path.findIndex((obj) => obj.active)
+      return  this.path.slice(0, index+1);
     }
+  },
+  created(){
+    this.path.forEach(obj => {
+      obj.active = obj.path === this.$route.path;
+      if (obj.active && obj.params){  
+        obj.label = to.params[obj.param]
+      }
+      return obj
+    });
+    this.path = [...this.path]
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([
       store.dispatch("patient/FecthCategoryWithData", {
-        studyId: `${to.params.studyId}`,
-        userId: `${to.params.userId}`
+        studyId: `${to.query.studyId}`,
+        userId: `${to.query.userId}`
       }),
       store.dispatch("patient/FetchMetricsData",{
-        studyId: `${to.params.studyId}`,
-        userId: `${to.params.userId}`
+        studyId: `${to.query.studyId}`,
+        userId: `${to.query.userId}`
       })
     ]).then(() => {
       next();
     });
   },
+  beforeRouteUpdate(to, from, next) {
+    this.path.forEach(obj => {
+      if (obj.param && to.params && to.params[obj.param]){  
+        obj.label = to.params[obj.param]
+        obj.path = to.path
+      }
+      obj.active = obj.path === to.path;
+      return obj
+    });
+    this.path = [...this.path]
+    next();
+  }
 };
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <section class="page">
-    <h1 class="mb-5 text-capitalize"> {{categoryId}}</h1>
+    <!-- <h1 class="mb-5 text-capitalize"> {{categoryId}}</h1> -->
     <div class="wrapper-activities">
        <!-- <activity-card name="Actividad" date="7 may">
         <template v-slot:card-body>
@@ -54,21 +54,23 @@ export default {
       calories:39,
       exerciseTime:10,
       standUpTime:2,
-      activities: []     
+      activities: [],
+      categoryId: this.$route.params.categoryId
     };
   },
-  props: {
+ /*  props: {
     categoryId: {
       type: String,
       required: true,
     },
-  },
+  }, */
   methods: {},
   computed: {
     ...mapGetters('patient',['getCategoryDataWebFormat'])
   },
   mounted(){
     this.activities = this.getCategoryDataWebFormat(this.categoryId)
+    console.log(this.activities, "activities")
   },
   beforeRouteEnter(to, from, next) {
     if(to.params.categoryId=="survey"){
@@ -76,7 +78,8 @@ export default {
     else
     {
       Promise.all([
-        store.dispatch("patient/FetchLastCategoryData",{ studyId:`${to.params.studyId}`  , userId:`${to.params.userId}`,category:`${to.params.categoryId}`})
+        store.dispatch("patient/FetchLastCategoryData",
+        { studyId:`${to.query.studyId}`  , userId:`${to.query.userId}`,category:`${to.params.categoryId}`})
       ]).then(()=>{
         next()
       })

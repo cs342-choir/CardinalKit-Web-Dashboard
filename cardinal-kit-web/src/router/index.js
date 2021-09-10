@@ -12,6 +12,9 @@ import surveyUser from "@/views/surveys/surveyUser"
 import store from "@/store";
 import surveysBuilder from "@/views/surveys/surveysBuilder"
 import editSurveyBuilder from "@/components/surveys/SurveyBuilder/editSurveyBuilder.vue"
+import categories from '@/components/patients/healthKit/categoryList'
+import healthKitGraphs from '@/views/patients/healthKit/healthKitGraphs'
+
 
 const routes = [
   {
@@ -41,12 +44,25 @@ const routes = [
         },
       },
       {
-        path: "/healthKitUser/:studyId/:userId",
+        path: "/healthKitUser",///:studyId/:userId",
         name: "healthUser",
         component: HealthUser,
         meta: {
           requiresAuth: true,
         },
+        props: true,
+        redirect: {name: "categories"},
+        children: [
+          { 
+            name: "categories", path: '', component: categories,
+          },
+          { 
+            name: "category", path: 'category/:categoryId', component: categoryDetail 
+          },
+          { 
+            name: "stadistic", path: 'stadistic/:hkCode', component: healthKitGraphs 
+          }
+        ]
       },
       {
         path: "/healthGraph/:studyId/:userId/:hkCode",
