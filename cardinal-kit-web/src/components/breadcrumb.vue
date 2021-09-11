@@ -2,7 +2,7 @@
     <div class="container">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"  v-for="obj in data" :key="obj.label">
-                <a href="#" class="text-capitalize">{{obj.label}}</a>
+                <span @click="redirect(obj)" class="text-capitalize">{{obj.label}}</span>
             </li>
         </ol>
     </div>
@@ -15,8 +15,29 @@ export default {
         data: {
             type: Array,
             required: true
+        },
+        userId: {
+            type: String,
+            required: true
+        },
+        studyId: {
+            type: String,
+            required: true
         }
-    }
+    },
+    methods: {
+        redirect(obj){
+            let data = { 
+                name: obj.name, 
+              //  ...(obj.params && {params: obj.params}), 
+                params: {...obj.params},
+                query:{userId: this.userId, studyId: this.studyId}
+            }
+            console.log(data, "dta")
+
+            this.$router.push(data)
+        }
+    },
 }
 </script>
 <style lang="scss">
@@ -37,16 +58,18 @@ export default {
   content: ">";
 }
 
-.breadcrumb-item a{
+.breadcrumb-item span{
   color: #6c757d;
   text-decoration: none;
   font-size: 28px;
+  cursor: pointer;
 }
 
-.breadcrumb-item a {
+.breadcrumb-item span {
     &:hover, &:focus {
         color: rgb(0, 0, 0);
         font-weight: 700;
+        cursor: pointer;
     }
 }
 </style>

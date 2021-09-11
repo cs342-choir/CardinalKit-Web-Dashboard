@@ -28,8 +28,8 @@ function ResumeRange(data,transformValueCallBack,unit){
     }
     if(newValue<min)
     {
-      console.log("new Min")
-      console.log(record)
+     /*  console.log("new Min")
+      console.log(record) */
       min=newValue
     }
   })

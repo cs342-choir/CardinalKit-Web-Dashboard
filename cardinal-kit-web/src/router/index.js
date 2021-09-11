@@ -60,7 +60,7 @@ const routes = [
             name: "category", path: 'category/:categoryId', component: categoryDetail 
           },
           { 
-            name: "stadistic", path: 'stadistic/:hkCode', component: healthKitGraphs 
+            name: "statistic", path: 'statistic/:hkCode', component: healthKitGraphs 
           }
         ]
       },

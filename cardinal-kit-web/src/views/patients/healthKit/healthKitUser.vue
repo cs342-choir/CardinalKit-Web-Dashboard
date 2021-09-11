@@ -1,6 +1,10 @@
 <template>
   <div>
-    <bread-crumb :data="breadCrumb"></bread-crumb>
+    <bread-crumb 
+      :data="breadCrumb"
+      :userId="$route.query.userId"
+      :studyId="$route.query.studyId">
+    </bread-crumb>
     <router-view></router-view>
    <!--  <categories :userId="$route.query.userId" :studyId="$route.query.studyId" /> -->
    </div>
@@ -22,9 +26,9 @@ export default {
   data(){
     return{
       path: [
-        {label: "Health Categories", path: "/healthKitUser"},
-        {label: "Activity", path: "/healthKitUser/categories", param: "categoryId"},
-        {label: "Stadistics", path: "/healthKitUser/categories/stadistics"},
+        {label: "Health Categories", name: "categories"},
+        {label: "Activity", name:"category", param: "categoryId"},
+        {label: "Statistics", name: "statistic"},
       ]
     }
   },
@@ -40,8 +44,12 @@ export default {
     }
   },
   created(){
+    let path = localStorage.getItem("path");
+    if (path){
+      this.path = JSON.parse(path);
+    }
     this.path.forEach(obj => {
-      obj.active = obj.path === this.$route.path;
+      obj.active = obj.name === this.$route.name;
       if (obj.active && obj.params){  
         obj.label = to.params[obj.param]
       }
@@ -65,13 +73,14 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     this.path.forEach(obj => {
-      if (obj.param && to.params && to.params[obj.param]){  
+      obj.active = obj.name === to.name;
+      if (obj.param && to.params && obj.active){  
+        obj.params = to.params
         obj.label = to.params[obj.param]
-        obj.path = to.path
       }
-      obj.active = obj.path === to.path;
       return obj
     });
+    localStorage.setItem("path", JSON.stringify(this.path))
     this.path = [...this.path]
     next();
   }

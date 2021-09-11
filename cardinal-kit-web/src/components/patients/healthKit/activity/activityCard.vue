@@ -71,7 +71,11 @@ export default {
   methods: {
     showToGraph(id) {
       this.loading=true
-      this.$router.push({name: "stadistic", params: {hkCode: id}, query: {studyId: this.studyId, userId: this.userId}});
+      this.$router.push({
+        name: "statistic",
+        params: {hkCode: id},
+        query: {studyId: this.studyId, userId: this.userId}
+      });
     }
   }
 };

@@ -70,7 +70,6 @@ export default {
   },
   mounted(){
     this.activities = this.getCategoryDataWebFormat(this.categoryId)
-    console.log(this.activities, "activities")
   },
   beforeRouteEnter(to, from, next) {
     if(to.params.categoryId=="survey"){
@@ -79,7 +78,7 @@ export default {
     {
       Promise.all([
         store.dispatch("patient/FetchLastCategoryData",
-        { studyId:`${to.query.studyId}`  , userId:`${to.query.userId}`,category:`${to.params.categoryId}`})
+        { studyId:`${to.query.studyId}`, userId:`${to.query.userId}`,category:`${to.params.categoryId}`})
       ]).then(()=>{
         next()
       })

@@ -42,11 +42,13 @@ export default {
   },
   methods: {
     handleSubmit() {
+      // check survey card 
       this.loading=true
- 
-      this.$router.push(
-        {name: "category", params: {categoryId: this.data.id}, query: {studyId: this.studyId, userId: this.userId}}
-      );
+      this.$router.push({
+        name: "category", 
+        params: {categoryId: this.data.id}, 
+        query: {studyId: this.studyId, userId: this.userId}
+      });
     }
   },
   computed: {},
