@@ -26,7 +26,6 @@ export function saveHealthData(state, payload) {
         name=keyCode
       }
       else{
-        console.log("record sin category ",record[key])
       }
 
       if(!(keyCode in healthData)){
@@ -39,6 +38,5 @@ export function saveHealthData(state, payload) {
       healthData[keyCode].data.push(record[key])
     });
   });
-console.log(healthData)
   state.healthData = healthData;
 }

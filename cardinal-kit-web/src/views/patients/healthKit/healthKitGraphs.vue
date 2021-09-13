@@ -147,10 +147,8 @@ export default {
     ]),
     GetGraphType() {
       if (this.hkCode == "HKCategoryTypeIdentifierSleepAnalysis") {
-        console.log("return sleep");
         return "sleep";
       } else if (this.hkCode == "HKQuantityTypeIdentifierHeartRate") {
-        console.log("return Heart");
         return "heart";
       } else if (this.hkCode == "HKCategoryTypeIdentifierMindfulSession") {
         return "mindful";

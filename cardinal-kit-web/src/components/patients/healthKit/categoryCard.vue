@@ -43,11 +43,20 @@ export default {
   methods: {
     handleSubmit() {
       this.loading=true
- 
-      this.$router.push(
-        {name: "category", params: {categoryId: this.data.id}, query: {studyId: this.studyId, userId: this.userId}}
-      );
-    }
+
+    if (this.data.customAction) {
+        this.$router.push({
+          name: this.data.customAction,
+          query: { studyId: this.studyId, userId: this.userId }
+        });
+      } else {
+        this.$router.push({
+          name: "category",
+          params: { categoryId: this.data.id },
+          query: { studyId: this.studyId, userId: this.userId },
+        });
+      }
+    },
   },
   computed: {},
 };

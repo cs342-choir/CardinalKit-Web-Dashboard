@@ -1,12 +1,23 @@
 export function getSurveysList(state) {
   return (idStudy) => {
-    return state.surveysList[idStudy];
+    if(state.surveysList[idStudy]){
+      return JSON.parse(JSON.stringify(state.surveysList[idStudy]));
+    }
+    else{
+      return [];
+    }
+    
   };
 }
 
 export function getSurveysListData(state) {
   return (idStudy) => {
-    return state.surveysListData[idStudy];
+    if (state.surveysListData[idStudy]){
+      return JSON.parse(JSON.stringify(state.surveysListData[idStudy]));
+    }
+    else{
+      return {}
+    }
   };
 }
 
@@ -30,8 +41,4 @@ export function getUserSurveyQuestion(state){
 
 export function getAllQuestion(state){
   return state.allQuestions
-}
-
-export function getQuestionBySurveyId(state){
-  return state.questionBySurveyId
 }

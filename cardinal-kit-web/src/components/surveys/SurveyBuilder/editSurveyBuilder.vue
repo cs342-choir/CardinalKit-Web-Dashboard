@@ -162,15 +162,16 @@ export default {
       }
       this.newData = {...this.questionData}
     },
-    setSurveyData(){
-      this.surveyData = this.getSurveysListData(this.studyId)[this.index]
+    setSurveyData(){      
+      this.surveyData = this.getSurveysListData(this.studyId)[this.surveyId]
       if (this.surveyData) {
+        let data= this.surveyData.data
         this.surveys={
-          'image':this.surveyData.image,
-          'order':this.surveyData.order,
-          'section':this.surveyData.section,
-          'subtitle':this.surveyData.subtitle,
-          'title':this.surveyData.title
+          'image':data.image,
+          'order':data.order,
+          'section':data.section,
+          'subtitle':data.subtitle,
+          'title':data.title
         }
       }
     }

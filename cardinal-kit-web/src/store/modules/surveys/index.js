@@ -4,13 +4,13 @@ import * as getters from './getters'
 
 export const initialState = () => ({
     surveysList:[],
-    surveysListData:[],
+    surveysListData:{},
     surveyDetail:[],
     userSurveys:{},
     SurveyBuilderUser:[],
     SurveyUserQuestions:{},
     allQuestions:[],
-    questionBySurveyId:{}
+    questionBySurveyId:{},
 })
 
 export default {
