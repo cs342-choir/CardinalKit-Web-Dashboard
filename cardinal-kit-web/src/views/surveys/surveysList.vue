@@ -9,10 +9,11 @@
     <template #t-row>
       <tr v-for="(survey, index ) in surveyData" :key="survey.name">
         <td v-if="!survey.deleted">
-          {{survey.title}}
+          {{survey.data.title}}
         </td>
+        {{survey}}
          <td v-if="!survey.deleted">
-          <button class="btn" @click="details(survey.name)">Details</button>
+          <button class="btn" @click="details(survey.data.title)">Details</button>
           <button class="btn" @click="edit(survey.name, index)">Edit</button>
           <modal
             :label="'Remove'"
@@ -55,11 +56,11 @@ export default {
     ...mapActions("surveys", ["DeleteSurvey", "UpdateSurveyData"]),
     surveysListData(){
       let data = []
-      let ids = this.getSurveysList(this.studyId)
+      
       let list = this.getSurveysListData(this.studyId)
-      list.forEach((obj, i) => {
-        data.push({...obj, name: ids[i]})
-      });
+      for (const [key, value] of Object.entries(list)) {
+        data.push({...value, name: key})
+      }
       this.surveyData = [...data]
     },
     remove(name) {

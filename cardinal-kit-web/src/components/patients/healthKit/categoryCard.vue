@@ -21,34 +21,40 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true,
+      required: true
     },
     userId: {
       type: String,
-      required: true,
+      required: true
     },
     studyId: {
       type: String,
-      required: true,
+      required: true
     },
     icon: {
-      type: String,
+      type: String
     },
   },
   data() {
     return {
-      loading:false
+      loading: false
     };
   },
   methods: {
     handleSubmit() {
-      // check survey card 
       this.loading=true
-      this.$router.push({
-        name: "category", 
-        params: {categoryId: this.data.id}, 
-        query: {studyId: this.studyId, userId: this.userId}
-      });
+      if (this.data.customAction) {
+        this.$router.push({
+          name: this.data.customAction,
+          query: { studyId: this.studyId, userId: this.userId }
+        });
+      } else {
+        this.$router.push({
+          name: "category",
+          params: { categoryId: this.data.id },
+          query: { studyId: this.studyId, userId: this.userId }
+        });
+      }
     }
   },
   computed: {},

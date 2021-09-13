@@ -83,7 +83,6 @@ export default {
       let surveyData = JSON.parse(
         JSON.stringify(this.getSurveyDetail(this.studyId)[this.surveyId])
       );
-      console.log(surveyData);
       let surveyTransformed = this.oneLineForEachAnswer(
         this.optionsInOneLine(surveyData)
       );
@@ -150,7 +149,6 @@ export default {
     },
   },
   mounted() {
-    console.log("mounted");
     this.questionSelected = this.questions ? this.questions[0].id : null;
   },
   beforeRouteEnter(to, from, next) {
@@ -160,7 +158,6 @@ export default {
         surveyId: to.params.surveyId,
       }),
     ]).then(() => {
-      console.log("read");
       next();
     });
   },

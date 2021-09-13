@@ -28,12 +28,10 @@ function ResumeRange(data,transformValueCallBack,unit){
     }
     if(newValue<min)
     {
-     /*  console.log("new Min")
-      console.log(record) */
       min=newValue
+      return {title:"Range",value:`${min} - ${max}  ${unit}`}
     }
   })
-  return {title:"Range",value:`${min} - ${max}  ${unit}`}
 }
 function ResumeSum(data,transformValueCallBack, unit){
   let total=0
@@ -292,7 +290,6 @@ function MinfdfulData(data){
 
 export function getCategoryDataWebFormat(state) {
   return (categoryId) => {
-    console.log(" -- ",state.healthWebFormat[categoryId])
     return state.healthWebFormat[categoryId];
   };
 }

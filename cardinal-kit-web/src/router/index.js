@@ -128,7 +128,7 @@ const routes = [
         },
       },
       {
-        path: "/surveyUser/:studyId/:userId/:extraInfo/",
+        path: "/surveyUser",
         name: "surveyUser",
         component: surveyUser,
         props:true,

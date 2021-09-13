@@ -1,7 +1,6 @@
 import request from "@/Rest";
 
 export const FetchSurveyQuestions = async ({commit},{studyId})=>{
-  let surveyquestions={}
   let questions=[]
   let allQuestions=[]
   let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute()
@@ -12,27 +11,35 @@ export const FetchSurveyQuestions = async ({commit},{studyId})=>{
         allQuestions.push(o.data())
         questions.push(o.data())
       })
-      surveyquestions[survey.id]=questions
       questions=[]
     }
   }))
-  commit("saveQuestionBySurveyId",{results:surveyquestions})
   commit("saveAllQuestions",{results:allQuestions})
 }
 
-export const FetchSurveyByStudy = async ({ commit }, {studyId}) => {
-  let surveysList = []
-  let surveysListData = []
+export const FetchSurveyByStudy = async ({ commit }, {studyId}) => {  
+  let surveysListData = {}
   let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute()
-  surveysSnap.forEach((survey)=>{
-    if(Object.keys(survey.data()).length){
-      surveysList.push(survey.id)
-      surveysListData.push(survey.data())
-    }
-  })
 
-  commit("saveSurveysList",{idStudy:studyId,surveys:surveysList})
-  commit("saveSurveysListData",{idStudy:studyId,surveys:surveysListData})
+  await Promise.all(surveysSnap.docs.map(async(survey)=>{
+    let invalidQuestionTypes = ["summary","instruction"]
+
+    if(!survey.data().deleted){
+      let surveyQuestionsSnap = await request.GET(`studies/${studyId}/surveys/${survey.id}/questions`).Execute()
+      let questions = {}
+      surveyQuestionsSnap.forEach((question)=>{
+        
+        if( !invalidQuestionTypes.includes(question.data().type)){
+          questions[question.id] = question.data()
+        }
+      })
+      surveysListData[survey.id] = {
+        data: survey.data(),
+        questions: questions
+      }
+    }
+  }))
+  commit("saveSurveysListData",{idStudy:studyId,surveys:JSON.parse(JSON.stringify(surveysListData))})
 };
 
 export const FetchSurveyAllData = async ({commit},{studyId,surveyId})=>{
@@ -52,8 +59,7 @@ export const FetchSurveyDataByUser = async ({commit},{studyId,userId})=>{
   let surveyResults={}
   let surveysSnap = await request.GET(`studies/${studyId}/surveys`).Execute()
   await Promise.all( surveysSnap.docs.map(async(survey)=>{
-    let surveyData = await request.GET(`studies/${studyId}/users/${userId}/surveys/${survey.id}`).Execute()
-    
+    let surveyData = await request.GET(`studies/${studyId}/users/${userId}/surveys/${survey.data().title}`).Execute()
     if(surveyData.exists){
       surveyResults[survey.id]=surveyData.data().results
     }

@@ -16,7 +16,7 @@ export function saveAllQuestions(state,questions){
 } 
 
 export function saveSurveysListData(state, { idStudy, surveys }) {
-  state.surveysListData[idStudy] = surveys;
+  state.surveysListData[idStudy] = JSON.parse(JSON.stringify(surveys));
 } 
 
 export function saveSurveysList(state, { idStudy, surveys }) {
@@ -137,7 +137,6 @@ export function saveSurveysBuilderUser(state,{results}) {
   state.SurveyBuilderUser = results
 }
 export function saveUserSurveys(state,{results,userId}) {
-  console.log("results",userId)
   let dictExternal = {}
   for (const [key, value] of Object.entries(results)) {
     let dictInternal = {};

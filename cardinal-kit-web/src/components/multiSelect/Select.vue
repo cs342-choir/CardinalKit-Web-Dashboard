@@ -12,6 +12,7 @@
   </div>
 </template>
 
+
 <script>
 import Multiselect from "@vueform/multiselect";
 export default {
@@ -20,6 +21,11 @@ export default {
     return {
       internalValue: null,      
     };
+  },
+  methods:{
+    setNewValue(newValue){
+      this.internalValue = newValue
+    }
   },
   watch: {
     internalValue: function(value){

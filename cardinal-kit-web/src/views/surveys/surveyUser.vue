@@ -29,6 +29,7 @@ export default {
     return {
       surveySelected: null,
       questionSelected: null,
+      studyId: this.$route.query.studyId
     };
   },
   components: {
@@ -45,49 +46,38 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("surveys", ["getSurveysList", "getUserSurveys"]),
+    ...mapGetters("surveys", ["getSurveysListData", "getUserSurveys"]),
     surveyTypes() {
       let types = [];
-      this.getSurveysList(this.studyId).map((element) => {
-        types.push({ id: element, name: element, value: element });
-      });
+      let surveys = this.getSurveysListData(this.studyId)
+      for (const [key, value] of Object.entries(surveys)) {
+        types.push({ id: key, name: value.data.title, value: key})
+    }
       return types;
     },
     surveyQuestions() {
       let qs = [];
-      if (this.getUserSurveys[this.surveySelected]) {
-        for (const [key, value] of Object.entries(
-          this.getUserSurveys[this.surveySelected]
-        )) {
+      if(this.surveySelected){
+        let surveys = this.getSurveysListData(this.studyId)
+        let questions = surveys[this.surveySelected].questions
+        for (const [key, value] of Object.entries(questions)) {
           qs.push({
-            id: value.identifier,
-            name: value.question,
-            value: value.identifier,
-          });
+             id: value.identifier,
+             name: value.question,
+             value: value.identifier,
+           });
         }
       }
       return qs;
     },
     surveyData(){
-      if(this.questionSelected){
-        console.log("selected",this.getUserSurveys[this.surveySelected][this.questionSelected])
+      if(this.questionSelected && this.getUserSurveys[this.surveySelected] && this.getUserSurveys[this.surveySelected][this.questionSelected]){
         return this.getUserSurveys[this.surveySelected][this.questionSelected]
       }
       return {}
     }
   },
-  props: {
-    studyId: {
-      type: String,
-      required: true,
-    },
-    userId: {
-      type: String,
-      required: true,
-    },
-  },
   mounted() {
-    console.log("types", this.surveyQuestions);
     this.$refs.surveyTypeSelect.setNewValue(
       this.surveyTypes && this.surveyTypes.length > 0
         ? this.surveyTypes[0].id
@@ -106,11 +96,11 @@ export default {
   beforeRouteEnter(to, from, next) {
     Promise.all([
       store.dispatch("surveys/FetchSurveyByStudy", {
-        studyId: to.params.studyId,
+        studyId: to.query.studyId,
       }),
       store.dispatch("surveys/FetchSurveyDataByUser", {
-        studyId: to.params.studyId,
-        userId: to.params.userId,
+        studyId: to.query.studyId,
+        userId: to.query.userId,
       }),
     ]).then(() => {
       next();

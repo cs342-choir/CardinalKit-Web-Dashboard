@@ -42,8 +42,10 @@ export function saveHealthData(state, payload) {
   state.healthData = healthData;
 }
 
+
+///TODO REVIEW THIS METHOD
 export function saveActivityData(state, payload) {
-  console.log("llamando otro", payload);
+  console.log("CALL OTHER???", payload);
 }
 
 
