@@ -2,7 +2,7 @@
   <div  id="app">
     <div class="wrapper" v-if="surveys">
       <div class="input-form">
-        <div class="alert-err" v-if="errMsg">
+        <div :class="cl" v-if="errMsg">
           {{msg}}
         </div>
         <h1>Edit Surveys Builder</h1>
@@ -13,6 +13,9 @@
         <label>Enter the subtitle: </label>
         <input v-model="surveys.subtitle" type="text" placeholder="Subtitle" />
         <br>
+        <label class="my-4">Show on main screen: </label>
+        <input v-model="surveys.main" type="checkbox" />
+        <br />
         <label>Order: </label>
         <input v-model="surveys.order" type="number"  min="1" pattern="^[0-9]+"/>
         <br>
@@ -23,7 +26,7 @@
         <input type="file" placeholder="Icon" accept="image/*" />
         <br>
         <div v-for="survey in newData" :key="survey.id">
-          <Question :survey="survey" :readonly="true" @DeleteQuestion="deleteQuestions" />
+          <Question :survey="survey" @DeleteQuestion="deleteQuestions" />
         </div>
         <br />
         <div class="form-group">
@@ -67,12 +70,14 @@ export default {
       surveyName: "",
       orderQuestion:0,
       order:"",
+      main: null,
       surveys: {},
       surveyData:null,
       questionData: {},
       newData:{},
       errMsg: false,
-      msg: ""
+      msg: "",
+      cl:""
     }
   },
   components: {
@@ -89,6 +94,7 @@ export default {
         type: "",
         scope: "public",
         identifier: "",
+        readonly: false,
         description: "",
         question: [],
         required: true,
@@ -128,11 +134,39 @@ export default {
           })
         }else{
           this.errMsg = true
+          this.cl = "alert-err"
           this.msg = "The questions cannot be empty"
         }
       }else{
         this.errMsg = true
+        this.cl = "alert-err"
         this.msg = "The fields can't be blank"
+      }
+    },
+    validIdentifier(surveys){
+      this.errMsg = false
+      this.msg=""
+      let allIdentifiers = this.getAllQuestion.map(obj => obj.identifier)
+      let identifiers = Object.values(surveys).map(obj => obj.identifier)
+      let unique = true
+      for (const key of identifiers) {
+        if (allIdentifiers.includes(key)){
+          unique = false
+        }
+      }
+      if (unique){
+        this.SaveQuestion({
+          id: this.surveyId,
+          studyId: this.studyId,
+          questions: surveys
+        }).then(()=>{
+          console.log("created")
+          this.update()
+        })
+      }else{
+        this.errMsg = true
+        this.cl = "alert-err"
+        this.msg="Identifier should be unique"
       }
     },
     saveNewSurveys(){
@@ -143,21 +177,16 @@ export default {
         }
       })
       if(Object.keys(newQuestions).length){
-        this.SaveQuestion({
-          id: this.surveyId,
-          studyId: this.studyId,
-          questions: newQuestions,
-        }).then(()=>{
-          console.log("created")
-        })
+        this.validIdentifier(newQuestions)
+      }else{
+        this.update()
       }
-      this.update()
     },
     setSurvey(){
       let questions = this.getUserSurveyQuestion[this.surveyId]
       if(questions && questions.length){
         questions.forEach(obj => {
-          this.questionData[obj.id]=obj
+          this.questionData[obj.id]={...obj, readonly: true}
         })
       }
       this.newData = {...this.questionData}
@@ -171,13 +200,14 @@ export default {
           'order':data.order,
           'section':data.section,
           'subtitle':data.subtitle,
-          'title':data.title
+          'title':data.title,
+          'main': data.main
         }
       }
     }
   },
   computed: {
-    ...mapGetters("surveys", ["getSurveysListData", "getUserSurveysBuilder", "getUserSurveyQuestion"]),
+    ...mapGetters("surveys", ["getAllQuestion","getSurveysListData", "getUserSurveysBuilder", "getUserSurveyQuestion"]),
   },
   created(){
     this.setSurveyData()
@@ -190,6 +220,9 @@ export default {
         surveyId: to.params.surveyId
       }),
       store.dispatch("surveys/FetchSurveyByStudy", {
+        studyId: to.params.studyId
+      }),
+      store.dispatch("surveys/FetchSurveyQuestions", {
         studyId: to.params.studyId
       })
     ])

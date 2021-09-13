@@ -44,7 +44,7 @@
           :name="`surveys[${survey.id}][identifier]`"
           type="text"
           placeholder="Identifier"
-          :readonly="readonly"
+          :readonly="survey.readonly"
         />
       </div>
       <div
@@ -194,6 +194,10 @@
         <br />
         <Weight />
       </div>
+      <div v-if="survey.type === 'summary'" class="form-group col-md-6" >
+        <br />
+        <Summary />
+      </div>
 
       <br />
       <br />
@@ -217,6 +221,7 @@
 
 <script>
 import AltSelect from "@/components/multiSelect/Select";
+import Summary from "@/components/surveys/SurveyBuilder/questionsTypes/Summary";
 import Form from "@/components/surveys/SurveyBuilder/questionsTypes/Form";
 import Checkbox from "@/components/surveys/SurveyBuilder/questionsTypes/CheckBox";
 import Radio from "@/components/surveys/SurveyBuilder/questionsTypes/Radio";
@@ -243,7 +248,7 @@ import Picker from "@/components/surveys/SurveyBuilder/questionsTypes/Picker.vue
 export default {
   props: {
     survey: Object,
-    readonly: Boolean
+   // readonly: Boolean
   },
   components: {
     AltSelect,
@@ -268,7 +273,8 @@ export default {
     TimeInterval,
     TimeOfDay,
     Weight,
-    ContinuosScale
+    ContinuosScale,
+    Summary
   },
 
   data: () => ({
@@ -293,7 +299,8 @@ export default {
       "weight",
       "socioeconomic",
       "continuosScale",
-      "picker"
+      "picker",
+      "summary"
     ],
     questionValues: [],
   }),

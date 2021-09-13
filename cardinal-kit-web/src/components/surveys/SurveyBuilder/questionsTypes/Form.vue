@@ -18,12 +18,12 @@
           <label>Select the type of question: </label>
           <br />
           <br />
+          {{question.type}}here
           <AltSelect
             :defaultValue="question.type"
             :options="formQuestionTypes"
             v-model="question.type"
-            :name="`
-               questions[${index}][type]`"
+            :name="`questions[${index}][type]`"
             type="text"
             class="form-control"
             placeholder="Type of question"
@@ -41,10 +41,8 @@
         >
           <label>Identifier: </label>
           <input
-            
             v-model="question.identifier"
-            :name="`
-               questions[${index}][id]`"
+            :name="`questions[${index}][id]`"
             type="text"
             class="TextInput"
             placeholder="id"
@@ -57,8 +55,7 @@
           <input            
             type="checkbox"
             v-model="question.required"
-            :name="`
-               questions[${index}][required]`"
+            :name="`questions[${index}][required]`"
             hidden
           />
         </div>      
@@ -172,6 +169,11 @@
           <br />
           <Weight />
         </div>
+
+        <div v-if="question.type === 'summary' " class="form-group col-md-6" >
+          <br />
+          <Summary />
+        </div>
         
         <br />
         <br />
@@ -206,6 +208,7 @@ import Radio from "@/components/surveys/SurveyBuilder/questionsTypes/Radio";
 import Scale from "@/components/surveys/SurveyBuilder/questionsTypes/Scale";
 import Instruction from "@/components/surveys/SurveyBuilder/questionsTypes/Instruction";
 import Text from "@/components/surveys/SurveyBuilder/questionsTypes/Text";
+import Summary from "@/components/surveys/SurveyBuilder/questionsTypes/Summary";
 import TextArea from "@/components/surveys/SurveyBuilder/questionsTypes/TextArea";
 import Signature from "@/components/surveys/SurveyBuilder/questionsTypes/Signature";
 import Boolean from "@/components/surveys/SurveyBuilder/questionsTypes/Boolean";
@@ -248,6 +251,7 @@ export default {
     TimeInterval,
     TimeOfDay,
     Weight,
+    Summary
   },
 
   data: () => ({
@@ -270,6 +274,7 @@ export default {
       "height",
       "weight",
       "socioeconomic",
+      "summary"
     ],
   }),
 
@@ -294,10 +299,7 @@ export default {
       this.Survey.question.splice(index, 1);
     },
 
-
     createFormQuestionOptions(type, index) {
-   //   const surveyIndex = this.Survey.findIndex((data) => data.id === id);
-
       switch (type) {
         case 'singleChoice':
           this.Survey.question[index].type = "singleChoice"

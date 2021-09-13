@@ -33,8 +33,6 @@ export default {
                 params: {...obj.params},
                 query:{userId: this.userId, studyId: this.studyId}
             }
-            console.log(data, "dta")
-
             this.$router.push(data)
         }
     },
