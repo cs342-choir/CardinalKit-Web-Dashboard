@@ -125,20 +125,6 @@ export default {
       hkCode: this.$route.params.hkCode
     };
   },
-/*   props: {
-    studyId: {
-      type: String,
-      required: true,
-    },
-    userId: {
-      type: String,
-      required: true,
-    },
-    hkCode: {
-      type: String,
-      required: true,
-    },
-  }, */
   computed: {
     ...mapGetters("patient", [
       "getSpecificHealthDataGrapFormat",

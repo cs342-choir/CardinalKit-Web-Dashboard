@@ -5,23 +5,20 @@
       :userId="$route.query.userId"
       :studyId="$route.query.studyId">
     </bread-crumb>
+
     <router-view></router-view>
-   <!--  <categories :userId="$route.query.userId" :studyId="$route.query.studyId" /> -->
-   </div>
+
+  </div>
 </template>
 
 <script>
 import breadCrumb from "@/components/breadcrumb.vue"
 import { mapGetters } from 'vuex';
-import categories from '@/components/patients/healthKit/categoryList'
-import category from "@/components/patients/healthKit/categoryCard";
 import store from "@/store";
 export default {
   name: "StudyDetail",
   components:{
-    categories,
     breadCrumb,
-    category
   },
   data(){
     return{

@@ -108,6 +108,15 @@ setup(props, ctx)  {
 	}
 
 	function getCalendarDaysOfWeek(calendarDays) {
+		/* console.log(calendarDays, "calendarDays")
+		const voidData = calendarDays[0].calendarDay;
+		if (voidData > 0){
+			return [...Array(voidData - 1).fill(0), ...calendarDays]
+		}
+		console.log(voidData, "here")
+		console.log([Array(voidData ).fill(0)], "voidData")
+
+		return [ ...calendarDays] */
 		const voidData = calendarDays[0].calendarDay;
 		return [...Array(voidData - 1).fill(0), ...calendarDays]
 	}
@@ -151,7 +160,7 @@ setup(props, ctx)  {
 	margin-top: 15px;
 	position: absolute;
 	top: 55px;
-  left: 0;
+ 	left: 0;
 	z-index: 2;
 
   &:before {
@@ -174,19 +183,18 @@ setup(props, ctx)  {
 
   &-group {
     &__label {
-      display: flex;
-			border: solid 1px#f7f7f7;
-      border-radius: 3px;
+      	display: flex;
+		border: solid 1px#f7f7f7;
+      	border-radius: 3px;
+		span {
+			background: #f7f7f7;
+			padding: .3rem;
+		}
 
-			span {
-				background: #f7f7f7;
-				padding: .3rem;
-			}
-
-			select {
-				padding: .3rem;
-				border: none;
-			}
+		select {
+			padding: .3rem;
+			border: none;
+		}
     }
   }
 }

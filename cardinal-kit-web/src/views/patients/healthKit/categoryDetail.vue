@@ -58,12 +58,6 @@ export default {
       categoryId: this.$route.params.categoryId
     };
   },
- /*  props: {
-    categoryId: {
-      type: String,
-      required: true,
-    },
-  }, */
   methods: {},
   computed: {
     ...mapGetters('patient',['getCategoryDataWebFormat'])
