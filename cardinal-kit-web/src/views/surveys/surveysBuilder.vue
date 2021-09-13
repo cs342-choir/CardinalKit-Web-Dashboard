@@ -9,16 +9,19 @@
         </div>
         <label>Title: </label>
         <input v-model="title" type="text" placeholder="Enter the title" />
-        <br>
+        <br />
         <label>Subtitle: </label>
         <input v-model="subtitle" type="text" placeholder="Enter the subtitle" />
-        <br>
+        <br />
+        <label class="my-4">Show on main screen: </label>
+        <input v-model="main" type="checkbox" />
+        <br />
         <label>Order: </label>
         <input v-model="orderSurvey" type="number"  min="1" pattern="^[0-9]+"/>
-        <br>
+        <br />
         <label>Section: </label>
         <input v-model="section" type="text" placeholder="Enter the section" />
-        <br>
+        <br />
         <label>Icon: </label>
         <input type="file" placeholder="Icon" accept="image/*" />
         <br>
@@ -58,6 +61,7 @@ export default {
   },
   data: () => ({
       image: null,
+      main: true,
       section: "",
       subtitle: "",
       title: "",
@@ -133,7 +137,8 @@ export default {
           'order':this.orderSurvey,
           'section':this.section,
           'subtitle':this.subtitle,
-          'title':this.title
+          'title':this.title,
+          'main': this.main
         }
         if(Object.keys(this.surveys).length){
           this.validSurvey(this.surveys, questionData)

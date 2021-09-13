@@ -11,7 +11,6 @@
         <td v-if="!survey.deleted">
           {{survey.data.title}}
         </td>
-        {{survey}}
          <td v-if="!survey.deleted">
           <button class="btn" @click="details(survey.data.title)">Details</button>
           <button class="btn" @click="edit(survey.name, index)">Edit</button>
