@@ -24,6 +24,7 @@ export function saveSurveysList(state, { idStudy, surveys }) {
 }
 
 export function saveSurveyDetail(state, { results, studyId, surveyId }) {
+  console.log("results",results)
   let dictResult = {};
   results.forEach((records) => {
     //each record
@@ -173,4 +174,17 @@ export function saveUserSurveys(state,{results,userId}) {
   }
   
   state.userSurveys = dictExternal
+}
+
+
+/// Scheduler
+
+export function saveSchedulesByStudy(state,{studyId,tasks}){
+  state.schedulesByStudy[studyId]={}
+  state.schedulesByStudy[studyId]=tasks
+}
+
+export function saveSchedulerByUser(state,{studyId,userId,tasks}){
+  state.schedulesByUser[studyId][userId] = {}
+  state.schedulesByUser[studyId][userId] = tasks
 }

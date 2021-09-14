@@ -129,3 +129,31 @@ export const DeleteSurveyQuestion = async({commit},data)=>{
   let studyId = data.studyId
   await request.DELETE(`/studies/${studyId}/surveys/${data.name}/questions/${data.id}/`).Execute()
 }
+
+
+
+// Survey Scheduler
+
+
+export const FetchSchedulerByStudy= async ({commit}, data)=>{
+  let study = data.studyId
+  let tasks = await request.GET(`/studies/${study}/carekit-store/v2/tasks/`).Execute()
+  let taskDictionary = {}
+  tasks.forEach((task)=>{
+    taskDictionary[task.id] = task.data()
+  })
+  commit("saveSchedulesByStudy",{studyId:study,tasks:taskDictionary})
+
+}
+
+export const FetchScheduleByUser = async()=>{
+
+}
+
+export const CreateStudySchedule = async({commit},data)=>{
+  console.log(data)
+}
+
+export const CreateUserSchedule = async()=>{
+  
+}

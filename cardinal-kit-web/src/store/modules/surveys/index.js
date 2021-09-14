@@ -11,6 +11,8 @@ export const initialState = () => ({
     SurveyUserQuestions:{},
     allQuestions:[],
     questionBySurveyId:{},
+    schedulesByStudy:{},
+    schedulesByUser:{}
 })
 
 export default {

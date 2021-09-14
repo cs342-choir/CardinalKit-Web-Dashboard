@@ -3,6 +3,7 @@
     <br />
     <div class="header">
       <h1 class="text-muted">Survey</h1>
+      <button @click="schedule">Scheduler</button>
       <button @click="create">Create new survey</button>
     </div>
     <alt-table :columns="columns" pagination >
@@ -81,6 +82,9 @@ export default {
     },
     details(survey) {
       this.$router.push(`/surveyDetail/${this.studyId}/${survey}`)
+    },
+    schedule() {
+      this.$router.push(`/surveyScheduler/${this.studyId}`)
     }
   },
   props: {

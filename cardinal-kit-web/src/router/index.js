@@ -9,6 +9,7 @@ import registerDoctor from "@/views/auth/registerDoctor"
 import surveysList from "@/views/surveys/surveysList"
 import surveyDetail from "@/views/surveys/surveysDetail"
 import surveyUser from "@/views/surveys/surveyUser"
+import surveyScheduler from '@/views/surveys/surveyScheduler'
 import store from "@/store";
 import surveysBuilder from "@/views/surveys/surveysBuilder"
 import editSurveyBuilder from "@/components/surveys/SurveyBuilder/editSurveyBuilder.vue"
@@ -113,6 +114,15 @@ const routes = [
         path: "/surveysBuilder/:studyId",
         name: "surveysBuilder",
         component: surveysBuilder,
+        props:true,
+        meta: {
+          requiresAuth: true,
+        }
+      },
+      {
+        path: "/surveyScheduler/:studyId",
+        name: "surveyScheduler",
+        component: surveyScheduler,
         props:true,
         meta: {
           requiresAuth: true,

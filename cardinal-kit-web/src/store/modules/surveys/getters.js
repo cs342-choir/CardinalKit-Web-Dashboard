@@ -42,3 +42,17 @@ export function getUserSurveyQuestion(state){
 export function getAllQuestion(state){
   return state.allQuestions
 }
+
+
+///Scheduler
+
+export function getScheduleTasksByStudy(state){
+  return (studyId)=>{
+    return state.schedulesByStudy[studyId]
+  }
+}
+export function getScheduleTasksByUser(state){
+  return (studyId,userId)=>{
+    return state.schedulesByUser[studyId][userId]
+  }
+}
