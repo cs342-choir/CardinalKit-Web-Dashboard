@@ -73,6 +73,9 @@
 export default {
   props: {
     Options: Object
+  },
+  created() {
+    console.log(this.Options, "here")
   }
 };
 </script>

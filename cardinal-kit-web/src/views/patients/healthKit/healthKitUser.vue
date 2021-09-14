@@ -45,14 +45,7 @@ export default {
     if (path){
       this.path = JSON.parse(path);
     }
-   /*  this.path.forEach(obj => {
-      obj.active = obj.name === this.$route.name;
-      if (obj.active && obj.params){  
-        obj.label = obj.params[obj.param]
-      }
-      return obj
-    });
-    this.path = [...this.path] */
+   
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([

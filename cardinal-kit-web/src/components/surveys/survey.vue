@@ -1,36 +1,41 @@
 <template>
-  <div>
-    {{ data.question }}
+  <div  class="mx-3">
+    <h6>{{ data.question }}</h6>
     <br />
     <!-- @TODO remove all conditionals and create a method that accepts all kinds of surveys.options and stylizes it in cardinal format-->
-    <div class="surveyOptionsTxt" v-if="data.questionType === 1">
-      <br />
-      <strong>Min: </strong>{{ data.Options["Min"] + "" }}
-      {{ data.Options["MinDescription"] }} <strong>Max: </strong>
-      {{ data.Options["Max"] }} {{ data.Options["MaxDescription"] }}
-      <strong>Step: </strong> {{ data.Options["Step"] }}
-      <br />
-    </div>
-    <div class="surveyOptionsTxt" v-else-if="data.questionType === 2">
-      <br />
-      <strong>0: </strong>{{ data.Options[0]["text"] + "" }} <strong>1: </strong
-      >{{ data.Options[1]["text"] + "" }} <strong>2: </strong
-      >{{ data.Options[2]["text"] + "" }}
-      <br />
-    </div>
-    <div class="surveyOptionsTxt" v-else-if="data.questionType === 7">
-      <br />
-      <strong>False: </strong>{{ data.Options["NoText"] + "" }}
-      <strong>True: </strong>{{ data.Options["YesText"] + "" }}
-      <br />
-    </div>
-    <div
-      class="surveyOptionsTxt"
-      v-else
-      v-for="(option, optionKey) in data.Options"
-      :key="optionKey"
-    >
-      {{ optionKey }}: {{ option }}
+    <div v-if="typeof data.Options != 'string'">
+      <div class="surveyOptionsTxt" v-if="data.questionType === 1">
+        <span ><b>Min:</b> {{ data.Options["Min"] + "" }}{{ data.Options["MinDescription"] }}</span>
+        <br />
+        <span><b>Max:</b> {{data.Options["Max"]  + "" }}{{ data.Options["MaxDescription"] }}</span>
+        <br />
+        <span><b>Step:</b>   {{ data.Options["Step"] }}</span>
+        <br />
+      </div>
+      <div class="surveyOptionsTxt" v-else-if="data.questionType === 2">
+        <br />
+        <span><b>0: </b>{{ data.Options[0]["text"] + "" }}</span>
+        <br />
+        <span><b>1: </b>{{ data.Options[1]["text"] + "" }}</span>
+        <br />
+        <span><b>2: </b>{{ data.Options[2]["text"] + "" }}</span>
+        <br />
+      </div>
+      <div class="surveyOptionsTxt" v-else-if="data.questionType === 7">
+        <br />
+        <span><b>False: </b> {{ data.Options["NoText"] + "" }}</span>
+        <br />
+        <span><b>True: </b> {{ data.Options["YesText"] + "" }}</span>
+        <br />
+      </div>
+      <div
+        class="surveyOptionsTxt"
+        v-else
+        v-for="(option, optionKey) in data.Options"
+        :key="optionKey"
+      >
+        {{ optionKey }}: {{ option }}
+      </div>
     </div>
     <!-- @TODO remove all conditionals and  create a method that accepts all kinds of surveys.options and stylizes it in cardinal format-->
 

@@ -1,12 +1,13 @@
 <template>
   <div class="page">
+    <div class="alert-err" v-if="errMsg">
+      {{msg}}
+    </div>
     <div>
       <br />
-      Select a question
+      <h2> Select a Question</h2>
       <br />
-      <br />
-      {{ questionSelected }}
-      <alt-select :options="questions" v-model="questionSelected" />
+      <alt-select :options="questions" v-model="questionSelected" :defaultValue="questionSelected" />
       <br />
       <div
         class="surveyQuestionTxt"
@@ -39,11 +40,14 @@ export default {
         { header: "Answer" },
         { header: "Date" },
       ],
-      questionSelected: null,
+      questionSelected: "",
+      questionData: {},
+      errMsg: false
     };
   },
   computed: {
     ...mapGetters("surveys", ["getSurveyDetail"]),
+   
     questions() {
       let qs = [];
       this.getSurveyDetail(this.studyId)[this.surveyId].map((element) => {
@@ -80,6 +84,7 @@ export default {
     //   return localDate || '';
     // },
     convert() {
+      this.errMsg = false
       let surveyData = JSON.parse(
         JSON.stringify(this.getSurveyDetail(this.studyId)[this.surveyId])
       );
@@ -88,8 +93,13 @@ export default {
       );
       let stringData = JSON.stringify(surveyTransformed);
       const jsonData = JSON.parse(stringData);
-      let csvData = this.objectToCsv(jsonData);
-      this.download(csvData);
+      if(jsonData.length){
+        let csvData = this.objectToCsv(jsonData);
+        this.download(csvData);
+      }else{
+        this.errMsg = true
+        this.msg = "No data to download"
+      }
     },
     optionsInOneLine(data) {
       let result = [];
@@ -148,8 +158,10 @@ export default {
       docu.click();
     },
   },
-  mounted() {
-    this.questionSelected = this.questions ? this.questions[0].id : null;
+  created() {
+    if (this.questions.length){
+      this.questionSelected = this.questions ? this.questions[0].id : null;
+    }
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([

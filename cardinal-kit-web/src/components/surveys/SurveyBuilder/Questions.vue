@@ -248,7 +248,6 @@ import Picker from "@/components/surveys/SurveyBuilder/questionsTypes/Picker.vue
 export default {
   props: {
     survey: Object,
-   // readonly: Boolean
   },
   components: {
     AltSelect,
