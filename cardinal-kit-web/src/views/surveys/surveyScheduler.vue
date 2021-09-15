@@ -1,6 +1,7 @@
 <template>
   <div class="page">
     <h1>My Calendar</h1>
+    <br />
     <calendar-view
       :items="calendarMonthItems"
       :show-date="showDate"
@@ -14,7 +15,8 @@
         />
       </template>
     </calendar-view>
-
+    <br />
+    <br />
     <alt-table :columns="columns" pagination>
       <template #t-row>
         <tr v-for="survey in tableItems" :key="survey.name">
@@ -44,7 +46,7 @@
         </tr>
       </template>
     </alt-table>
-    <button class="btn" @click="newSchedule()">
+    <button class="my-4" @click="newSchedule()">
       Add survey to calendar
     </button>
 
@@ -290,5 +292,15 @@ export default {
 }
 .theme-default .cv-header .periodLabel {
   text-transform: capitalize;
+}
+
+.theme-default .cv-day.past {
+  background-color: #fafafa;
+  width: 180px;
+  height: 200px;
+}
+
+.cv-weeks {
+  height: 550px;
 }
 </style>
