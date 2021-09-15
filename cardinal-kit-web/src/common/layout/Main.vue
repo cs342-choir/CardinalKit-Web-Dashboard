@@ -45,11 +45,9 @@ export default {
       if (this.getUserRol == "superAdmin") {
         main.push({ name: "Register doctors", route: "/register" });
       }
-      if (
-        this.$route.params.studyId &&
-        (this.getUserRol == "superAdmin" || this.getUserRol == "doctor")
-      ) {
-        if (this.$route.name != "Studies") {
+      if (this.getUserRol == "superAdmin" || this.getUserRol == "doctor")
+       {
+        if (this.$route.params.studyId){
           main[0].children = [
             {
               name: "Patients",
@@ -58,6 +56,18 @@ export default {
             {
               name: "Surveys",
               route: `/surveysList/${this.$route.params.studyId}`
+            }
+          ];
+        }
+        if (this.$route.query.studyId){
+            main[0].children = [
+            {
+              name: "Patients",
+              route: `/patients/${this.$route.query.studyId}`,
+            },
+            {
+              name: "Surveys",
+              route: `/surveysList/${this.$route.query.studyId}`
             }
           ];
         }

@@ -38,7 +38,7 @@
 
           <td>
             <!-- <button class="btn" @click="details(survey.data.title)">Details</button> -->
-            <button class="btn" @click="schedule(survey.name)">
+            <button @click="schedule(survey.name)">
               Change Dates
             </button>
             <!-- <button class="btn" @click="edit(survey.name, index)">Edit</button> -->
