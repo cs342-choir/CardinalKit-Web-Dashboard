@@ -196,9 +196,6 @@ export default {
             let title = value.title;
             if (schedule.text) {
               title = schedule.text
-              // if (schedule.targetValues.length > 0) {
-              //   title = schedule.targetValues[0].groupIdentifier;
-              // }
             }
             if (schedule.startTime) {
               let startTime = schedule.startTime.toDate();
@@ -206,8 +203,9 @@ export default {
               startTimeDay.setHours(0);
               let endTime = new Date(this.displayLastDate.getTime());
               if (schedule.endTime) {
-                console.log("endtime",endTime)
-                endTime = schedule.endTime.toDate();
+                if (schedule.endTime.toDate()<this.displayLastDate){
+                  endTime = schedule.endTime.toDate();
+                }
               }
               if (this.isTaskInMonth(startTime, endTime)) {
                 let intervalDays = schedule.interval.day;
@@ -228,7 +226,7 @@ export default {
                     startDate: new Date(_date.getTime()),
                     title: title,
                   });
-                  _date.setDate(_date.getDate() + intervalDays);
+                  _date.setDate(_date.getDate() + parseInt(intervalDays));
                 }
               }
             }
