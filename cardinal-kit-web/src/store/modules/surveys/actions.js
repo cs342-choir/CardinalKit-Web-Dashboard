@@ -188,7 +188,19 @@ export const FetchSchedulerByStudy = async ({ commit }, data) => {
   commit("saveSchedulesByStudy", { studyId: study, tasks: taskDictionary });
 };
 
-export const FetchScheduleByUser = async () => {};
+export const FetchScheduleByUser = async ({commit},data) => {
+  let study = data.studyId
+  let userId = data.userId
+  console.log("userId",userId)
+  let tasks = await request
+    .GET(`/studies/${study}/users/${userId}/carekit-store/v2/tasks/`)
+    .Execute();
+  let taskDictionary = {}
+  tasks.forEach((task)=>{
+    taskDictionary[task.id]=task.data()
+  })
+  commit("saveSchedulerByUser", { studyId: study, tasks: taskDictionary, userId: userId });
+};
 
 export const CreateStudySchedule = async ({ commit }, data) => {
   // get if exist task with id surveys
@@ -238,4 +250,52 @@ export const CreateStudySchedule = async ({ commit }, data) => {
   }
 };
 
-export const CreateUserSchedule = async () => {};
+export const CreateUserSchedule = async ({ commit }, data) => {
+  
+ // get if exist task with id surveys
+ let surveysTaskId = null;
+ let scheduleElements = [];
+ let studyId = data.studyId;
+ let userId = data.userId
+ let tasks = await request
+   .GET(`/studies/${studyId}/users/${userId}/carekit-store/v2/tasks/`)
+   .Execute();
+ tasks.forEach((task) => {
+   if (task.data().id && task.data().id == "surveys") {
+     surveysTaskId = task.id;
+     if (task.data().scheduleElements) {
+       scheduleElements = task.data().scheduleElements;
+       console.log("schedule", scheduleElements);
+     }
+   }
+ });
+
+ scheduleElements.push(data.payload);
+ if (surveysTaskId == null) {
+   console.log("post without id");
+   await request
+     .POST(`/studies/${studyId}/users/${userId}/carekit-store/v2/tasks/`, {
+       data: { 
+         scheduleElements: scheduleElements,
+         id: "surveys",
+         impactsAdherence: true,
+         instructions: "Complete Daily Surveys",
+         title: "Surveys",
+         updateTime: new Date()
+       },
+       emptyDoc: true,
+     })
+     .Execute();
+ } else {
+   console.log("put with id");
+   console.log(data.payload);
+   await request
+     .PUT(`/studies/${studyId}/users/${userId}/carekit-store/v2/tasks/${surveysTaskId}/`, {
+       data: { 
+         scheduleElements: scheduleElements ,
+         updateTime: new Date()
+       },
+     })
+     .Execute();
+ }
+};

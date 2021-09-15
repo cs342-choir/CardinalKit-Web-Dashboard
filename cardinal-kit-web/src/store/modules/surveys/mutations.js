@@ -185,6 +185,8 @@ export function saveSchedulesByStudy(state,{studyId,tasks}){
 }
 
 export function saveSchedulerByUser(state,{studyId,userId,tasks}){
-  state.schedulesByUser[studyId][userId] = {}
+  console.log("tasks",tasks)
+  state.schedulesByUser[studyId] = {}
   state.schedulesByUser[studyId][userId] = tasks
+  console.log("tasks",state.schedulesByUser)
 }

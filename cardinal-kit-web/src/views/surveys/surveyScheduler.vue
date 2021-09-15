@@ -127,7 +127,7 @@ export default {
     altSelect,
   },
   methods: {
-    ...mapActions("surveys",["CreateStudySchedule"]),
+    ...mapActions("surveys",["CreateStudySchedule","CreateUserSchedule"]),
     periodChanged(range, eventSource) {
       this.displayLastDate = range.displayLastDate;
       this.displayFirstDate = range.displayFirstDate;
@@ -163,7 +163,7 @@ export default {
 
 
       if(!this.errMsg){
-        this.CreateStudySchedule({
+        let data = {
           studyId:this.studyId,
           payload:{
             duration: {allDay: true},
@@ -173,7 +173,16 @@ export default {
             targetValues: [{groupIdentifier:this.SurveySelected}],
             text: this.description
           }
-        })
+        }
+
+        if(this.$route.query.userId){
+          data["userId"]=this.$route.query.userId
+          this.CreateUserSchedule(data)
+        }
+        else{
+          this.CreateStudySchedule(data)
+        }
+        
 
         this.showSurveyForm= false
         this.errMsg=false
@@ -186,9 +195,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("surveys", ["getScheduleTasksByStudy","getSurveysListData"]),
+    ...mapGetters("surveys", ["getScheduleTasksByStudy","getSurveysListData","getScheduleTasksByUser"]),
     calendarMonthItems() {
-      let tasks = this.getScheduleTasksByStudy(this.studyId);
+      let tasks = this.$route.query.userId ?
+                  this.getScheduleTasksByUser(this.studyId,this.$route.query.userId)
+                  : this.getScheduleTasksByStudy(this.studyId);
       let items = [];
       for (const [key, value] of Object.entries(tasks)) {
         if (value) {
@@ -236,11 +247,12 @@ export default {
       return items;
     },
     tableItems() {
-      let tasks = this.getScheduleTasksByStudy(this.studyId);
+      let tasks = this.$route.query.userId ?
+                  this.getScheduleTasksByUser(this.studyId,this.$route.query.userId)
+                  : this.getScheduleTasksByStudy(this.studyId);
       let items = [];
       for (const [_, value] of Object.entries(tasks)) {
         if (value) {
-          console.log(value);
           value.scheduleElements.forEach((schedule) => {
             let title = value.title;
             let identifier = value.id;
@@ -289,7 +301,21 @@ export default {
     },
   },
   beforeRouteEnter(to, from, next) {
-    Promise.all([
+    if(to.query.userId){
+      Promise.all([
+      store.dispatch("surveys/FetchScheduleByUser", {
+        studyId: to.params.studyId,
+        userId: to.query.userId
+      }),
+      store.dispatch("surveys/FetchSurveyByStudy", {
+        studyId: to.params.studyId,
+      }),
+    ]).then(() => {
+      next();
+    });
+    }
+    else{
+      Promise.all([
       store.dispatch("surveys/FetchSchedulerByStudy", {
         studyId: to.params.studyId,
       }),
@@ -299,6 +325,9 @@ export default {
     ]).then(() => {
       next();
     });
+    }
+
+    
   },
 };
 </script>

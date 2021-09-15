@@ -1,5 +1,6 @@
 <template>
   <div class="page">
+    <button @click="schedule">Scheduler</button>
     Select survey type
     <alt-select
       :options="surveyTypes"
@@ -44,6 +45,9 @@ export default {
           : null
       );
     },
+    schedule() {
+      this.$router.push(`/surveyScheduler/${this.studyId}?userId=${this.$route.query.userId}`)
+    }
   },
   computed: {
     ...mapGetters("surveys", ["getSurveysListData", "getUserSurveys"]),
