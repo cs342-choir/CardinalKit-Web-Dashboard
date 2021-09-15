@@ -49,7 +49,7 @@
     </button>
 
     <div class="input-form" v-show="showSurveyForm">
-      <div :class="cl" v-if="errMsg">
+      <div class="" v-if="errMsg">
         {{ msg }}
       </div>
       <label>Start Date: </label>
@@ -110,6 +110,7 @@ export default {
       displayFirstDate: new Date(),
       showSurveyForm: false,
       errMsg: false,
+      msg: "",
       startDate: null,
       endDate: null,
       intervalDays:1 ,
@@ -141,21 +142,45 @@ export default {
       this.showSurveyForm = true;
     },
     saveNewSchedule(){
-      this.CreateStudySchedule({
-        startDate: this.startDate,
-        endDate: this.endDate,
-        interval: this.interval,
-        surveyIdentifier: this.SurveySelected,
-        description: this.description
-      })
+      this.errMsg = false
+      this.msg=""
+      if(!this.startDate){
+        this.errMsg = true
+        this.msg = "StartDate"
+      }
 
-      this.showSurveyForm= false
-      this.errMsg=false
-      this.startDate= null
-      this.endDate= null
-      this.intervalDays=1 
-      this.SurveySelected= null
-      this.description = ""
+      if(!this.SurveySelected){
+        this.errMsg = true
+        this.msg = "Survey"
+      }
+
+      if(!this.description){
+        this.errMsg = true
+        this.msg = "Description"
+      }
+
+
+      if(!this.errMsg){
+        this.CreateStudySchedule({
+          studyId:this.studyId,
+          payload:{
+            duration: {allDay: true},
+            startTime: new Date(this.startDate),
+            endTime: this.endDate ? new Date(this.endDate):null,
+            interval:{ day:this.intervalDays},
+            targetValues: [{groupIdentifier:this.SurveySelected}],
+            text: this.description
+          }
+        })
+
+        this.showSurveyForm= false
+        this.errMsg=false
+        this.startDate= null
+        this.endDate= null
+        this.intervalDays=1 
+        this.SurveySelected= null
+        this.description = ""
+      }
     }
   },
   computed: {
@@ -167,10 +192,11 @@ export default {
         if (value) {
           value.scheduleElements.forEach((schedule) => {
             let title = value.title;
-            if (schedule.targetValues) {
-              if (schedule.targetValues.length > 0) {
-                title = schedule.targetValues[0].groupIdentifier;
-              }
+            if (schedule.text) {
+              title = schedule.text
+              // if (schedule.targetValues.length > 0) {
+              //   title = schedule.targetValues[0].groupIdentifier;
+              // }
             }
             if (schedule.startTime) {
               let startTime = schedule.startTime.toDate();
@@ -178,6 +204,7 @@ export default {
               startTimeDay.setHours(0);
               let endTime = new Date(this.displayLastDate.getTime());
               if (schedule.endTime) {
+                console.log("endtime",endTime)
                 endTime = schedule.endTime.toDate();
               }
               if (this.isTaskInMonth(startTime, endTime)) {
@@ -217,9 +244,12 @@ export default {
           value.scheduleElements.forEach((schedule) => {
             let title = value.title;
             let identifier = value.id;
-            if (schedule.targetValues) {
-              if (schedule.targetValues.length > 0) {
-                title = schedule.targetValues[0].groupIdentifier;
+            if (schedule.text) {
+                title = schedule.text;
+            }
+            if(schedule.targetValues){
+              if(schedule.targetValues.length>0){
+                identifier = schedule.targetValues[0].groupIdentifier
               }
             }
 

@@ -27,7 +27,7 @@ export class Ref {
             case "SET":
                 return await this.object.set(this.payload)
             case "UPDATE":
-                return await this.object.update(this.payload,{merge:true})
+                return await this.object.set(this.payload,{merge:true})
             case "DELETE":
                 return await this.object.delete()
             default:
