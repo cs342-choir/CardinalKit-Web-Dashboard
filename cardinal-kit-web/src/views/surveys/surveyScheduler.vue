@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="page">
     <h1>My Calendar</h1>
     <calendar-view
       :items="calendarMonthItems"
@@ -273,12 +273,22 @@ export default {
 };
 </script>
 <style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  color: #2c3e50;
-  height: 67vh;
-  width: 90vw;
-  margin-left: auto;
-  margin-right: auto;
+
+.cv-header {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  flex-direction: column-reverse;
+  min-height: 2.5em;
+  border-width: 1px 1px 0 1px;
+}
+.cv-header-nav {
+  display: flex;
+}
+.theme-default .cv-header button {
+  color: #ffffff;
+}
+.theme-default .cv-header .periodLabel {
+  text-transform: capitalize;
 }
 </style>
