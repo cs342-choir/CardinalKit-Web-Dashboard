@@ -36,7 +36,7 @@
         </div>
 
         <div class="form-group">
-          <button @click="printJson" type="button" class="btn btn-primary">
+          <button @click="saveSurveybuild" type="button" class="btn btn-primary">
             Save
           </button>
         </div>
@@ -128,7 +128,7 @@ export default {
         this.msg="Identifier should be unique"
       }
     },
-    printJson() {
+    saveSurveybuild() {
       this.errMsg = false
       this.msg=""
       if(this.section && this.subtitle && this.title){
