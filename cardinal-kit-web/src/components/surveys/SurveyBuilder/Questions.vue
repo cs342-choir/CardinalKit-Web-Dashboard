@@ -249,18 +249,6 @@ import CheckBoxVue from './questionsTypes/CheckBox.vue';
 
 export default {
   props: ["survey", "disabledSelect"],
- /*  props: {
-    survey: {
-      type: Object,
-      required: true,
-      default: () => {}
-    },
-    disabledSelect: {
-      type: Boolean,
-      required: false,
-      default: () => false
-    }
-  }, */
   components: {
     AltSelect,
     Picker,
@@ -371,11 +359,12 @@ export default {
               { text: "", value: "1" },
             ];
           }
-            break;
+          break;
         default:
           if (!this.survey.options || !this.survey.options.length){
             this.survey["options"] = [{}];
           }
+          break;
       }
     },
     deleteQuestion(index) {

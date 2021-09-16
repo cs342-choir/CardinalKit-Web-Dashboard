@@ -78,7 +78,7 @@
         </div>
 
         <div v-if="question.type === 'scale'" class="form-group col-md-6">
-            <Scale :Options="question" />
+          <Scale :Options="question" />
         </div>
 
         <div v-if="question.type === 'boolean'" class="form-group col-md-6">
@@ -331,6 +331,10 @@ export default {
           break;
         default:
           this.Survey.question[index].options = [{}];
+          if (!this.Survey.question[index].options || !this.Survey.question[index].options.length){
+            this.Survey.question[index].options  = [{}];
+          }
+          break;
       }
     },
 

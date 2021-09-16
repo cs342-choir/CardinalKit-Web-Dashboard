@@ -12,7 +12,6 @@
     />
   </div>
 </template>
-
 <script>
 import Multiselect from "@vueform/multiselect";
 export default {
@@ -69,4 +68,9 @@ export default {
 };
 </script>
 
+<style>
+  .is-disabled .multiselect-input {
+    background: transparent !important;
+  }
+</style>
 <style src="@vueform/multiselect/themes/default.css"></style>

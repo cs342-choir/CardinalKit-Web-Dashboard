@@ -50,7 +50,15 @@
 						</li>
 					</ul>
 					<div class="alt-calendar-body__days">
-						<span @click="selectedDay(day.day)" :class="{ active: today === day.day}" class="calendar-day" v-for="(day, index) in daysPerWeek" :key='index' :value="day.day">{{day.day}}</span>
+						<span 
+							@click="selectedDay(day.day)" 
+							:class="{ active: today === day.day}" 
+							class="calendar-day" 
+							v-for="(day, index) in daysPerWeek" :key='index' 
+							:value="day.day"
+						>
+							{{day.day}}
+						</span>
 					</div>
 				</div>
 			</div>
@@ -91,9 +99,9 @@ setup(props, ctx)  {
 	});
 
 	function getDayperMonthsandYear(year, month) {
-			const countDays = new Date(year, Number(month) + 1, 0).getDate();
-			const days = [...Array(countDays).keys()].map((day) => getDayofWeek(year, month, day + 1));
-			return days;
+		const countDays = new Date(year, Number(month) + 1, 0).getDate();
+		const days = [...Array(countDays).keys()].map((day) => getDayofWeek(year, month, day + 1));
+		return days;
 	}
 
 	function getDayofWeek(year, month, day) {
@@ -108,17 +116,14 @@ setup(props, ctx)  {
 	}
 
 	function getCalendarDaysOfWeek(calendarDays) {
-		/* console.log(calendarDays, "calendarDays")
+		let calendar = []
 		const voidData = calendarDays[0].calendarDay;
 		if (voidData > 0){
-			return [...Array(voidData - 1).fill(0), ...calendarDays]
+			calendar = [...Array(voidData - 1).fill(0), ...calendarDays]
+		}else{
+			calendar = [0, ...calendarDays]
 		}
-		console.log(voidData, "here")
-		console.log([Array(voidData ).fill(0)], "voidData")
-
-		return [ ...calendarDays] */
-		const voidData = calendarDays[0].calendarDay;
-		return [...Array(voidData - 1).fill(0), ...calendarDays]
+		return calendar
 	}
 
 	function selectedDay(day) {
