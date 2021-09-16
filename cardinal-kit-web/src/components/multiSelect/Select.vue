@@ -54,7 +54,8 @@ export default {
     defaultValue:{
       type: String,
       require: false
-    }
+    },
+  
   },
   created(){
     if (this.defaultValue){

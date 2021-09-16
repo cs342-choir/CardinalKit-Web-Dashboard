@@ -244,10 +244,12 @@ import TimeOfDay from "@/components/surveys/SurveyBuilder/questionsTypes/TimeOfD
 import Weight from "@/components/surveys/SurveyBuilder/questionsTypes/Weight";
 import ContinuosScale from "@/components/surveys/SurveyBuilder/questionsTypes/ContinuosScale.vue"
 import Picker from "@/components/surveys/SurveyBuilder/questionsTypes/Picker.vue"
+import CheckBoxVue from './questionsTypes/CheckBox.vue';
 
 export default {
   props: {
     survey: Object,
+   
   },
   components: {
     AltSelect,
@@ -325,33 +327,33 @@ export default {
           }
           break;
         case "boolean":
-          this.survey['yes'] = "" 
-          this.survey['no'] = "" 
+          !this.survey['yes'] ? this.survey['yes'] = "" : this.survey
+          !this.survey['no'] ? this.survey['no'] = "" : this.survey
           break;
         case "scale":
-          this.survey["min"] = ""
-          this.survey["minValueDescription"] = ""
-          this.survey["max"] = ""
-          this.survey["maxValueDescription"] = ""
-          this.survey["step"] = ""
-          this.survey["default"] = ""
-          this.survey["vertical"] = false
+          !this.survey["min"] ? this.survey["min"] = "" : this.survey
+          !this.survey["minValueDescription"] ? this.survey["minValueDescription"] = "" : this.survey
+          !this.survey["max"] ? this.survey["max"] = "" : this.survey
+          !this.survey["maxValueDescription"] ? this.survey["maxValueDescription"] = "" : this.survey
+          !this.survey["step"] ? this.survey["step"] = "" : this.survey
+          !this.survey["default"] ? this.survey["default"] = "" : this.survey
+          !this.survey["vertical"] ? this.survey["vertical"] = false  : this.survey
           break;
         case "numeric":
-            this.survey["max"]=""
-            this.survey["min"]=""
-            this.survey["maxFractionDigits"]=""
-            this.survey["unit"]=""
-            break;
+          !this.survey["max"] ? this.survey["max"] = "" : this.survey
+          !this.survey["min"] ? this.survey["max"] = ""  : this.survey
+          !this.survey["maxFractionDigits"] ? this.survey["max"] = "" : this.survey
+          !this.survey["unit"] ? this.survey["max"] = "" : this.survey
+          break;
         case "continuosScale":
-            this.survey["min"] = ""
-            this.survey["minValueDescription"] = ""
-            this.survey["max"] = ""
-            this.survey["maxValueDescription"] = ""
-            this.survey["default"] = ""
-            this.survey["maxFractionDigits"]=""
-            this.survey["vertical"] = false
-            break;
+          !this.survey["min"] ? this.survey["min"] = "" : this.survey
+          !this.survey["minValueDescription"] ? this.survey["minValueDescription"] = "" : this.survey
+          !this.survey["max"] ? this.survey["max"] = "" : this.survey
+          !this.survey["maxValueDescription"] ? this.survey["maxValueDescription"] = "" : this.survey
+          !this.survey["default"] ? this.survey["default"] = "" : this.survey
+          !this.survey["maxFractionDigits"] ? this.survey["maxFractionDigits"]="" : this.survey
+          !this.survey["vertical"] ? this.survey["vertical"] = false : this.survey
+          break;
         case "picker":
           if (!this.survey.options.length){
             this.survey.options = [

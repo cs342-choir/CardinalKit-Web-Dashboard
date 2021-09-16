@@ -318,7 +318,6 @@ export default {
         case "boolean":
           this.Survey.question[index].yes = "" 
           this.Survey.question[index].no = "" 
-          //this.Survey.question[index].options = [{ yes: "", no: "" }];
           break;
         case "scale":
          this.Survey.question[index].min = ""

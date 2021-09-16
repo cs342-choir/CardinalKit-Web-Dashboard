@@ -13,8 +13,8 @@
           {{survey.data.title}}
         </td>
          <td v-if="!survey.deleted">
-          <button class="btn" @click="details(survey.data.title)">Details</button>
-          <button class="btn" @click="edit(survey.name, index)">Edit</button>
+          <a class="button mr-1" @click="details(survey.data.title)">Details</a>
+          <a class="button mr-1" @click="edit(survey.name, index)">Edit</a>
           <modal
             :label="'Remove'"
             :name="survey.name"
