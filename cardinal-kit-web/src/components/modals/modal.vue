@@ -1,7 +1,7 @@
 <template>
-    <div class="inline" :id="name">
-        <a class="modal-show" href="#modal">{{label}}</a>
-        <div class="modal " id="modal">
+    <div class="inline my-4" :id="name">
+        <a class="modal-show button " href="#modal">{{label}}</a>
+        <div class="modal" id="modal">
             <div class="modal-content">
                 <a class="modal-hide" href="#">✕</a>
                 <h2 class="m-4">{{title}}</h2>
@@ -21,12 +21,12 @@ export default {
     props: ["label", "title", "content", "name"],
     methods: {
         accept(){
-            this.$emit("remove", this.name);
+            this.$emit("accept", this.name);
         }
     }
 }
 </script>
-<style scoped  lang="scss">
+<style  lang="scss">
 .inline {
     display: inline-flex;
 }
@@ -47,6 +47,7 @@ export default {
 .modal-content {
   position: relative;
   width: 30%;
+  padding: 10px;
   background-color: white;
   text-align: center;
 }
@@ -82,7 +83,6 @@ export default {
 .button {
     display: inline-block;
     background-color: #ff96c8;
-    width: 5rem;
     border: none;
     text-align: center;
     border-radius: 0.25rem;
@@ -95,7 +95,6 @@ export default {
     transition: color .3s ease;
 
     &:hover {
-        width: 5rem;
         cursor: pointer;
         background-color: #ff96c8;
         transform: scale(1.1) rotateX(0);

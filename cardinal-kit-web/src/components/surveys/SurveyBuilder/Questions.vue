@@ -517,6 +517,7 @@ button {
   font-size: 125%;
   color: white;
   border: none;
+  margin: auto;
   border-radius: .25rem;
   background-color: rgb(239,126,173);
   outline: none;

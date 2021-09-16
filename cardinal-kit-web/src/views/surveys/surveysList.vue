@@ -20,7 +20,7 @@
             :name="survey.name"
             title="Are you sure?"
             content="Do you want to delete the survey?"
-            @remove="remove"
+            @accept="remove"
           />
         </td>
       </tr>

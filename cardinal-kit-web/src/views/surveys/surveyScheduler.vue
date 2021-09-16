@@ -35,49 +35,51 @@
           <td>
             {{ survey.interval }}
           </td>
-
           <td>
-            <!-- <button class="btn" @click="details(survey.data.title)">Details</button> -->
             <button @click="schedule(survey.name)">
               Change Dates
             </button>
-            <!-- <button class="btn" @click="edit(survey.name, index)">Edit</button> -->
           </td>
         </tr>
       </template>
     </alt-table>
-    <button class="my-4" @click="newSchedule()">
-      Add survey to calendar
-    </button>
-
-    <div class="input-form" v-show="showSurveyForm">
-      <div class="" v-if="errMsg">
-        {{ msg }}
-      </div>
-      <label>Start Date: </label>
-      <input v-model="startDate" type="datetime-local" />
-      <br />
-      <label>End Date: </label>
-      <input v-model="endDate" type="datetime-local"  />
-      <br />
-      <label>Interval days: </label>
-      <input v-model="intervalDays" type="number" min="1" pattern="^[0-9]+" />
-      <br />
-      <label>Survey: </label>
-      <alt-select :options="surveys" v-model="SurveySelected" />
-      <br />
-      <label>Description: </label>
-      <input
-        v-model="description"
-        type="text"
-        placeholder="Enter the description"
-      />
-      <br />
-
-      <div class="form-group">
-        <button @click="saveNewSchedule" type="button" class="btn btn-primary">
-          Save
-        </button>
+    <div class="inline my-4" id="calendar">
+      <a class="modal-show button" href="#modal" @click="resetForm">Add survey to calendar</a>
+      <div class="modal" id="modal">
+        <div class="modal-content">
+          <a class="modal-hide" href="#">✕</a>
+          <h2 class="m-4 text-center">Calendar survey</h2>
+            <div class="input-form" >
+              <div :class="cl" v-if="errMsg">
+                {{ msg }}
+              </div>
+              <label>Start Date: </label>
+              <input v-model="startDate" type="datetime-local" />
+              <br />
+              <label>End Date: </label>
+              <input v-model="endDate" type="datetime-local"  />
+              <br />
+              <label>Interval days: </label>
+              <input v-model="intervalDays" type="number" min="1" pattern="^[0-9]+" />
+              <br />
+              <label>Survey: </label>
+              <alt-select :options="surveys" v-model="SurveySelected" />
+              <br />
+              <label>Description: </label>
+              <input
+                v-model="description"
+                type="text"
+                placeholder="Enter the description"
+              />
+              <br />
+              <div class="form-group text-center inline">
+                <a @click="saveNewSchedule" class="m-1 button" >
+                  Save
+                </a>
+                <a href="#" class="m-1 button">Cancel</a>
+              </div>
+            </div>
+        </div>
       </div>
     </div>
   </div>
@@ -90,6 +92,7 @@ import "vue-simple-calendar/static/css/default.css";
 import "vue-simple-calendar/static/css/holidays-us.css";
 import altTable from "@/components/tables/altTable";
 import altSelect from "@/components/multiSelect/Select";
+import modal from "@/components/modals/modal.vue";
 
 import store from "@/store";
 import { mapActions, mapGetters } from "vuex";
@@ -110,14 +113,14 @@ export default {
       studyId: this.$route.params.studyId,
       displayLastDate: new Date(),
       displayFirstDate: new Date(),
-      showSurveyForm: false,
       errMsg: false,
       msg: "",
       startDate: null,
       endDate: null,
       intervalDays:1 ,
       SurveySelected: null,
-      description: ""
+      description: "",
+      cl: ""
     };
   },
   components: {
@@ -125,6 +128,7 @@ export default {
     CalendarViewHeader,
     altTable,
     altSelect,
+    modal
   },
   methods: {
     ...mapActions("surveys",["CreateStudySchedule","CreateUserSchedule"]),
@@ -140,27 +144,33 @@ export default {
         startDate < this.displayLastDate && endDate > this.displayFirstDate
       );
     },
-    newSchedule() {
-      this.showSurveyForm = true;
+    resetForm(){
+      this.cl = ""
+      this.msg = ""
+      this.errMsg=false
+      this.startDate= null
+      this.endDate= null
+      this.intervalDays=1 
+      this.SurveySelected= null
+      this.description = ""
     },
     saveNewSchedule(){
-      this.errMsg = false
-      this.msg=""
+      this.cl = ""
+      this.msg = ""
+      this.errMsg=false
       if(!this.startDate){
         this.errMsg = true
-        this.msg = "StartDate"
-      }
-
-      if(!this.SurveySelected){
+        this.msg = "Start date is missing"
+        this.cl = "alert-err"
+      }else if(!this.SurveySelected){
         this.errMsg = true
-        this.msg = "Survey"
-      }
-
-      if(!this.description){
+        this.msg = "Survey is missing"
+        this.cl = "alert-err"
+      }else if(!this.description){
         this.errMsg = true
-        this.msg = "Description"
+        this.cl = "alert-err"
+        this.msg = "Description is missing"
       }
-
 
       if(!this.errMsg){
         let data = {
@@ -178,14 +188,17 @@ export default {
         if(this.$route.query.userId){
           data["userId"]=this.$route.query.userId
           this.CreateUserSchedule(data)
+          this.errMsg = true
+          this.cl = 'alert-success'
+          this.msg = "Calendar survey added successfully"
         }
         else{
           this.CreateStudySchedule(data)
+          this.errMsg = true
+          this.cl = 'alert-success'
+          this.msg = "Calendar survey added successfully"
         }
         
-
-        this.showSurveyForm= false
-        this.errMsg=false
         this.startDate= null
         this.endDate= null
         this.intervalDays=1 
@@ -303,32 +316,30 @@ export default {
   beforeRouteEnter(to, from, next) {
     if(to.query.userId){
       Promise.all([
-      store.dispatch("surveys/FetchScheduleByUser", {
-        studyId: to.params.studyId,
-        userId: to.query.userId
-      }),
-      store.dispatch("surveys/FetchSurveyByStudy", {
-        studyId: to.params.studyId,
-      }),
-    ]).then(() => {
-      next();
-    });
+        store.dispatch("surveys/FetchScheduleByUser", {
+          studyId: to.params.studyId,
+          userId: to.query.userId
+        }),
+        store.dispatch("surveys/FetchSurveyByStudy", {
+          studyId: to.params.studyId
+        })
+      ]).then(() => {
+        next();
+      });
     }
     else{
       Promise.all([
-      store.dispatch("surveys/FetchSchedulerByStudy", {
-        studyId: to.params.studyId,
-      }),
-      store.dispatch("surveys/FetchSurveyByStudy", {
-        studyId: to.params.studyId,
-      }),
-    ]).then(() => {
-      next();
-    });
-    }
-
-    
-  },
+        store.dispatch("surveys/FetchSchedulerByStudy", {
+          studyId: to.params.studyId,
+        }),
+        store.dispatch("surveys/FetchSurveyByStudy", {
+          studyId: to.params.studyId,
+        })
+      ]).then(() => {
+        next();
+      });
+    }   
+  }
 };
 </script>
 <style>
@@ -359,5 +370,8 @@ export default {
 
 .cv-weeks {
   height: 550px;
+}
+.modal-content {
+  text-align: left;
 }
 </style>
