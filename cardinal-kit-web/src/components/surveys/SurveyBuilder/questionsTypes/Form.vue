@@ -327,7 +327,6 @@ export default {
          this.Survey.question[index].step = ""
          this.Survey.question[index].default = ""
          this.Survey.question[index].vertical = false
-         // this.Survey.question[index].options = [{ min: "", max: "", step: "" }];
           break;
         default:
           this.Survey.question[index].options = [{}];
@@ -337,11 +336,9 @@ export default {
           break;
       }
     },
-
     placeholderSetter(index) {
       return "Option " + (index + 1);
-    },
-
+    }
   },
 };
 </script>

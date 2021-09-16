@@ -106,7 +106,7 @@ setup(props, ctx)  {
 
 	function getDayofWeek(year, month, day) {
 		const calendarDay = new Date(year, month, day).getDay();
-		return {day: day , calendarDay }
+		return { day , calendarDay }
 	}
 
 	function generateSelectableYears(year) {

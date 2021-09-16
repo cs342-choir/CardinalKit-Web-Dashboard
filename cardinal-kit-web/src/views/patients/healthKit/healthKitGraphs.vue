@@ -1,74 +1,78 @@
 <template>
-  <section class="page">
-    <h1 class="mb-5">Statistics</h1>
-    <div class="mb-5">
-      <alt-date
-        withCalendar
-        :defaultDate="date"
-        range
-        @update:model-value="handleChangeDate"
-      />
+  <section class="page  statistic">
+    <!--   <h1 class="mb-5">Statistics</h1> -->
+    <div class="graphic">
+      <div class="mb-5">
+        <h3 class="my-3">{{ transformAppleCode(hkCode) }}</h3>
+        <alt-date
+          withCalendar
+          :defaultDate="date"
+          range
+          @update:model-value="handleChangeDate"
+        />
+      </div>
+      
+      <div class="wrapper-graphs">
+        <line-chart
+          v-if="GetGraphType == 'line'"
+          ref="chart"
+          :key="1"
+          :series="getSpecificHealthDataGrapFormat(hkCode)"
+        />
+        <scatter-chart
+          v-if="GetGraphType == 'scatter'"
+          ref="chart"
+          :key="2"
+          :series="getSpecificHealthDataGrapFormat(hkCode)"
+          :labels="GetCategoriesByHkType(hkCode)"
+        />
+        <range-chart
+          v-if="GetGraphType == 'sleep'"
+          ref="chart"
+          :key="3"
+          :series="getSpecificHealthDataGrapFormat(hkCode)"
+          :yAxisFormat="
+            function(value) {
+              return new Date(value).toISOString().substr(11, 8);
+            }"
+          :yMax="24 * 3600 - 1"
+          :yMin="0"
+        />
+        <range-chart
+          v-if="GetGraphType == 'heart'"
+          ref="chart"
+          :key="4"
+          :series="getSpecificHealthDataGrapFormat(hkCode)"
+          :yMax="100"
+          :yMin="0"
+          :titleFormatter="
+            (seriesName, { w, seriesIndex, dataPointIndex }) => {
+              x = w.globals.initialSeries[seriesIndex].data[dataPointIndex].x;
+              hourStart = x.getHours();
+              hourEnd = hourStart + 1;
+              return seriesName + ': ' + hourStart + ' - ' + hourEnd;
+            }"
+        />
+        <range-chart
+          v-if="GetGraphType == 'mindful'"
+          ref="chart"
+          :key="5"
+          :series="getSpecificHealthDataGrapFormat(hkCode)"
+          :horizontal="true"
+          :toolTipYFormat="
+            function(value) {
+              return new Date(value).toISOString().substr(11, 8);
+            }"
+        />
+      </div>
+
+      <div class="mb-1">
+        <p><b>{{ getHealthDataGraphResume(hkCode).value }}</b></p>
+        <p><b>{{ getHealthDataGraphResume(hkCode).date }}</b></p>
+        <p>{{ getHealthDataGraphResume(hkCode).title }}</p>
+      </div>
     </div>
-    <div class="mb-1">
-      <h3>{{ transformAppleCode(hkCode) }}</h3>
-      {{ getHealthDataGraphResume(hkCode).title }}
-      <br />
-      {{ getHealthDataGraphResume(hkCode).value }}
-      <br />
-      {{ getHealthDataGraphResume(hkCode).date }}
-    </div>
-    <div class="wrapper-graphs">
-      <line-chart
-        v-if="GetGraphType == 'line'"
-        ref="chart"
-        :key="1"
-        :series="getSpecificHealthDataGrapFormat(hkCode)"
-      />
-      <scatter-chart
-        v-if="GetGraphType == 'scatter'"
-        ref="chart"
-        :key="2"
-        :series="getSpecificHealthDataGrapFormat(hkCode)"
-        :labels="GetCategoriesByHkType(hkCode)"
-      />
-      <range-chart
-        v-if="GetGraphType == 'sleep'"
-        ref="chart"
-        :key="3"
-        :series="getSpecificHealthDataGrapFormat(hkCode)"
-        :yAxisFormat="
-          function(value) {
-            return new Date(value).toISOString().substr(11, 8);
-          }"
-        :yMax="24 * 3600 - 1"
-        :yMin="0"
-      />
-      <range-chart
-        v-if="GetGraphType == 'heart'"
-        ref="chart"
-        :key="4"
-        :series="getSpecificHealthDataGrapFormat(hkCode)"
-        :yMax="100"
-        :yMin="0"
-        :titleFormatter="
-          (seriesName, { w, seriesIndex, dataPointIndex }) => {
-            x = w.globals.initialSeries[seriesIndex].data[dataPointIndex].x;
-            hourStart = x.getHours();
-            hourEnd = hourStart + 1;
-            return seriesName + ': ' + hourStart + ' - ' + hourEnd;
-          }"
-      />
-      <range-chart
-        v-if="GetGraphType == 'mindful'"
-        ref="chart"
-        :key="5"
-        :series="getSpecificHealthDataGrapFormat(hkCode)"
-        :horizontal="true"
-        :toolTipYFormat="
-          function(value) {
-            return new Date(value).toISOString().substr(11, 8);
-          }"
-      />
+    <div>
       <alt-table
         :columns="[{ header: 'Date' }, { header: 'Value' }]"
         pagination
@@ -152,7 +156,7 @@ export default {
     },
     paginationOptions() {
       return {
-        limit: [10, 20],
+        limit: [5,10],
         total: this.getSpecificHealthData(this.hkCode).length,
         currentPage: this.currentPage,
       };
@@ -211,5 +215,13 @@ export default {
   gap: 15px;
   max-width: 1200px;
   margin: auto;
+}
+.statistic {
+  display: flex;
+  justify-content: space-between;
+}
+.graphic {
+  align-self: end;
+  width: 50%;
 }
 </style>
