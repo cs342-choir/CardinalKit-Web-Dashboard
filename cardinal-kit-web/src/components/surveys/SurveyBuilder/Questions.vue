@@ -6,6 +6,7 @@
         <br />
         <br />
         <AltSelect
+          :disabledSelect="disabledSelect"
           :defaultValue="survey.type"
           :ref="survey.id"
           :options="questionTypes"
@@ -247,10 +248,19 @@ import Picker from "@/components/surveys/SurveyBuilder/questionsTypes/Picker.vue
 import CheckBoxVue from './questionsTypes/CheckBox.vue';
 
 export default {
-  props: {
-    survey: Object,
-   
-  },
+  props: ["survey", "disabledSelect"],
+ /*  props: {
+    survey: {
+      type: Object,
+      required: true,
+      default: () => {}
+    },
+    disabledSelect: {
+      type: Boolean,
+      required: false,
+      default: () => false
+    }
+  }, */
   components: {
     AltSelect,
     Picker,

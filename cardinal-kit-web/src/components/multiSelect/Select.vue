@@ -1,6 +1,7 @@
 <template>
   <div>
     <Multiselect  
+      :disabled="disabledSelect"
       trackBy="id"
       label="name"
       v-model="internalValue" 
@@ -11,7 +12,6 @@
     />
   </div>
 </template>
-
 
 <script>
 import Multiselect from "@vueform/multiselect";
@@ -55,7 +55,11 @@ export default {
       type: String,
       require: false
     },
-  
+    disabledSelect: {
+      type: Boolean,
+      require: false,
+      default: () => false
+    }
   },
   created(){
     if (this.defaultValue){

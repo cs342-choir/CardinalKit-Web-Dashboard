@@ -129,7 +129,6 @@ export default {
       }
     },
     saveSurveybuild() {
-      console.log(this.surveys)
       this.errMsg = false
       this.msg=""
       if(this.section && this.subtitle && this.title){

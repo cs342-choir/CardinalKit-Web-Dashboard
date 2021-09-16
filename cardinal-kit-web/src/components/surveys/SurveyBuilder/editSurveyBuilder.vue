@@ -26,7 +26,7 @@
         <input type="file" placeholder="Icon" accept="image/*" />
         <br>
         <div v-for="survey in newData" :key="survey.id">
-          <Question :survey="survey" @DeleteQuestion="deleteQuestions" />
+          <Question :disabledSelect="survey.disabled" :survey="survey" @DeleteQuestion="deleteQuestions" />
         </div>
         <br />
         <div class="form-group">
@@ -186,7 +186,7 @@ export default {
       let questions = this.getUserSurveyQuestion[this.surveyId]
       if(questions && questions.length){
         questions.forEach(obj => {
-          this.questionData[obj.id]={...obj, readonly: true}
+          this.questionData[obj.id]={...obj, readonly: true, disabled: true }
         })
       }
       this.newData = {...this.questionData}
