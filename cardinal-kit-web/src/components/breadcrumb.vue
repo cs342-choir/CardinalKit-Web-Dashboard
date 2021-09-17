@@ -2,7 +2,9 @@
     <div class="container">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"  v-for="obj in data" :key="obj.label">
-                <span @click="redirect(obj)" class="text-capitalize">{{obj.label}}</span>
+                <span @click="redirect(obj)" class="text-capitalize">
+                    {{obj.label}}
+                </span>
             </li>
         </ol>
     </div>
@@ -64,10 +66,15 @@ export default {
 }
 
 .breadcrumb-item span {
-    &:hover, &:focus {
+    &:hover{
         color: rgb(0, 0, 0);
         font-weight: 700;
         cursor: pointer;
+    }
+}
+@media (max-width: 1390px) {
+    .breadcrumb-item span {
+        font-size: 18px;
     }
 }
 </style>

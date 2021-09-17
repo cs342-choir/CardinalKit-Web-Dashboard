@@ -65,6 +65,7 @@ export default {
 
 .wrapper-table{
   border-radius: .5rem;
+  height: 30rem;
   display: block;
   min-width: 100%;
   overflow: auto;
