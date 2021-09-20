@@ -110,10 +110,11 @@ export default {
         }
         
       }
-
       if(isValid){
+        let id = uuidv4()
+        data['identifier'] = id
         this.AddSurvey({
-          id: uuidv4(),
+          id: id,
           studyId: this.studyId,
           questions: questions,
           data: data,
