@@ -5,7 +5,15 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods:{
+    checkQuestion(){
+      let error = false
+      let msg = ""
+      return {"error":error,"msg":msg};
+    }
+  }
+};
 </script>
 
 <style>

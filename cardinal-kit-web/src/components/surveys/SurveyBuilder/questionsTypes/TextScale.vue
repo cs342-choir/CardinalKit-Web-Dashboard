@@ -7,6 +7,7 @@
         type="numeric"
         class="TextInput"
         placeholder="1"
+        min="0"
       />
 
 
@@ -59,6 +60,17 @@ export default {
     deleteOptions(index) {
       this.Survey.options.splice(index, 1);
     },
+    checkQuestion(){
+      let error = false
+      let msg = ""
+       this.Survey.options.forEach(element => {
+        if(element.text == ""){
+          error = true
+          msg = "The fields can't be blank"
+        }
+      });
+      return {"error":error,"msg":msg};
+    }
   },
   mounted(){
       this.Survey.options=[

@@ -182,17 +182,9 @@ export default {
         this.update()
       }
     },
-    setSurvey(){
-      let questions = this.getUserSurveyQuestion[this.surveyId]
-      if(questions && questions.length){
-        questions.forEach(obj => {
-          this.questionData[obj.id]={...obj, readonly: true, disabled: true }
-        })
-      }
-      this.newData = {...this.questionData}
-    },
     setSurveyData(){      
-      this.surveyData = this.getSurveysListData(this.studyId)[this.surveyId]
+      this.surveyData = this.getSurveysData(this.studyId)[this.surveyId]
+      console.log("data",this.surveyData)
       if (this.surveyData) {
         let data= this.surveyData.data
         this.surveys={
@@ -203,15 +195,23 @@ export default {
           'title':data.title,
           'main': data.main
         }
+        let questions = this.surveyData.questions
+        if(questions){
+         for (const [key, value] of Object.entries(questions)){
+            this.questionData[value.id]={...value, readonly: true}
+          }
+        }
+      this.newData = {...this.questionData}
       }
+
     }
   },
   computed: {
-    ...mapGetters("surveys", ["getAllQuestion","getSurveysListData", "getUserSurveysBuilder", "getUserSurveyQuestion"]),
+    // ...mapGetters("surveys", ["getAllQuestion","getSurveysListData", "getUserSurveysBuilder", "getUserSurveyQuestion"]),
+      ...mapGetters("surveys",["getSurveysData"])
   },
   created(){
     this.setSurveyData()
-    this.setSurvey()
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([
@@ -219,12 +219,12 @@ export default {
         studyId: to.params.studyId,
         surveyId: to.params.surveyId
       }),
-      store.dispatch("surveys/FetchSurveyByStudy", {
-        studyId: to.params.studyId
-      }),
-      store.dispatch("surveys/FetchSurveyQuestions", {
-        studyId: to.params.studyId
-      })
+      // store.dispatch("surveys/FetchSurveyByStudy", {
+      //   studyId: to.params.studyId
+      // }),
+      // store.dispatch("surveys/FetchSurveyQuestions", {
+      //   studyId: to.params.studyId
+      // })
     ])
     .then(() => {
       next();

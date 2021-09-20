@@ -11,7 +11,7 @@
         v-show="getValidCategories.includes(category.id)"
       />
     </div>
-    <div class="wrapper-graphs content">
+    <div class="wrapper-graphs content" v-if="showActivityIndex">
       <h1>Activity Index</h1>
       <line-chart
         ref="chart"
@@ -44,7 +44,17 @@ export default {
   },
   methods: {},
   computed: {
-    ...mapGetters("patient",["getValidCategories", "getActivityIndexDataToGraphic"])
+    ...mapGetters("patient",["getValidCategories", "getActivityIndexDataToGraphic"]),
+    showActivityIndex(){
+      let show = false
+      if(this.getActivityIndexDataToGraphic.length>0){
+        if(this.getActivityIndexDataToGraphic[0].data.length>0){
+          show=true
+        }
+      }
+      return show
+
+    }
   },
   created(){
     this.categories = CategoriesList

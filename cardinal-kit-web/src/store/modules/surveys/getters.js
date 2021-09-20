@@ -1,3 +1,26 @@
+export function getSurveysData(state){
+  return (studyId)=>{
+    return state.surveysData[studyId]
+  }
+}
+
+export function getSurveyAnswers(state){
+  return (studyId)=>{
+    return state.surveyAnswers[studyId]
+  }
+}
+
+export function getUserAnswers(state){
+  return state.userAnswers
+}
+
+
+
+
+
+
+
+
 export function getSurveysList(state) {
   return (idStudy) => {
     if(state.surveysList[idStudy]){

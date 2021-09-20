@@ -1,5 +1,9 @@
 <template>
   <form>
+
+    <div class="alert-err" v-if="error">
+      {{msg}}
+    </div>
     <div class="surveys">
       <div class="form-group col-md-6">
         <label>Select the type of question: </label>
@@ -7,197 +11,195 @@
         <br />
         <AltSelect
           :disabledSelect="disabledSelect"
-          :defaultValue="survey.type"
-          :ref="survey.id"
+          :defaultValue="question.type"
+          :ref="question.id"
           :options="questionTypes"
-          v-model="survey.type"
-          :name="`surveys[${survey.id}][type]`"
+          v-model="question.type"
+          :name="`surveys[${question.id}][type]`"
           type="text"
           class="form-control"
           placeholder="Type of question"
-          :onChange="
-            () => {
-              createQuestionOptions(survey.type, survey.id);
-            }
-          "
+          :onChange="() => {
+              createQuestionOptions(question.type, question.id);
+            }"
         />
         <br />
       </div>
       <div
-        v-if="survey.type != '' && survey.type != null"
+        v-if="question.type != '' && question.type != null"
         class="form-group col-md-6"
       >
         <label>Title: </label>
         <input
-          v-model="survey.title"
-          :name="`surveys[${survey.id}][title]`"
+          v-model="question.title"
+          :name="`surveys[${question.id}][title]`"
           type="text"
           placeholder="Title"
         />
       </div>
       <div
-        v-if="survey.type != '' && survey.type != null"
+        v-if="question.type != '' && question.type != null"
         class="form-group col-md-6"
       >
         <label>Identifier: </label>
         <input
-          v-model="survey.identifier"
-          :name="`surveys[${survey.id}][identifier]`"
+          v-model="question.identifier"
+          :name="`surveys[${question.id}][identifier]`"
           type="text"
           placeholder="Identifier"
-          :readonly="survey.readonly"
+          :readonly="question.readonly"
         />
       </div>
       <div
-        v-if="survey.type != '' && survey.type != null"
+        v-if="question.type != '' && question.type != null"
         class="form-group col-md-6"
       >
         <label>Description: </label>
         <input
-          v-model="survey.description"
-          :name="`surveys[${survey.id}][description]`"
+          v-model="question.description"
+          :name="`surveys[${question.id}][description]`"
           type="text"
           placeholder="Description here..."
         />
       </div>
 
-      <div v-if="survey.type != '' && survey.type != null">
+      <div v-if="question.type != '' && question.type != null">
         <input
           type="checkbox"
-          v-model="survey.required"
-          :name="`surveys[${survey.id}][required]`"
+          v-model="question.required"
+          :name="`surveys[${question.id}][required]`"
           hidden
         />
       </div>
 
       <div
         v-if="
-          survey.type != '' &&
-          survey.type != null &&
-          survey.type != 'form' &&
-          survey.type != 'instruction'
+          question.type != '' &&
+          question.type != null &&
+          question.type != 'form' &&
+          question.type != 'instruction'
         "
         class="form-group col-md-6"
       >
         <br />
         <label>Question: </label>
         <input
-          v-model="survey.question"
+          v-model="question.question"
           :name="`
-              surveys[${survey.id}][question]`"
+              surveys[${question.id}][question]`"
           type="text"
           class="TextInput"
           placeholder="Question"
         />
       </div>
 
-      <div v-if="survey.type == 'form'">
-        <Form :Survey="survey" />
+      <div v-if="question.type == 'form'">
+        <Form :Survey="question" ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'scale'" class="form-group col-md-6">
-        <Scale :Options="survey" /> 
+      <div v-if="question.type === 'scale'" class="form-group col-md-6">
+        <Scale :Options="question" ref="question"/> 
       </div>
 
-      <div v-if="survey.type === 'continuosScale'" class="form-group col-md-6">
-        <ContinuosScale :Options="survey" />
+      <div v-if="question.type === 'continuosScale'" class="form-group col-md-6">
+        <ContinuosScale :Options="question" ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'picker'" class="form-group col-md-6">
-        <Picker :Options="survey.options" />
+      <div v-if="question.type === 'picker'" class="form-group col-md-6">
+        <Picker :Options="question.options" ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'boolean'" class="form-group col-md-6">
-        <Boolean :Options="survey" />
+      <div v-if="question.type === 'boolean'" class="form-group col-md-6">
+        <Boolean :Options="question" ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'singleChoice'" class="form-group col-md-6">
+      <div v-if="question.type === 'singleChoice'" class="form-group col-md-6">
         <br />
-        <Radio :Options="survey.options" />
+        <Radio :Options="question.options" ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'multipleChoice'" class="form-group col-md-6">
+      <div v-if="question.type === 'multipleChoice'" class="form-group col-md-6">
         <br />
-        <Checkbox :Options="survey.options" />
+        <Checkbox :Options="question.options" ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'instruction'" class="form-group col-md-6">
+      <div v-if="question.type === 'instruction'" class="form-group col-md-6">
         <br />
-        <Instruction :Options="survey.options" />
+        <Instruction :Options="question.options" ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'text'" class="form-group col-md-6">
+      <div v-if="question.type === 'text'" class="form-group col-md-6">
         <br />
-        <Text />
+        <Text ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'textarea'" class="form-group col-md-6">
+      <div v-if="question.type === 'textarea'" class="form-group col-md-6">
         <br />
-        <TextArea />
+        <TextArea ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'signature'" class="form-group col-md-6">
+      <div v-if="question.type === 'signature'" class="form-group col-md-6">
         <br />
-        <Signature />
+        <Signature ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'date'" class="form-group col-md-6">
+      <div v-if="question.type === 'date'" class="form-group col-md-6">
         <br />
-        <Date />
+        <Date ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'decimal'" class="form-group col-md-6">
+      <div v-if="question.type === 'decimal'" class="form-group col-md-6">
         <br />
-        <Decimal />
+        <Decimal ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'email'" class="form-group col-md-6">
+      <div v-if="question.type === 'email'" class="form-group col-md-6">
         <br />
-        <Email />
+        <Email ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'height'" class="form-group col-md-6">
+      <div v-if="question.type === 'height'" class="form-group col-md-6">
         <br />
-        <Height />
+        <Height ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'numeric'" class="form-group col-md-6">
+      <div v-if="question.type === 'numeric'" class="form-group col-md-6">
         <br />
-        <Integer :Options="survey" />
+        <Integer :Options="question" ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'location'" class="form-group col-md-6">
+      <div v-if="question.type === 'location'" class="form-group col-md-6">
         <br />
-        <Location />
+        <Location ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'socioeconomic'" class="form-group col-md-6">
+      <div v-if="question.type === 'socioeconomic'" class="form-group col-md-6">
         <br />
-        <SocioEconomic :Options="survey" />
+        <SocioEconomic :Options="question" ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'textscale'" class="form-group col-md-6">
+      <div v-if="question.type === 'textScale'" class="form-group col-md-6">
         <br />
-        <TextScale  :Survey="survey"/>
+        <TextScale  :Survey="question"  ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'timeinterval'" class="form-group col-md-6">
+      <div v-if="question.type === 'timeinterval'" class="form-group col-md-6">
         <br />
-        <TimeInterval />
+        <TimeInterval ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'timeofday'" class="form-group col-md-6">
+      <div v-if="question.type === 'timeofday'" class="form-group col-md-6">
         <br />
-        <TimeOfDay />
+        <TimeOfDay ref="question"/>
       </div>
 
-      <div v-if="survey.type === 'weight'" class="form-group col-md-6">
+      <div v-if="question.type === 'weight'" class="form-group col-md-6">
         <br />
-        <Weight />
+        <Weight ref="question"/>
       </div>
-      <div v-if="survey.type === 'summary'" class="form-group col-md-6" >
+      <div v-if="question.type === 'summary'" class="form-group col-md-6" >
         <br />
-        <Summary />
+        <Summary ref="question"/>
       </div>
 
       <br />
@@ -206,7 +208,7 @@
       <button
         @click="
           () => {
-            deleteQuestion(survey.id);
+            deleteQuestion(question.id);
           }
         "
         type="button"
@@ -248,7 +250,7 @@ import Picker from "@/components/surveys/SurveyBuilder/questionsTypes/Picker.vue
 import CheckBoxVue from './questionsTypes/CheckBox.vue';
 
 export default {
-  props: ["survey", "disabledSelect"],
+  props: ["question", "disabledSelect"],
   components: {
     AltSelect,
     Picker,
@@ -277,6 +279,8 @@ export default {
   },
 
   data: () => ({
+    error:false,
+    msg: "",
     questionTypes: [
       "text",
       "textarea",
@@ -307,68 +311,89 @@ export default {
     createQuestionOptions(type, id) {
       switch (type) {
         case "singleChoice":
-          this.survey.type = "singleChoice";
-          if (!this.survey.options.length){
-            this.survey.options = [
+          this.question.type = "singleChoice";
+          if (!this.question.options.length){
+            this.question.options = [
               { text: "", value: "0" },
               { text: "", value: "1" },
             ];
           }
           break;
         case "multipleChoice":
-          this.survey.type = "multipleChoice";
-          if (!this.survey.options.length){
-            this.survey.options = [
+          this.question.type = "multipleChoice";
+          if (!this.question.options.length){
+            this.question.options = [
               { text: "", value: "0" },
               { text: "", value: "1" },
             ]; 
           }
           break;
         case "boolean":
-          !this.survey['yes'] ? this.survey['yes'] = "" : this.survey
-          !this.survey['no'] ? this.survey['no'] = "" : this.survey
+          !this.question['yes'] ? this.question['yes'] = "" : this.question
+          !this.question['no'] ? this.question['no'] = "" : this.question
           break;
         case "scale":
-          !this.survey["min"] ? this.survey["min"] = "" : this.survey
-          !this.survey["minValueDescription"] ? this.survey["minValueDescription"] = "" : this.survey
-          !this.survey["max"] ? this.survey["max"] = "" : this.survey
-          !this.survey["maxValueDescription"] ? this.survey["maxValueDescription"] = "" : this.survey
-          !this.survey["step"] ? this.survey["step"] = "" : this.survey
-          !this.survey["default"] ? this.survey["default"] = "" : this.survey
-          !this.survey["vertical"] ? this.survey["vertical"] = false  : this.survey
+          !this.question["min"] ? this.question["min"] = "" : this.question
+          !this.question["minValueDescription"] ? this.question["minValueDescription"] = "" : this.question
+          !this.question["max"] ? this.question["max"] = "" : this.question
+          !this.question["maxValueDescription"] ? this.question["maxValueDescription"] = "" : this.question
+          !this.question["step"] ? this.question["step"] = "" : this.question
+          !this.question["default"] ? this.question["default"] = "" : this.question
+          !this.question["vertical"] ? this.question["vertical"] = false  : this.question
           break;
         case "numeric":
-          !this.survey["max"] ? this.survey["max"] = "" : this.survey
-          !this.survey["min"] ? this.survey["max"] = ""  : this.survey
-          !this.survey["maxFractionDigits"] ? this.survey["max"] = "" : this.survey
-          !this.survey["unit"] ? this.survey["max"] = "" : this.survey
+          !this.question["max"] ? this.question["max"] = "" : this.question
+          !this.question["min"] ? this.question["max"] = ""  : this.question
+          !this.question["maxFractionDigits"] ? this.question["max"] = "" : this.question
+          !this.question["unit"] ? this.question["max"] = "" : this.question
           break;
         case "continuosScale":
-          !this.survey["min"] ? this.survey["min"] = "" : this.survey
-          !this.survey["minValueDescription"] ? this.survey["minValueDescription"] = "" : this.survey
-          !this.survey["max"] ? this.survey["max"] = "" : this.survey
-          !this.survey["maxValueDescription"] ? this.survey["maxValueDescription"] = "" : this.survey
-          !this.survey["default"] ? this.survey["default"] = "" : this.survey
-          !this.survey["maxFractionDigits"] ? this.survey["maxFractionDigits"]="" : this.survey
-          !this.survey["vertical"] ? this.survey["vertical"] = false : this.survey
+          !this.question["min"] ? this.question["min"] = "" : this.question
+          !this.question["minValueDescription"] ? this.question["minValueDescription"] = "" : this.question
+          !this.question["max"] ? this.question["max"] = "" : this.question
+          !this.question["maxValueDescription"] ? this.question["maxValueDescription"] = "" : this.question
+          !this.question["default"] ? this.question["default"] = "" : this.question
+          !this.question["maxFractionDigits"] ? this.question["maxFractionDigits"]="" : this.question
+          !this.question["vertical"] ? this.question["vertical"] = false : this.question
           break;
         case "picker":
-          if (!this.survey.options.length){
-            this.survey.options = [
+          if (!this.question.options.length){
+            this.question.options = [
               { text: "", value: "0" },
               { text: "", value: "1" },
             ];
           }
           break;
         default:
-          if (!this.survey.options || !this.survey.options.length){
-            this.survey["options"] = [{}];
+          if (!this.question.options || !this.question.options.length){
+            this.question["options"] = [{}];
           }
           break;
       }
     },
     deleteQuestion(index) {
      this.$emit("DeleteQuestion", index);
+    },
+    reviewQuestionData(){
+      if(this.$refs["question"]){
+        if(this.question.title != "" && this.question.identifier != "" && this.question.description != "" && this.question.question != ""){
+          let error,msg;
+          ({error,msg} = this.$refs["question"].checkQuestion())
+          this.error = error
+          this.msg = msg
+        }
+        else{
+          this.error = true
+          console.log("in question")
+          this.msg = "The fields can't be blank"
+        }
+      }
+      else{
+          this.error = true
+          this.msg = "Select the type of question"
+      }
+      
+      return !this.error
     }
   }
  };

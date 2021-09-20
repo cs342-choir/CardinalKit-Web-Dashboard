@@ -1,16 +1,6 @@
 <template>
   <form>
     <div class="Form">
-      <!--   <div>
-          <br />
-          <label>Description: </label>
-          <textarea           
-            v-model="Survey.description"
-            class="TextInput"
-            placeholder="Description"
-            rows="5" cols="100"
-          />
-        </div> -->
         <br />
         <br />
       <div class="form-row" v-for="(question, index) in Survey.question" :key="index">
@@ -78,103 +68,98 @@
         </div>
 
         <div v-if="question.type === 'scale'" class="form-group col-md-6">
-          <Scale :Options="question" />
+          <Scale :Options="question"  :ref="question.id"/>
         </div>
 
         <div v-if="question.type === 'boolean'" class="form-group col-md-6">
-          <Boolean :Options="question" />
+          <Boolean :Options="question" :ref="question.id"/>
         </div>
 
         <div v-if=" question.type === 'singleChoice' " class="form-group col-md-6" >
           <br />
-          <Radio :Options="question.options" />
+          <Radio :Options="question.options" :ref="question.id"/>
         </div>
 
         <div v-if=" question.type === 'multipleChoice' " class="form-group col-md-6" >
           <br />
-          <Checkbox :Options="question.options" />
+          <Checkbox :Options="question.options" :ref="question.id"/>
         </div>
 
         <div v-if=" question.type === 'instruction' " class="form-group col-md-6" >
           <br />
-          <Instruction :Options="question.options" />
+          <Instruction :Options="question.options" :ref="question.id"/>
         </div>
 
         <div v-if=" question.type === 'text' " class="form-group col-md-6" >
           <br />
-          <Text />
+          <Text :ref="question.id"/>
         </div>
 
         <div v-if=" question.type === 'textarea' " class="form-group col-md-6" >
           <br />
-          <TextArea />
+          <TextArea :ref="question.id"/>
         </div>
 
         <div v-if=" question.type === 'signature' " class="form-group col-md-6" >
           <br />
-          <Signature />
+          <Signature :ref="question.id"/>
         </div>
 
         <div v-if="question.type === 'date'" class="form-group col-md-6">
           <br />
-          <Date />
+          <Date :ref="question.id"/>
         </div>
 
         <div v-if="question.type === 'decimal'" class="form-group col-md-6">
           <br />
-          <Decimal />
+          <Decimal :ref="question.id"/>
         </div>
 
         <div v-if="question.type === 'email'" class="form-group col-md-6">
           <br />
-          <Email />
+          <Email :ref="question.id"/>
         </div>
 
         <div v-if="question.type === 'height'" class="form-group col-md-6">
           <br />
-          <Height />
+          <Height :ref="question.id"/>
         </div>
 
         <div v-if="question.type === 'integer'" class="form-group col-md-6">
           <br />
-          <Integer />
+          <Integer :ref="question.id"/>
         </div>
 
         <div v-if="question.type === 'location'" class="form-group col-md-6">
           <br />
-          <Location />
+          <Location :ref="question.id"/>
         </div>
 
         <div v-if="question.type === 'socioeconomic'" class="form-group col-md-6">
           <br />
-          <SocioEconomic />
+          <SocioEconomic :ref="question.id"/>
         </div>
 
         <div v-if="question.type === 'textscale'" class="form-group col-md-6">
           <br />
-          <TextScale />
+          <TextScale :ref="question.id"/>
         </div>
 
         <div v-if="question.type === 'timeinterval'" class="form-group col-md-6">
           <br />
-          <TimeInterval />
+          <TimeInterval :ref="question.id"/>
         </div>
 
         <div v-if="question.type === 'timeofday'" class="form-group col-md-6">
           <br />
-          <TimeOfDay />
+          <TimeOfDay :ref="question.id"/>
         </div>
 
         <div v-if="question.type === 'weight'" class="form-group col-md-6">
           <br />
-          <Weight />
+          <Weight :ref="question.id"/>
         </div>
 
-        <div v-if="question.type === 'summary' " class="form-group col-md-6" >
-          <br />
-          <Summary />
-        </div>
-        
         <br />
         <br />
 
@@ -208,7 +193,6 @@ import Radio from "@/components/surveys/SurveyBuilder/questionsTypes/Radio";
 import Scale from "@/components/surveys/SurveyBuilder/questionsTypes/Scale";
 import Instruction from "@/components/surveys/SurveyBuilder/questionsTypes/Instruction";
 import Text from "@/components/surveys/SurveyBuilder/questionsTypes/Text";
-import Summary from "@/components/surveys/SurveyBuilder/questionsTypes/Summary";
 import TextArea from "@/components/surveys/SurveyBuilder/questionsTypes/TextArea";
 import Signature from "@/components/surveys/SurveyBuilder/questionsTypes/Signature";
 import Boolean from "@/components/surveys/SurveyBuilder/questionsTypes/Boolean";
@@ -250,8 +234,7 @@ export default {
     TextScale,
     TimeInterval,
     TimeOfDay,
-    Weight,
-    Summary
+    Weight
   },
 
   data: () => ({
@@ -273,8 +256,7 @@ export default {
       "timeofday",
       "height",
       "weight",
-      "socioeconomic",
-      "summary"
+      "socioeconomic"
     ],
   }),
 
@@ -338,6 +320,15 @@ export default {
     },
     placeholderSetter(index) {
       return "Option " + (index + 1);
+    },
+    checkQuestion(){
+      let isValid = true
+      for(const [key,value] of Object.entries(this.Survey.question)){
+        if(!this.$refs[value.id].checkQuestion()){
+          isValid=false
+        }
+      }
+      return isValid;
     }
   },
 };

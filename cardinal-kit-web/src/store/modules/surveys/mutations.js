@@ -7,6 +7,78 @@ export function RESET(state) {
   });
 }
 
+export function saveSurveysData(state,payload){
+  console.log(payload.surveys)
+  state.surveysData[payload.studyId] = payload.surveys
+}
+
+export function saveSurveyAnswers(state,{studyId,surveyId, results}){
+  //edit format
+  let dictResult = {};
+  results.forEach((records) => {
+    //each record
+    records.forEach((record) => {
+      if (record.results) {
+        //Each Question
+        record.results.forEach((question) => {
+          if (
+            (question.results && question.results.length > 0) ||
+            !Array.isArray(question.results)
+          ) {
+            if (Symbol.iterator in question.results) {
+              question.results.forEach((Nquestion) => {
+                addQuestionToDictionary(
+                  question,
+                  Nquestion,
+                  dictResult,
+                  records["userId"]
+                );
+              });
+            } else {
+              addQuestionToDictionary(
+                question,
+                question.results,
+                dictResult,
+                records["userId"]
+              );
+            }
+          }
+        });
+      }
+    });
+  });  
+  console.log(transformDictionaryInJsonReadable(dictResult))
+  state.surveyAnswers[studyId] = {}
+  state.surveyAnswers[studyId][surveyId] = transformDictionaryInJsonReadable(dictResult)
+}
+
+export function saveSurveyData(state,payload){
+  if(!state.surveysData[payload.studyId]){
+    state.surveysData[payload.studyId]={}
+  }
+  state.surveysData[payload.studyId][payload.surveyId] = {data: payload.data, questions:payload.questions}
+}
+
+export function saveUserAnswers(state,payload){
+  state.userAnswers[payload.studyId] = {}
+  state.userAnswers[payload.studyId][payload.userId] = payload.answers
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export function saveQuestionBySurveyId(state,questions){
   state.questionBySurveyId = questions.results;
 } 

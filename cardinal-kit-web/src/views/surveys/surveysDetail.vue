@@ -3,15 +3,19 @@
     <div class="alert-err" v-if="errMsg">
       {{msg}}
     </div>
-    <div>
+    <div class="alert-err" v-if="noData">
+      this survey has no answers yet
+    </div>
+    <div v-else>
       <br />
       <h2> Select a Question</h2>
       <br />
       <alt-select :options="questions" v-model="questionSelected" :defaultValue="questionSelected" />
       <br />
+      
       <div
         class="surveyQuestionTxt"
-        v-for="(value, key) in getSurveyDetail(studyId)[surveyId]"
+        v-for="(value, key) in getSurveyAnswers(studyId)[surveyId]"
         :key="key"
         v-show="questionSelected == value.identifier"
       >
@@ -42,19 +46,21 @@ export default {
       ],
       questionSelected: "",
       questionData: {},
-      errMsg: false
+      errMsg: false,
+      noData: false
     };
   },
   computed: {
-    ...mapGetters("surveys", ["getSurveyDetail"]),
+    ...mapGetters("surveys", ["getSurveyAnswers"]),
    
     questions() {
       let qs = [];
-      this.getSurveyDetail(this.studyId)[this.surveyId].map((element) => {
+      let questions = this.getSurveyAnswers(this.studyId)[this.surveyId]
+      questions.forEach(question => {
         qs.push({
-          id: element.identifier,
-          name: element.question,
-          value: element.identifier,
+          id: question.identifier,
+          name: question.question,
+          value: question.identifier,
         });
       });
       return qs;
@@ -76,17 +82,11 @@ export default {
       required: true,
     },
   },
-  methods: {
-    //   UTCtoLocalDate(date)  {           //@TODO decide whether to use local time or utc
-    //   const UTC = new Date(date || '');
-    //   const offSetDate = new Date(UTC.getTime() - UTC.getTimezoneOffset() * 120000);
-    //   const localDate = new Date(offSetDate).toISOString().substring(0, 19);
-    //   return localDate || '';
-    // },
+  methods: {    
     convert() {
       this.errMsg = false
       let surveyData = JSON.parse(
-        JSON.stringify(this.getSurveyDetail(this.studyId)[this.surveyId])
+        JSON.stringify(this.getSurveyAnswers(this.studyId)[this.surveyId])
       );
       let surveyTransformed = this.oneLineForEachAnswer(
         this.optionsInOneLine(surveyData)
@@ -162,10 +162,17 @@ export default {
     if (this.questions.length){
       this.questionSelected = this.questions ? this.questions[0].id : null;
     }
+    else{
+      this.noData = true
+    }
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([
-      store.dispatch("surveys/FetchSurveyAllData", {
+      store.dispatch("surveys/FetchSurveyData", {
+        studyId: to.params.studyId,
+        surveyId: to.params.surveyId,
+      }),
+      store.dispatch("surveys/FetchSurveyDataAnswers", {
         studyId: to.params.studyId,
         surveyId: to.params.surveyId,
       }),
@@ -176,28 +183,6 @@ export default {
 };
 </script>
 <style lang="scss">
-/* .downloadBtn {
-  text-decoration: none;
-  font-weight: 300;
-  font-size: 20px;
-  color: #000000;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 20px;
-  padding-right: 20px;
-  background-color: transparent;
-  border-width: 2px;
-  border-style: solid;
-  border-color: #000000;
-  margin: auto;
-  top: -20px;
-  box-shadow: 5px 5px 5px;
-} 
-.footerBtn {
-  padding: 0px 25px 25px 25px;
-  width: 100%;
-  display: flex;
-}*/
 .surveyQuestionTxt {
   font-size: 25px;
   font-weight: 300;

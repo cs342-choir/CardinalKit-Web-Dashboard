@@ -47,6 +47,19 @@ export default {
     },
     deleteOptions(index) {
       this.Options.splice(index, 1);
+    },
+    checkQuestion(){
+      let error = false
+      let msg = ""
+
+      this.Options.forEach(element => {
+        if(element.text==""){
+          error = true
+          msg = "The fields can't be blank"
+        }
+      });
+
+      return {"error":error,"msg":msg};
     }
   },
 };

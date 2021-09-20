@@ -25,8 +25,8 @@
         <label>Icon: </label>
         <input type="file" placeholder="Icon" accept="image/*" />
         <br>
-        <div v-for="survey in surveys" :key="survey.id">
-          <Question :survey="survey" :readonly="false" @DeleteQuestion="deleteQuestions" />
+        <div v-for="question in questions" :key="question.id">
+          <Question :question="question" :readonly="false" @DeleteQuestion="deleteQuestions" :ref="question.id" />
         </div>
         <br />
         <div class="form-group my-4">
@@ -69,7 +69,7 @@ export default {
       surveyName: "",
       orderQuestion:0,
       orderSurvey:"1",
-      surveys: {},
+      questions: {},
       errMsg: false,
       msg:"",
       cl: ""
@@ -78,13 +78,13 @@ export default {
       Question,
   },
   methods: {
-    ...mapActions("surveys", ["SaveSurvey"]),
+    ...mapActions("surveys", ["AddSurvey"]),
     addQuestion() {
       this.errMsg = false
       this.msg = ""
       this.orderQuestion+=1
       let id = uuidv4()
-      this.surveys[id]={
+      this.questions[id]={
         title: "",
         id: id,
         type: "",
@@ -98,41 +98,47 @@ export default {
       }
     },
     deleteQuestions(index) {
-      delete this.surveys[index]
+      delete this.questions[index]
     },
-    validSurvey(surveys, questionData){
-      this.errMsg = false
-      this.msg=""
-      let allIdentifiers = this.getAllQuestion.map(obj => obj.identifier)
-      let identifiers = Object.values(surveys).map(obj => obj.identifier)
-      let unique = true
-      for (const key of identifiers) {
-        if (allIdentifiers.includes(key)){
-          unique = false
+    validSurvey(questions, data){
+      // review if question has data
+      let isValid = true
+      for(const[key,value] of Object.entries(questions)){
+        console.log("review")
+        if(!this.$refs[value.id].reviewQuestionData()){
+          isValid = false
         }
+        
       }
-      if (unique){
-        this.SaveSurvey({
+
+      if(isValid){
+        this.AddSurvey({
           id: uuidv4(),
           studyId: this.studyId,
-          questions: surveys,
-          data: questionData,
+          questions: questions,
+          data: data,
         }).then(()=>{
           this.errMsg = true
           this.msg="Surveys Builder has been created successfully"
           this.cl= "alert-success"
         })
-      }else{
+      }
+      else{
         this.errMsg = true
         this.cl = "alert-err"
-        this.msg="Identifier should be unique"
+        this.msg="Some data is incorrect"
       }
     },
+
+    reviewQuestion(){
+
+    },
+
     saveSurveybuild() {
       this.errMsg = false
       this.msg=""
       if(this.section && this.subtitle && this.title){
-        let questionData={
+        let surveyData={
           'image':"SurveyIcon",
           'order':this.orderSurvey,
           'section':this.section,
@@ -140,8 +146,20 @@ export default {
           'title':this.title,
           'main': this.main
         }
-        if(Object.keys(this.surveys).length){
-          this.validSurvey(this.surveys, questionData)
+        
+        if(Object.keys(this.questions).length){
+          let questionIdentifiers = Object.keys(this.questions).map((key)=>{
+            return this.questions[key].identifier
+          }) 
+        let uniqueIdentifiers =new Set(questionIdentifiers)
+        if(questionIdentifiers.length==uniqueIdentifiers.size){
+          this.validSurvey(this.questions, surveyData)
+        }
+        else{
+          this.errMsg = true
+          this.cl = "alert-err"
+          this.msg = "The question identifiers must be unique"
+        }
         }else{
           this.errMsg = true
           this.cl = "alert-err"
@@ -154,19 +172,19 @@ export default {
       }
     },
   },
-  computed:{
-    ...mapGetters("surveys", ["getAllQuestion"]),
-  },
-  beforeRouteEnter(to, from, next) {
-    Promise.all([
-      store.dispatch("surveys/FetchSurveyQuestions", {
-        studyId: to.params.studyId
-      })
-    ])
-    .then(() => {
-      next();
-    });
-  }
+  // computed:{
+  //   ...mapGetters("surveys", ["getSurveysData"]),
+  // },
+  // beforeRouteEnter(to, from, next) {
+  //   Promise.all([
+  //     store.dispatch("surveys/FetchAllSurveysData", {
+  //       studyId: to.params.studyId
+  //     })
+  //   ])
+  //   .then(() => {
+  //     next();
+  //   });
+  // }
 };
 </script>
 

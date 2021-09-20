@@ -3,16 +3,18 @@ import * as actions from './actions'
 import * as getters from './getters'
 
 export const initialState = () => ({
-    surveysList:[],
-    surveysListData:{},
-    surveyDetail:[],
-    userSurveys:{},
-    SurveyBuilderUser:[],
-    SurveyUserQuestions:{},
-    allQuestions:[],
-    questionBySurveyId:{},
-    schedulesByStudy:{},
-    schedulesByUser:{}
+    // surveysList:[],
+    // surveysListData:{},
+    // surveyDetail:[],
+    // userSurveys:{},
+    // SurveyBuilderUser:[],
+    // SurveyUserQuestions:{},
+    // allQuestions:[],
+    // questionBySurveyId:{},
+    // schedulesByStudy:{},
+    // schedulesByUser:{}
+    surveysData:{},
+    surveyAnswers:{}
 })
 
 export default {
