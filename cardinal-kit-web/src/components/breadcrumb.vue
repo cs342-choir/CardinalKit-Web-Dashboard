@@ -72,7 +72,7 @@ export default {
         cursor: pointer;
     }
 }
-@media (max-width: 1390px) {
+@media (max-width: 790px) {
     .breadcrumb-item span {
         font-size: 18px;
     }

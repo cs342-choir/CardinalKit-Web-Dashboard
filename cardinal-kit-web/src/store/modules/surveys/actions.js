@@ -92,7 +92,7 @@ export const FetchUserSurveyData = async ({ commit }, { studyId, userId }) => {
         let surveyQuestions = await request.GET(`studies/${studyId}/surveys/${id}/questions`).Execute()
         let questions = []
         surveyQuestions.docs.map((question)=>{
-          console.log(question.data().type)
+       //   console.log(question.data().type)
           if(!questionsExclude.includes(question.data().type)){
             questions.push(question.data())
           }
@@ -134,8 +134,8 @@ export const AddSurvey = async ({ commit }, { studyId, id, questions, data }) =>
 //Delete Survey
 
 export const DeleteSurvey = async ({ commit }, {studyId,surveyId}) => {
-  console.log("survey Id",surveyId)
-  console.log("study  Id",studyId)
+/*   console.log("survey Id",surveyId)
+  console.log("study  Id",studyId) */
   
   await request.PUT(`/studies/${studyId}/surveys/${surveyId}/`,{
     data:{

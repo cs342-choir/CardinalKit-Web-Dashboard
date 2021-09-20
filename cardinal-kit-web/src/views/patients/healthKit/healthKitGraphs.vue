@@ -72,7 +72,7 @@
       
 
     </div>
-    <div>
+    <div class="height">
       <alt-table
         :columns="[{ header: 'Date' }, { header: 'Value' }]"
         pagination
@@ -224,10 +224,15 @@ export default {
 .graphic {
   width: 45rem;
 }
+.height {
+  height: 30rem;
+  overflow: auto;
+  border-radius: .5rem;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
 @media (max-width: 1390px) {
   .statistic {
     display: flex;
-    padding: 1rem ;
     flex-direction: column;
   }
   .wrapper-graphs {
@@ -236,6 +241,5 @@ export default {
   .graphic {
     width: auto;
   }
-
 }
 </style>

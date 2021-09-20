@@ -86,4 +86,10 @@ export default {
       padding: 1rem 4rem;
     }
   }
+  @media (max-width: 672px) {
+    .categories-grid {
+      display: grid;
+      gap: 20px 40px;
+    }
+  }
 </style>
