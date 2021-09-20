@@ -11,7 +11,9 @@ export function getSurveyAnswers(state){
 }
 
 export function getUserAnswers(state){
-  return state.userAnswers
+  return (studyId,userId)=>{
+    return state.userAnswers[studyId][userId]
+  }
 }
 
 

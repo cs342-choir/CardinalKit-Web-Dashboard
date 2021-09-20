@@ -50,10 +50,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("surveys", ["getSurveysListData", "getUserSurveys"]),
+    ...mapGetters("surveys", ["getUserAnswers"]),
     surveyTypes() {
       let types = [];
-      let surveys = this.getSurveysListData(this.studyId)
+      let surveys = this.getUserAnswers(this.studyId,this.$route.query.userId)
       for (const [key, value] of Object.entries(surveys)) {
         types.push({ id: key, name: value.data.title, value: key})
     }
@@ -62,8 +62,8 @@ export default {
     surveyQuestions() {
       let qs = [];
       if(this.surveySelected){
-        let surveys = this.getSurveysListData(this.studyId)
-        let questions = surveys[this.surveySelected].questions
+        let surveys = this.getUserAnswers(this.studyId,this.$route.query.userId)
+        let questions = surveys[this.surveySelected].questions        
         for (const [key, value] of Object.entries(questions)) {
           qs.push({
              id: value.identifier,
@@ -75,8 +75,13 @@ export default {
       return qs;
     },
     surveyData(){
-      if(this.questionSelected && this.getUserSurveys[this.surveySelected] && this.getUserSurveys[this.surveySelected][this.questionSelected]){
-        return this.getUserSurveys[this.surveySelected][this.questionSelected]
+      let surveys = this.getUserAnswers(this.studyId,this.$route.query.userId)
+      let questionData = surveys[this.surveySelected]
+      if(questionData){
+        console.log("question data",questionData.answers[this.questionSelected])
+        if(questionData.answers[this.questionSelected]){
+          return questionData.answers[this.questionSelected]
+        }
       }
       return {}
     }
@@ -99,10 +104,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([
-      store.dispatch("surveys/FetchSurveyByStudy", {
-        studyId: to.query.studyId,
-      }),
-      store.dispatch("surveys/FetchSurveyDataByUser", {
+      store.dispatch("surveys/FetchUserSurveyData", {
         studyId: to.query.studyId,
         userId: to.query.userId,
       }),

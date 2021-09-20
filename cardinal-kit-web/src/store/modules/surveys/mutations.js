@@ -59,9 +59,49 @@ export function saveSurveyData(state,payload){
   state.surveysData[payload.studyId][payload.surveyId] = {data: payload.data, questions:payload.questions}
 }
 
-export function saveUserAnswers(state,payload){
-  state.userAnswers[payload.studyId] = {}
-  state.userAnswers[payload.studyId][payload.userId] = payload.answers
+export function saveUserAnswers(state, {studyId,userId, response}){
+  let dictExternal = {}
+  for (const [key, value] of Object.entries(response)) {
+    let dictInternal = {};
+    value.answers.results.forEach(record => {
+        if(record.results){
+          record.results.forEach((question) => {
+  
+            if (
+              (question.results && question.results.length > 0) ||
+              !Array.isArray(question.results)
+            ) {
+              if (Symbol.iterator in question.results) {
+                question.results.forEach((Nquestion) => {
+                  addQuestionToDictionary(
+                    question,
+                    Nquestion,
+                    dictInternal,
+                    userId
+                  );
+                });
+                
+              } else {
+                addQuestionToDictionary(
+                  question,
+                  question.results,
+                  dictInternal,
+                  userId
+                );
+              }
+            }
+          });
+        }
+    });
+    dictExternal[key]=
+      {
+        questions:value.questions,
+        data: value.data,
+        answers: dictInternal
+      }
+  }
+  state.userAnswers[studyId] = {}
+  state.userAnswers[studyId][userId] = dictExternal
 }
 
 

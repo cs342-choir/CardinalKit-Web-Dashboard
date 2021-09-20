@@ -71,13 +71,46 @@ export const FetchSurveyData = async ({ commit }, { studyId, surveyId }) => {
 
 // Get All surveys answers of specific user
 export const FetchUserSurveyData = async ({ commit }, { studyId, userId }) => {
+  let questionsExclude = ["summary","signature"]
   let response = {};
-  //Get Answers
+  //Get user answers
   let userSurveysSnap = await request.GET(`studies/${studyId}/users/${userId}/surveys`).Execute();
-  userSurveysSnap.forEach((survey) => {
-    response[survey.id] = survey.data();
-  });
-  commit("saveUserAnswers", response);
+  // get questions data
+  await Promise.all(
+    userSurveysSnap.docs.map(async (survey) => {
+      let id = survey.id
+      //TO CHANGE
+      if(survey.data().results){
+        if(survey.data().results[0]){
+          id = survey.data().results[0].identifier
+        }
+      }
+      let surveyData = await request.GET(`studies/${studyId}/surveys/${id}`).Execute()
+      
+
+      if(surveyData.data()){
+        let surveyQuestions = await request.GET(`studies/${studyId}/surveys/${id}/questions`).Execute()
+        let questions = []
+        surveyQuestions.docs.map((question)=>{
+          console.log(question.data().type)
+          if(!questionsExclude.includes(question.data().type)){
+            questions.push(question.data())
+          }
+        })
+        if(questions.length>0){
+          response[id]={
+            answers:survey.data(),
+            data:surveyData.data(),
+            questions:questions
+          }
+        }
+      }
+    }))
+  // userSurveysSnap.forEach((survey) => {
+  //   answers[survey.id] = survey.data();
+  // });
+  console.log("save")
+  commit("saveUserAnswers", {studyId,userId, response});
 };
 
 //Create survey
