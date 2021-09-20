@@ -25,9 +25,6 @@ export function getScheduleTasksByStudy(state){
 
 export function getScheduleTasksByUser(state){
   return (studyId,userId)=>{
-    console.log("state",state)
-    console.log("state",state.schedulesByUser[studyId])
-    console.log("state",studyId)
     return state.schedulesByUser[studyId][userId]
   }
 }

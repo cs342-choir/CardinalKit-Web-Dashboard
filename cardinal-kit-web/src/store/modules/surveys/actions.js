@@ -183,7 +183,7 @@ export const CreateStudySchedule = async ({ commit }, { studyId, payload }) => {
       surveysTaskId = task.id;
       if (task.data().scheduleElements) {
         scheduleElements = task.data().scheduleElements;
-        console.log("schedule", scheduleElements);
+       // console.log("schedule", scheduleElements);
       }
     }
   });
@@ -228,13 +228,12 @@ export const CreateUserSchedule = async (
       surveysTaskId = task.id;
       if (task.data().scheduleElements) {
         scheduleElements = task.data().scheduleElements;
-        console.log("schedule", scheduleElements);
+       // console.log("schedule", scheduleElements);
       }
     }
   });
   scheduleElements.push(payload);
   if (surveysTaskId == null) {
-    console.log("post without id");
     await request
       .POST(`/studies/${studyId}/users/${userId}/carekit-store/v2/tasks/`, {
         data: {
@@ -444,9 +443,9 @@ export const CreateUserSchedule = async (
 //   await request.DELETE(`/studies/${studyId}/surveys/${data.name}/`).Execute();
 // };
 
-// export const DeleteSurveyQuestion = async ({ commit }, data) => {
-//   let studyId = data.studyId;
-//   await request
-//     .DELETE(`/studies/${studyId}/surveys/${data.name}/questions/${data.id}/`)
-//     .Execute();
-// };
+export const DeleteSurveyQuestion = async ({ commit }, data) => {
+  let studyId = data.studyId;
+  await request
+    .DELETE(`/studies/${studyId}/surveys/${data.name}/questions/${data.id}/`)
+    .Execute();
+};

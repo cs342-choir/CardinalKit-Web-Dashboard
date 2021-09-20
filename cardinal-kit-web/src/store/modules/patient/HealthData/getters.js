@@ -302,7 +302,6 @@ export function getActivityIndexDataToGraphic(state){
   
   let metrics =state.userMetricData
   let data=[]
-  console.log(new Date())
   metrics.forEach(element => {
     data.push({"x":Date.parse(element.date),"y":element.activityindex})
   });

@@ -26,7 +26,6 @@
         <input type="file" placeholder="Icon" accept="image/*" />
         <br>
         <div v-for="question in newQuestionsData" :key="question.id">
-          <!-- {{question}} -->
           <Question :disabledSelect="question.disabled" :question="question" @DeleteQuestion="deleteQuestions" />
         </div>
         <br />
@@ -62,7 +61,6 @@ export default {
   data() {
     return {
       surveyId: this.$route.params.surveyId,
-      index: this.$route.params.index,
       image: null,
       section: "",
       subtitle: "",
@@ -185,7 +183,6 @@ export default {
     },
     setSurveyData(){      
       this.surveyData = this.getSurveysData(this.studyId)[this.surveyId]
-      console.log("data",this.surveyData)
       if (this.surveyData) {
         let data= this.surveyData.data
         this.surveys={
@@ -198,11 +195,11 @@ export default {
         }
         let questions = this.surveyData.questions
         if(questions){
-         for (const [key, value] of Object.entries(questions)){
-            this.questionData[value.id]={...value, readonly: true}
+          for (const [key, value] of Object.entries(questions)){
+            this.questionData[value.id]={...value, readonly: true, disabled: true}
           }
         }
-      this.newQuestionsData = {...this.questionData}
+        this.newQuestionsData = {...this.questionData}
       }
 
     }

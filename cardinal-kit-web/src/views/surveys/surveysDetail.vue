@@ -4,7 +4,7 @@
       {{msg}}
     </div>
     <div class="alert-err" v-if="noData">
-      this survey has no answers yet
+      This survey has no answers yet
     </div>
     <div v-else>
       <br />

@@ -8,7 +8,6 @@ export function RESET(state) {
 }
 
 export function saveSurveysData(state,payload){
-  console.log(payload.surveys)
   state.surveysData[payload.studyId] = payload.surveys
 }
 
@@ -47,7 +46,6 @@ export function saveSurveyAnswers(state,{studyId,surveyId, results}){
       }
     });
   });  
-  console.log(transformDictionaryInJsonReadable(dictResult))
   state.surveyAnswers[studyId] = {}
   state.surveyAnswers[studyId][surveyId] = transformDictionaryInJsonReadable(dictResult)
 }
@@ -136,7 +134,6 @@ export function saveSurveysList(state, { idStudy, surveys }) {
 }
 
 export function saveSurveyDetail(state, { results, studyId, surveyId }) {
-  console.log("results",results)
   let dictResult = {};
   results.forEach((records) => {
     //each record
@@ -297,8 +294,6 @@ export function saveSchedulesByStudy(state,{studyId,tasks}){
 }
 
 export function saveSchedulerByUser(state,{studyId,userId,tasks}){
-  console.log("tasks",tasks)
   state.schedulesByUser[studyId] = {}
   state.schedulesByUser[studyId][userId] = tasks
-  console.log("tasks",state.schedulesByUser)
 }

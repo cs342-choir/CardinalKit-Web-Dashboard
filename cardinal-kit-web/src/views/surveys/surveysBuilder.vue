@@ -104,7 +104,6 @@ export default {
       // review if question has data
       let isValid = true
       for(const[key,value] of Object.entries(questions)){
-        console.log("review")
         if(!this.$refs[value.id].reviewQuestionData()){
           isValid = false
         }

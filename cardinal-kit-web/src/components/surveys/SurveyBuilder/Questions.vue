@@ -384,7 +384,7 @@ export default {
         }
         else{
           this.error = true
-          console.log("in question")
+         // console.log("in question")
           this.msg = "The fields can't be blank"
         }
       }

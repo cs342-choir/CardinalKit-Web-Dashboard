@@ -38,7 +38,6 @@ export function saveHealthData(state, payload) {
       healthData[keyCode].data.push(record[key]);
     });
   });
-  console.log(healthData);
   state.healthData = healthData;
 }
 
