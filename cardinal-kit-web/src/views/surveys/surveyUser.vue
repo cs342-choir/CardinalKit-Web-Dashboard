@@ -78,7 +78,6 @@ export default {
       let surveys = this.getUserAnswers(this.studyId,this.$route.query.userId)
       let questionData = surveys[this.surveySelected]
       if(questionData){
-     //   console.log("question data",questionData.answers[this.questionSelected])
         if(questionData.answers[this.questionSelected]){
           return questionData.answers[this.questionSelected]
         }

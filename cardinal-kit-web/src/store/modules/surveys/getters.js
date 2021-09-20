@@ -16,13 +16,27 @@ export function getUserAnswers(state){
   }
 }
 
+///Scheduler
+export function getScheduleTasksByStudy(state){
+  return (studyId)=>{
+    return state.schedulesByStudy[studyId]
+  }
+}
+
+export function getScheduleTasksByUser(state){
+  return (studyId,userId)=>{
+    console.log("state",state)
+    console.log("state",state.schedulesByUser[studyId])
+    console.log("state",studyId)
+    return state.schedulesByUser[studyId][userId]
+  }
+}
 
 
 
 
 
-
-
+//Delete
 export function getSurveysList(state) {
   return (idStudy) => {
     if(state.surveysList[idStudy]){
@@ -69,18 +83,4 @@ export function getAllQuestion(state){
 }
 
 
-///Scheduler
 
-export function getScheduleTasksByStudy(state){
-  return (studyId)=>{
-    return state.schedulesByStudy[studyId]
-  }
-}
-export function getScheduleTasksByUser(state){
-  return (studyId,userId)=>{
-    console.log("state",state)
-    console.log("state",state.schedulesByUser[studyId])
-    console.log("state",studyId)
-    return state.schedulesByUser[studyId][userId]
-  }
-}

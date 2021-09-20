@@ -15,7 +15,9 @@ export const initialState = () => ({
     // schedulesByUser:{}
     surveysData:{},
     surveyAnswers:{},
-    userAnswers:{}
+    userAnswers:{},
+    schedulesByStudy:{},
+    schedulesByUser:{}
 })
 
 export default {

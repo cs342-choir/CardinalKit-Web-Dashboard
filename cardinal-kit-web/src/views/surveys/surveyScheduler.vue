@@ -35,11 +35,11 @@
           <td>
             {{ survey.interval }}
           </td>
-          <td>
+          <!-- <td>
             <button @click="schedule(survey.name)">
               Change Dates
             </button>
-          </td>
+          </td> -->
         </tr>
       </template>
     </alt-table>
@@ -107,7 +107,6 @@ export default {
         { header: "Start Date" },
         { header: "End Date" },
         { header: "Interval" },
-        { header: "Actions" },
       ],
       showDate: new Date(),
       studyId: this.$route.params.studyId,
@@ -208,7 +207,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("surveys", ["getScheduleTasksByStudy","getSurveysListData","getScheduleTasksByUser"]),
+    ...mapGetters("surveys", ["getScheduleTasksByStudy","getSurveysData","getScheduleTasksByUser"]),
     calendarMonthItems() {
       let tasks = this.$route.query.userId ?
                   this.getScheduleTasksByUser(this.studyId,this.$route.query.userId)
@@ -306,7 +305,7 @@ export default {
     },
     surveys() {
       let types = [];
-      let surveys = this.getSurveysListData(this.studyId);
+      let surveys = this.getSurveysData(this.studyId);
       for (const [key, value] of Object.entries(surveys)) {
         types.push({ id: key, name: value.data.title, value: key });
       }
@@ -316,11 +315,11 @@ export default {
   beforeRouteEnter(to, from, next) {
     if(to.query.userId){
       Promise.all([
-        store.dispatch("surveys/FetchScheduleByUser", {
+        store.dispatch("surveys/FetchUserScheduler", {
           studyId: to.params.studyId,
           userId: to.query.userId
         }),
-        store.dispatch("surveys/FetchSurveyByStudy", {
+        store.dispatch("surveys/FetchAllSurveysData", {
           studyId: to.params.studyId
         })
       ]).then(() => {
@@ -329,10 +328,10 @@ export default {
     }
     else{
       Promise.all([
-        store.dispatch("surveys/FetchSchedulerByStudy", {
+        store.dispatch("surveys/FetchStudyScheduler", {
           studyId: to.params.studyId,
         }),
-        store.dispatch("surveys/FetchSurveyByStudy", {
+        store.dispatch("surveys/FetchAllSurveysData", {
           studyId: to.params.studyId,
         })
       ]).then(() => {

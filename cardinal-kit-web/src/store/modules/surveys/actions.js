@@ -159,7 +159,7 @@ export const FetchStudyScheduler = async ({ commit }, { studyId }) => {
 
 export const FetchUserScheduler = async ({ commit }, { studyId, userId }) => {
   let tasks = await request
-    .GET(`/studies/${study}/users/${studyId}/carekit-store/v2/tasks/`)
+    .GET(`/studies/${studyId}/users/${userId}/carekit-store/v2/tasks/`)
     .Execute();
   let taskDictionary = {};
   tasks.forEach((task) => {
