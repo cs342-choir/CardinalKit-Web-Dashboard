@@ -25,8 +25,9 @@
         <label>Icon: </label>
         <input type="file" placeholder="Icon" accept="image/*" />
         <br>
-        <div v-for="survey in newData" :key="survey.id">
-          <Question :disabledSelect="survey.disabled" :survey="survey" @DeleteQuestion="deleteQuestions" />
+        <div v-for="question in newQuestionsData" :key="question.id">
+          <!-- {{question}} -->
+          <Question :disabledSelect="question.disabled" :question="question" @DeleteQuestion="deleteQuestions" />
         </div>
         <br />
         <div class="form-group">
@@ -74,7 +75,7 @@ export default {
       surveys: {},
       surveyData:null,
       questionData: {},
-      newData:{},
+      newQuestionsData:{},
       errMsg: false,
       msg: "",
       cl:""
@@ -88,7 +89,7 @@ export default {
     addQuestion() {
       this.orderQuestion+=1
       let id = uuidv4()
-      this.newData[id]={
+      this.newQuestionsData[id]={
         title: "",
         id: id,
         type: "",
@@ -103,12 +104,12 @@ export default {
       }
     },
     deleteQuestions(index) {
-      this.DeleteSurveyQuestion({...this.newData[index],
+      this.DeleteSurveyQuestion({...this.newQuestionsData[index],
        name: this.surveyId,
        studyId: this.studyId
       }).then(() => {
         delete this.questionData[index]
-        delete this.newData[index]
+        delete this.newQuestionsData[index]
         console.log("deleted")
       })
     },
@@ -121,7 +122,7 @@ export default {
         this.surveys.order && 
         this.surveys.section
       ){
-        if(Object.keys(this.newData).length){
+        if(Object.keys(this.newQuestionsData).length){
           this.UpdateSurveyData({
             studyId: this.studyId,
             id: this.surveyId,
@@ -171,9 +172,9 @@ export default {
     },
     saveNewSurveys(){
       let newQuestions = {}
-      Object.keys(this.newData).forEach((key) => {
+      Object.keys(this.newQuestionsData).forEach((key) => {
         if (!Object.keys(this.questionData).includes(key)){
-          newQuestions[key] = this.newData[key]
+          newQuestions[key] = this.newQuestionsData[key]
         }
       })
       if(Object.keys(newQuestions).length){
@@ -201,7 +202,7 @@ export default {
             this.questionData[value.id]={...value, readonly: true}
           }
         }
-      this.newData = {...this.questionData}
+      this.newQuestionsData = {...this.questionData}
       }
 
     }
