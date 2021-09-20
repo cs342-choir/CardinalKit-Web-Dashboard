@@ -15,7 +15,7 @@
         <td v-if="!survey.deleted">
           {{survey.data.title}}
         </td>
-         <td v-if="!survey.deleted">
+        <td v-if="!survey.deleted">
           <a class="button mr-1" @click="details(survey.data.identifier)">Details</a>
           <a class="button mr-1" @click="edit(survey.data.identifier)">Edit</a>
           <modal
@@ -56,6 +56,7 @@ export default {
   computed: {
     ...mapGetters("user", ["getUserRol","getUserId"]),
     ...mapGetters("surveys",["getSurveysData"]),
+   
     paginationOptions() {
       return {
         limit: [10, 20],
@@ -85,13 +86,11 @@ export default {
       this.surveyData = [...data]
     },
     remove(name) {
-      console.log(name)
       this.DeleteSurvey({
-        studyId: this.studyId,
+      studyId: this.studyId,
         surveyId: name,
       }).then(()=>{
-        this.surveyData = this.surveyData.filter((obj) => obj.data.identifier != name)
-        
+        this.surveyData = this.surveyData.filter((obj) =>  obj.data.identifier != name )
       })
     },
     create(){

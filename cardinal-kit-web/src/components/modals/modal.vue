@@ -1,7 +1,7 @@
 <template>
-    <div class="inline my-4" :id="name">
-        <a class="modal-show button " href="#modal">{{label}}</a>
-        <div class="modal" id="modal">
+    <div class="inline my-4" >
+        <a class="modal-show button" :href="`#${name}`">{{label}}</a>
+        <div class="modal" :id="name">
             <div class="modal-content">
                 <a class="modal-hide" href="#">✕</a>
                 <h2 class="m-4">{{title}}</h2>
@@ -9,7 +9,7 @@
                     {{content}}
                 </p>
                 <div class="inline m-4">
-                    <a href="#" class="m-1 button" @click="accept">Yes</a>
+                    <a href="#" class="m-1 button" @click="accept(name)">Yes</a>
                     <a href="#" class="m-1 button">No</a>
                 </div>
             </div>
@@ -20,8 +20,8 @@
 export default {
     props: ["label", "title", "content", "name"],
     methods: {
-        accept(){
-            this.$emit("accept", this.name);
+        accept(name){
+           this.$emit("accept", name);
         }
     }
 }
