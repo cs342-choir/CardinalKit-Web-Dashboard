@@ -1,6 +1,5 @@
 <template>
   <form>
-
     <div class="alert-err" v-if="error">
       {{msg}}
     </div>

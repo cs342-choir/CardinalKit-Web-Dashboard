@@ -8,7 +8,6 @@
           <label>Select the type of question: </label>
           <br />
           <br />
-          {{question.type}}here
           <AltSelect
             :defaultValue="question.type"
             :options="formQuestionTypes"
@@ -137,7 +136,7 @@
 
         <div v-if="question.type === 'socioeconomic'" class="form-group col-md-6">
           <br />
-          <SocioEconomic :ref="question.id"/>
+          <SocioEconomic :ref="question.id"  :Options="question.options"/>
         </div>
 
         <div v-if="question.type === 'textscale'" class="form-group col-md-6">
