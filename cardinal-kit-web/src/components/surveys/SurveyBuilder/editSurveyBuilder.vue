@@ -112,9 +112,9 @@ export default {
       })
     },
     saveSurvey(data){
+      this.errMsg = false 
       this.DeleteSurvey({ surveyId: this.surveyId, studyId: this.studyId })
       .then(() => {
-        console.log("se elimino")
         let id = uuidv4()
         data['identifier'] = id
         this.AddSurvey({
