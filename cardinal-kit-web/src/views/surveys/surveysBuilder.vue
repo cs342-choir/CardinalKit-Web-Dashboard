@@ -130,10 +130,6 @@ export default {
       }
     },
 
-    reviewQuestion(){
-
-    },
-
     saveSurveybuild() {
       this.errMsg = false
       this.msg=""
@@ -151,15 +147,15 @@ export default {
           let questionIdentifiers = Object.keys(this.questions).map((key)=>{
             return this.questions[key].identifier
           }) 
-        let uniqueIdentifiers =new Set(questionIdentifiers)
-        if(questionIdentifiers.length==uniqueIdentifiers.size){
-          this.validSurvey(this.questions, surveyData)
-        }
-        else{
-          this.errMsg = true
-          this.cl = "alert-err"
-          this.msg = "The question identifiers must be unique"
-        }
+          let uniqueIdentifiers =new Set(questionIdentifiers)
+          if(questionIdentifiers.length==uniqueIdentifiers.size){
+            this.validSurvey(this.questions, surveyData)
+          }
+          else{
+            this.errMsg = true
+            this.cl = "alert-err"
+            this.msg = "The question identifiers must be unique"
+          }
         }else{
           this.errMsg = true
           this.cl = "alert-err"

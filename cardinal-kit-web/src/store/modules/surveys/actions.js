@@ -130,13 +130,16 @@ export const AddSurvey = async ({ commit }, { studyId, id, questions, data }) =>
       .Execute();
   });
 };
-
+// //Delete Survey question
+export const DeleteSurveyQuestion = async ({ commit }, data) => {
+  let studyId = data.studyId;
+  await request
+    .DELETE(`/studies/${studyId}/surveys/${data.name}/questions/${data.id}/`)
+    .Execute();
+};
 //Delete Survey
 
 export const DeleteSurvey = async ({ commit }, {studyId,surveyId}) => {
-/*   console.log("survey Id",surveyId)
-  console.log("study  Id",studyId) */
-  
   await request.PUT(`/studies/${studyId}/surveys/${surveyId}/`,{
     data:{
       deleted:true
@@ -261,6 +264,17 @@ export const CreateUserSchedule = async (
       .Execute();
   }
 };
+// export const SaveQuestion = async ({ commit }, data) => {
+//   let studyId = data.studyId;
+//   Object.keys(data.questions).forEach(async (key) => {
+//     let element = data.questions[key];
+//     await request
+//       .POST(`/studies/${studyId}/surveys/${data.id}/questions/${element.id}/`, {
+//         data: element,
+//       })
+//       .Execute();
+//   });
+// };
 
 // //All Surveys
 
@@ -402,17 +416,7 @@ export const CreateUserSchedule = async (
 //       .Execute();
 //   });
 // };
-// export const SaveQuestion = async ({ commit }, data) => {
-//   let studyId = data.studyId;
-//   Object.keys(data.questions).forEach(async (key) => {
-//     let element = data.questions[key];
-//     await request
-//       .POST(`/studies/${studyId}/surveys/${data.id}/questions/${element.id}/`, {
-//         data: element,
-//       })
-//       .Execute();
-//   });
-// };
+
 
 // export const UpdateSurveyData = async ({ commit }, data) => {
 //   let studyId = data.studyId;
@@ -436,16 +440,11 @@ export const CreateUserSchedule = async (
 //   }
 // };
 
-// //Delete Survey
+
+
 
 // export const DeleteSurvey = async ({ commit }, data) => {
 //   let studyId = data.studyId;
 //   await request.DELETE(`/studies/${studyId}/surveys/${data.name}/`).Execute();
 // };
 
-export const DeleteSurveyQuestion = async ({ commit }, data) => {
-  let studyId = data.studyId;
-  await request
-    .DELETE(`/studies/${studyId}/surveys/${data.name}/questions/${data.id}/`)
-    .Execute();
-};

@@ -179,7 +179,7 @@
 
       <div v-if="question.type === 'textScale'" class="form-group col-md-6">
         <br />
-        <TextScale  :Survey="question"  ref="question"/>
+        <TextScale :Survey="question"  ref="question"/>
       </div>
 
       <div v-if="question.type === 'timeinterval'" class="form-group col-md-6">

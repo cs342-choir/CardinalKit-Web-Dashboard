@@ -26,7 +26,7 @@
         <input type="file" placeholder="Icon" accept="image/*" />
         <br>
         <div v-for="question in newQuestionsData" :key="question.id">
-          <Question :disabledSelect="question.disabled" :question="question" @DeleteQuestion="deleteQuestions" />
+          <Question :disabledSelect="question.disabled" :question="question" @DeleteQuestion="deleteQuestions" :ref="question.id"/>
         </div>
         <br />
         <div class="form-group">
@@ -35,7 +35,7 @@
           </button>
         </div>
         <div class="form-group">
-          <button @click="saveNewSurveys" type="button" class="btn btn-primary">
+          <button @click="updateSurvey" type="button" class="btn btn-primary">
             Update
           </button>
         </div>
@@ -83,7 +83,7 @@ export default {
     Question,
   },
   methods: {
-    ...mapActions("surveys", ["DeleteSurveyQuestion", "SaveQuestion", "UpdateSurveyData"]),
+    ...mapActions("surveys", ["DeleteSurveyQuestion", "AddSurvey","DeleteSurvey"]),
     addQuestion() {
       this.orderQuestion+=1
       let id = uuidv4()
@@ -111,7 +111,42 @@ export default {
         console.log("deleted")
       })
     },
-    update() {
+    saveSurvey(data){
+      this.DeleteSurvey({ surveyId: this.surveyId, studyId: this.studyId })
+      .then(() => {
+        console.log("se elimino")
+        let id = uuidv4()
+        data['identifier'] = id
+        this.AddSurvey({
+          id: id,
+          studyId: this.studyId,
+          questions: this.newQuestionsData,
+          data: data,
+        }).then(()=>{
+          this.errMsg = true
+          this.msg="Surveys Builder has been created successfully"
+          this.cl= "alert-success"
+        }) 
+      })
+    },
+    validSurvey(questions, data){
+      // review if question has data
+      let isValid = true
+      for(const[key,value] of Object.entries(questions)){
+        if(!this.$refs[value.id].reviewQuestionData()){
+          isValid = false
+        }
+      }
+      if(isValid){
+        this.saveSurvey(data)
+      }
+      else{
+        this.errMsg = true
+        this.cl = "alert-err"
+        this.msg="Some data is incorrect"
+      }
+    },
+    updateSurvey(){
       this.errMsg = false
       this.msg=""
       if (
@@ -120,67 +155,38 @@ export default {
         this.surveys.order && 
         this.surveys.section
       ){
-        if(Object.keys(this.newQuestionsData).length){
-          this.UpdateSurveyData({
-            studyId: this.studyId,
-            id: this.surveyId,
-            data: this.surveys,
-            questions: this.questionData,
-          }).then(()=>{
-            console.log("updated")
-            this.errMsg = false
-            this.$router.push(`/surveysList/${this.studyId}`);
-          })
+        let surveyData={
+          'image':"SurveyIcon",
+          'order':this.surveys.order,
+          'section':this.surveys.section,
+          'subtitle':this.surveys.subtitle,
+          'title':this.surveys.title,
+          'main': this.surveys.main
+        }
+        if (Object.keys(this.newQuestionsData).length){
+            let questionIdentifiers = Object.keys(this.newQuestionsData).map((key)=>{
+            return this.newQuestionsData[key].identifier
+          }) 
+            let uniqueIdentifiers =new Set(questionIdentifiers)
+          if(questionIdentifiers.length==uniqueIdentifiers.size){
+            this.validSurvey(this.newQuestionsData, surveyData)
+          }
+          else{
+            this.errMsg = true
+            this.cl = "alert-err"
+            this.msg = "The question identifiers must be unique"
+          }
         }else{
           this.errMsg = true
           this.cl = "alert-err"
           this.msg = "The questions cannot be empty"
         }
-      }else{
+      } else {
         this.errMsg = true
         this.cl = "alert-err"
         this.msg = "The fields can't be blank"
       }
-    },
-    validIdentifier(surveys){
-      this.errMsg = false
-      this.msg=""
-      let allIdentifiers = this.getAllQuestion.map(obj => obj.identifier)
-      let identifiers = Object.values(surveys).map(obj => obj.identifier)
-      let unique = true
-      for (const key of identifiers) {
-        if (allIdentifiers.includes(key)){
-          unique = false
-        }
-      }
-      if (unique){
-        this.SaveQuestion({
-          id: this.surveyId,
-          studyId: this.studyId,
-          questions: surveys
-        }).then(()=>{
-          console.log("created")
-          this.update()
-        })
-      }else{
-        this.errMsg = true
-        this.cl = "alert-err"
-        this.msg="Identifier should be unique"
-      }
-    },
-    saveNewSurveys(){
-      let newQuestions = {}
-      Object.keys(this.newQuestionsData).forEach((key) => {
-        if (!Object.keys(this.questionData).includes(key)){
-          newQuestions[key] = this.newQuestionsData[key]
-        }
-      })
-      if(Object.keys(newQuestions).length){
-        this.validIdentifier(newQuestions)
-      }else{
-        this.update()
-      }
-    },
+    }, 
     setSurveyData(){      
       this.surveyData = this.getSurveysData(this.studyId)[this.surveyId]
       if (this.surveyData) {
@@ -201,7 +207,6 @@ export default {
         }
         this.newQuestionsData = {...this.questionData}
       }
-
     }
   },
   computed: {
