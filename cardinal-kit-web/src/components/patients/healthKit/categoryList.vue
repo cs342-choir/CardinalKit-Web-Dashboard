@@ -1,15 +1,15 @@
 <template>
   <div class="page">
-    <div class="categories-grid">
-      <category
-        v-for="category in categories"
-        :data="category"
-        :key="category.id"
-        :userId="userId"
-        :studyId="studyId"
-        :icon="category.icon"
-        v-show="getValidCategories.includes(category.id)"
-      />
+    <div class="row box">
+        <category
+         v-for="category in categories" :key="category.id"
+          class="col width"
+          :data="category"
+          :userId="userId"
+          :studyId="studyId"
+          :icon="category.icon"
+          v-show="getValidCategories.includes(category.id)"
+        />
     </div>
     <div class="wrapper-graphs content" v-if="showActivityIndex">
       <h1>Activity Index</h1>
@@ -65,6 +65,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .width {
+    min-width: 500px;
+    max-width: 600px;
+  }
+  .box {
+    flex-wrap: wrap;
+  }
   .categories-grid {
     display: grid;
     gap: 20px 40px;

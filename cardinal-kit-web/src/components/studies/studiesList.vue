@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <h1 class="mb-5">Studies</h1>
+    <h1 class="mb-5 ml-5">Studies</h1>
     <div class="row box">
       <div class="col-50 m-3"  v-for="study of studies" :key="study">
         <small-card 
