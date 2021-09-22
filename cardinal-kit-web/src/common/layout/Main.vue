@@ -1,14 +1,5 @@
 <template>
   <div class="flex sidebar">
-    <!--  <Header
-      :src-logo="logo"
-      className="bg-danger"
-      brandTitle="CardinalKit"
-      logout
-      width-logo="50"
-      @handle-logout="handleLogout"
-      :menu="menu"
-    /> -->
       <Sidebar
         :menu="menu"
         :className="'h-auto bg-danger'"
