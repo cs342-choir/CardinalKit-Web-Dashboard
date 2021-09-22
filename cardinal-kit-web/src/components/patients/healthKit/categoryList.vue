@@ -66,7 +66,7 @@ export default {
 
 <style lang="scss" scoped>
   .width {
-    min-width: 500px;
+    min-width: 340px;
     max-width: 500px;
   }
   .box {
