@@ -13,8 +13,8 @@
     </div>
     <div class="wrapper-graphs content" v-if="showActivityIndex">
       <h1>Activity Index</h1>
-      <div class="inline">
-        <span  class="align-self-center w-10">7-day moving avg (steps/day)</span>
+      <div >
+        <span >7-day moving avg (steps/day)</span>
         <line-chart
           ref="chart"
           id="line-chart"
