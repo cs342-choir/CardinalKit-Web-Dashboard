@@ -13,11 +13,15 @@
     </div>
     <div class="wrapper-graphs content" v-if="showActivityIndex">
       <h1>Activity Index</h1>
-      <line-chart
-        ref="chart"
-        :key="1"
-        :series="getActivityIndexDataToGraphic"
-      />
+      <div class="inline">
+        <span  class="align-self-center w-10">7-day moving avg (steps/day)</span>
+        <line-chart
+          ref="chart"
+          id="line-chart"
+          :key="1"
+          :series="getActivityIndexDataToGraphic"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -26,7 +30,6 @@ import category from "./categoryCard";
 import { CategoriesList } from '@/common/static_data'
 import { mapGetters } from 'vuex';
 import LineChart from "@/components/apexCharts/LineChart";
-
 
 export default {
   name: "categories",
@@ -53,7 +56,6 @@ export default {
         }
       }
       return show
-
     }
   },
   created(){
