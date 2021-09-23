@@ -1,7 +1,7 @@
 <template>
   <section class="page">
     <!-- <h1 class="mb-5 text-capitalize"> {{categoryId}}</h1> -->
-    <div class="wrapper-activities">
+    <div class="row">
        <!-- <activity-card name="Actividad" date="7 may">
         <template v-slot:card-body>
           <div class="card-info">
@@ -21,18 +21,18 @@
            <multiple-radial-bars :series="[calories,exerciseTime,standUpTime]" :height="'250'" :labels="['Move','exercise','Stand Up']"/> 
         </template>
       </activity-card> -->
-      <template v-if="activities && activities.length" >
-        <activity-card 
-          v-for="activity in activities" :key="activity.HkCode"
-          :name="activity.HkCodeName" 
-          :date="activity.Date.formatted"
-          :color-title="activity.Color" 
-          :value="''+activity.Value" 
-          :measure="activity.Unit"
-          :logo="activity.Logo"
-          :id="activity.HkCode">
-        </activity-card>
-      </template>
+        <div class="col flex wrap" v-if="activities && activities.length" >
+          <activity-card 
+            v-for="activity in activities" :key="activity.HkCode"
+            :name="activity.HkCodeName" 
+            :date="activity.Date.formatted"
+            :color-title="activity.Color" 
+            :value="''+activity.Value" 
+            :measure="activity.Unit"
+            :logo="activity.Logo"
+            :id="activity.HkCode">
+          </activity-card>
+        </div>
     </div>
   </section>
 </template>
@@ -82,16 +82,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrapper-activities {
-/*   justify-content: center;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: center; */
-
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 350px));
+.wrap {
+  flex-flow: wrap;
 }
 
 .card-info {

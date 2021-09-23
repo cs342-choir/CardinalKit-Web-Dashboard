@@ -1,6 +1,6 @@
 <template>
-  <div class="w-65">
-    <div v-if="!loading" @click="showToGraph(id)" class="card pointer">
+  <div>
+    <div v-if="!loading" @click="showToGraph(id)" class="m-2 card pointer width">
       <div class="card-header align-center m-1">
         <div class="card-header__title">
           <h4 :style="{ color: colorTitle }"><b>{{ name }} </b></h4>
@@ -81,8 +81,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.wi {
-  width: 65%;
+.width {
+  width: 13rem;
+  flex-wrap: wrap;
 }
 .card {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -90,7 +91,6 @@ export default {
   min-width: 40%;
   padding-bottom: 5px;
   border-radius: 5px;
- /*  width: 65%; */
   height: auto;
   background-color: $bg-card;
   justify-content: space-between;
