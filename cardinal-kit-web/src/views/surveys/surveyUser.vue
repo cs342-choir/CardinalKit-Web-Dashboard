@@ -1,14 +1,19 @@
 <template>
   <div class="page">
+    <br />
     <button @click="schedule">Scheduler</button>
+    <br />
     Select survey type
+    <br /><br />
     <alt-select
       :options="surveyTypes"
       v-model="surveySelected"
       :onChange="onSurveyTypeChange"
       ref="surveyTypeSelect"
     />
+    <br /><br />
     Select Question of survey
+    <br /><br />
     <alt-select
       :options="surveyQuestions"
       v-model="questionSelected"
