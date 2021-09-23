@@ -20,7 +20,7 @@
           <span class="m-2">{{ date }}</span>
       </div>
     </div>
-    <loading-icon v-show="loading" size="12px"/>
+    <loading-icon v-else size="12px" class="width"/>
   </div>
 </template>
 <script>
@@ -83,7 +83,6 @@ export default {
 <style lang="scss" scoped>
 .width {
   width: 13rem;
-  flex-wrap: wrap;
 }
 .card {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);

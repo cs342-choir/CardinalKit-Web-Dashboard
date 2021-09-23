@@ -1,10 +1,8 @@
 <template>
   <div class="page">
     <br />
-    <div class="header">
+    <div  class="my-2">
       <h1 class="text-muted">Survey</h1>
-      <button @click="schedule">Scheduler</button>
-      <button @click="create">Create new survey</button>
     </div>
     <alt-table :columns="columns" pagination 
       :paginationOptions="paginationOptions"
@@ -29,6 +27,10 @@
       </tr>
     </template>
     </alt-table>
+    <div  class="btn-content mt-2">
+      <button @click="schedule">Scheduler</button>
+      <button @click="create">Create new survey</button>
+    </div>
     <br />
   </div>
 </template>
@@ -56,7 +58,6 @@ export default {
   computed: {
     ...mapGetters("user", ["getUserRol","getUserId"]),
     ...mapGetters("surveys",["getSurveysData"]),
-   
     paginationOptions() {
       return {
         limit: [10, 20],
@@ -133,11 +134,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-  .header {
+  .btn-content {
     margin-bottom: 10px;
+    margin-top: 10px;
     display: flex;
     justify-content: space-between;
   }
-
-
 </style>

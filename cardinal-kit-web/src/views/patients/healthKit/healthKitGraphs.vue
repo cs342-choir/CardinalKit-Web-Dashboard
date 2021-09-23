@@ -63,14 +63,12 @@
               }"
           />
         </div>
-        <div class="mb-1">
+        <div class="mb-1" v-if="getHealthDataGraphResume(hkCode)" >
           <p><b>{{ getHealthDataGraphResume(hkCode).value }}</b></p>
           <p><b>{{ getHealthDataGraphResume(hkCode).date }}</b></p>
           <p>{{ getHealthDataGraphResume(hkCode).title }}</p>
         </div>
       </div>
-      
-
     </div>
     <div class="height">
       <alt-table
@@ -194,7 +192,6 @@ export default {
       }
     }
   },
-  mounted() {},
   beforeRouteEnter(to, from, next) {
     Promise.all([
       store.dispatch("patient/FetchSpecificTypeData", {
