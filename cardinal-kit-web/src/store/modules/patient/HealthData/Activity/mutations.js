@@ -38,12 +38,13 @@ export function saveHealthData(state, payload) {
       healthData[keyCode].data.push(record[key]);
     });
   });
-  console.log(healthData);
   state.healthData = healthData;
 }
 
+
+///TODO REVIEW THIS METHOD
 export function saveActivityData(state, payload) {
-  console.log("llamando otro", payload);
+  console.log("CALL OTHER???", payload);
 }
 
 

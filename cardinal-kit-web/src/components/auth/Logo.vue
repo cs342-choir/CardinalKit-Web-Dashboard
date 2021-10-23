@@ -1,7 +1,12 @@
 <template>
-  <picture :class="className">
-    <img :src="path || ''" alt="logo" :width="width" />
-  </picture>
+  <div>
+    <picture :class="className" class="flex">
+      <img :src="path || ''" alt="logo" :width="width" />
+      <div v-if="title" class="mt-3">
+        <h2>{{title}}</h2>
+      </div>
+    </picture>
+  </div>
 </template>
 <script>
 export default {
@@ -10,6 +15,7 @@ export default {
     width: String,
     className: String,
     path: String,
+    title: String
   },
 }
 </script>

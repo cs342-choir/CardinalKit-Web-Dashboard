@@ -12,6 +12,7 @@ export const CategoriesList = [
   { id:"symtoms", name: "Symptoms", icon: require("@/assets/icons/Symtoms.png") },
   { id:"vitals", name: "Vitals", icon: require("@/assets/icons/Vitals.png") },
   { id:"other", name: "Other Data", icon: require("@/assets/icons/Other.png") },
+  { id:"survey", name: "Surveys", icon: require("@/assets/icons/Other.png"), customAction:"surveyUser" },
 ];
 
 /** Apple Categories that need average instead of summation */

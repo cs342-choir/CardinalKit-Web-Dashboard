@@ -11,7 +11,6 @@ export function reset({ commit }) {
 }
 
 export async function SignIn({ commit }, payload) {
-  console.log("auth", payload);
   return await auth
     .signInWithEmailAndPassword(payload.email, payload.password)
     .then(() => {

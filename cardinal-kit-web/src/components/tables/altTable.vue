@@ -63,7 +63,6 @@ export default {
   }
 }
 
-
 .wrapper-table{
   border-radius: .5rem;
   display: block;

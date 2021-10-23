@@ -28,12 +28,10 @@ function ResumeRange(data,transformValueCallBack,unit){
     }
     if(newValue<min)
     {
-      console.log("new Min")
-      console.log(record)
       min=newValue
+      return {title:"Range",value:`${min} - ${max}  ${unit}`}
     }
   })
-  return {title:"Range",value:`${min} - ${max}  ${unit}`}
 }
 function ResumeSum(data,transformValueCallBack, unit){
   let total=0
@@ -292,7 +290,42 @@ function MinfdfulData(data){
 
 export function getCategoryDataWebFormat(state) {
   return (categoryId) => {
-    console.log(" -- ",state.healthWebFormat[categoryId])
     return state.healthWebFormat[categoryId];
   };
+}
+
+export function getValidCategories(state){
+  return state.validCategories
+}
+
+export function getActivityIndexDataToGraphic(state){
+  
+  let metrics =state.userMetricData
+  let data=[]
+  metrics.forEach(element => {
+    data.push({"x":Date.parse(element.date),"y": parseInt(element.activityindex) })
+  });
+  let response = [{
+    "name":"ActivityIndex",
+    "data":data
+  }]
+  return response
+  
+
+  /* 
+  [ 
+    { "name": "HKQuantityTypeIdentifierDistanceWalkingRunning", 
+      "data": [ 
+        { "x": "2021-08-03T20:43:30.823Z", "y": "131.68" }, 
+        { "x": "2021-08-06T14:54:49.220Z", "y": "631.60" }, 
+        { "x": "2021-08-09T16:06:59.679Z", "y": "421.70" }, 
+        { "x": "2021-08-10T15:03:12.788Z", "y": "889.07" }, 
+        { "x": "2021-08-11T05:04:47.586Z", "y": "2209.50" } 
+      ] 
+    } 
+  ]
+*/
+
+  return metrics
+
 }

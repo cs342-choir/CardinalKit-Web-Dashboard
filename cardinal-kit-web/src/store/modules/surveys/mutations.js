@@ -7,6 +7,128 @@ export function RESET(state) {
   });
 }
 
+export function saveSurveysData(state,payload){
+  state.surveysData[payload.studyId] = payload.surveys
+}
+
+export function saveSurveyAnswers(state,{studyId,surveyId, results}){
+  //edit format
+  let dictResult = {};
+  results.forEach((records) => {
+    //each record
+    records.forEach((record) => {
+      if (record.results) {
+        //Each Question
+        record.results.forEach((question) => {
+          if (
+            (question.results && question.results.length > 0) ||
+            !Array.isArray(question.results)
+          ) {
+            if (Symbol.iterator in question.results) {
+              question.results.forEach((Nquestion) => {
+                addQuestionToDictionary(
+                  question,
+                  Nquestion,
+                  dictResult,
+                  records["userId"]
+                );
+              });
+            } else {
+              addQuestionToDictionary(
+                question,
+                question.results,
+                dictResult,
+                records["userId"]
+              );
+            }
+          }
+        });
+      }
+    });
+  });  
+  state.surveyAnswers[studyId] = {}
+  state.surveyAnswers[studyId][surveyId] = transformDictionaryInJsonReadable(dictResult)
+}
+
+export function saveSurveyData(state,payload){
+  if(!state.surveysData[payload.studyId]){
+    state.surveysData[payload.studyId]={}
+  }
+  state.surveysData[payload.studyId][payload.surveyId] = {data: payload.data, questions:payload.questions}
+}
+
+export function saveUserAnswers(state, {studyId,userId, response}){
+  let dictExternal = {}
+  for (const [key, value] of Object.entries(response)) {
+    let dictInternal = {};
+    value.answers.results.forEach(record => {
+        if(record.results){
+          record.results.forEach((question) => {
+  
+            if (
+              (question.results && question.results.length > 0) ||
+              !Array.isArray(question.results)
+            ) {
+              if (Symbol.iterator in question.results) {
+                question.results.forEach((Nquestion) => {
+                  addQuestionToDictionary(
+                    question,
+                    Nquestion,
+                    dictInternal,
+                    userId
+                  );
+                });
+                
+              } else {
+                addQuestionToDictionary(
+                  question,
+                  question.results,
+                  dictInternal,
+                  userId
+                );
+              }
+            }
+          });
+        }
+    });
+    dictExternal[key]=
+      {
+        questions:value.questions,
+        data: value.data,
+        answers: dictInternal
+      }
+  }
+  state.userAnswers[studyId] = {}
+  state.userAnswers[studyId][userId] = dictExternal
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export function saveQuestionBySurveyId(state,questions){
+  state.questionBySurveyId = questions.results;
+} 
+
+export function saveAllQuestions(state,questions){
+  state.allQuestions = questions.results;
+} 
+
+export function saveSurveysListData(state, { idStudy, surveys }) {
+  state.surveysListData[idStudy] = JSON.parse(JSON.stringify(surveys));
+} 
+
 export function saveSurveysList(state, { idStudy, surveys }) {
   state.surveysList[idStudy] = surveys;
 }
@@ -117,4 +239,61 @@ function transformAnswerFormat(question) {
     date = "";
   }
   return { userId: question.userId, answer: answer, date: date };
+}
+export function saveSurveysUserQuestions(state,{results}) {
+  state.SurveyUserQuestions = results
+}
+export function saveSurveysBuilderUser(state,{results}) {
+  state.SurveyBuilderUser = results
+}
+export function saveUserSurveys(state,{results,userId}) {
+  let dictExternal = {}
+  for (const [key, value] of Object.entries(results)) {
+    let dictInternal = {};
+    value.forEach(record => {
+        if(record.results){
+          record.results.forEach((question) => {
+                  if (
+                    (question.results && question.results.length > 0) ||
+                    !Array.isArray(question.results)
+                  ) {
+                    if (Symbol.iterator in question.results) {
+                      question.results.forEach((Nquestion) => {
+                        addQuestionToDictionary(
+                          question,
+                          Nquestion,
+                          dictInternal,
+                          userId
+                        );
+                      });
+                      
+                    } else {
+                      addQuestionToDictionary(
+                        question,
+                        question.results,
+                        dictInternal,
+                        userId
+                      );
+                    }
+                  }
+                });
+        }
+    });
+    dictExternal[key]=dictInternal
+  }
+  
+  state.userSurveys = dictExternal
+}
+
+
+/// Scheduler
+
+export function saveSchedulesByStudy(state,{studyId,tasks}){
+  state.schedulesByStudy[studyId]={}
+  state.schedulesByStudy[studyId]=tasks
+}
+
+export function saveSchedulerByUser(state,{studyId,userId,tasks}){
+  state.schedulesByUser[studyId] = {}
+  state.schedulesByUser[studyId][userId] = tasks
 }

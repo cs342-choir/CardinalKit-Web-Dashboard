@@ -1,84 +1,35 @@
 <template>
-  <div>
-    <br />
-    Select a question
-    <br />
-    <br />
-     <alt-select :options="questions" v-model="questionSelected" />
-     <br />
-    <div
-      class="surveyQuestionTxt"
-      v-for="(value, key) in getSurveyDetail(studyId)[surveyId]"
-      :key="key"
-       v-show="questionSelected==value.identifier"
-    >
-      {{ value.question }}
-
-      <br />
-
-      <!-- @TODO remove all conditionals and create a method that accepts all kinds of surveys.options and stylizes it in cardinal format-->
-      <div class="surveyOptionsTxt" v-if="value.questionType === 1">
-        <br />
-        <strong>Min: </strong>{{ value.Options["Min"] + "" }}
-        {{ value.Options["MinDescription"] }} <strong>Max: </strong>
-        {{ value.Options["Max"] }} {{ value.Options["MaxDescription"] }}
-        <strong>Step: </strong> {{ value.Options["Step"] }}
-        <br />
-      </div>
-      <div class="surveyOptionsTxt" v-else-if="value.questionType === 2">
-        <br />
-        <strong>0: </strong>{{ value.Options[0]["text"] + "" }}
-        <strong>1: </strong>{{ value.Options[1]["text"] + "" }}
-        <strong>2: </strong>{{ value.Options[2]["text"] + "" }}
-        <br />
-      </div>
-      <div class="surveyOptionsTxt" v-else-if="value.questionType === 7">
-        <br />
-        <strong>False: </strong>{{ value.Options["NoText"] + "" }}
-        <strong>True: </strong>{{ value.Options["YesText"] + "" }}
-        <br />
-      </div>
-      <div    
-        class="surveyOptionsTxt"
-        v-else
-        v-for="(option, optionKey) in value.Options"
-        :key="optionKey"
-      >
-        {{ optionKey }}: {{ option }}
-      </div>
-      <!-- @TODO remove all conditionals and  create a method that accepts all kinds of surveys.options and stylizes it in cardinal format-->
-
-      <br />
-
-      <br />
-      <alt-table :columns="columns">
-        <template #t-row>
-          <tr v-for="(answer, index) in value.answers" :key="answer">
-            <td>{{ index + 1 }}</td>
-            <td class="userIdTxt">
-              {{ answer.userId }}
-            </td>
-            <td class="answerTxt">
-              {{ answer.answer }}
-            </td>
-            <td class="dateTxt">
-              {{ answer.date }}
-            </td>
-          </tr>
-        </template>
-      </alt-table>
-      <br />
+  <div class="page">
+    <div class="alert-err" v-if="errMsg">
+      {{msg}}
     </div>
-  </div>
-  <div :onClick="convert" class="card-category footerBtn">
-    <span class="downloadBtn">Download</span>
+    <div class="alert-err" v-if="noData">
+      This survey has no answers yet
+    </div>
+    <div v-else>
+      <br />
+      <h2> Select a Question</h2>
+      <br />
+      <alt-select :options="questions" v-model="questionSelected" :defaultValue="questionSelected" />
+      <br />
+      
+      <div
+        class="surveyQuestionTxt"
+        v-for="(value, key) in getSurveyAnswers(studyId)[surveyId]"
+        :key="key"
+        v-show="questionSelected == value.identifier"
+      >
+        <survey :data="value" />
+      </div>
+      <button @click="convert">Download</button>
+    </div>
   </div>
 </template>
 
 <script>
 import store from "@/store";
 import { mapGetters } from "vuex";
-import 'vue-select/dist/vue-select.css';
+import survey from "@/components/surveys/survey";
 
 //Components
 import altTable from "@/components/tables/altTable";
@@ -93,23 +44,33 @@ export default {
         { header: "Answer" },
         { header: "Date" },
       ],
-      questionSelected:null
+      questionSelected: "",
+      questionData: {},
+      errMsg: false,
+      noData: false
     };
   },
   computed: {
-    ...mapGetters("surveys", ["getSurveyDetail"]),
-    questions(){
-      let qs = []
-      this.getSurveyDetail(this.studyId)[this.surveyId].map((element)=>{
-        qs.push({"id":element.identifier,"name":element.question,"value":element.identifier})
-      })
-      return qs
-    }
+    ...mapGetters("surveys", ["getSurveyAnswers"]),
+   
+    questions() {
+      let qs = [];
+      let questions = this.getSurveyAnswers(this.studyId)[this.surveyId]
+      questions.forEach(question => {
+        qs.push({
+          id: question.identifier,
+          name: question.question,
+          value: question.identifier,
+        });
+      });
+      return qs;
+    },
   },
 
   components: {
     altTable,
-    altSelect
+    altSelect,
+    survey,
   },
   props: {
     studyId: {
@@ -121,26 +82,24 @@ export default {
       required: true,
     },
   },
-  methods: {
-
-    //   UTCtoLocalDate(date)  {           //@TODO decide whether to use local time or utc
-    //   const UTC = new Date(date || '');
-    //   const offSetDate = new Date(UTC.getTime() - UTC.getTimezoneOffset() * 120000);
-    //   const localDate = new Date(offSetDate).toISOString().substring(0, 19);
-    //   return localDate || '';
-    // },
+  methods: {    
     convert() {
+      this.errMsg = false
       let surveyData = JSON.parse(
-        JSON.stringify(this.getSurveyDetail(this.studyId)[this.surveyId])
+        JSON.stringify(this.getSurveyAnswers(this.studyId)[this.surveyId])
       );
-      console.log(surveyData);
       let surveyTransformed = this.oneLineForEachAnswer(
         this.optionsInOneLine(surveyData)
       );
       let stringData = JSON.stringify(surveyTransformed);
       const jsonData = JSON.parse(stringData);
-      let csvData = this.objectToCsv(jsonData);
-      this.download(csvData);
+      if(jsonData.length){
+        let csvData = this.objectToCsv(jsonData);
+        this.download(csvData);
+      }else{
+        this.errMsg = true
+        this.msg = "No data to download"
+      }
     },
     optionsInOneLine(data) {
       let result = [];
@@ -199,46 +158,31 @@ export default {
       docu.click();
     },
   },
-  mounted(){
-    console.log("mounted")
-    this.questionSelected=this.questions?this.questions[0].id:null
+  created() {
+    if (this.questions.length){
+      this.questionSelected = this.questions ? this.questions[0].id : null;
+    }
+    else{
+      this.noData = true
+    }
   },
   beforeRouteEnter(to, from, next) {
     Promise.all([
-      store.dispatch("surveys/FetchSurveyAllData", {
+      store.dispatch("surveys/FetchSurveyData", {
+        studyId: to.params.studyId,
+        surveyId: to.params.surveyId,
+      }),
+      store.dispatch("surveys/FetchSurveyDataAnswers", {
         studyId: to.params.studyId,
         surveyId: to.params.surveyId,
       }),
     ]).then(() => {
-      console.log("read");
       next();
     });
   },
 };
 </script>
 <style lang="scss">
-.downloadBtn {
-  text-decoration: none;
-  font-weight: 300;
-  font-size: 20px;
-  color: #000000;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 20px;
-  padding-right: 20px;
-  background-color: transparent;
-  border-width: 2px;
-  border-style: solid;
-  border-color: #000000;
-  margin: auto;
-  top: -20px;
-  box-shadow: 5px 5px 5px;
-}
-.footerBtn {
-  padding: 0px 25px 25px 25px;
-  width: 100%;
-  display: flex;
-}
 .surveyQuestionTxt {
   font-size: 25px;
   font-weight: 300;

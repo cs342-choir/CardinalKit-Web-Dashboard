@@ -1,6 +1,8 @@
 <template>
-<notifications position="top  left" width="100%" />
-  <router-view/>
+  <div>
+    <notifications position="top  left" width="100%" />
+      <router-view/>
+  </div>
 </template>
 
 <style lang="scss">

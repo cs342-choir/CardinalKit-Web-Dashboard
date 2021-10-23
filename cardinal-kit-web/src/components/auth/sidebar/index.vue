@@ -1,7 +1,7 @@
 <template>
   <nav class="flex justify-between flex-column" :class="{[className]: className , 'collapse-nav': collapse }">
     <div class="collapse">
-      <button @click="handleCollapse" type="button" class="btn-collapse">
+      <button @click="handleCollapse" class="btn-collapse">
         <svg viewBox="0 0 100 80" width="40" height="40">
           <rect width="100" height="20"></rect>
           <rect y="33" width="100" height="15"></rect>
@@ -11,17 +11,32 @@
     </div>
     <slot name="side-content">
       <div>
-        <Logo class="flex justify-center mb-5" :path="logo"
-        :width="widthLogo" />
+        <Logo
+          :path="logo" 
+          :className="'text-center'"
+          :title="'CardinalKit'"
+          :width="widthLogo">
+        </Logo>
         <ul v-if="menu" class="mb-5">
-          <template v-for="(link, index) in menu" :key="index">
-            <li class="flex sb-link">
-              <Icon v-if="link?.icon" :icon="link.icon" />
-              <router-link :to="link.route">
-                {{link.name}}
-              </router-link>
+          <div v-for="(link, index) in menu" :key="index">
+            <li class="sb-link">
+              <div>
+                <Icon v-if="link?.icon" :icon="link.icon" />
+                <router-link :to="link.route">
+                  {{link.name}}
+                </router-link>
+              </div>
+              <div v-if="link.children && link.children.length">
+                <div v-for="(child, index) in link.children" :key="index">
+                  <div class="ml-5">
+                    <router-link :to="child.route">
+                      {{child.name}}
+                    </router-link>
+                  </div>
+                </div>
+              </div>
             </li>
-          </template>
+          </div>
         </ul>
       </div>
       <div v-if="logout">
@@ -53,27 +68,45 @@ export default {
       type: String,
       default: 'bg-info'
     },
-    logo: String
+    logo:{
+      type: String
+    } 
   },
   components: { Logo, Icon },
+
   setup(props, ctx) {
     const collapse = ref(false);
-
     function handleClickLogout() {
-      ctx.emit('emitLogout', true);
+      ctx.emit('handleLogout', true);
     }
-
     const handleCollapse = () => (collapse.value = !collapse.value);
-
     return {
       handleClickLogout,
       handleCollapse,
-      collapse
+      collapse,
     }
   },
 }
 </script>
 <style lang="scss" scoped>
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
 nav {
   height: 100%;
   padding: 1.5rem;
@@ -94,8 +127,7 @@ nav {
     display: inline-block;
     position: absolute;
     top: 20px;
-    right: 0;
-    margin-right: -20px;
+    right: 6px;
     transition: .3s;
   }
 
@@ -104,6 +136,7 @@ nav {
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    padding: unset;
 
     &:before {
       content:'';

@@ -72,6 +72,7 @@ export default {
     border-radius: 5px;
     border-color: $light-grey;
     outline: none;
+    width: 70px;
   }
   
 .pagination {

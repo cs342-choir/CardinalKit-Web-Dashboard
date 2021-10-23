@@ -13,6 +13,5 @@ export function getActivityData(state){
 }
 
 export function getActivityDataWebFormat(state){
-  console.log("getter",state)
   return state.activityDataWebFormat
 }

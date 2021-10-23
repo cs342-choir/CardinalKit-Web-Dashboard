@@ -1,6 +1,6 @@
 import request from "@/Rest";
 import { transformHealthDataToGlobalFormat } from "@/common/helpers/healthKit";
-import {timeTransform} from "@/plugins/firebase/firebase"
+import { timeTransform } from "@/plugins/firebase/firebase";
 
 export const FetchSpecificTypeData = async ({ commit }, payload) => {
   let startDate = new Date();
@@ -17,8 +17,7 @@ export const FetchSpecificTypeData = async ({ commit }, payload) => {
     Ref = Ref.WHERE(["body.quantity_type", "==", payload.dataType]);
   } else if (payload.dataType.includes("Category")) {
     Ref = Ref.WHERE(["body.category_type", "==", payload.dataType]);
-  }
-  else{
+  } else {
     Ref = Ref.WHERE(["body.activity_name", "==", payload.dataType]);
   }
   let RefCopy = Ref.CLONE();
@@ -29,7 +28,7 @@ export const FetchSpecificTypeData = async ({ commit }, payload) => {
   records = dataSnap.docs.map((record) => {
     return transformHealthDataToGlobalFormat(record.data());
   });
-  if (records.length == 0 && payload.dates==undefined) {
+  if (records.length == 0 && payload.dates == undefined) {
     //Find Last and 1 month earlier
     let NewRef = Ref.CLONE()
       .ORDER_BY("header.creation_date_time", true)
@@ -57,8 +56,6 @@ export const FetchLastCategoryData = async ({ dispatch }, payload) => {
       return dispatch("FetchLastActivityData", payload);
     case "body":
       return dispatch("FetchLastBodyData", payload);
-    case "cycle":
-      return dispatch("FetchLastCycleData", payload);
     case "hearing":
       return dispatch("FetchLastHearingData", payload);
     case "heart":
@@ -80,4 +77,48 @@ export const FetchLastCategoryData = async ({ dispatch }, payload) => {
     case "other":
       return dispatch("FetchLastOtherData", payload);
   }
+};
+
+export const FetchLastSurveys = async ({}, payload) => {
+  let surveysSnap = await request
+    .GET(`studies/${payload.studyId}/surveys`)
+    .Execute();
+  return {
+    name: "survey",
+    data: surveysSnap.docs.filter((element) => element.exists),
+  };
+};
+
+export const FecthCategoryWithData = async ({ dispatch, commit }, payload) => {
+  let values = await Promise.all([
+    dispatch("FetchLastActivityData", payload),
+    dispatch("FetchLastBodyData", payload),
+    dispatch("FetchLastHearingData", payload),
+    dispatch("FetchLastHeartData", payload),
+    dispatch("FetchLastMindfulnessData", payload),
+    dispatch("FetchLastMobilityData", payload),
+    dispatch("FetchLastNutritionData", payload),
+    dispatch("FetchLastRespiratoryData", payload),
+    dispatch("FetchLastSleepData", payload),
+    dispatch("FetchLastSymtomsData", payload),
+    dispatch("FetchLastVitalsData", payload),
+    dispatch("FetchLastOtherData", payload),
+    dispatch("FetchLastSurveys", payload),
+  ]);
+  let categories = values.filter((element) => element.data.length > 0);
+  let categoriesNames = categories.map((element) => {
+    return element.name;
+  });
+  commit("saveValidCategories", categoriesNames);
+};
+
+export const FetchMetricsData = async ({ commit }, { studyId, userId }) => {
+  let result = [];
+  let metricSnap = await request.GET(`studies/${studyId}/users/${userId}/metrics`).Execute();
+ /*  console.log(metricSnap.docs) */
+  for (const [key, element] of Object.entries(metricSnap.docs)) {
+    let metricData = await request.GET(`studies/${studyId}/users/${userId}/metrics/${element.id}`).Execute();
+    result.push(metricData.data());
+  }
+  commit("saveMetricData", result);
 };

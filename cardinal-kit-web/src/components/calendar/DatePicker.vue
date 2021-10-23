@@ -50,7 +50,15 @@
 						</li>
 					</ul>
 					<div class="alt-calendar-body__days">
-						<span @click="selectedDay(day.day)" :class="{ active: today === day.day}" class="calendar-day" v-for="(day, index) in daysPerWeek" :key='index' :value="day.day">{{day.day}}</span>
+						<span 
+							@click="selectedDay(day.day)" 
+							:class="{ active: today === day.day}" 
+							class="calendar-day" 
+							v-for="(day, index) in daysPerWeek" :key='index' 
+							:value="day.day"
+						>
+							{{day.day}}
+						</span>
 					</div>
 				</div>
 			</div>
@@ -91,14 +99,14 @@ setup(props, ctx)  {
 	});
 
 	function getDayperMonthsandYear(year, month) {
-			const countDays = new Date(year, Number(month) + 1, 0).getDate();
-			const days = [...Array(countDays).keys()].map((day) => getDayofWeek(year, month, day + 1));
-			return days;
+		const countDays = new Date(year, Number(month) + 1, 0).getDate();
+		const days = [...Array(countDays).keys()].map((day) => getDayofWeek(year, month, day + 1));
+		return days;
 	}
 
 	function getDayofWeek(year, month, day) {
 		const calendarDay = new Date(year, month, day).getDay();
-		return {day: day , calendarDay }
+		return { day , calendarDay }
 	}
 
 	function generateSelectableYears(year) {
@@ -108,8 +116,14 @@ setup(props, ctx)  {
 	}
 
 	function getCalendarDaysOfWeek(calendarDays) {
+		let calendar = []
 		const voidData = calendarDays[0].calendarDay;
-		return [...Array(voidData - 1).fill(0), ...calendarDays]
+		if (voidData > 0){
+			calendar = [...Array(voidData - 1).fill(0), ...calendarDays]
+		}else{
+			calendar = [0, ...calendarDays]
+		}
+		return calendar
 	}
 
 	function selectedDay(day) {
@@ -151,7 +165,7 @@ setup(props, ctx)  {
 	margin-top: 15px;
 	position: absolute;
 	top: 55px;
-  left: 0;
+ 	left: 0;
 	z-index: 2;
 
   &:before {
@@ -174,19 +188,18 @@ setup(props, ctx)  {
 
   &-group {
     &__label {
-      display: flex;
-			border: solid 1px#f7f7f7;
-      border-radius: 3px;
+      	display: flex;
+		border: solid 1px#f7f7f7;
+      	border-radius: 3px;
+		span {
+			background: #f7f7f7;
+			padding: .3rem;
+		}
 
-			span {
-				background: #f7f7f7;
-				padding: .3rem;
-			}
-
-			select {
-				padding: .3rem;
-				border: none;
-			}
+		select {
+			padding: .3rem;
+			border: none;
+		}
     }
   }
 }

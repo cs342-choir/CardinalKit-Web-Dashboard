@@ -1,14 +1,14 @@
 <template>
   <div :style="styles" class="small-card">
-		<div v-if="image" class="small-card-img">
+		<div v-if="image" class="small-card-img flex">
 			<img class="logo" :src="image" alt="logo" >
+      <div class="small-card-info">
+        <p class="small-card-info__title">{{ title }}</p>
+        <p v-if="description" class="small-card-info__description">{{ description }}</p>
+        <small @click="$emit('onClick')" class="small-card-info__link pointer">{{ actionText || Action }}</small>
+      </div>
 		</div>
-		<div class="small-card-info">
-			<p class="small-card-info__title">{{ title }}</p>
-			<p v-if="description" class="small-card-info__description">{{ description }}</p>
-			<small @click="$emit('onClick')" class="small-card-info__link pointer">{{ actionText || Action }}</small>
-		</div>
-		<div class="hidden-background"></div>
+	<!-- 	<div class="hidden-background"></div> -->
 	</div>
 </template>
 
@@ -30,7 +30,7 @@ export default {
 	setup(props) {
 		const styles = reactive({
 			'--bg-card': props.bgCard || '#dadcff',
-			'--bg-card-hover': props.bgCardHover || '#5c62c5',
+			'--bg-card-hover': props.bgCardHover || '#b71540',
 			'--text-color': props.colorText || '#2c3e50',
 			'--text-color-action': props.colorTextAction  || '#ababab',
 			'--text-color-hover': props.colorTextHover  || 'white',
@@ -46,18 +46,18 @@ export default {
 <style lang="scss" scoped>
 .small-card {
   display: inline-block;
-  // overflow: hidden;
   position: relative;
   border-radius: 10px;
 
   &-img {
-    text-align: center;
     position: relative;
-    background-color: var(--bg-card);
-    padding: 2rem 1.5rem;
+    background-color: #f5f5f7;
+    padding: 1rem 1.5rem;
     border-radius: 10px;
-    z-index: 1;
+    border: 2.25px solid gainsboro;
     transition: background-color .5s;
+    justify-content: space-between;
+    width: 25rem;
 
     .logo {
       width: 100px;
@@ -66,8 +66,8 @@ export default {
 
   &-info {
     position: relative;
-    text-align: center;
-    padding: 1rem 1.5rem;
+    text-align: right;
+    padding: 1rem;
     z-index: 1;
 
     &__title {
@@ -82,19 +82,7 @@ export default {
       transition: color .7s;
     }
   }
-
-  .hidden-background {
-    width: 100%;
-    border-radius: 10px;
-    position: absolute;
-    background-color: var(--bg-card-hover);
-    top: 0;
-    left: 0;
-    height: 10%;
-    visibility: hidden;
-    transition: all .7s;
-  }
-
+  
   &:hover {
     .small-card-img {
       background-color: var(--bg-card-hover);
@@ -109,6 +97,18 @@ export default {
         color: var(--text-color-hover);
       }
     }
+  }
+/*   .hidden-background {
+    width: 100%;
+    border-radius: 10px;
+    position: absolute;
+    background-color: var(--bg-card-hover);
+    top: 0;
+    left: 0;
+    height: 10%;
+    visibility: hidden;
+    transition: all .7s;
+  }
 
     .hidden-background {
       visibility: visible;
@@ -116,7 +116,7 @@ export default {
       box-shadow: -1px 3px 5px 2px var(--bg-card);
       height: 100%;
       z-index: 0;
-    }
-  }
+     }
+  }*/
 }
 </style>

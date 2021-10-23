@@ -30,7 +30,6 @@ export const FetchStudyHealthData = async ({ commit }, payload) => {
     })
     return records
   }));
-  console.log(allRecords)
   commit("saveRecords", allRecords);
 };
 
@@ -43,3 +42,4 @@ export const FetchUsers = async ({commit},payload)=>{
   })
   commit("SaveUsers", {idStudy:payload.studyId,users:allUsers})
 }
+

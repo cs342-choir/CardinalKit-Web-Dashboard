@@ -8,6 +8,14 @@ import categoryDetail from "@/views/patients/healthKit/categoryDetail";
 import registerDoctor from "@/views/auth/registerDoctor"
 import surveysList from "@/views/surveys/surveysList"
 import surveyDetail from "@/views/surveys/surveysDetail"
+import surveyUser from "@/views/surveys/surveyUser"
+import surveyScheduler from '@/views/surveys/surveyScheduler'
+import store from "@/store";
+import surveysBuilder from "@/views/surveys/surveysBuilder"
+import editSurveyBuilder from "@/components/surveys/SurveyBuilder/editSurveyBuilder.vue"
+import categories from '@/components/patients/healthKit/categoryList'
+import healthKitGraphs from '@/views/patients/healthKit/healthKitGraphs'
+
 
 const routes = [
   {
@@ -28,7 +36,7 @@ const routes = [
         },
       },
       {
-        path: "/patients/:idStudy",
+        path: "/patients/:studyId",
         name: "patients",
         component: PatientsList,
         props: true,
@@ -37,12 +45,25 @@ const routes = [
         },
       },
       {
-        path: "/healthKitUser/:studyId/:userId",
+        path: "/healthKitUser",
         name: "healthUser",
         component: HealthUser,
         meta: {
           requiresAuth: true,
         },
+        props: true,
+        redirect: {name: "categories"},
+        children: [
+          { 
+            name: "categories", path: '', component: categories,
+          },
+          { 
+            name: "category", path: 'category/:categoryId', component: categoryDetail 
+          },
+          { 
+            name: "statistic", path: 'statistic/:hkCode', component: healthKitGraphs 
+          }
+        ]
       },
       {
         path: "/healthGraph/:studyId/:userId/:hkCode",
@@ -87,7 +108,44 @@ const routes = [
         props:true,
         meta: {
           requiresAuth: true,
+        }
+      },
+      {
+        path: "/surveysBuilder/:studyId",
+        name: "surveysBuilder",
+        component: surveysBuilder,
+        props:true,
+        meta: {
+          requiresAuth: true,
+        }
+      },
+      {
+        path: "/surveyScheduler/:studyId",
+        name: "surveyScheduler",
+        component: surveyScheduler,
+        props:true,
+        meta: {
+          requiresAuth: true,
+        }
+      },
+      {
+        path: "/edit/surveyBuilder/:studyId/:surveyId",
+        name: "editSurveyBuilder",
+        component: editSurveyBuilder,
+        props:true,
+        meta: {
+          requiresAuth: true,
         },
+      },
+      {
+        path: "/surveyUser",
+        name: "surveyUser",
+        component: surveyUser,
+        props:true,
+        meta: {
+          requiresAuth: true,
+        },
+        
       },
     ]
   },
@@ -121,6 +179,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  store.dispatch("user/FetchUserRolesAndStudies")
   if (process.env.VUE_APP_AUTH_MODE == "firebase") {
     let { auth } = require("@/plugins/firebase/firebase");
     let unsubscribe = auth.onAuthStateChanged(function(user){
