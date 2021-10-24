@@ -2,7 +2,6 @@
 home: false
 title: Generate CardinalKit App
 footer: Alternova Inc
-order: 1
 ---
 
 <Block>
