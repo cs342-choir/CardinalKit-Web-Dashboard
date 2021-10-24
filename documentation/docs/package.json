@@ -17,6 +17,7 @@
     "vuepress": "^1.5.3"
   },
   "dependencies": {
+    "markdown-it-meta": "0.0.1",
     "vuepress-theme-api": "^1.0.1"
   }
 }
