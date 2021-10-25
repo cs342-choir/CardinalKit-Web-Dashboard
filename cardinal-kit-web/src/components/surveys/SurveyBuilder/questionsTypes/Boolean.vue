@@ -33,9 +33,10 @@ export default {
   },
   methods:{
     checkQuestion(){
+      console.log(this.Options.yesText)
       let error = false
       let msg = ""
-      if(this.Options.yesText == "" || this.Options.noText == ""){
+      if(this.Options.yesText == "" || this.Options.noText == "" || this.Options.yesText == undefined || this.Options.noText == undefined){
         error = true
         msg = "The fields can't be blank"
       }

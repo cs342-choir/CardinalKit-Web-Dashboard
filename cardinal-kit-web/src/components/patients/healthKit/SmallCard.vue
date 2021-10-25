@@ -52,12 +52,11 @@ export default {
   &-img {
     position: relative;
     background-color: #f5f5f7;
-    padding: 1rem 1.5rem;
+    padding: 2rem 1.5rem;
     border-radius: 10px;
     border: 2.25px solid gainsboro;
     transition: background-color .5s;
     justify-content: space-between;
-    width: 25rem;
 
     .logo {
       width: 100px;

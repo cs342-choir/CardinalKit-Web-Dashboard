@@ -21,9 +21,9 @@
         <br>
         <label>Section: </label>
         <input v-model="surveys.section" type="text" placeholder="Section" />
-        <br>
+        <!-- <br>
         <label>Icon: </label>
-        <input type="file" placeholder="Icon" accept="image/*" />
+        <input type="file" placeholder="Icon" accept="image/*" /> -->
         <br>
         <div v-for="question in newQuestionsData" :key="question.id">
           <Question :disabledSelect="question.disabled" :question="question" @DeleteQuestion="deleteQuestions" :ref="question.id"/>

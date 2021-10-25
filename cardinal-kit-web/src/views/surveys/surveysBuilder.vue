@@ -21,9 +21,9 @@
         <br />
         <label>Section: </label>
         <input v-model="section" type="text" placeholder="Enter the section" />
-        <br />
+        <!-- <br />
         <label>Icon: </label>
-        <input type="file" placeholder="Icon" accept="image/*" />
+        <input type="file" placeholder="Icon" accept="image/*" /> -->
         <br>
         <div v-for="question in questions" :key="question.id">
           <Question :question="question" :readonly="false" @DeleteQuestion="deleteQuestions" :ref="question.id" />
