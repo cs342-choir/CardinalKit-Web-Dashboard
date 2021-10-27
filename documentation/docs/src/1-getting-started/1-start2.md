@@ -1,6 +1,6 @@
 ---
 home: false
-title: Generate CardinalKit App Img
+title: Generate CardinalKit App
 footer: Alternova Inc
 ---
 
