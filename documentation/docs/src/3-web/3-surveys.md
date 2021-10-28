@@ -1,12 +1,10 @@
 ---
 home: false
-title: survey creation
-footer: Alternova Inc
+title: Survey Creation
+footer: Stanford Byers Center for Biodesign
 ---
 
-<Block>
-
-The Cardinal kit allows you to create custom surveys that users can complete as many times as they want on the main screen, or schedule them to be filled on specific days or in a certain period, surveys can be assigned to a specific user or a study.
+CardinalKit allows you to create custom surveys that users can complete as many times as they want on the main screen, or schedule them to be filled on specific days or in a certain period, surveys can be assigned to a specific user or a study.
 
 ## 1) Create a survey
 
@@ -48,13 +46,10 @@ You can add all the questions you need by clicking on the Add Form question butt
 
 To add questions to a form, click on add form question.
 
-</Block>
-
-<Block>
 
 ## 2) Survey Types
 
-</br>
+<br />
 
 #### Text: 
 Create an open question with a single line text answer
@@ -99,19 +94,11 @@ Create a select with multiple options
 #### Summary: 
 show the user a final message
 
-<Example>
-
 <img src="./images/Surveys/6-example.png" alt="drawing" width="350"/>
 
-</br>
+<br />
 
 <img src="./images/Surveys/7-example2.png" alt="drawing" width="350"/>
-
-</Example>
-
-</Block>
-
-<Block>
 
 ## 3) How to assign a survey for a study?
 
@@ -121,29 +108,25 @@ To add a questionnaire to a complete study, on the survey page click on the sche
 
 <img src="./images/Surveys/8-scheduler.png" alt="drawing" width="650"/>
 
-</br>
-</br>
+<br />
+<br />
 
 There you will see a calendar and a table with the currently assigned surveys
 To assign a new one, click on the "Add survey to calendar" button.
 
 <img src="./images/Surveys/9-calendar.png" alt="drawing" width="650"/>
 
-</br>
-</br>
+<br />
+<br />
 
 A pop up will appear where you can indicate from which date to which date you want the survey to be filled in the interval of days that you want to pass from one occurrence to another
 
 <img src="./images/Surveys/10-form.png" alt="drawing" width="650"/>
 
-</br>
-</br>
+<br />
+<br />
 
 Finally a picker to select all the existing surveys and a short description that the user will read in the calendar of your application
-
-</Block>
-
-<Block>
 
 ## 4) How to assign a survey to a specific user?
 
@@ -153,31 +136,26 @@ For this you must go to the studies section/Patients -> select the user to whom 
 
 <img src="./images/Surveys/11-surveyPatient.png" alt="drawing" width="650"/>
 
-</br>
-</br>
+<br />
+<br />
 
 There you will see several sections of data including one called surveys, select it
 
 <img src="./images/Surveys/12-select-survey.png" alt="drawing" width="650"/>
 
-</br>
-</br>
+<br />
+<br />
 
 In this new screen you will be able to see the summary of all the responses that the user has had in front of the assigned surveys, click on scheduler to proceed to assign a new one.
 
 <img src="./images/Surveys/13-scheduler.png" alt="drawing" width="650"/>
 
-</br>
-</br>
+<br />
+<br />
 
 You will see the calendar and the table of assigned surveys press add survey to calendar and fill in the form in the same way that you filled it in to add the surveys to a study
 
 <img src="./images/Surveys/14-form.png" alt="drawing" width="650"/>
-
-</Block>
-
- <Block>
-
 
  ## 5) Download Answers
 
@@ -186,18 +164,15 @@ go to the surveys tab and select the details button for a specific survey
 
 <img src="./images/Surveys/15-edit.png" alt="drawing" width="650"/>
 
-</br>
-</br>
+<br />
+<br />
 
 You will find the summary of all survey responses separated by question
 click on the download button and you will get a csv file with all the answers organized
 
 <img src="./images/Surveys/16-download.png" alt="drawing" width="650"/>  
 
-</br>
-</br>
+<br />
+<br />
 
 <img src="./images/Surveys/17-example.png" alt="drawing" width="1050"/>  
-
-
-</Block>

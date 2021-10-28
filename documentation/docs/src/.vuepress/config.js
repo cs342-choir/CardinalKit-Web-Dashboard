@@ -38,5 +38,5 @@ const getChildren = function(parent_path, dir) {
 
 module.exports = {
   getChildren,
-  theme: 'api',
+  theme: 'api'
 }

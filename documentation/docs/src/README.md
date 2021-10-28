@@ -1,10 +1,10 @@
 ---
 home: true
-title: Cardinal Kit
+title: CardinalKit
 description: An Open Source Platform & Codebase for Digital Health Research and Applications
 actionText: Get Started
 actionLink: /1-getting-started/1-start
-footer: Alternova Inc
+footer: Stanford Byers Center for Biodesign
 ---
 <!-- 
 ### Robust Research and Health Features.

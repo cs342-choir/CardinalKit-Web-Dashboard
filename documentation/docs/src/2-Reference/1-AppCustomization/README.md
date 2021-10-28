@@ -3,7 +3,6 @@ home: false
 title: App Customization Guide
 footer: Alternova Inc
 ---
-<Block>
 
 # App Customization Guide
 
@@ -11,12 +10,8 @@ Note: these features are currently only available on the currently experimental 
 
 CardinalKit provides quick customization options for your health research application through the CKConfiguration.plist file. This file is a spreadsheet that maps CardinalKit-defined keys to user-selected values. This reference shows you how to customize that file to suit your needs. Every key must have a value or the app will crash.
 
-</br>
 <img src="../images/swiftui.png" alt="drawing" width="650"/>
 
-<br>
-</Block>
-<Block>
 The default CardinalKit sample app with no CKConfiguration.plist changes.
 
 ### CKConfiguration Keys and Values
@@ -59,8 +54,6 @@ The default CardinalKit sample app with no CKConfiguration.plist changes.
 | Consent Form                 | See below. At least 1 section is required.                                                                                           |
 | Onboarding                   | See below. At least 1 panel is required.                                                                                             |
 
-<Example>
-
 ### Consent Form Specifications
 
 The values to this element in the file will construct the consent process. At least 1 section is required.
@@ -76,12 +69,6 @@ The values to this element in the file will construct the consent process. At le
 | Study Tasks        |
 | Withdrawing        |
 
-</Example>
-
-</Block>
-<Block>
-
-
 
 ### Onboarding Specifications
 
@@ -95,8 +82,6 @@ The ```Onboarding``` key is an array of dictionary items. Each dictionary repres
 | Description | A description for the page      |
 | Logo        | An emoji or number for the page |
 
-<Example>
-
 ### Sign in with Apple
 
 The ```Login-Sign-In-With-Apple``` key is an array of dictionary items. Before turning this feature on, make sure you have taken care of the necessary setup.
@@ -106,8 +91,3 @@ The ```Login-Sign-In-With-Apple``` key is an array of dictionary items. Before t
 | Enabled | Whether Apple sign in is enabled (1 or 0) |
 | Title   | A title for the sign in invocation        |
 | Text    | Text to go with the sign in process       |
-
-</Example>
-
-
-</Block>

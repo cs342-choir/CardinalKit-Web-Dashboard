@@ -5,8 +5,6 @@ footer: Alternova Inc
 order: 2
 ---
 
-<Block>
-
 # Set Up Application Infrastructure
 
 <!-- ![image](./images/doctors.svg) -->
@@ -15,10 +13,6 @@ Prior to CardinalKit, researchers would need to implement a backend solution of 
 ## Create a new Firebase Database
 
 <img src="./images/connect.svg" alt="drawing" width="250"/>
-
-</Block>
-
-<Block>
 
 ## 1. Make a Firebase Account
 
@@ -33,10 +27,6 @@ firebase.google.com
 
 </Example>
 
-</Block>
-
-<Block>
-
 ## 2. Set up a New Firebase Instance
 
 Go to your Firebase console (top right) and add a new project. Name the project to be something related to your app for future reference.
@@ -49,10 +39,6 @@ It is important that you disable Google Analytics because it is not BAA complian
 
 </Example>
 
-</Block>
-
-<Block>
-
 </br>
 Once ready, click "continue". Click "Database" under the "Develop" section in the sidebar, and then "Create database".
 </br>
@@ -62,10 +48,6 @@ Once ready, click "continue". Click "Database" under the "Develop" section in th
 <Example>
 
 </Example>
-
-</Block>
-
-<Block>
 
 </br>
 </br>
@@ -78,11 +60,7 @@ Be sure to start the database in test mode so your research IT can configure the
 Why? When developing and testing your application, it is fine to use your own custom Firebase backend. However, in production, it is easier to hand-off database maintenance to your IT department (e.g. Stanford Medicine IT). Their configuration will be guaranteed to be HIPAA compliant.
 :::
 
-
-
 <img src="./images/database-setup-1.png" alt="drawing" width="450"/>
-
-
 
 </br>
 </br>
@@ -92,10 +70,6 @@ Finally, set the deploy location to be "us-east1" (or any location close to your
 </br>
 
 <img src="./images/database-setup-2.png" alt="drawing" width="450"/>
-
-</Block>
-
-<Block>
 
 ## 3. Link App to Firebase Project
 
@@ -121,15 +95,7 @@ Fill out the registration form using the bundle ID you selected on while creatin
 
 Download the "GoogleService-Info.plist" file when prompted. There will be a "GoogleService-Info.plist" in the Xcode project as well located in "CardinalKit-Example" > "CardinalKit" > "Supporting Files". Replace this one with the new file you just downloaded. Run the app again and make sure no errors pop up.
 
-
-</br>
 <img src="./images/plist.png" alt="drawing" width="650"/>
-
-
-</br>
-</Block>
-
-<Block>
 
 ## Enabling Authentication
 
@@ -146,15 +112,6 @@ The last step is to open the CKConfiguration.plist file and edit the Enabled key
 
 <img src="./images/10.gif" alt="drawing" width="650"/>
 
-</br>
-
-</Block>
-
-<Block>
-</br>
-</br>
-</br>
-</br>
 The final step is to allow authorized users to upload data to Firebase. Navigate to the Database tab in your Firebase dashboard. Find the "Rules" section and edit the text to match the following rule set:
 
 <Example>
@@ -171,13 +128,8 @@ service cloud.firestore {
 ```
 </Example>
 
-</Block>
-
-<Block>
 
 Congrats! You're now set up to use CardinalKit as a starting point for your research app - run the app within Xcode and test it out!
 
 <img src="./images/celebrate.svg" alt="drawing" width="350"/>
 
-
-</Block>

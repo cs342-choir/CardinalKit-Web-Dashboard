@@ -7,57 +7,57 @@ footer: Alternova Inc
 
 ## 1) Create admin account
 
- </br>
+ <br />
 
  To manage your website you need to create an administrator account this is created from the firebase administrator
 
  From the firebase administrator enter authentication
 
- </br>
+ <br />
 
  <img src="./images/authentication.png" alt="drawing" width="550"/>
 
- </br>
- </br>
+ <br />
+ <br />
 
  and then add new user
  
- </br>
+ <br />
 
  <img src="./images/newuser.png" alt="drawing" width="850"/>
 
- </br>
- </br>
+ <br />
+ <br />
 
 enter a username and password for the administrator user
 
-</br>
+<br />
 
 <img src="./images/userpassword.png" alt="drawing" width="750"/>
 
-</br>
-</br>
+<br />
+<br />
 
 Now you need to indicate to the web page that this new user is an administrator user, the user roles are managed from the database in firestore
 For users created from the web, this process will be automatic, it is necessary to do it by hand only once for the administrator user.
 
 First copy the uid of the user you just created
 
-</br>
+<br />
 
 <img src="./images/useruid.png" alt="drawing" width="750"/>
 
-</br>
-</br>
+<br />
+<br />
 
 then click on firestore database
 
-</br>
+<br />
 
 <img src="./images/Firestore.png" alt="drawing" width="250"/>
 
-</br>
-</br>
+<br />
+<br />
 
 Esta es la base de datos de todo el proyecto aca podras ver todos los registros de estudios y usuarios generados en la aplicacion.
 
@@ -67,12 +67,12 @@ agrega un docuemento con el uid del usuario previamente creado
 
 Finalmente agrega un campo al documento rol:"superAdmin"
 
-</br>
+<br />
 
 <img src="./images/add_role.png" alt="drawing" width="850"/>
 
-</br>
-</br>
+<br />
+<br />
 
 Now you can log in with your administrator account
 
