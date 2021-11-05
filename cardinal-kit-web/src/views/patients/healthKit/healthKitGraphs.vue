@@ -124,7 +124,8 @@ export default {
       limit: 10,
       studyId: this.$route.query.studyId,
       userId: this.$route.query.userId,
-      hkCode: this.$route.params.hkCode
+      hkCode: this.$route.params.hkCode,
+      firstDateChange: true
     };
   },
   computed: {
@@ -166,6 +167,20 @@ export default {
     transformAppleCode,
     GetCategoriesByHkType,
     handleChangeDate(value) {
+      if(this.firstDateChange){
+        let allData = this.getSpecificHealthDataGrapFormat(this.hkCode)
+        if (allData.length>0){
+          let data = allData[0].data
+          if (data.length>0){
+            let lastValue = data[data.length-1]
+            if (value.startDate>lastValue.x){
+              value.startDate=lastValue.x
+            }
+          }
+        }
+      }
+      this.firstDateChange = false
+
       if (value) {
         if (this.$refs.chart) {
           if (value.endDate) {

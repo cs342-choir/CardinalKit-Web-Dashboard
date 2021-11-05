@@ -79,13 +79,21 @@ function ResumeSleepAnalisis(data){
 
 export function getHealthDataGraphResume(state){
   return (code)=>{
+    console.log("health",state.healthData)
     let data= state.healthData[code]
 
     let result = { title:"", value:"",date:""}
 
     switch(code){
       case "HKQuantityTypeIdentifierHeartRate": 
-        result = ResumeRange(data,(param,unit)=>{return param},data[0].Unit)
+      let Unit = data.length>0 ?data[0].Unit:""
+      if(data.length>0){
+        result = ResumeRange(data,(param,unit)=>{return param},Unit)
+      }
+      else{
+        
+      }
+        
       break;
       case "HKCategoryTypeIdentifierSleepAnalysis":
         result = ResumeSleepAnalisis(data)
@@ -98,7 +106,9 @@ export function getHealthDataGraphResume(state){
         break;
       default:
         if (code.includes("Quantity")) {          
-          result = ResumeSum(data,(param)=>{return param},data[0].Unit)
+          let Unit = data.length>0 ?data[0].Unit:""
+          result = ResumeSum(data,(param)=>{return param},Unit)
+          console.log("result",result)
         }
         else{
           result = ResumeCount(data)

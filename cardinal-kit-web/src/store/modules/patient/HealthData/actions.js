@@ -47,7 +47,10 @@ export const FetchSpecificTypeData = async ({ commit }, payload) => {
       });
     }
   }
-  commit("saveSpecificTypeData", { data: records, datatype: payload.dataType });
+  if (records.length>0){
+        commit("saveSpecificTypeData", { data: records, datatype: payload.dataType });
+  }
+  
 };
 
 export const FetchLastCategoryData = async ({ dispatch }, payload) => {
@@ -117,8 +120,8 @@ export const FetchMetricsData = async ({ commit }, { studyId, userId }) => {
   let metricSnap = await request.GET(`studies/${studyId}/users/${userId}/metrics`).Execute();
  /*  console.log(metricSnap.docs) */
   for (const [key, element] of Object.entries(metricSnap.docs)) {
-    let metricData = await request.GET(`studies/${studyId}/users/${userId}/metrics/${element.id}`).Execute();
-    result.push(metricData.data());
+    // let metricData = await request.GET(`studies/${studyId}/users/${userId}/metrics/${element.id}`).Execute();
+    result.push(element.data());
   }
   commit("saveMetricData", result);
 };
