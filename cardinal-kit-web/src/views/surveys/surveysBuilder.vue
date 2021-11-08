@@ -4,9 +4,9 @@
       <h1 class="text-center text-muted font-weight-bold">Surveys Builder</h1>
       <br />
       <div class="input-form">
-        <div :class="cl" v-if="errMsg">
+        <!-- <div :class="cl" v-if="errMsg">
           {{msg}}
-        </div>
+        </div>-->
         <label>Title: </label>
         <input v-model="title" type="text" placeholder="Enter the title" />
         <br />
@@ -50,6 +50,7 @@ import Question from "@/components/surveys/SurveyBuilder/Questions";
 import { mapActions, mapGetters } from "vuex";
 import { uuidv4 } from "@/helpers";
 import store from "@/store";
+import Swal from 'sweetalert2'
 
 export default {
   name: "App",
@@ -119,14 +120,26 @@ export default {
           data: data,
         }).then(()=>{
           this.errMsg = true
-          this.msg="Surveys Builder has been created successfully"
-          this.cl= "alert-success"
+
+          Swal.fire({
+            title: 'success',
+            text:   "Surveys Builder has been created successfully",
+            icon: 'success'
+          }).then(()=>{
+            this.$router.push(`/surveysList/${this.studyId}`)
+          })
         })
       }
       else{
         this.errMsg = true
         this.cl = "alert-err"
         this.msg="Some data is incorrect"
+
+        Swal.fire({
+          title: 'Error',
+          text: "Some data is incorrect",
+          icon: 'warning'
+        })
       }
     },
 
@@ -152,19 +165,44 @@ export default {
             this.validSurvey(this.questions, surveyData)
           }
           else{
+            
             this.errMsg = true
-            this.cl = "alert-err"
-            this.msg = "The question identifiers must be unique"
+            
+            Swal.fire({
+              title: 'Error',
+              text: "The question identifiers must be unique",
+              icon: 'warning'
+            })
           }
         }else{
           this.errMsg = true
-          this.cl = "alert-err"
-          this.msg = "The questions cannot be empty"
+          Swal.fire({
+            title: 'Error',
+            text: "The questions cannot be empty",
+            icon: 'warning'
+          })
         }
       }else{
+        Swal.fire({
+          title: 'Error',
+          text: "The fields can't be blank",
+          icon: 'warning'
+        })
         this.errMsg = true
-        this.cl = "alert-err"
-        this.msg = "The fields can't be blank"
+
+        // Swal.fire({
+        //     title: 'OPPS',
+        //     text:   "wow",
+        //     icon: 'warning',
+        //     //success
+        //     //question
+        //     //error
+          
+        // }).then((result) => {
+        //   /* Read more about isConfirmed, isDenied below */
+        //   //Action on Ok
+        //   Swal.fire('Saved!', '', 'success')
+        // })
       }
     },
   },
