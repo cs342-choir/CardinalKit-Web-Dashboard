@@ -10,7 +10,7 @@
           range
           @update:model-value="handleChangeDate"
         />
-        <div class="wrapper-graphs">
+        <div class="wrapper-graphs" v-if="dataFiltered">
           <line-chart
             v-if="GetGraphType == 'line'"
             ref="chart"
@@ -125,7 +125,8 @@ export default {
       studyId: this.$route.query.studyId,
       userId: this.$route.query.userId,
       hkCode: this.$route.params.hkCode,
-      firstDateChange: true
+      firstDateChange: true,
+      dataFiltered: false
     };
   },
   computed: {
@@ -168,6 +169,7 @@ export default {
     GetCategoriesByHkType,
     handleChangeDate(value) {
       if(this.firstDateChange){
+        console.log("first change")
         let allData = this.getSpecificHealthDataGrapFormat(this.hkCode)
         if (allData.length>0){
           let data = allData[0].data
@@ -182,18 +184,24 @@ export default {
       this.firstDateChange = false
 
       if (value) {
-        if (this.$refs.chart) {
+        // if (this.$refs.chart) {
           if (value.endDate) {
             this.FetchSpecificTypeData({
               studyId: this.studyId,
               userId: this.userId,
               dataType: this.hkCode,
               dates: { startDate: value.startDate, endDate: value.endDate },
+            }).then(()=>{
+                this.dataFiltered = true
             });
-            this.$refs.chart.zoomX(value.startDate, value.endDate);
+            if (this.$refs.chart) {
+              this.$refs.chart.zoomX(value.startDate, value.endDate);
+            }
           }
-        }
+        // }
       }
+      
+      console.log("changed . ",value.startDate, value.endDate)
     },
     transformDate(date) {
       return date.toLocaleString("en-US", { timeZone: "UTC" });
