@@ -12,6 +12,7 @@
         type="number"
         placeholder="1"
         min="0"
+        :class="classError('min')"
       />
       <label> Description: </label>
       <input
@@ -19,6 +20,7 @@
         class="TextInput"
         type="text"
         placeholder="Min value description"
+        :class="classError('minDescription')"
       />    
     </div>
     <br/>
@@ -30,6 +32,7 @@
         type="number"
         min="0"
         placeholder="5"
+        :class="classError('max')"
       />
       <label> Description: </label>
       <input
@@ -37,6 +40,7 @@
         class="TextInput"
         placeholder="Máx value description"
         type="text"
+        :class="classError('maxDescription')"
       />   
     </div>
      <br/>
@@ -58,6 +62,7 @@
         class="TextInput"
         placeholder="1"
         min="1"
+        :class="classError('step')"
       />
     </div>
     <br/>
@@ -70,6 +75,7 @@
         class="TextInput"
         placeholder="1"
         min="0"
+        :class="classError('default')"
       />
     </div>
   </div>
@@ -77,11 +83,22 @@
 
 <script>
 export default {
+
+  data:() => ({
+    errors:{}
+  }),
   props: {
     Options: Object
   },
   methods:{
+    classError(value){
+      if(this.errors[value]){
+        return "TextInput input-no-value-style"
+      }
+      return "TextInput"
+    },
     checkQuestion(){
+      this.errors={}
       let error = false
       let msg = ""
       //Check all fields are not empty
@@ -98,6 +115,13 @@ export default {
         {     
           error = true
           msg = "The fields can't be blank"
+          this.errors['min'] = this.Options.min == ""
+          this.errors['max'] = this.Options.max == ""
+          this.errors['minDescription'] = this.Options.minValueDescription == ""
+          this.errors['maxDescription'] = this.Options.maxValueDescription == ""
+          this.errors['step'] = this.Options.step == ""
+          this.errors['default'] = this.Options.default == ""
+
         }
       else {
         let min = parseInt(this.Options.min)
@@ -110,16 +134,19 @@ export default {
         if(defaults<min){
           error = true
           msg = "default value must be greater than min value"
+          this.errors['default'] = true
         }    
 
         if(defaults>max){
           error = true
           msg = "default value must be lower than max value"
+          this.errors['default'] = true
         }
 
         if(step>max){
           error = true
           msg = "Step value must be lower than max value"
+          this.errors['step'] = true
         }
 
         //check max value greater than min value
@@ -127,6 +154,7 @@ export default {
         if(min>max){
           error = true
           msg = "Min value must be lower than max value"
+          this.errors['min'] = true
         }      
       }
       

@@ -8,19 +8,19 @@
           {{msg}}
         </div>-->
         <label>Title: </label>
-        <input v-model="title" type="text" placeholder="Enter the title" />
+        <input v-model="title" type="text" placeholder="Enter the title"  :class="classError('title')"/>
         <br />
         <label>Subtitle: </label>
-        <input v-model="subtitle" type="text" placeholder="Enter the subtitle" />
+        <input v-model="subtitle" type="text" placeholder="Enter the subtitle" :class="classError('subtitle')" />
         <br />
         <label class="my-4">Show on main screen: </label>
         <input v-model="main" type="checkbox" />
         <br />
         <label>Order: </label>
-        <input v-model="orderSurvey" type="number"  min="1" pattern="^[0-9]+"/>
+        <input v-model="orderSurvey" type="number"  min="1" pattern="^[0-9]+" :class="classError('order')"/>
         <br />
         <label>Section: </label>
-        <input v-model="section" type="text" placeholder="Enter the section" />
+        <input v-model="section" type="text" placeholder="Enter the section" :class="classError('section')"/>
         <!-- <br />
         <label>Icon: </label>
         <input type="file" placeholder="Icon" accept="image/*" /> -->
@@ -73,7 +73,8 @@ export default {
       questions: {},
       errMsg: false,
       msg:"",
-      cl: ""
+      cl: "",
+      errors:{}
   }),
   components: {
       Question,
@@ -101,14 +102,12 @@ export default {
     deleteQuestions(index) {
       delete this.questions[index]
     },
-    validSurvey(questions, data){
+    validSurvey(questions, data,isValid){
       // review if question has data
-      let isValid = true
       for(const[key,value] of Object.entries(questions)){
         if(!this.$refs[value.id].reviewQuestionData()){
           isValid = false
-        }
-        
+        }        
       }
       if(isValid){
         let id = uuidv4()
@@ -142,11 +141,25 @@ export default {
         })
       }
     },
-
+    classError(value){
+      if(this.errors[value]){
+        return "input-no-value-style"
+      }
+      return ""
+    },
     saveSurveybuild() {
       this.errMsg = false
       this.msg=""
-      if(this.section && this.subtitle && this.title){
+      if(!(this.section && this.subtitle && this.title)){
+        Swal.fire({
+          title: 'Error',
+          text: "The fields can't be blank",
+          icon: 'warning'
+        })
+        this.errMsg = true  
+      }
+
+      if(Object.keys(this.questions).length){
         let surveyData={
           'image':"SurveyIcon",
           'order':this.orderSurvey,
@@ -154,75 +167,50 @@ export default {
           'subtitle':this.subtitle,
           'title':this.title,
           'main': this.main
-        }
-        
-        if(Object.keys(this.questions).length){
+        }        
           let questionIdentifiers = Object.keys(this.questions).map((key)=>{
             return this.questions[key].identifier
           }) 
           let uniqueIdentifiers =new Set(questionIdentifiers)
           if(questionIdentifiers.length==uniqueIdentifiers.size){
-            this.validSurvey(this.questions, surveyData)
+            this.validSurvey(this.questions, surveyData,!this.errMsg)
           }
           else{
-            
+            if(!this.errMsg){
+              this.errMsg = true            
+              Swal.fire({
+                title: 'Error',
+                text: "The question identifiers must be unique",
+                icon: 'warning'
+              })
+            }
+           
+          }
+        }else{
+          if(!this.errMsg){
             this.errMsg = true
-            
             Swal.fire({
               title: 'Error',
-              text: "The question identifiers must be unique",
+              text: "The questions cannot be empty",
               icon: 'warning'
             })
           }
-        }else{
-          this.errMsg = true
-          Swal.fire({
-            title: 'Error',
-            text: "The questions cannot be empty",
-            icon: 'warning'
-          })
         }
-      }else{
-        Swal.fire({
-          title: 'Error',
-          text: "The fields can't be blank",
-          icon: 'warning'
-        })
-        this.errMsg = true
 
-        // Swal.fire({
-        //     title: 'OPPS',
-        //     text:   "wow",
-        //     icon: 'warning',
-        //     //success
-        //     //question
-        //     //error
-          
-        // }).then((result) => {
-        //   /* Read more about isConfirmed, isDenied below */
-        //   //Action on Ok
-        //   Swal.fire('Saved!', '', 'success')
-        // })
-      }
+
+
+      this.errors["title"]=this.title ? false : true
+        this.errors["subtitle"]=this.subtitle ? false : true
+        this.errors["section"]=this.section ? false : true
     },
   },
-  // computed:{
-  //   ...mapGetters("surveys", ["getSurveysData"]),
-  // },
-  // beforeRouteEnter(to, from, next) {
-  //   Promise.all([
-  //     store.dispatch("surveys/FetchAllSurveysData", {
-  //       studyId: to.params.studyId
-  //     })
-  //   ])
-  //   .then(() => {
-  //     next();
-  //   });
-  // }
 };
 </script>
 
 <style lang="scss">
+.input-no-value-style {
+  background-color:pink !important;
+}
 .wrapper {
   margin-top: 5%;
   margin-bottom: 5%;

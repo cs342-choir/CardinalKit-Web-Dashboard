@@ -49,6 +49,7 @@ import Question from "@/components/surveys/SurveyBuilder/Questions";
 import { mapActions, mapGetters } from "vuex";
 import store from "@/store";
 import { uuidv4 } from "@/helpers";
+import Swal from 'sweetalert2'
 
 export default {
   name: "App",
@@ -126,6 +127,13 @@ export default {
           this.errMsg = true
           this.msg="Surveys Builder has been created successfully"
           this.cl= "alert-success"
+          Swal.fire({
+            title: 'success',
+            text:   "Surveys Builder has been created successfully",
+            icon: 'success'
+          }).then(()=>{
+            this.$router.push(`/surveysList/${this.studyId}`)
+          })
         }) 
       })
     },
@@ -133,6 +141,7 @@ export default {
       // review if question has data
       let isValid = true
       for(const[key,value] of Object.entries(questions)){
+        console.log("tryReview")
         if(!this.$refs[value.id].reviewQuestionData()){
           isValid = false
         }
@@ -210,7 +219,6 @@ export default {
     }
   },
   computed: {
-    // ...mapGetters("surveys", ["getAllQuestion","getSurveysListData", "getUserSurveysBuilder", "getUserSurveyQuestion"]),
       ...mapGetters("surveys",["getSurveysData"])
   },
   created(){
@@ -222,12 +230,6 @@ export default {
         studyId: to.params.studyId,
         surveyId: to.params.surveyId
       }),
-      // store.dispatch("surveys/FetchSurveyByStudy", {
-      //   studyId: to.params.studyId
-      // }),
-      // store.dispatch("surveys/FetchSurveyQuestions", {
-      //   studyId: to.params.studyId
-      // })
     ])
     .then(() => {
       next();

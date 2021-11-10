@@ -9,8 +9,8 @@
       :name="`
       options[${Options.id}][options]`"
       type="text"
-      class="TextInput"
       placeholder="Yes"
+      :class="classError('yes')"
     />
     <br />
     <br />
@@ -20,26 +20,45 @@
       :name="`
       options[${Options.id}][options]`"
       type="text"
-      class="TextInput"
       placeholder="No"
+      :class="classError('no')"
     />
 </div>
 </template>
 
 <script>
 export default {
+  data:() => ({
+    errors:{}
+  }),
   props: {
     Options: Object
   },
   methods:{
+    classError(value){
+      if(this.errors[value]){
+        return "TextInput input-no-value-style"
+      }
+      return "TextInput"
+    },
     checkQuestion(){
-      console.log(this.Options.yesText)
+      this.errors={}
       let error = false
       let msg = ""
-      if(this.Options.yesText == "" || this.Options.noText == "" || this.Options.yesText == undefined || this.Options.noText == undefined){
+      if(this.Options.yesText == "" || this.Options.noText == "" ){
         error = true
         msg = "The fields can't be blank"
+        this.errors["yes"]=true
       }
+
+      if(this.Options.yesText == undefined || this.Options.noText == undefined){
+        error = true
+        msg = "The fields can't be blank"
+        this.errors["no"]=true
+      }
+
+
+
       return {"error":error,"msg":msg};
     }
   }
