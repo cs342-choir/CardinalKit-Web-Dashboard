@@ -1,5 +1,5 @@
 import { transformAppleCode,transformHealthDataToGlobalFormat } from "@/common/helpers/healthKit"
-import { dataTypeToCalculateAverage } from "@/common/static_data"
+import { dataTypeToCalculateAverage, dataTypeToRounded } from "@/common/static_data"
 
 
 
@@ -24,6 +24,9 @@ export function saveLastCategoryData(state, {category,data}){
                 });        
                 if(dataTypeToCalculateAverage.includes(transform.HkCode)){
                     transform.Value=transform.Value/element.length
+                    if(dataTypeToRounded.includes(transform.HkCode)){
+                        transform.Value = Math.round(transform.Value)
+                    }
                 }
                 transform.Value= parseFloat(parseFloat(transform.Value).toFixed(2))
             }

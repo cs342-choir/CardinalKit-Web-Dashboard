@@ -47,9 +47,9 @@ export const FetchSpecificTypeData = async ({ commit }, payload) => {
       });
     }
   }
-  if (records.length>0){
+  // if (records.length>0){
         commit("saveSpecificTypeData", { data: records, datatype: payload.dataType });
-  }
+  // }
   
 };
 

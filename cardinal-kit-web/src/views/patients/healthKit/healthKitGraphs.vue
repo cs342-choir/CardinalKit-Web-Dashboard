@@ -152,12 +152,18 @@ export default {
       let items = this.getSpecificHealthData(this.hkCode);
       let lowerLimit = (this.currentPage - 1) * this.limit;
       let upperLimit = this.currentPage * this.limit;
-      return items.slice(lowerLimit, upperLimit);
+      if(items){
+        return items.slice(lowerLimit, upperLimit);
+      }
+      else{
+        return []
+      }
+      
     },
     paginationOptions() {
       return {
         limit: [10, 20],
-        total: this.getSpecificHealthData(this.hkCode).length,
+        total: this.getSpecificHealthData(this.hkCode)?this.getSpecificHealthData(this.hkCode).length:0,
         currentPage: this.currentPage,
       };
     }
@@ -216,15 +222,16 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    Promise.all([
-      store.dispatch("patient/FetchSpecificTypeData", {
-        studyId: `${to.query.studyId}`,
-        userId: `${to.query.userId}`,
-        dataType: `${to.params.hkCode}`,
-      }),
-    ]).then(() => {
-      next();
-    });
+    // Promise.all([
+    //   store.dispatch("patient/FetchSpecificTypeData", {
+    //     studyId: `${to.query.studyId}`,
+    //     userId: `${to.query.userId}`,
+    //     dataType: `${to.params.hkCode}`,
+    //   }),
+    // ]).then(() => {
+    //   next();
+    // });
+    next()
   }
 };
 </script>
