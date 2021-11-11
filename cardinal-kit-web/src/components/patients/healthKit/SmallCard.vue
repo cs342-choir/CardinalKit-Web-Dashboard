@@ -1,13 +1,13 @@
 <template>
-  <div :style="styles" class="small-card">
+  <div :style="styles" class="small-card" @click="$emit('onClick')">
 		<div v-if="image" class="small-card-img flex">
 			<img class="logo" :src="image" alt="logo" >
       <div class="small-card-info">
         <p class="small-card-info__title">{{ title }}</p>
         <p v-if="description" class="small-card-info__description">{{ description }}</p>
-        <small @click="$emit('onClick')" class="small-card-info__link pointer">{{ actionText || Action }}</small>
+        <small class="small-card-info__link pointer">{{ actionText || Action }}</small>
       </div>
-		</div>
+		</div  >
 	<!-- 	<div class="hidden-background"></div> -->
 	</div>
 </template>

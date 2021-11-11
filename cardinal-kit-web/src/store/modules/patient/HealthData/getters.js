@@ -66,7 +66,8 @@ function ResumeAverage(data,transformValueCallBack,unit){
 }
 
 function ResumeCount(data){
-  return {title:"Total",value:`${data.length} entries`}
+  let dataLength = data?data.length:0
+  return {title:"Total",value:`${dataLength} entries`}
 }
 
 function ResumeSleepAnalisis(data){
@@ -180,14 +181,16 @@ export function getSpecificHealthDataGrapFormat(state) {
         dataFormat.push({ x: value.date, y: value.value.toFixed(2) });
       }
     } else {
-      data.forEach((record) => {
-        let yValue = record.Value;
-        if (code.includes("Category")) {
-          let array = GetCategoriesByHkType(code);
-          yValue = array.indexOf(yValue);
-        }
-        dataFormat.push({ x: record.Date.Date, y: yValue });
-      });
+      if(data && data.length){
+        data.forEach((record) => {
+          let yValue = record.Value;
+          if (code.includes("Category")) {
+            let array = GetCategoriesByHkType(code);
+            yValue = array.indexOf(yValue);
+          }
+          dataFormat.push({ x: record.Date.Date, y: yValue });
+        });
+      }
     }
     return [
       {
@@ -319,9 +322,11 @@ function HeartRateData(data) {
 function MinfdfulData(data){
   let dataFormat = []
   // dataFormat.push({x:"TEST",y:[new Date(),]})
-  data.forEach((record)=>{
-    dataFormat.push({ x: "Mind", y: [record.StartDate.getTime() ,record.EndDate.getTime()] });
-  })
+  if(data && data.length>0){
+    data.forEach((record)=>{
+      dataFormat.push({ x: "Mind", y: [record.StartDate.getTime() ,record.EndDate.getTime()] });
+    })
+  }
 
   return[{
     name: "Mindful Minutes",
