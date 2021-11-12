@@ -90,6 +90,12 @@ export default {
         chart: {
           height: 350,
           type: "rangeBar",
+          toolbar:{
+            show:false
+          },
+           zoom:{
+             enabled:false
+           }
         },
         plotOptions: {
           bar: {

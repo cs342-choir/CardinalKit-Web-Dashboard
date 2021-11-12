@@ -31,6 +31,12 @@ export default {
         chart: {
           id: "vuechart-example",
            background: '#000',
+           toolbar:{
+            show:false
+          },
+           zoom:{
+             enabled:false
+           }
         },
         plotOptions: {
               radialBar: {

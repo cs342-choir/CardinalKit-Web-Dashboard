@@ -29,6 +29,12 @@ export default {
       return {
         chart: {
           id: "vuechart-example",
+          toolbar:{
+            show:false
+          },
+           zoom:{
+             enabled:false
+           }
         },
         xaxis: {
           categories: this.categories,

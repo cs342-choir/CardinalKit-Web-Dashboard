@@ -1,3 +1,5 @@
+import {logosByCategory,categoriesOfSubcategories} from '@/common/static_data'
+
 /*
     CustomDataFormat
     {
@@ -164,6 +166,17 @@ export const transformHealthDataToGlobalFormat = (data) => {
   //Id
   Id = data.header.id;
   
+  let logo = require("@/assets/icons/Flame.png")
+  let category = categoriesOfSubcategories[HkCode]
+  if(category){
+    let logoCategory = logosByCategory[category]
+    if(logoCategory){
+      logo = logoCategory
+    }
+  }
+  
+
+
   return {
     HkCode: HkCode,
     HkCodeName: HkCodeName,
@@ -174,7 +187,7 @@ export const transformHealthDataToGlobalFormat = (data) => {
     Id: Id,
     StartDate: StartDate,
     EndDate: EndDate,
-    Logo:require("@/assets/icons/Flame.png"),
+    Logo:logo,
     Color: "red"
   };
 };

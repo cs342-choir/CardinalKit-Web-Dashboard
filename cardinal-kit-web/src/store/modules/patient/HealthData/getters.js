@@ -87,8 +87,6 @@ function ResumeSleepAnalisis(data){
         sumASleepSeconds+=transformTimeToSeconds(record.Value,record.Unit)
         
         if(!(daysCounted.includes(record.StartDate.getTime()))){
-          console.log(record.StartDate)
-          console.log(false)
           countASleep++;
           daysCounted.push(record.StartDate.getTime())
         }        
