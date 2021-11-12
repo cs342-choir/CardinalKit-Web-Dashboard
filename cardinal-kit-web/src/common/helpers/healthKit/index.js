@@ -181,7 +181,7 @@ export const transformHealthDataToGlobalFormat = (data) => {
     HkCode: HkCode,
     HkCodeName: HkCodeName,
     HkValue: HkValue,
-    Date: {Date:_Date,formatted:_Date.getDate()+" "+monthNames[_Date.getMonth()]},
+    Date: {Date:_Date,formatted:monthNames[_Date.getMonth()]+" "+_Date.getDate()},
     Value: Value,
     Unit: Unit,
     Id: Id,

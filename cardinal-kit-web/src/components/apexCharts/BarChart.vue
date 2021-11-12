@@ -38,6 +38,14 @@ export default {
         },
         xaxis: {
           categories: this.categories,
+          labels: {
+            datetimeFormatter: {
+              year: 'yyyy',
+              month: 'MMM \'yy',
+              day: 'MMM dd',
+              hour: 'HH:mm'
+            }
+          }
         },
       }
     }

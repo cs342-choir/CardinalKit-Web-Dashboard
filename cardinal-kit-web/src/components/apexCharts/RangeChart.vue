@@ -107,6 +107,14 @@ export default {
         },
         xaxis: {
           type: "datetime",
+          labels: {
+            datetimeFormatter: {
+              year: 'yyyy',
+              month: 'MMM \'yy',
+              day: 'MMM dd',
+              hour: 'HH:mm'
+            }
+          }
         },
         tooltip: {
           custom: this.customTooltip,

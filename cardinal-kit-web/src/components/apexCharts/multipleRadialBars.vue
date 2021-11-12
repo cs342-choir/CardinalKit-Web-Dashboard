@@ -38,6 +38,16 @@ export default {
              enabled:false
            }
         },
+        xaxis: {
+          labels: {
+            datetimeFormatter: {
+              year: 'yyyy',
+              month: 'MMM \'yy',
+              day: 'MMM dd',
+              hour: 'HH:mm'
+            }
+          }
+        },
         plotOptions: {
               radialBar: {
                 dataLabels: {
