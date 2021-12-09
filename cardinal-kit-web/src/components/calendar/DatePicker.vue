@@ -83,7 +83,7 @@ props: {
 emits: ['changeDate'],
 setup(props, ctx)  {
 	const defaultDate = computed(() => props.defaultDate)
-	const date = computed(()  => `${today.value}/${Number(currentMonth.value) + 1}/${currentYear.value}`);
+	const date = computed(()  => `${Number(currentMonth.value) + 1}/${today.value}/${currentYear.value}`);
 	const today = ref(props.defaultDate?.getUTCDate());
 	const currentMonth = ref(props.defaultDate?.getUTCMonth());
 	const currentYear = ref(props.defaultDate?.getUTCFullYear());

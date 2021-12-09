@@ -29,9 +29,23 @@ export default {
       return {
         chart: {
           id: "vuechart-example",
+          toolbar:{
+            show:false
+          },
+           zoom:{
+             enabled:false
+           }
         },
         xaxis: {
           categories: this.categories,
+          labels: {
+            datetimeFormatter: {
+              year: 'yyyy',
+              month: 'MMM \'yy',
+              day: 'MMM dd',
+              hour: 'HH:mm'
+            }
+          }
         },
       }
     }

@@ -10,7 +10,7 @@
           range
           @update:model-value="handleChangeDate"
         />
-        <div class="wrapper-graphs">
+        <div class="wrapper-graphs" v-if="dataFiltered">
           <line-chart
             v-if="GetGraphType == 'line'"
             ref="chart"
@@ -124,7 +124,9 @@ export default {
       limit: 10,
       studyId: this.$route.query.studyId,
       userId: this.$route.query.userId,
-      hkCode: this.$route.params.hkCode
+      hkCode: this.$route.params.hkCode,
+      firstDateChange: true,
+      dataFiltered: false
     };
   },
   computed: {
@@ -150,12 +152,18 @@ export default {
       let items = this.getSpecificHealthData(this.hkCode);
       let lowerLimit = (this.currentPage - 1) * this.limit;
       let upperLimit = this.currentPage * this.limit;
-      return items.slice(lowerLimit, upperLimit);
+      if(items){
+        return items.slice(lowerLimit, upperLimit);
+      }
+      else{
+        return []
+      }
+      
     },
     paginationOptions() {
       return {
         limit: [10, 20],
-        total: this.getSpecificHealthData(this.hkCode).length,
+        total: this.getSpecificHealthData(this.hkCode)?this.getSpecificHealthData(this.hkCode).length:0,
         currentPage: this.currentPage,
       };
     }
@@ -166,19 +174,40 @@ export default {
     transformAppleCode,
     GetCategoriesByHkType,
     handleChangeDate(value) {
+      if(this.firstDateChange){
+        console.log("first change")
+        let allData = this.getSpecificHealthDataGrapFormat(this.hkCode)
+        if (allData.length>0){
+          let data = allData[0].data
+          if (data.length>0){
+            let lastValue = data[data.length-1]
+            if (value.startDate>lastValue.x){
+              value.startDate=lastValue.x
+            }
+          }
+        }
+      }
+      this.firstDateChange = false
+
       if (value) {
-        if (this.$refs.chart) {
+        // if (this.$refs.chart) {
           if (value.endDate) {
             this.FetchSpecificTypeData({
               studyId: this.studyId,
               userId: this.userId,
               dataType: this.hkCode,
               dates: { startDate: value.startDate, endDate: value.endDate },
+            }).then(()=>{
+                this.dataFiltered = true
             });
-            this.$refs.chart.zoomX(value.startDate, value.endDate);
+            if (this.$refs.chart) {
+              this.$refs.chart.zoomX(value.startDate, value.endDate);
+            }
           }
-        }
+        // }
       }
+      
+      console.log("changed . ",value.startDate, value.endDate)
     },
     transformDate(date) {
       return date.toLocaleString("en-US", { timeZone: "UTC" });
@@ -193,15 +222,16 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    Promise.all([
-      store.dispatch("patient/FetchSpecificTypeData", {
-        studyId: `${to.query.studyId}`,
-        userId: `${to.query.userId}`,
-        dataType: `${to.params.hkCode}`,
-      }),
-    ]).then(() => {
-      next();
-    });
+    // Promise.all([
+    //   store.dispatch("patient/FetchSpecificTypeData", {
+    //     studyId: `${to.query.studyId}`,
+    //     userId: `${to.query.userId}`,
+    //     dataType: `${to.params.hkCode}`,
+    //   }),
+    // ]).then(() => {
+    //   next();
+    // });
+    next()
   }
 };
 </script>

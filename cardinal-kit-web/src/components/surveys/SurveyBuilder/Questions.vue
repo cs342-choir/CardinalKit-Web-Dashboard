@@ -34,6 +34,7 @@
           :name="`surveys[${question.id}][title]`"
           type="text"
           placeholder="Title"
+          :class="classError('title')"
         />
       </div>
       <div
@@ -47,6 +48,7 @@
           type="text"
           placeholder="Identifier"
           :readonly="question.readonly"
+          :class="classError('identifier')"
         />
       </div>
       <div
@@ -59,6 +61,7 @@
           :name="`surveys[${question.id}][description]`"
           type="text"
           placeholder="Description here..."
+          :class="classError('description')"
         />
       </div>
 
@@ -89,6 +92,7 @@
           type="text"
           class="TextInput"
           placeholder="Question"
+          :class="classError('question')"
         />
       </div>
 
@@ -278,6 +282,7 @@ export default {
   },
 
   data: () => ({
+    errors:{},
     error:false,
     msg: "",
     questionTypes: [
@@ -307,6 +312,12 @@ export default {
     questionValues: [],
   }),
   methods: {
+    classError(value){
+      if(this.errors[value]){
+        return "TextInput input-no-value-style"
+      }
+      return "TextInput"
+    },
     createQuestionOptions(type, id) {
       switch (type) {
         case "singleChoice":
@@ -340,11 +351,14 @@ export default {
           !this.question["default"] ? this.question["default"] = "" : this.question
           !this.question["vertical"] ? this.question["vertical"] = false  : this.question
           break;
+        case "textScale":
+          !this.question["defaultIndex"] ? this.question["defaultIndex"] = "" : this.question
+          break;
         case "numeric":
           !this.question["max"] ? this.question["max"] = "" : this.question
-          !this.question["min"] ? this.question["max"] = ""  : this.question
-          !this.question["maxFractionDigits"] ? this.question["max"] = "" : this.question
-          !this.question["unit"] ? this.question["max"] = "" : this.question
+          !this.question["min"] ? this.question["min"] = ""  : this.question
+          !this.question["maxFractionDigits"] ? this.question["maxFractionDigits"] = "" : this.question
+          !this.question["unit"] ? this.question["unit"] = "" : this.question
           break;
         case "continuosScale":
           !this.question["min"] ? this.question["min"] = "" : this.question
@@ -355,6 +369,11 @@ export default {
           !this.question["maxFractionDigits"] ? this.question["maxFractionDigits"]="" : this.question
           !this.question["vertical"] ? this.question["vertical"] = false : this.question
           break;
+        case "socioeconomic":
+          !this.question["topText"] ? this.question["topText"] = "" : this.question
+          !this.question["bottomText"] ? this.question["bottomText"] = "" : this.question
+          break;
+        
         case "picker":
           if (!this.question.options.length){
             this.question.options = [
@@ -374,17 +393,28 @@ export default {
      this.$emit("DeleteQuestion", index);
     },
     reviewQuestionData(){
+      this.errors={}
       if(this.$refs["question"]){
-        if(this.question.title != "" && this.question.identifier != "" && this.question.description != "" && this.question.question != ""){
-          let error,msg;
-          ({error,msg} = this.$refs["question"].checkQuestion())
-          this.error = error
-          this.msg = msg
-        }
-        else{
+        console.log("checking")
+        let error,msg;
+        ({error,msg} = this.$refs["question"].checkQuestion())
+        this.error =  error
+        this.msg = msg
+
+        if(this.question.title == "" || this.question.identifier == "" || this.question.description == "" ){
+          this.errors["title"]=this.question.title == "" 
+          this.errors["identifier"]=this.question.identifier == "" 
+          this.errors["description"]=this.question.description == "" 
           this.error = true
-         // console.log("in question")
+         
           this.msg = "The fields can't be blank"
+
+        }
+
+        if(this.question.type != "form" && this.question.question == ""){
+          this.error = true
+          this.msg = "The fields can't be blank"
+          this.errors["question"] = true
         }
       }
       else{

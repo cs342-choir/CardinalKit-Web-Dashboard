@@ -1,17 +1,23 @@
 <template>
   <div class="page">
-    <div class="row box">
-        <category
-         v-for="category in categories" :key="category.id"
-          class="col width"
-          :data="category"
-          :userId="userId"
-          :studyId="studyId"
-          :icon="category.icon"
-          v-show="getValidCategories.includes(category.id)"
-        />
+    <div class="categories-grid">
+      <category
+        v-for="category in categories"
+        :data="category"
+        :key="category.id"
+        :userId="userId"
+        :studyId="studyId"
+        :icon="category.icon"
+        v-show="getValidCategories.includes(category.id)"
+      />
     </div>
     <div class="wrapper-graphs content" v-if="showActivityIndex">
+    <alt-date
+          withCalendar
+          :defaultDate="date"
+          range
+          @update:model-value="handleChangeDate"
+        />
       <h1>Activity Index</h1>
       <div >
         <span >7-day moving avg (steps/day)</span>
@@ -19,8 +25,9 @@
           ref="chart"
           id="line-chart"
           :key="1"
-          :series="getActivityIndexDataToGraphic"
+          :series="filteredData"
         />
+       
       </div>
     </div>
   </div>
@@ -30,22 +37,47 @@ import category from "./categoryCard";
 import { CategoriesList } from '@/common/static_data'
 import { mapGetters } from 'vuex';
 import LineChart from "@/components/apexCharts/LineChart";
+import AltDate from "@/components/calendar/AltDate";
 
 export default {
   name: "categories",
   components: {
     category,
     CategoriesList,
-    LineChart
+    LineChart,
+    AltDate
   },
   data(){
     return{
+      date: { startDate: new Date(new Date().setDate(-30)) },
       categories:[],
       userId: this.$route.query.userId,
-      studyId: this.$route.query.studyId
+      studyId: this.$route.query.studyId,
+      filteredIndexData: [ {name:"ActivityIndex",data:[]} ]
     }
   },
-  methods: {},
+  methods: {
+    async handleChangeDate(value) {
+      if(value){        
+        if(this.getActivityIndexDataToGraphic[0]){
+            let data = [...this.getActivityIndexDataToGraphic][0].data
+
+           let startTimeStamp = value.startDate.getTime()
+           let endTimeStamp = value.endDate.getTime()
+
+           let finalData = data.filter(function(element){
+             return (element.x > startTimeStamp && element.x < endTimeStamp)
+           })
+           await new Promise(resolve => setTimeout(resolve, 10));;
+           this.filteredIndexData=[ {name:"ActivityIndex",data:finalData} ]
+
+        }
+        
+      }
+      this.$refs.chart.zoomX(value.startDate, value.endDate);
+      
+    }
+  },
   computed: {
     ...mapGetters("patient",["getValidCategories", "getActivityIndexDataToGraphic"]),
     showActivityIndex(){
@@ -56,10 +88,15 @@ export default {
         }
       }
       return show
+    },
+    filteredData(){
+      return [ {name:"ActivityIndex",data:this.filteredIndexData[0].data} ]
     }
   },
   created(){
     this.categories = CategoriesList
+    console.log("on",this.getActivityIndexDataToGraphic)
+    this.filteredIndexData = [...this.getActivityIndexDataToGraphic]
   }
 };
 </script>

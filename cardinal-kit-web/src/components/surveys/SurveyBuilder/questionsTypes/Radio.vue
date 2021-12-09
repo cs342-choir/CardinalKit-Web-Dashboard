@@ -10,6 +10,7 @@
           :name="`options[${index}]`"
           type="text"
           class="TextInput"
+          :class="classError(option.value)"
         />
         <button
           v-if="index > 1"
@@ -37,12 +38,21 @@
 
 <script>
 export default {
+  data:() => ({
+    errors:{}
+  }),
   props: {
     Options: Array,
     default: () => [],
     //required: true
   },
   methods: {
+    classError(value){
+      if(this.errors[value]){
+        return "TextInput input-no-value-style"
+      }
+      return "TextInput"
+    },
     addOptions() {
       const val = this.Options.length;
       this.Options.push({ text: "", value: ""+val });
@@ -51,12 +61,14 @@ export default {
       this.Options.splice(index, 1);
     },
     checkQuestion(){
+      this.errors={}
       let error = false
       let msg = ""
        this.Options.forEach(element => {
         if(element.text == ""){
           error = true
           msg = "The fields can't be blank"
+          this.errors[element.value]=true
         }
       });
       return {"error":error,"msg":msg};

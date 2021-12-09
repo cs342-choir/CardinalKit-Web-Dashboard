@@ -90,6 +90,12 @@ export default {
         chart: {
           height: 350,
           type: "rangeBar",
+          toolbar:{
+            show:false
+          },
+           zoom:{
+             enabled:false
+           }
         },
         plotOptions: {
           bar: {
@@ -101,6 +107,14 @@ export default {
         },
         xaxis: {
           type: "datetime",
+          labels: {
+            datetimeFormatter: {
+              year: 'yyyy',
+              month: 'MMM \'yy',
+              day: 'MMM dd',
+              hour: 'HH:mm'
+            }
+          }
         },
         tooltip: {
           custom: this.customTooltip,

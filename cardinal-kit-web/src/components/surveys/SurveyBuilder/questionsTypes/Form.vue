@@ -35,6 +35,7 @@
             type="text"
             class="TextInput"
             placeholder="id"
+            :class="classError(question.id+'identifier')" 
           />
         </div>
 
@@ -63,6 +64,7 @@
             type="text"
             class="TextInput"
             placeholder="Question"
+            :class="classError(question.id+'question')"
           />
         </div>
 
@@ -237,6 +239,7 @@ export default {
   },
 
   data: () => ({
+    errors:{},
     formQuestionTypes: [
       "text",
       "textarea",
@@ -260,6 +263,12 @@ export default {
   }),
 
   methods: {
+    classError(value){
+      if(this.errors[value]){
+        return "TextInput input-no-value-style"
+      }
+      return "TextInput"
+    },
     addFormQuestion() {
       if(!this.Survey.question){
         this.Survey.question=[]
@@ -270,7 +279,7 @@ export default {
         scope: "public",
         identifier: "",
         description: "",
-        question: [],
+        question: "",
         required: true,
         options: [],
       });
@@ -321,13 +330,34 @@ export default {
       return "Option " + (index + 1);
     },
     checkQuestion(){
+      this.errors = {}
       let isValid = true
+      let msg = ""
+      console.log("value",this.Survey.question)
       for(const [key,value] of Object.entries(this.Survey.question)){
-        if(!this.$refs[value.id].checkQuestion()){
+        if(value.question == "" || value.identifier == ""){
+          isValid = false
+          msg = "The fields can't be blank"
+          this.errors[value.id+'question']= value.question==""
+          this.errors[value.id+'identifier']=value.identifier==""
+        }
+        console.log("value",value)
+        if(!this.$refs[value.id]  || !this.$refs[value.id].checkQuestion()){
+
+          
+
+
           isValid=false
+          msg = "The fields can't be blank"
         }
       }
-      return isValid;
+      if(this.Survey.question.length==0){
+        isValid=false
+        msg = "Please select at least one question "
+      }
+      console.log(isValid,msg)
+      console.log(this.Survey.question)
+      return {"error":!isValid,"msg":msg};
     }
   },
 };

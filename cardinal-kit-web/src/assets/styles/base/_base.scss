@@ -242,102 +242,102 @@ $num: 5;
     align-self: center;
 }
 
-.col {
-  padding: 10px;
-  margin: 5px 0;
-  text-align: center;
-}
+// .col {
+//   padding: 10px;
+//   margin: 5px 0;
+//   text-align: center;
+// }
   
-  /* GENERAL GRID STYLES */
+//   /* GENERAL GRID STYLES */
   
-  .col {
-    flex-basis: 100%;
-  }
+//   .col {
+//     flex-basis: 100%;
+//   }
   
-  @media screen and (min-width: 980px) {
-    .row {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-    }
+//   @media screen and (min-width: 980px) {
+//     .row {
+//       display: flex;
+//       flex-direction: row;
+//       flex-wrap: nowrap;
+//     }
    
-    .col {
-      flex: 1;
-    }
+//     .col {
+//       flex: 1;
+//     }
    
-    .col-05 {
-      flex: 0.5;
-    }
+//     .col-05 {
+//       flex: 0.5;
+//     }
   
-    .col-10 {
-      flex: 1;
-    }
+//     .col-10 {
+//       flex: 1;
+//     }
   
-    .col-15 {
-      flex: 1.5;
-    }
+//     .col-15 {
+//       flex: 1.5;
+//     }
     
-    .col-20 {
-      flex: 2;
-    }
+//     .col-20 {
+//       flex: 2;
+//     }
     
-    .col-25 {
-      flex: 2.5;
-    }
+//     .col-25 {
+//       flex: 2.5;
+//     }
     
-    .col-30 {
-      flex: 3;
-    }
+//     .col-30 {
+//       flex: 3;
+//     }
     
-    .col-35 {
-      flex: 3.5;
-    }
+//     .col-35 {
+//       flex: 3.5;
+//     }
   
-    .col-40 {
-      flex: 4;
-    }
+//     .col-40 {
+//       flex: 4;
+//     }
     
-    .col-45 {
-      flex: 4.5;
-    }
+//     .col-45 {
+//       flex: 4.5;
+//     }
     
-    .col-50 {
-      flex: 5;
-    }
+//     .col-50 {
+//       flex: 5;
+//     }
     
-    .col-55 {
-      flex: 5.5;
-    }
+//     .col-55 {
+//       flex: 5.5;
+//     }
     
-    .col-60 {
-      flex: 6;
-    }
+//     .col-60 {
+//       flex: 6;
+//     }
     
-    .col-65 {
-      flex: 6.5;
-    }
+//     .col-65 {
+//       flex: 6.5;
+//     }
     
-    .col-70 {
-      flex: 7;
-    }
+//     .col-70 {
+//       flex: 7;
+//     }
     
-    .col-75 {
-      flex: 7.5;
-    }
+//     .col-75 {
+//       flex: 7.5;
+//     }
     
-    .col-80 {
-      flex: 8;
-    }
+//     .col-80 {
+//       flex: 8;
+//     }
     
-    .col-85 {
-      flex: 8.5;
-    }
+//     .col-85 {
+//       flex: 8.5;
+//     }
     
-    .col-90 {
-      flex: 9;
-    }
+//     .col-90 {
+//       flex: 9;
+//     }
     
-    .col-95 {
-      flex: 9.5;
-    }
-  }
+//     .col-95 {
+//       flex: 9.5;
+//     }
+  // }

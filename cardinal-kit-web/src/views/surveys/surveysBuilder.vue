@@ -4,26 +4,26 @@
       <h1 class="text-center text-muted font-weight-bold">Surveys Builder</h1>
       <br />
       <div class="input-form">
-        <div :class="cl" v-if="errMsg">
+        <!-- <div :class="cl" v-if="errMsg">
           {{msg}}
-        </div>
+        </div>-->
         <label>Title: </label>
-        <input v-model="title" type="text" placeholder="Enter the title" />
+        <input v-model="title" type="text" placeholder="Enter the title"  :class="classError('title')"/>
         <br />
         <label>Subtitle: </label>
-        <input v-model="subtitle" type="text" placeholder="Enter the subtitle" />
+        <input v-model="subtitle" type="text" placeholder="Enter the subtitle" :class="classError('subtitle')" />
         <br />
         <label class="my-4">Show on main screen: </label>
         <input v-model="main" type="checkbox" />
         <br />
         <label>Order: </label>
-        <input v-model="orderSurvey" type="number"  min="1" pattern="^[0-9]+"/>
+        <input v-model="orderSurvey" type="number"  min="1" pattern="^[0-9]+" :class="classError('order')"/>
         <br />
         <label>Section: </label>
-        <input v-model="section" type="text" placeholder="Enter the section" />
-        <br />
+        <input v-model="section" type="text" placeholder="Enter the section" :class="classError('section')"/>
+        <!-- <br />
         <label>Icon: </label>
-        <input type="file" placeholder="Icon" accept="image/*" />
+        <input type="file" placeholder="Icon" accept="image/*" /> -->
         <br>
         <div v-for="question in questions" :key="question.id">
           <Question :question="question" :readonly="false" @DeleteQuestion="deleteQuestions" :ref="question.id" />
@@ -50,6 +50,7 @@ import Question from "@/components/surveys/SurveyBuilder/Questions";
 import { mapActions, mapGetters } from "vuex";
 import { uuidv4 } from "@/helpers";
 import store from "@/store";
+import Swal from 'sweetalert2'
 
 export default {
   name: "App",
@@ -72,7 +73,8 @@ export default {
       questions: {},
       errMsg: false,
       msg:"",
-      cl: ""
+      cl: "",
+      errors:{}
   }),
   components: {
       Question,
@@ -100,14 +102,12 @@ export default {
     deleteQuestions(index) {
       delete this.questions[index]
     },
-    validSurvey(questions, data){
+    validSurvey(questions, data,isValid){
       // review if question has data
-      let isValid = true
       for(const[key,value] of Object.entries(questions)){
         if(!this.$refs[value.id].reviewQuestionData()){
           isValid = false
-        }
-        
+        }        
       }
       if(isValid){
         let id = uuidv4()
@@ -119,21 +119,47 @@ export default {
           data: data,
         }).then(()=>{
           this.errMsg = true
-          this.msg="Surveys Builder has been created successfully"
-          this.cl= "alert-success"
+
+          Swal.fire({
+            title: 'success',
+            text:   "Surveys Builder has been created successfully",
+            icon: 'success'
+          }).then(()=>{
+            this.$router.push(`/surveysList/${this.studyId}`)
+          })
         })
       }
       else{
         this.errMsg = true
         this.cl = "alert-err"
         this.msg="Some data is incorrect"
+
+        Swal.fire({
+          title: 'Error',
+          text: "Some data is incorrect",
+          icon: 'warning'
+        })
       }
     },
-
+    classError(value){
+      if(this.errors[value]){
+        return "input-no-value-style"
+      }
+      return ""
+    },
     saveSurveybuild() {
       this.errMsg = false
       this.msg=""
-      if(this.section && this.subtitle && this.title){
+      if(!(this.section && this.subtitle && this.title)){
+        Swal.fire({
+          title: 'Error',
+          text: "The fields can't be blank",
+          icon: 'warning'
+        })
+        this.errMsg = true  
+      }
+
+      if(Object.keys(this.questions).length){
         let surveyData={
           'image':"SurveyIcon",
           'order':this.orderSurvey,
@@ -141,50 +167,50 @@ export default {
           'subtitle':this.subtitle,
           'title':this.title,
           'main': this.main
-        }
-        
-        if(Object.keys(this.questions).length){
+        }        
           let questionIdentifiers = Object.keys(this.questions).map((key)=>{
             return this.questions[key].identifier
           }) 
           let uniqueIdentifiers =new Set(questionIdentifiers)
           if(questionIdentifiers.length==uniqueIdentifiers.size){
-            this.validSurvey(this.questions, surveyData)
+            this.validSurvey(this.questions, surveyData,!this.errMsg)
           }
           else{
-            this.errMsg = true
-            this.cl = "alert-err"
-            this.msg = "The question identifiers must be unique"
+            if(!this.errMsg){
+              this.errMsg = true            
+              Swal.fire({
+                title: 'Error',
+                text: "The question identifiers must be unique",
+                icon: 'warning'
+              })
+            }
+           
           }
         }else{
-          this.errMsg = true
-          this.cl = "alert-err"
-          this.msg = "The questions cannot be empty"
+          if(!this.errMsg){
+            this.errMsg = true
+            Swal.fire({
+              title: 'Error',
+              text: "The questions cannot be empty",
+              icon: 'warning'
+            })
+          }
         }
-      }else{
-        this.errMsg = true
-        this.cl = "alert-err"
-        this.msg = "The fields can't be blank"
-      }
+
+
+
+      this.errors["title"]=this.title ? false : true
+        this.errors["subtitle"]=this.subtitle ? false : true
+        this.errors["section"]=this.section ? false : true
     },
   },
-  // computed:{
-  //   ...mapGetters("surveys", ["getSurveysData"]),
-  // },
-  // beforeRouteEnter(to, from, next) {
-  //   Promise.all([
-  //     store.dispatch("surveys/FetchAllSurveysData", {
-  //       studyId: to.params.studyId
-  //     })
-  //   ])
-  //   .then(() => {
-  //     next();
-  //   });
-  // }
 };
 </script>
 
 <style lang="scss">
+.input-no-value-style {
+  background-color:pink !important;
+}
 .wrapper {
   margin-top: 5%;
   margin-bottom: 5%;
