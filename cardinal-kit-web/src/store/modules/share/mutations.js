@@ -14,3 +14,7 @@ export function saveUsersHaveMyData(state,users){
 export function saveDoctorsAdmin(state,users){
     state.doctorsAdmin=users
 }
+
+export function saveUserIHaveAccess(state,users){
+    state.usersIHaveAccess = users
+}

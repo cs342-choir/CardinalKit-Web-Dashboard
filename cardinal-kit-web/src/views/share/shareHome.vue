@@ -1,7 +1,6 @@
 <template>
 
  <div class="page">
- {{getDoctorsAdmin}}
     <br />
     <div  class="my-2">
       <h1 class="text-muted">Users who have access to my data </h1>
@@ -12,9 +11,6 @@
     >
     <template #t-row>
       <tr v-for="user in getPageItems" :key="user.id">
-      <td>
-      {{user.id}}
-      </td>
       <td>
       {{user.id}}
       </td>
@@ -78,7 +74,7 @@ import altSelect from "@/components/multiSelect/Select";
 export default {  
   data(){
     return{
-      columns: [{header: 'User Id'},{header: 'Name'}, {header: 'Actions'}],
+      columns: [{header: 'User Id'}, {header: 'Actions'}],
       currentPage: 1,
       limit: 10,
       showAddNewUser: false,
@@ -119,8 +115,9 @@ export default {
   methods:{
     ...mapActions("share",["ShareMyData","RemoveAccess"]),
     share(){
-      console.log("selected",this.doctorSelected)
-      this.ShareMyData(this.doctorSelected).then(()=>{
+      console.log(this.$route.params.studyId)
+      this.ShareMyData({userId:this.doctorSelected,studyId:this.$route.params.studyId}).then(()=>{
+        console.log("shareeee")
        this.reload()
       })
     },
@@ -147,15 +144,12 @@ export default {
         this.showAddNewUser=false
         this.$refs["userSelec"].setNewValue(null)
         store.dispatch("share/FetchUserHaveMyData"),
-        store.dispatch("share/FetchUsersIHaveAccessTo"),
         store.dispatch("share/FetchAllDoctorsAndSuperAdmin")
     }
   },
   beforeRouteEnter(to, from, next){
-    console.log("id",store.getters['user/getUserId'])
     Promise.all([
       store.dispatch("share/FetchUserHaveMyData"),
-      store.dispatch("share/FetchUsersIHaveAccessTo"),
       store.dispatch("share/FetchAllDoctorsAndSuperAdmin")
     ]).then(()=>{
       next()

@@ -5,3 +5,7 @@ export function getUsersHaveMyData(state){
 export function getDoctorsAdmin(state){
     return state.doctorsAdmin
 }
+
+export function getUsersIHaveAccessTo(state){
+    return state.usersIHaveAccess
+}

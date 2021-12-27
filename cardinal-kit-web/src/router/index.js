@@ -148,7 +148,7 @@ const routes = [
         },        
       },
       {
-        path: "/share",
+        path: "/share/:studyId",
         name: "share",
         component: shareHome,
         props:true,
