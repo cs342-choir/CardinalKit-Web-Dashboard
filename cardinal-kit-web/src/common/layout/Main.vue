@@ -63,6 +63,9 @@ export default {
           ];
         }
       }
+      else{
+        main.push({ name: "Share User Info", route: "/share" });
+      }
       return main;
     }
   },
