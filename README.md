@@ -10,4 +10,7 @@ A Vue.js web dashboard that allows you to visualize mobile health data collected
 
 Please see our [documentation](https://cardinalkit.org/cardinalkit-docs/2-web-dashboard/1-deploy.html) for installation instructions.
 
+## License
+CardinalKit is available under the MIT license. See the LICENSE file for more info.
+
 ![Stanford Byers Center for Biodesign](https://github.com/CardinalKit/CardinalKit/raw/master/CardinalKit-Web-Assets/footer.png?raw=true)
