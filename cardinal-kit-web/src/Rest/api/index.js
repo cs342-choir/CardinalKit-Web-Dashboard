@@ -10,7 +10,7 @@ export const PATH= async (path,payload)=>{
 
 }
 
-export const  PUT= async ()=>{
+export const  PUT= async (path,payload)=>{
 
 }
 

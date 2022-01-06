@@ -1,5 +1,5 @@
 import { transformAppleCode,transformHealthDataToGlobalFormat } from "@/common/helpers/healthKit"
-import { dataTypeToCalculateAverage } from "@/common/static_data"
+import { dataTypeToCalculateAverage, dataTypeToRounded } from "@/common/static_data"
 
 
 
@@ -12,7 +12,6 @@ export function saveSpecificTypeData(state, payload) {
 
 
 export function saveLastCategoryData(state, {category,data}){
-    
     let categoryWebFormat = []
     data.forEach(element => {        
         if(element && element.length>0){
@@ -25,6 +24,9 @@ export function saveLastCategoryData(state, {category,data}){
                 });        
                 if(dataTypeToCalculateAverage.includes(transform.HkCode)){
                     transform.Value=transform.Value/element.length
+                    if(dataTypeToRounded.includes(transform.HkCode)){
+                        transform.Value = Math.round(transform.Value)
+                    }
                 }
                 transform.Value= parseFloat(parseFloat(transform.Value).toFixed(2))
             }
@@ -38,4 +40,12 @@ export function saveLastCategoryData(state, {category,data}){
     let copyWebFormat = {...state.healthWebFormat}
     copyWebFormat[category]=categoryWebFormat
     state.healthWebFormat=copyWebFormat
+}
+
+export function saveValidCategories(state,payload){
+    state.validCategories = payload
+  }
+
+export function saveMetricData(state,metricData){
+    state.userMetricData=metricData 
 }

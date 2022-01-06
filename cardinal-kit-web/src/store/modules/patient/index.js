@@ -85,8 +85,7 @@ const FetchGeneralData = async (payload) => {
 
 export const initialState = () => ({
   healthData: {},
-  // activityData: {},
-  // activityDataWebFormat: []
+  userMetricData:[]
 });
 
 export default {

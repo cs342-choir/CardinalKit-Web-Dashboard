@@ -3,19 +3,14 @@
     <Card>
       <template v-slot:card-header>
         <div class="card-header">
-          <Logo
-            :path="logo"
-            :width="'100'"
-            :className="'flex justify-center'"
-          ></Logo>
-          <h1 id="signup" class="mb-1 text-center">Register doctor</h1>
+          <h1 id="signup" class="mb-1 text-center text-muted">Register Doctors</h1>
         </div>
       </template>
       <template v-slot:card-body>
         <form class="login-form" @submit.prevent="handleSubmitRegister">
           <div class="form-group__horizontal"></div>
           <div class="w-100 form-group">
-            <label for="email">Email Address</label>
+            <label for="email" class="text-muted">EMAIL</label>
             <input
               class="form-input"
               type="email"
@@ -26,10 +21,12 @@
             />
           </div>
           <div class="w-100 form-group">
-            <label for="studies">studies</label>
+            <label for="studies" class="text-muted">STUDY</label>
             <Multiselect :options="getUserStudies" v-model="studies" />
           </div>
-          <button id="b-signup" class="btn btn-primary" type="submit">
+          <button id="b-signup"
+            class="btn btn-ck fill-danger w-50 m-auto"
+            type="submit">
             Register
           </button>
         </form>
@@ -38,7 +35,7 @@
   </section>
 </template>
 <script>
-import Logo from "@/components/auth/Logo";
+
 import Card from "@/components/auth/Card";
 import Multiselect from "@/components/multiSelect/Multiselect";
 import { mapActions, mapGetters } from "vuex";
@@ -48,12 +45,10 @@ export default {
   data() {
     return {
       email: "",
-      studies: [],
-      logo: require("@/assets/logo.png"),
+      studies: []
     };
   },
   components: {
-    Logo,
     Card,
     Multiselect,
   },

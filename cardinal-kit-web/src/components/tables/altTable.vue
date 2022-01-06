@@ -63,7 +63,6 @@ export default {
   }
 }
 
-
 .wrapper-table{
   border-radius: .5rem;
   display: block;
@@ -97,9 +96,10 @@ export default {
       padding: .75rem 1.25rem;
       text-align: left;
       font-weight: 600;
-      font-size: .75rem;
+      font-size: .99rem;
       line-height: 1rem;
-      background-color: $light-grey;
+      color: white;
+      background-color: #B71540;
     }
 
     td {

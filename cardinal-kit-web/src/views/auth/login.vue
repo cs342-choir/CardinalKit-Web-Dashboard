@@ -2,15 +2,15 @@
   <section class="wrapper-login">
     <Card>
       <template v-slot:card-header>
-        <Logo :path="logo" :className="'flex justify-center'" :width="'100'"></Logo>
-        <h1 class="text-center">SIGN IN</h1>
+        <Logo :path="logo" :className="'text-center'" :width="'180'"></Logo>
       </template>
       <template v-slot:card-body>
+        <br>
+        <h4 class="my-2 text-muted">Sign In</h4>
         <form class="login-form" @submit.prevent="handleSubmitLogin">
           <div class="form-group">
             <label for="email">Email Address</label>
             <input
-              class="form-input"
               type="email"
               placeholder=""
               id="email"
@@ -20,21 +20,25 @@
           <div class="form-group">
             <label for="password">Password</label>
             <input
-              class="form-input"
               type="password"
               placeholder=""
               id="password"
               v-model="password"
               autocomplete="on"
             />
-            <router-link to="#" class="ev-link forgot"
+            <router-link to="#" class="ev-link forgot "
               >Forgot Password?</router-link
             >
           </div>
-          <button class="btn btn-primary" type="submit">Log in</button>
+          <button 
+            class="btn btn-ck fill-danger w-50 m-auto"
+            type="submit"
+          >
+            Sign in
+          </button>
         </form>
-       
       </template>
+      <hr />
       <template v-slot:card-footer>
         <div className="auth__social-networks">
           <p class="mb-1 subtitle">Login with social networks</p>
@@ -42,12 +46,13 @@
             @click="handleGoogleLogin"
             icon="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" 
             text="Sign in with google"
-            className="google-btn"
+            className="btn btn-ck otl-danger"
           />
           <social-button
             @click="handleAppleLogin" 
             icon="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/240px-Apple_logo_black.svg.png" 
-            text="Sign in with apple" 
+            text="Sign in with apple"
+            className="btn btn-ck otl-danger"
           />
         </div>
         <!-- <div class="text-center">
@@ -70,7 +75,7 @@ export default {
     return {
       email: "",
       password: "",
-      logo: require('@/assets/logo.png')
+      logo: require('@/assets/LogoCardinalKit@2x.png')
     };
   },
   components: {
@@ -129,12 +134,24 @@ export default {
       flex-direction: column;
 
       label {
+        text-transform: uppercase;
         text-align: start;
         margin-bottom: 3px;
         font-size: 10pt;
+        color: #6c757d
       }
       input {
         margin-bottom: 0.5rem;
+        font-size: 1em;
+        border: 0;
+        border-bottom: 1px solid #6c757d;
+        -webkit-appearance: none;
+        border-radius: 0;
+        padding: 0;
+        cursor: text;
+      }:focus {
+        outline: 0;
+        border-bottom: 1px solid #B61440;
       }
 
       a {
@@ -144,6 +161,7 @@ export default {
 
         &.forgot {
           font-size: 10pt;
+          color: #6c757d
         }
       }
     }
@@ -160,4 +178,5 @@ export default {
     }
   }
 }
+
 </style>

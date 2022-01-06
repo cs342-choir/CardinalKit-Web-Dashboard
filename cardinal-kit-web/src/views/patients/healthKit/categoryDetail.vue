@@ -1,7 +1,7 @@
 <template>
   <section class="page">
-    <h1 class="mb-5"> {{categoryId}} </h1>
-    <div class="wrapper-activities">
+    <!-- <h1 class="mb-5 text-capitalize"> {{categoryId}}</h1> -->
+    <div class="row">
        <!-- <activity-card name="Actividad" date="7 may">
         <template v-slot:card-body>
           <div class="card-info">
@@ -21,17 +21,18 @@
            <multiple-radial-bars :series="[calories,exerciseTime,standUpTime]" :height="'250'" :labels="['Move','exercise','Stand Up']"/> 
         </template>
       </activity-card> -->
-      <template v-if="activities && activities.length" >
-          <activity-card v-for="activity in activities" :key="activity.HkCode"
-          :name="activity.HkCodeName" 
-          :date="activity.Date.formatted"
-          :color-title="activity.Color" 
-          :value="''+activity.Value" 
-          :measure="activity.Unit"
-          :logo="activity.Logo"
-          :id="activity.HkCode">
+        <div class="col flex wrap" v-if="activities && activities.length" >
+          <activity-card 
+            v-for="activity in activities" :key="activity.HkCode"
+            :name="activity.HkCodeName" 
+            :date="activity.Date.formatted"
+            :color-title="activity.Color" 
+            :value="''+activity.Value" 
+            :measure="activity.Unit"
+            :logo="activity.Logo"
+            :id="activity.HkCode">
           </activity-card>
-      </template>
+        </div>
     </div>
   </section>
 </template>
@@ -53,38 +54,36 @@ export default {
       calories:39,
       exerciseTime:10,
       standUpTime:2,
-      activities: []     
+      activities: [],
+      categoryId: this.$route.params.categoryId
     };
-  },
-  props: {
-    categoryId: {
-      type: String,
-      required: true,
-    },
   },
   methods: {},
   computed: {
     ...mapGetters('patient',['getCategoryDataWebFormat'])
   },
   mounted(){
-    // let burnedDataArray = this.getSpecificHealthData('41981-2').data
     this.activities = this.getCategoryDataWebFormat(this.categoryId)
   },
   beforeRouteEnter(to, from, next) {
-    Promise.all([
-      store.dispatch("patient/FetchLastCategoryData",{ studyId:`${to.params.studyId}`  , userId:`${to.params.userId}`,category:`${to.params.categoryId}`})
+    if(to.params.categoryId=="survey"){
+    }
+    else
+    {
+      Promise.all([
+        store.dispatch("patient/FetchLastCategoryData",
+        { studyId:`${to.query.studyId}`, userId:`${to.query.userId}`,category:`${to.params.categoryId}`})
       ]).then(()=>{
         next()
       })
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.wrapper-activities {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 350px));
+.wrap {
+  flex-flow: wrap;
 }
 
 .card-info {

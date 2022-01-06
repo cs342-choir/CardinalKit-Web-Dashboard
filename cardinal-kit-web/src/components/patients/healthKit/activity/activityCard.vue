@@ -1,28 +1,36 @@
 <template>
-  <div class="card">
-    <div class="card-header align-center">
-      <div class="card-header__title">
-        <img v-if="logo" :src="logo" alt="logo activity card">
-        <h4 :style="{ color: colorTitle }"><b>{{ name }} </b></h4>
-      </div>
-      <div @click="showToGraph(id)" class="card-header__link flex align-center pointer">
-        <span>{{ date }}</span>
-        <span class="arrow-link">›</span>
-      </div>
-    </div>
-    <div class="card-body">
-      <slot name="card-body">
-        <div class="card-body__info">
-          <p class="info-value">{{value || 'Value'}}</p>
-          <p class="info-measure">{{ measure || 'Type Measure' }}</p>
+  <div>
+    <div v-if="!loading" @click="showToGraph(id)" class="m-2 card pointer width">
+      <div class="card-header align-center m-1">
+        <div class="card-header__title">
+          <h4 :style="{ color: colorTitle }"><b>{{ name }} </b></h4>
         </div>
-      </slot>
+        <div  class="card-header__link  text-center m-1">
+          <img v-if="logo" :src="logo" width="50" alt="logo activity card">
+          <!-- <span class="arrow-link">›</span> -->
+        </div>
+      </div>
+      <div class="card-body m-1">
+        <slot name="card-body">
+          <div class="card-body__info">
+            <p class="info-value">{{value || 'Value'}}</p>
+            <p class="info-measure">{{ measure || 'Type Measure' }}</p>
+          </div>
+        </slot>
+          <span class="m-2">{{ date }}</span>
+      </div>
     </div>
+    <loading-icon v-else size="12px" class="width"/>
   </div>
 </template>
 <script>
+
+import loadingIcon from "@/components/loading";
 export default {
   name: "ActivityCard",
+  components:{
+    loadingIcon
+  },
   props: {
     name: {
       type: String,
@@ -52,33 +60,42 @@ export default {
     return {
       userId: '',
       studyId: '',
+      loading: false
     };
   },
   mounted () {
-    const { studyId, userId } = this.$route?.params;
+    const { studyId, userId } = this.$route?.query;
     this.userId = userId;
     this.studyId = studyId;
   },
   methods: {
-    showToGraph: function (id) {
-      this.$router.push(`/healthGraph/${this.studyId}/${this.userId}/${id}`);
-    },
+    showToGraph(id) {
+      this.loading=true
+      this.$router.push({
+        name: "statistic",
+        params: {hkCode: id},
+        query: {studyId: this.studyId, userId: this.userId}
+      });
+    }
   }
 };
 </script>
 <style lang="scss" scoped>
+.width {
+  width: 13rem;
+}
 .card {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
   min-width: 40%;
+  padding-bottom: 5px;
   border-radius: 5px;
-  display: flex;
-  flex-flow: column;
-  justify-content: space-between;
+  height: auto;
   background-color: $bg-card;
+  justify-content: space-between;
 
   .card-header {
-    display: flex;
+    //display: flex;
     justify-content: space-between;
     padding: .7rem;
 

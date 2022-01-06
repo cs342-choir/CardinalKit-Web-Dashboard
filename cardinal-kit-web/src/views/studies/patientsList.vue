@@ -1,17 +1,14 @@
 <template>
   <div>
-    <patient-list :patients="getUsersStudy(idStudy)" :studyId="idStudy" />
-    <br />
+      <patient-list :patients="getUsersStudy(studyId)" :studyId="studyId" />
+      <br />
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 import store from "@/store";
-
-//Components
 import patientList from "@/components/studies/patientsList";
-import studyList from "@/components/studies/studiesList";
 
 export default {
   name: "Home",
@@ -19,19 +16,37 @@ export default {
     patientList,
   },
   computed: {
-    ...mapGetters("user", ["getUserRol", "getUserStudies", "getUserId"]),
-    ...mapGetters("studies",["getUsersStudy"])
+    ...mapGetters("studies", ["getUsersStudy"]),
   },
   props: {
-    idStudy:{
-      type:String,
-      required:true
-    }
+    studyId: {
+      type: String,
+      required: true,
+    },
   },
   beforeRouteEnter(to, from, next) {
-    Promise.all([store.dispatch("studies/FetchUsers",{studyId:to.params.idStudy})]).then(() => {
+    store.dispatch("studies/FetchUsers", { studyId: to.params.studyId })
+    .then(() => {
       next();
     });
   },
 };
 </script>
+<style lang="scss">
+  .surveysBtn {
+    margin: 65px;
+    text-decoration: none;
+    font-weight: 300;
+    font-size: 20px;
+    color: #000000;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: transparent;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #000000;
+    box-shadow: 5px 5px 5px
+  }
+</style>

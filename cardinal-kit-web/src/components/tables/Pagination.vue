@@ -7,9 +7,10 @@
       </select>
     </div>
     <div class="flex mr-2 pagination-child">
-      <p>{{range}} of {{pagination.total}}</p>
+      <p>{{range}} of {{pagination.total}} </p>
     </div>
     <div class="flex align-center pagination-child">
+    <p>Page: </p>
       <select class="select-table" name="page" v-model="currentPage">
         <option v-for="(page, index) in pages" :key="index" :value="page">{{page}}</option>
       </select>
@@ -72,6 +73,7 @@ export default {
     border-radius: 5px;
     border-color: $light-grey;
     outline: none;
+    width: 70px;
   }
   
 .pagination {

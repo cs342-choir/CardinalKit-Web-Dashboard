@@ -1,7 +1,18 @@
 <template>
   <div class="alt-date">
-    <date-picker :calendar="withCalendar" ref="startElement" :showPopup="startDateTooltip" @changeDate="handleChangeDates($event, 'startDate')"  :defaultDate="startDate" label='Start Date' />
-    <date-picker :calendar="withCalendar" v-if="range" ref="endElement" :showPopup="endDateTooltip" @changeDate="handleChangeDates($event, 'endDate')" :defaultDate="endDate" label='End Date' />
+    <date-picker 
+      :calendar="withCalendar"
+      ref="startElement"
+      :showPopup="startDateTooltip"
+      @changeDate="handleChangeDates($event, 'startDate')"
+      :defaultDate="startDate" label='Start Date' />
+    <date-picker 
+      :calendar="withCalendar" 
+      v-if="range" ref="endElement" 
+      :showPopup="endDateTooltip" 
+      @changeDate="handleChangeDates($event, 'endDate')" 
+      :defaultDate="endDate" 
+      label='End Date' />
   </div>
 </template>
 

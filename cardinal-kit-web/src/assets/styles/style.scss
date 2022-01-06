@@ -21,7 +21,7 @@ button {
 
 .page {
     padding: 1rem 4rem;
-
+    width: auto;
     @media screen and (max-width: 510px) {
         padding: 1rem;
     }
