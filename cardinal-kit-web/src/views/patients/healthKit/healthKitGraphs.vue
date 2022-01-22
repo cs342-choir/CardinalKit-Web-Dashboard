@@ -196,7 +196,7 @@ export default {
               studyId: this.studyId,
               userId: this.userId,
               dataType: this.hkCode,
-              dates: { startDate: value.startDate, endDate: value.endDate },
+              dates: { startDate: value.startDate.toISOString(), endDate: value.endDate.toISOString() },
             }).then(()=>{
                 this.dataFiltered = true
             });

@@ -234,7 +234,8 @@ function transformAnswerFormat(question) {
   }
   let date = "";
   try {
-    date = question.startDate.toDate().toLocaleString('en-US',{timeZone: 'UTC'});
+    date = new Date(question.startDate)
+    date = date.toLocaleString('en-US',{timeZone: 'UTC'});
   } catch {
     date = "";
   }
