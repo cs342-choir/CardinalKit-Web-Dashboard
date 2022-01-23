@@ -82,7 +82,7 @@ export const transformHealthDataToGlobalFormat = (data) => {
   HkCodeName=transformAppleCode(HkCode)
 
   //Date
-  _Date = data.header.creation_date_time.toDate();
+  _Date = new Date(data.header.creation_date_time);
 
   //Unit and value
 
